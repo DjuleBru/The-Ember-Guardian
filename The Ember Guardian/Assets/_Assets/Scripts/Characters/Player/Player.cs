@@ -271,23 +271,6 @@ public class Player : MonoBehaviour, IDamageable
         this.carryingOtherObject = carryingOtherObject;
     }
 
-    //public void SetManagingWorkers(bool managingWorkers) {
-    //    this.managingWorkers = managingWorkers;
-
-    //    if(managingWorkers) {
-    //        OnPlayerStartedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
-    //    } else {
-    //        OnPlayerStoppedInteractingWithAnyInteractable?.Invoke(this, EventArgs.Empty);
-    //    }
-    //}
-    //public void SetManagingWorkersAfterFrame(bool managingWorkers) {
-    //    StartCoroutine(SetManagingWorkersAfterFrameeCoroutine(managingWorkers));
-    //}
-    //private IEnumerator SetManagingWorkersAfterFrameeCoroutine(bool managingWorkers) {
-    //    yield return new WaitForEndOfFrame();
-    //    this.managingWorkers = managingWorkers;
-    //}
-
     public void SetInPayCurrencyArea(bool inPayCurrencyArea) {
         inPayCurrencyTriggerArea = inPayCurrencyArea;
 
@@ -360,6 +343,11 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private void VideoTipUI_OnVideoTipPanelClosed(object sender, VideoTipUI.OnVideoTipPanelClosedEventArgs e) {
+        StartCoroutine(SetVideoTipPanelClosedAfterFrame());
+    }
+
+    private IEnumerator SetVideoTipPanelClosedAfterFrame() {
+        yield return new WaitForSeconds(.25f);
         videoTipMenuOpen = false;
     }
 

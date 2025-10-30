@@ -461,6 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7106095e1d49b6f4f8de0383da852f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonPressable: 1
 --- !u!95 &6773288554132461871
 Animator:
   serializedVersion: 5
@@ -1348,7 +1349,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4419981263633874249}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -6405.1406}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1373,6 +1374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 601486b9a86467848bf2121eb8cc70f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buttonPressable: 1
   settingType: 3
   toggledImageGameObject: {fileID: 0}
   toggledText: {fileID: 3275849044936826358}

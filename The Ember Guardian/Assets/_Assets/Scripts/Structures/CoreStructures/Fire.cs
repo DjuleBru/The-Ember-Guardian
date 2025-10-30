@@ -82,6 +82,7 @@ public class Fire : Structure, IDamageable {
     public event EventHandler OnFireEmberExtractionStarted;
     public static event EventHandler OnAnyFireEmberExtractionStarted;
     public event EventHandler OnFireEmberExtractionStopped;
+    public event EventHandler OnPrimordialFireLit;
     public static event EventHandler OnAnyFireEmberExtractionStopped;
 
     private bool lockFireInteractionFunctionsUpdate;
@@ -239,6 +240,8 @@ public class Fire : Structure, IDamageable {
     private void LevelManager_OnLevelSuccess(object sender, EventArgs e) {
         ES3.Save("lastPrimordialFireLit", primordialFireColor);
         LevelUI_Locations.Instance.ShowFireTextForTime(5f);
+
+        OnPrimordialFireLit?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetFuelLevel(float fuelLevel) {
@@ -759,6 +762,10 @@ public class Fire : Structure, IDamageable {
 
     public float GetLerpDuration() {
         return lerpDuration;
+    }
+
+    public void SetLerpDuration(float duration) {
+        lerpDuration = duration;
     }
 
     public float GetCurrentFuelLevel() {

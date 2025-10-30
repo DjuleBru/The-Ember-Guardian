@@ -169,7 +169,6 @@ public class LevelManager : MonoBehaviour
 
             LevelObjectives.Instance.ShowReturnToHubObj(delayToShowReturnToHubObj);
             LevelSuccess(delayToShowReturnToHubObj + 1f);
-            //StartCoroutine(EnableEndLevelPortal(delayToShowReturnToHubObj+1f));
         }
 
         if(levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
@@ -213,7 +212,7 @@ public class LevelManager : MonoBehaviour
 
                 // Demo level
                 endLevelPortal.transform.position = endLevelPortalPosition;
-                StartCoroutine(EnableEndLevelPortal(delayToReturnToHub));
+                StartCoroutine(EnableEndLevelPortal(8f));
 
             }
             else {

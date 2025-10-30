@@ -15,6 +15,7 @@ public class MainMenuUI : MonoBehaviour {
     protected bool confirmResetProgression;
 
     [SerializeField] protected GameObject mainMenuPanel;
+    [SerializeField] protected GameObject fullGameDescriptionPanel;
     [SerializeField] protected Animator mainMenuPanelAnimator;
     [SerializeField] protected Button continueButton;
     [SerializeField] protected Button newGameButton;
@@ -48,11 +49,17 @@ public class MainMenuUI : MonoBehaviour {
 
         InitializeButtonNavigation();
 
+        Debug.Log("IS DEMO " + VersioningManager.Instance.GetIsDemo());
         if (VersioningManager.Instance.GetIsDemo()) {
             logoImage.sprite = demoLogo;
+            wishlistButton_Menu.gameObject.SetActive(true);
+            fullGameDescriptionPanel.SetActive(true);
         }
         else {
             logoImage.sprite = fullGameLogo;
+            wishlistButton_Menu.gameObject.SetActive(false);
+            fullGameDescriptionPanel.SetActive(false);
+            Debug.Log("CAC");
         }
 
         if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
@@ -120,6 +127,9 @@ public class MainMenuUI : MonoBehaviour {
                 continueButton.interactable = false;
                 EventSystem.current.SetSelectedGameObject(newGameButton.gameObject);
                 newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_newGame");
+
+                continueGameText.fontMaterial = LocalizationManager.Instance.GetStandardMaterial();
+                newGameText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
             }
             else {
                 confirmResetProgression = true;
@@ -235,38 +245,60 @@ public class MainMenuUI : MonoBehaviour {
         Navigation wishlishButtonNav = wishlistButton_Menu.navigation;
         Navigation wishlishButtonFullGamePanelNav = wishlistButton_FullGamePanel.navigation;
         Navigation newGameButtonNav = newGameButton.navigation;
+        Navigation resumeGameButtonNav = continueButton.navigation;
         Navigation discordButtonNav = discordButton.navigation;
 
+
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
-
-            wishlishButtonNav.selectOnDown = newGameButton;
-            wishlistButton_Menu.navigation = wishlishButtonNav;
-
-            wishlishButtonFullGamePanelNav.selectOnLeft = newGameButton;
-            wishlistButton_FullGamePanel.navigation = wishlishButtonFullGamePanelNav;
-
             discordButtonNav.selectOnLeft = newGameButton;
             discordButton.navigation = discordButtonNav;
-
-            newGameButtonNav.selectOnUp = wishlistButton_Menu;
-            newGameButton.navigation = newGameButtonNav;
-
         }
         else {
-
-            wishlishButtonNav.selectOnDown = continueButton;
-            wishlistButton_Menu.navigation = wishlishButtonNav;
-
-            wishlishButtonFullGamePanelNav.selectOnLeft = continueButton;
-            wishlistButton_FullGamePanel.navigation = wishlishButtonFullGamePanelNav;
-
             discordButtonNav.selectOnLeft = continueButton;
             discordButton.navigation = discordButtonNav;
 
-            newGameButtonNav.selectOnUp = continueButton;
-            newGameButton.navigation = newGameButtonNav;
-
         }
+
+        if (VersioningManager.Instance.GetIsDemo()) {
+            // DEMO
+
+            if (!MetaProgressionManager.Instance.GetSavedOnce()) {
+
+                wishlishButtonNav.selectOnDown = newGameButton;
+                wishlistButton_Menu.navigation = wishlishButtonNav;
+
+                wishlishButtonFullGamePanelNav.selectOnLeft = newGameButton;
+                wishlistButton_FullGamePanel.navigation = wishlishButtonFullGamePanelNav;
+
+                newGameButtonNav.selectOnUp = wishlistButton_Menu;
+                newGameButton.navigation = newGameButtonNav;
+
+            }
+            else {
+
+                wishlishButtonNav.selectOnDown = continueButton;
+                wishlistButton_Menu.navigation = wishlishButtonNav;
+
+                wishlishButtonFullGamePanelNav.selectOnLeft = continueButton;
+                wishlistButton_FullGamePanel.navigation = wishlishButtonFullGamePanelNav;
+
+                newGameButtonNav.selectOnUp = continueButton;
+                newGameButton.navigation = newGameButtonNav;
+
+            }
+        } else {
+
+
+            if (!MetaProgressionManager.Instance.GetSavedOnce()) {
+                newGameText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
+            }
+            else {
+                continueGameText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
+            }
+
+            resumeGameButtonNav.selectOnUp = null;
+        }
+      
     }
 
     public void ShowMainMenuButtons() {

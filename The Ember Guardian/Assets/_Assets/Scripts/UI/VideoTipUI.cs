@@ -55,7 +55,7 @@ public class VideoTipUI : MonoBehaviour
         dontShowDebugMode = DebugManager.Instance.GetDebugMode_DontShowVideoTips();
 
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
-        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        GameInput.Instance.OnPlayerReloadPerformed += GameInput_OnPlayerReloadPerformed;
         videoTipUIMainPanel.SetActive(false);
         videoTipUIManualPanel.SetActive(false);
         replayTipButtonGO.GetComponent<Button>().interactable = false;
@@ -65,7 +65,7 @@ public class VideoTipUI : MonoBehaviour
         tipName.font = font;
     }
 
-    private void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
+    private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
         if (!panelOpen) return;
         SkipTipOrResumeButton();
     }

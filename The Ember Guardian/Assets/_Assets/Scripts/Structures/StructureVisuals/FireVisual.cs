@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -112,6 +113,7 @@ public class FireVisual : StructureVisual
 
         if(fire.GetIsPrimordialFire()) {
             SetPrimordialFireColors(fire.GetPrimordialFireColor());
+            fire.OnPrimordialFireLit += Fire_OnPrimordialFireLit;
         }
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
@@ -131,6 +133,10 @@ public class FireVisual : StructureVisual
             StartCoroutine(LerpFireLightIntensity(0, AOEFireLightIntensity, 1f));
         }
 
+    }
+
+    private void Fire_OnPrimordialFireLit(object sender, System.EventArgs e) {
+        StartLightPrimordialFireVisuals();
     }
 
     private void SetPrimordialFireColors(Fire.PrimordialFireColor fireColor) {
@@ -420,6 +426,42 @@ public class FireVisual : StructureVisual
     private void ChangeContinuousPSEmissionRate(float rate) {
         var emission = continuousPS.emission;
         emission.rateOverTime = rate;
+    }
+
+    [Button]
+    public void StartLightPrimordialFireVisuals() {
+        StartCoroutine(LightPrimordialFireCoroutine());
+    }
+
+    private IEnumerator LightPrimordialFireCoroutine() {
+
+        Fire.Instance.SetLerpDuration(1.5f);
+        lerping = true;
+        lerpTimer = 0;
+
+        fireAnimator.ResetTrigger("Calm");
+        fireAnimator.SetTrigger("Extinguished");
+        finalFireLightLimiValue = 0;
+        finalFireAOEValue = 0;
+        finalFireLightIntensityValue = 0;
+        finalFirePSEmissionRateValue = 0;
+        ChangeContinuousPSEmissionRate(0);
+
+        yield return new WaitForSeconds(2f);
+
+        Fire.Instance.SetLerpDuration(4f);
+        lerping = true;
+        lerpTimer = 0;
+
+        fireAnimator.SetTrigger("Insane");
+
+        finalFireAOEValue = fire.GetLevel2FireRadius();
+        finalFireLightLimiValue = mildLightRadius;
+        finalFireLightIntensityValue = insaneLightIntensityValue;
+        finalFirePSEmissionRateValue = insanePSEmissionRateValue;
+        fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite2;
+
+        ChangeContinuousPSEmissionRate(continuousPSInsaneEmissionRate);
     }
 
     private IEnumerator LerpFireLightIntensity(float initialIntensity, float destinationIntensity, float lerpDuration) {

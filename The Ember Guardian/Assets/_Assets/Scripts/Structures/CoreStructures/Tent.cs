@@ -86,7 +86,7 @@ public class Tent : Structure
         fastTravelTP.gameObject.SetActive(true);
     }
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
-        Debug.Log(currentStructureInteractionType);
+        //Debug.Log(currentStructureInteractionType);
         if (currentStructureInteractionType == StructureInteractionType.primaryFunction) {
             TriggerStructurePrimaryFunction();
             return;

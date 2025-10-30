@@ -118,7 +118,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void ShowObjectiveAfterDelay(ObjectiveType objectiveType, float delay) {
-        Debug.Log("ShowObjectiveAfterDelay " + objectiveType);
+        //Debug.Log("ShowObjectiveAfterDelay " + objectiveType);
         StartCoroutine(ShowObjectiveAfterDelayCoroutine(objectiveType, delay));
     }
 
@@ -137,7 +137,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void ShowObjectiveUI(ObjectiveType objectiveType) {
-        Debug.Log("ShowObjectiveUI " + objectiveType);
+        //Debug.Log("ShowObjectiveUI " + objectiveType);
         objectiveText.text = GetObjectiveTextFromType(objectiveType);
         GetComponent<Animator>().enabled = true;
         objectiveGameObject.SetActive(true);
@@ -147,7 +147,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void SetNewObjectiveUI(ObjectiveType objectiveType) {
-        Debug.Log("SetNewObjectiveUI " + objectiveType);
+        //Debug.Log("SetNewObjectiveUI " + objectiveType);
 
         objectiveText.text = GetObjectiveTextFromType(objectiveType);
         objectiveGameObject.SetActive(true);

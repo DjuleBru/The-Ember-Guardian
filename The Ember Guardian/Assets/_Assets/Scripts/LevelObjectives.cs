@@ -104,7 +104,6 @@ public class LevelObjectives : MonoBehaviour
 
         if (nightsSurvived == nightsToSurvive) {
             CompleteSurviveNightsObjective();
-
         }
     }
 
@@ -118,7 +117,7 @@ public class LevelObjectives : MonoBehaviour
         }
         else {
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights);
-            ShowReturnToHubObj(4f);
+            ShowReturnToHubObj(8f);
         }
     }
 

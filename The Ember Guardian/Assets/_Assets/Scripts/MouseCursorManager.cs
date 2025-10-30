@@ -44,12 +44,19 @@ public class MouseCursorManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
-        Cursor.lockState = CursorLockMode.Confined;
     }
 
     void Start() {
         cursorHotspot = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
         Cursor.SetCursor(cursorTexture, cursorHotspot, CursorMode.Auto);
+
+        #if !UNITY_EDITOR
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
+        #else
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+        #endif
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
             isMenuScene = true;

@@ -36,6 +36,14 @@ public class LevelUI_Locations : MonoBehaviour
     }
 
     public void ShowFireTextForTime(float timeToShow) {
+        StartCoroutine(ShowFireTextForTimeCoroutine(timeToShow));
+    }
+
+    private IEnumerator ShowFireTextForTimeCoroutine(float timeToShow) {
+        CameraManager.Instance.ChangeCameraTarget(Fire.Instance.transform);
+
+        yield return new WaitForSeconds(2f);
+
         locationsAnimator.ResetTrigger("Hide");
         locationsAnimator.SetTrigger("Show");
 
@@ -44,6 +52,10 @@ public class LevelUI_Locations : MonoBehaviour
         OnLocationTextShown?.Invoke(this, EventArgs.Empty);
 
         StartCoroutine(ShowLocationCoroutine(timeToShow));
+
+        yield return new WaitForSeconds(timeToShow);
+
+        CameraManager.Instance.ResetCameraTargetToPlayer();
     }
 
     private IEnumerator ShowLocationCoroutine(float showDuration) {
