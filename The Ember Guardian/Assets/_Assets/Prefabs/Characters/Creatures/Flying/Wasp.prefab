@@ -303,6 +303,7 @@ MonoBehaviour:
   maxSpeedMultiplier: 1.4
   speedLerpDuration: 0.5
   speedChangeInterval: 1
+  useNoise: 0
   noiseAmplitude: 0.8
   noiseFrequency: 2.5
 --- !u!114 &4559363108854811627
@@ -322,3 +323,4 @@ MonoBehaviour:
   repositionCooldown: 0
   distanceToDropOnTarget: 2.5
   distanceToDropOnTargetRandomizer: 1.5
+  playerYTargetAltitude: 1.5

@@ -30,6 +30,8 @@ public class AddStructureBlueprint : ButtonUI
     private bool newItem;
     private Button button;
 
+    public static event EventHandler OnAnyStructureBlueprintFailedAddedMaxAmount;
+
     private void Awake() {
         button = GetComponent<Button>();
         button.onClick.RemoveAllListeners(); // Supprime les anciens pour éviter les doublons
@@ -124,6 +126,8 @@ public class AddStructureBlueprint : ButtonUI
             plusIcon.GetComponent<Image>().enabled = false;
             maxStructureAmountGameObject.SetActive(false);
             structureNameText.gameObject.SetActive(false);
+        } else {
+            locked = false;
         }
     }
 
@@ -137,7 +141,7 @@ public class AddStructureBlueprint : ButtonUI
         RefreshStructureAmounts();
         newItemGO.SetActive(true);
         newItem = true;
-        //Debug.Log("SetStructureUnlocked " + linkedStructureSO);
+        Debug.Log("SetStructureUnlocked " + linkedStructureSO);
         ArchitectTable.Instance.GetArchitectTableHubMerchant().SetMerchantHasNewItems();
 
     }
@@ -145,7 +149,7 @@ public class AddStructureBlueprint : ButtonUI
     private void TryAddStructureBlueprint() {
         if (locked) return;
         if (currentBlueprintAmount >= maxBlueprintAmount) {
-
+            OnAnyStructureBlueprintFailedAddedMaxAmount?.Invoke(this, EventArgs.Empty);
             return;
         }
 

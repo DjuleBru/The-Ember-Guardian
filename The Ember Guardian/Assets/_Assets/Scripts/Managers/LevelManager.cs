@@ -17,6 +17,9 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private StructureLocation conditionalLockedStructureLocation;
     [SerializeField] private bool setEndLevelPositionRelativeToPlayer = true;
 
+    [SerializeField] private List<int> maxCurrencyStorageList;
+    [SerializeField] private List<float> difficultyReductionFactorsList;
+
     private List<Obstacle> allObstacles = new List<Obstacle>();
     private List<Obstacle> blockingObstacles = new List<Obstacle>();
     private List<Chest> allChests = new List<Chest>();
@@ -382,6 +385,13 @@ public class LevelManager : MonoBehaviour
             conditionalLockedStructureLocation.gameObject.SetActive(true);
             conditionalLockedStructureLocation.UnlockStructureLocation();
         }
+    }
+
+    public List<int> GetMaxCurrencyStorageList() {
+        return maxCurrencyStorageList;
+    }
+    public List<float> GetDifficultyReductionFactorsList() {
+        return difficultyReductionFactorsList;
     }
 
     private void OnDestroy() {

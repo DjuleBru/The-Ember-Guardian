@@ -81,8 +81,10 @@ public class PerspectiveObject : MonoBehaviour {
 
     void UpdateSortingOrder() {
         // Plus un sprite est bas, plus il doit être "devant"
-        int order = baseSortingOrder - Mathf.RoundToInt(spriteRenderer.transform.position.y * sortingPrecision);
-        spriteRenderer.sortingOrder = order -1;
+        int order = baseSortingOrder - Mathf.RoundToInt(perspectiveReferencePoint.transform.position.y * sortingPrecision);
+        if (spriteRenderer != null) {
+            spriteRenderer.sortingOrder = order - 1;
+        }
 
         if (foliageSpriteRenderer != null) {
             foliageSpriteRenderer.sortingOrder = order;

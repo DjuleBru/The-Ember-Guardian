@@ -821,14 +821,14 @@ public class MusicManager : MonoBehaviour {
         if(musicAudioLevelReducedWithPause) {
             volume /= musicVolumeReductionWithPause;
         }
-        Debug.Log("SetAudioVolume " + volume);
+        //Debug.Log("SetAudioVolume " + volume);
 
         audioSourceA.volume = volume * musicSettingVolume * masterSettingVolume;
         audioSourceB.volume = volume * musicSettingVolume * masterSettingVolume;
     }
 
     public void SetAudioTargerVolume(float volume) {
-        Debug.Log("SetAudioTargerVolume " + volume);
+        //Debug.Log("SetAudioTargerVolume " + volume);
         targetVolume = volume * musicSettingVolume * masterSettingVolume;
     }
 

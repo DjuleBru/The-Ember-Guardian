@@ -521,6 +521,30 @@ public class CreatureAI : MonoBehaviour {
         return state;
     }
 
+    protected void OnTriggerEnter2D(Collider2D collision) {
+        if (creature.GetCreatureSO().flying) return;
+
+        if (collision.gameObject.GetComponent<Obstacle>() != null) {
+            Obstacle obstacle = collision.gameObject.GetComponent<Obstacle>();
+
+            if (!obstacle.GetBuilt()) {
+                float direction = obstacle.transform.position.x - transform.position.x;
+                if (direction > 0) {
+                    direction = 1;
+                }
+                else {
+                    direction = -1;
+                }
+
+                Vector3 moveTarget = new Vector3(-direction, 0, 0);
+                detectedAttackTarget = false;
+                aggroedRecently = true;
+                ChangeState(State.walkingToSpawner);
+                creatureMovement.SetMoveTarget(moveTarget);
+            }
+        }
+    }
+
     protected void OnDestroy() {
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
     }

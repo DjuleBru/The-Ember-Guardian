@@ -67,6 +67,7 @@ public class SettingsManager : MonoBehaviour
         Instance = this;
         settingsSaveFileSettings = new ES3Settings("Settings.es3");
         settingsVersion = ES3.Load("settingsVersion", 0f, settingsSaveFileSettings);
+
         LoadSettings();
     }
 
@@ -229,6 +230,15 @@ public class SettingsManager : MonoBehaviour
                 Screen.SetResolution(native.width, native.height, FullScreenMode.ExclusiveFullScreen);
                 break;
         }
+
+        StartCoroutine(VerifyFullscreenMode());
+    }
+
+
+    private IEnumerator VerifyFullscreenMode() {
+        yield return new WaitForSeconds(0.5f);
+        if (Screen.fullScreenMode != FullScreenMode.ExclusiveFullScreen)
+            Debug.LogWarning("Unity n'a pas pu passer en ExclusiveFullScreen (probablement borderless).");
     }
 
     public ScreenMode GetCurrentScreenMode() => currentScreenMode;

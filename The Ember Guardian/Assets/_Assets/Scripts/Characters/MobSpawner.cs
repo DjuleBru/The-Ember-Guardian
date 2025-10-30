@@ -52,7 +52,7 @@ public class MobSpawner : MonoBehaviour
 
     protected bool mobsCanSpawnAtDawn = true;
     protected bool ambushSpawned;
-    protected bool firstDawnAfterLoad = true;
+    protected bool firstDawnAfterLoad;
 
     public class OnMobSpawnedEventArgs : EventArgs {
         public Mob mob;

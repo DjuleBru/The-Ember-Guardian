@@ -44,6 +44,7 @@ public class MouseCursorManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     void Start() {

@@ -87,6 +87,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip campEdit_GridHovered;
     public AudioClip campEdit_GridHoveredWithStructure;
     public AudioClip campEdit_GridHoveredWhileMovingBlueprint;
+    public AudioClip campEdit_BlueprintFailedAddedMaxAmount;
 
     public AudioClip hubChestOpen;
     public AudioClip hubChestClose;

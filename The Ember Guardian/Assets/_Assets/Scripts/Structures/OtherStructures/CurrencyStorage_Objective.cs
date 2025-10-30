@@ -6,8 +6,8 @@ using UnityEngine;
 public class CurrencyStorage_Objective : CurrencyStorage
 {
 
-    [SerializeField] private List<int> maxCurrencyStorageList;
-    [SerializeField] private List<float> difficultyReductionFactorsList;
+    private List<int> maxCurrencyStorageList;
+    private List<float> difficultyReductionFactorsList;
     private int maxCurrencyStorageIndex;
 
     public event EventHandler OnMaxCurrencyAmountReached;
@@ -17,10 +17,19 @@ public class CurrencyStorage_Objective : CurrencyStorage
 
     protected override void Awake() {
         base.Awake();
-        maxCurrencyAmountStored = maxCurrencyStorageList[0];
+        //maxCurrencyAmountStored = maxCurrencyStorageList[0];
 
         engineersCanPickUpOrbs = false;
     }
+
+    protected override void Start() {
+        base.Start();
+        maxCurrencyStorageList = LevelManager.Instance.GetMaxCurrencyStorageList();
+        difficultyReductionFactorsList = LevelManager.Instance.GetDifficultyReductionFactorsList();
+        maxCurrencyAmountStored = maxCurrencyStorageList[0];
+
+    }
+
     protected override void TriggerStructurePrimaryFunction() {
         base.TriggerStructurePrimaryFunction();
 

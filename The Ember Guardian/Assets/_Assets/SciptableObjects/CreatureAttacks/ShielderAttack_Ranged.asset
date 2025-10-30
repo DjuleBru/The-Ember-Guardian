@@ -29,9 +29,10 @@ MonoBehaviour:
   damageToBarricades: 1
   canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 1
-  blockSwitchXScaleWhileAttacking: 0
+  blockSwitchXScaleWhileAttacking: 1
+  startblockSwitchXScaleWhileAttackingTime: 0.1
   attackAnimationDelay: 0.9
-  totalAttackAnimationTime: 1.3
+  totalAttackAnimationTime: 2
   attackSFXDelayAfterAnimationStart: 0.8
   staticProjectilePrefab: {fileID: 0}
   staticProjectileAutoTargetsPlayer: 0

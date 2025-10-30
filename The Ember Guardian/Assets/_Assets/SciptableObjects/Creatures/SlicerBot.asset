@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: SlicerBot
   isBoss: 0
+  appearTwiceOnSecondPhase: 0
   description: Basic monster, a bit swarmy.
   creatureIcon: {fileID: 21300000, guid: 101643964bd4ae44c87d0ba5a3de1f76, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: 089391eda397e5f4b846ea8cb60518be, type: 3}
-  creaturePrefab: {fileID: 0}
+  creaturePrefab: {fileID: 4997657120178985709, guid: d119421a9fdb30e46a5eac33d684e066, type: 3}
   mass: 10
   detectionRange_Day: 10
   detectionRange_Night: 10
@@ -37,6 +38,7 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0.5
   maxHealth: 30
   enteredLightattackRateDebuff: 2.5
+  nightSpawnYPosition: 2
   probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0

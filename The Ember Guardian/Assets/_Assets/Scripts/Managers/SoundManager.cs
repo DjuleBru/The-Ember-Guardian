@@ -124,6 +124,7 @@ public class SoundManager : MonoBehaviour
             CampEditManager.Instance.OnStructurePickedUp += CampEditManager_OnStructurePickedUp;
             CampEditManager.Instance.OnStructureDroppedMoving += CampEditManager_OnStructureDropped;
             CampEditManager.Instance.OnAllStructuresRemoved += CampEditManager_OnAllStructuresRemoved;
+            AddStructureBlueprint.OnAnyStructureBlueprintFailedAddedMaxAmount += AddStructureBlueprint_OnAnyStructureBlueprintFailedAddedMaxAmount;
         }
 
         StructureBlueprint.OnAnyBlueprintWithStructureHovered += StructureBlueprint_OnAnyBlueprintWithStructureHovered;
@@ -197,6 +198,7 @@ public class SoundManager : MonoBehaviour
         DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
     }
+
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -317,6 +319,10 @@ public class SoundManager : MonoBehaviour
     }
     private void CampEditManager_OnAllStructuresRemoved(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.campEdit_AllStructuresRemoved, .15f);
+    }
+
+    private void AddStructureBlueprint_OnAnyStructureBlueprintFailedAddedMaxAmount(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.campEdit_BlueprintFailedAddedMaxAmount, .7f);
     }
 
     private void CampEditManager_OnLayoutResetToDefault(object sender, System.EventArgs e) {
@@ -1148,6 +1154,7 @@ public class SoundManager : MonoBehaviour
         PlayerUI_TickTemplate.OnAnyBulletPingShineWindowStarted -= PlayerUI_TickTemplate_OnAnyBulletPingShineWindowStarted;
         PlayerUI_TickTemplate.OnAnyBulletPingShineStarted -= PlayerUI_TickTemplate_OnAnyBulletPingShineStarted;
         PlayerUI_TickTemplate.OnAnyBulletPingShineReachedGun -= PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun;
+        AddStructureBlueprint.OnAnyStructureBlueprintFailedAddedMaxAmount -= AddStructureBlueprint_OnAnyStructureBlueprintFailedAddedMaxAmount;
 
 
         ParticleCollision.OnAnyBulletHitEnemy -= ParticleCollision_OnAnyBulletHitEnemy;
