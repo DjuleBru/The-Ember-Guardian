@@ -1,7 +1,11 @@
+using Febucci.UI;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class HUBManager : MonoBehaviour
 {
@@ -30,6 +34,17 @@ public class HUBManager : MonoBehaviour
     [SerializeField] private GameObject fireIndicator;
 
     [SerializeField] private LevelSO level1SO;
+    [SerializeField] private VideoPlayer endGameCinematicVideoPlayer;
+    [SerializeField] private GameObject endGameCinematicVideoMainPanel;
+    [SerializeField] private GameObject creditsPanel;
+
+    [SerializeField] private TypewriterByCharacter creditTitleTypeWriter;
+    [SerializeField] private TypewriterByCharacter creditNamesTypeWriter;
+    [SerializeField] private TypewriterByCharacter creditNamesTypeWriter2;
+    [SerializeField] private TypewriterByCharacter creditNamesTypeWriter3;
+    [SerializeField] private TextMeshProUGUI creditNamesText;
+    [SerializeField] private TextMeshProUGUI creditNamesText2;
+    [SerializeField] private TextMeshProUGUI creditNamesText3;
 
     private float hubDelayToStartPlayingMusic = 3f;
 
@@ -52,12 +67,15 @@ public class HUBManager : MonoBehaviour
     private bool merchantEndedTalking;
     private bool fireIndicatorActive;
     private bool chestIndicatorActive;
+    private bool endGameSequenceStarted;
+    private bool endGameSequenceDone;
 
     public event EventHandler OnHubSaved;
 
     private void Awake() {
         Instance = this;
 
+        creditsPanel.SetActive(false);
         if (!demoHUB) {
             gemMerchantIndicator.gameObject.SetActive(false);
             chestIndicator.gameObject.SetActive(false);
@@ -114,7 +132,9 @@ public class HUBManager : MonoBehaviour
             enterHubCollider.gameObject.SetActive(false);
             hubFire.RefreshHubFireEmberExtractable();
             RefreshPlayerHasGemsIndicators();
-            if (!demoHUB) {
+            HandleLastHubEnterSequence();
+
+            if (!demoHUB && !endGameSequenceStarted) {
                 MusicManager.Instance.PlayMusicDelayed(hubDelayToStartPlayingMusic);
             }
         }
@@ -133,6 +153,29 @@ public class HUBManager : MonoBehaviour
         if (DEBUGMODE) {
             Player.Instance.SetPosition(DEBUGPlayerSpawnPoint.position);
         }
+    }
+
+    private void HandleLastHubEnterSequence() {
+
+        //Fire.PrimordialFireColor lastPrimordialFireColorLit = ES3.Load("lastPrimordialFireLit", Fire.PrimordialFireColor.Red);
+        Fire.PrimordialFireColor lastPrimordialFireColorLit = Fire.PrimordialFireColor.Purple;
+
+        // DEBUG MODE
+        //endGameSequenceDone = ES3.Load("endGameSequenceDone", false);
+        endGameSequenceDone = false;
+
+        if (lastPrimordialFireColorLit == Fire.PrimordialFireColor.Purple && !endGameSequenceDone) {
+            HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
+            HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+            endGameSequenceStarted = true;
+            StartCoroutine(LastHubEnterSequence());
+        }
+    }
+
+    private IEnumerator LastHubEnterSequence() {
+        yield return new WaitForSeconds(5f);
+        LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.HUB_FinalHubEnter);
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(new List<LevelUI_ObjectiveUI.SubObjectiveType>() { LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader});
     }
 
     private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -306,6 +349,8 @@ public class HUBManager : MonoBehaviour
             if(hubMerchantType == HubMerchant.HubMerchantType.GemMerchant) {
                 // Player just finished talking to Gem Merchant
                 List<LevelSO> levelSOToUnlockList = MetaProgressionManager.Instance.GetPreviousLevelsUnlocked();
+                if (levelSOToUnlockList.Count == 0) return;
+
                 LevelSO nextLevelSO = levelSOToUnlockList[0];
 
                 if (nextLevelSO.isBranchingLevel && nextLevelSO.requiredLevelSO1 != null) {
@@ -375,6 +420,17 @@ public class HUBManager : MonoBehaviour
     }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, System.EventArgs e) {
+        HubMerchant merchant = sender as HubMerchant;
+        if (merchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GemMerchant) {
+            if (endGameSequenceStarted) {
+                endGameSequenceStarted = false;
+                endGameSequenceDone = true;
+                ES3.Save("endGameSequenceDone", true);
+
+                StartCoroutine(ShowCredits());
+            }
+        }
+
         if (firstHubEncounterRoutineOver) return;
 
         if(!playerInteractedWithMerchantOnce) {
@@ -391,13 +447,21 @@ public class HUBManager : MonoBehaviour
             gemMerchant.SetPlayerCanInteractWithMerchant(true);
             return;
         };
-
-
     }
 
     private void HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant(object sender, EventArgs e) {
-        if (playerBoughtItem) return;
-        gemMerchantIndicator.SetActive(false);
+        HubMerchant merchant = sender as HubMerchant;
+        if(merchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GemMerchant) {
+            if (!playerBoughtItem) {
+                gemMerchantIndicator.SetActive(false);
+            };
+
+            ES3.Save("endGameSequenceStarted", endGameSequenceStarted);
+            if (endGameSequenceStarted) {
+                LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.HUB_TalkToTrader);
+                StartCoroutine(EndGameCinematicCoroutine());
+            }
+        }
     }
 
     private IEnumerator FirstHUBSpawnCoroutine() {
@@ -603,6 +667,156 @@ public class HUBManager : MonoBehaviour
     }
     public bool GetIsDemo() {
         return demoHUB;
+    }
+
+    public bool GetIsEndGameSequence() {
+        return endGameSequenceStarted;
+    }
+
+    private IEnumerator EndGameCinematicCoroutine() {
+        SceneLoader.Instance.StartFadeIn(1.5f, true);
+        CameraManager.Instance.ZoomIn(false, 1.5f, 2f);
+        CameraManager.Instance.ChangeCameraTarget(gemMerchant.GetCameraFocusTransform());
+        gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().StartTalkingToMerchantCoroutine_EndGame();
+
+        yield return new WaitForSeconds(3f);
+        // Black screen
+        endGameCinematicVideoMainPanel.SetActive(true);
+        endGameCinematicVideoPlayer.Play();
+        SceneLoader.Instance.StartFadeOut(true);
+
+        float scrollTimeInEachEnvironment = 6f;
+
+        yield return new WaitForSeconds(2f);
+        MusicManager.Instance.PlayCreditsMusic();
+        yield return new WaitForSeconds(2.5f);
+        gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().ShowNextTextLine(true);
+        yield return new WaitForSeconds(scrollTimeInEachEnvironment);
+        gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().ShowNextTextLine(true);
+        yield return new WaitForSeconds(scrollTimeInEachEnvironment);
+        gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().ShowNextTextLine(true);
+        yield return new WaitForSeconds(scrollTimeInEachEnvironment);
+        gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().ShowNextTextLine(true);
+        yield return new WaitForSeconds(scrollTimeInEachEnvironment);
+
+        // Back to city
+        SceneLoader.Instance.StartFadeIn(1f, false);
+        yield return new WaitForSeconds(2f);
+
+        endGameCinematicVideoMainPanel.SetActive(false);
+        CameraManager.Instance.ChangeCameraTarget(gemMerchant.transform);
+        SceneLoader.Instance.StartFadeOut(false);
+
+        yield return new WaitForSeconds(.5f);
+
+        gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().ShowNextTextLine(false);
+        gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().SetEndGameCoroutineEnded();
+
+    }
+
+    [Button]
+    public void StartShowCredits() {
+        StartCoroutine(ShowCredits());
+    }
+
+    private IEnumerator ShowCredits() {
+        yield return new WaitForSeconds(1f);
+        creditsPanel.SetActive(true);
+        creditTitleTypeWriter.ShowText("");
+        creditNamesTypeWriter.ShowText("");
+        creditNamesTypeWriter2.ShowText("");
+        creditNamesTypeWriter3.ShowText("");
+
+        creditTitleTypeWriter.ShowText("Created by");
+        yield return new WaitForSeconds(1.5f);
+        creditNamesTypeWriter.ShowText("Ratbit");
+
+        yield return new WaitForSeconds(3f);
+        creditTitleTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(.5f);
+        creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(1.5f);
+
+        creditTitleTypeWriter.ShowText("Published by");
+        yield return new WaitForSeconds(1.5f);
+        creditNamesTypeWriter.ShowText("Slug Disco");
+
+        yield return new WaitForSeconds(3f);
+        creditTitleTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(.5f);
+        creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(1.5f);
+
+        creditTitleTypeWriter.ShowText("Programming");
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter.ShowText("Ratbit");
+
+        yield return new WaitForSeconds(3f);
+        creditTitleTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(.5f);
+        creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(1.5f);
+
+        creditTitleTypeWriter.ShowText("Art");
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter.ShowText("Penubsmic");
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter2.ShowText("Krishna Palacio");
+
+        yield return new WaitForSeconds(3f);
+        creditTitleTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(.5f);
+        creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(.5f);
+        creditNamesTypeWriter2.StartDisappearingText();
+        yield return new WaitForSeconds(1.5f);
+
+        creditTitleTypeWriter.ShowText("Original Music");
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter.ShowText("Jonathan Meyer");
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter2.ShowText("Alexey Samojlenko");
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter3.ShowText("Matryoshka");
+
+        yield return new WaitForSeconds(3f);
+        creditTitleTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(.5f);
+        creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(.5f);
+        creditNamesTypeWriter2.StartDisappearingText();
+        yield return new WaitForSeconds(.5f);
+        creditNamesTypeWriter3.StartDisappearingText();
+        yield return new WaitForSeconds(1.5f);
+
+        creditNamesText.fontSize = 50f;
+        creditNamesText.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 50f);
+        creditNamesText2.fontSize = 50f;
+        creditNamesText2.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 50f);
+        creditNamesText3.fontSize = 50f;
+        creditNamesText3.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 50f);
+
+        creditTitleTypeWriter.ShowText("Special Thanks");
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter.ShowText("Joha");
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter2.ShowText("Tao");
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter3.ShowText("Javingor");
+        creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+
+        creditNamesTypeWriter.ShowText("Verneveyel");
+        creditNamesTypeWriter2.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter2.ShowText("Reuhnarr");
+        creditNamesTypeWriter3.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter3.ShowText("Romane");
+        creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+
+        creditsPanel.SetActive(true);
     }
 
     private void OnDestroy() {

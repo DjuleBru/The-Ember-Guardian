@@ -19,10 +19,11 @@ public class SceneLoader : MonoBehaviour
     public static SceneLoader Instance;
 
     public event EventHandler<OnSceneFadeOutEventArgs> OnSceneFadeOut;
-    public event EventHandler OnSceneFadeIn;
+    public event EventHandler<OnSceneFadeOutEventArgs> OnSceneFadeIn;
 
     public class OnSceneFadeOutEventArgs : EventArgs {
         public float fadeOutTime;
+        public bool fadeOutSound;
     }
 
     public enum SceneType {
@@ -116,7 +117,8 @@ public class SceneLoader : MonoBehaviour
         transitionAnimator.speed = 1/crossfadeDuration;
 
         OnSceneFadeOut?.Invoke(this, new OnSceneFadeOutEventArgs {
-            fadeOutTime = crossfadeDuration
+            fadeOutTime = crossfadeDuration,
+            fadeOutSound = true,
         });
 
         isCrossfading = true;
@@ -135,8 +137,19 @@ public class SceneLoader : MonoBehaviour
         isCrossfading = false;
     }
 
-    public void StartFadeOut() {
-        OnSceneFadeIn?.Invoke(this, EventArgs.Empty);
+    public void StartFadeOut(bool fadeOutSound) {
+        OnSceneFadeIn?.Invoke(this, new OnSceneFadeOutEventArgs {
+            fadeOutTime = 1f, 
+            fadeOutSound = fadeOutSound
+        });
+        transitionAnimator.SetTrigger("End");
+    }
+
+    public void StartFadeIn(float fadeTime, bool fadeOutSound) {
+        OnSceneFadeOut?.Invoke(this, new OnSceneFadeOutEventArgs {
+            fadeOutTime = fadeTime,
+            fadeOutSound = fadeOutSound
+        });
         transitionAnimator.SetTrigger("Start");
     }
 

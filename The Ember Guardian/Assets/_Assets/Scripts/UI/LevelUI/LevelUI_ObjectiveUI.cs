@@ -33,6 +33,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         FindWatcherArtifact,
         DefendFlame,
         FindAndDestroyTwoNests,
+        HUB_FinalHubEnter,
     }
 
     public enum SubObjectiveType {

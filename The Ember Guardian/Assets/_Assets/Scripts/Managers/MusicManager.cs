@@ -30,6 +30,8 @@ public class MusicManager : MonoBehaviour {
     [SerializeField] private AudioClip hubMusic;
     [SerializeField] private AudioClip hubMusicStreamerMode;
 
+    [SerializeField] private AudioClip creditsMusic;
+
     [SerializeField] private AudioClip nightMusicIntro;
     [SerializeField] private AudioClip nightMusicIntroLoop;
     [SerializeField] private AudioClip nightMusicOutro;
@@ -834,6 +836,11 @@ public class MusicManager : MonoBehaviour {
 
     public void SetTargetVolumeToMainTrack() {
         targetVolume = discoverNewLocationAudioVolume * musicSettingVolume * masterSettingVolume;
+    }
+
+    public void PlayCreditsMusic() {
+        audioSourceA.clip = creditsMusic;
+        audioSourceA.Play();
     }
 
     public void FadeInMusic(float fadeDuration) {

@@ -22,7 +22,12 @@ public class DirectionIndicator : MonoBehaviour
     private void Start() {
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             LevelManager.Instance.OnEndLevelPortalEnabled += LevelManager_OnEndLevelPortalEnabled;
+            Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         }
+    }
+
+    private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
+        HideDirection();
     }
 
     private void LevelManager_OnEndLevelPortalEnabled(object sender, LevelManager.OnEndLevelPortalEnabledEventArgs e) {
@@ -64,5 +69,9 @@ public class DirectionIndicator : MonoBehaviour
 
     private void HideDirection() {
         showHideAnimator.SetTrigger("Hide");
+    }
+
+    private void OnDestroy() {
+        Portal.OnAnyPlayerMovedOnTeleporter -= Portal_OnAnyPlayerMovedOnTeleporter;
     }
 }

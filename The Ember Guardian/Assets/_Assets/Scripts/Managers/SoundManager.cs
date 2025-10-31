@@ -104,6 +104,7 @@ public class SoundManager : MonoBehaviour
             WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged += WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
             LevelUI_DayCountUI.Instance.OnDayUIShown += LevelUI_OnDayUIShown;
             WorkerFollowPlayerHandler.Instance.OnAllFollowingWorkersRemoved += WorkerFollowPlayerHandler_OnAllFollowingWorkersRemoved;
+            Fire.Instance.OnPrimordialFireLit += Fire_OnPrimordialFireLit;
         }
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
@@ -209,11 +210,13 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    private void SceneLoader_OnSceneFadeIn(object sender, System.EventArgs e) {
+    private void SceneLoader_OnSceneFadeIn(object sender, SceneLoader.OnSceneFadeOutEventArgs e) {
+        if (!e.fadeOutSound) return;
         StartCoroutine(FadeInVolume(1f));
     }
 
     private void SceneLoader_OnSceneFadeOut(object sender, SceneLoader.OnSceneFadeOutEventArgs e) {
+        if (!e.fadeOutSound) return;
         StartCoroutine(FadeOutAllSounds(e.fadeOutTime));
     }
 
@@ -827,6 +830,10 @@ public class SoundManager : MonoBehaviour
     #endregion
 
     #region STRUCTURES
+
+    private void Fire_OnPrimordialFireLit(object sender, System.EventArgs e) {
+        StartCoroutine(PlaySound2DAfterDelay(2f, soundRefsSO.primordialFireLit, 2f));
+    }
 
     private void Obstacle_OnAnyObstacleBuilt(object sender, Obstacle.OnObstacleBuiltEventArgs e) {
         if (!e.builtFromGame) return;

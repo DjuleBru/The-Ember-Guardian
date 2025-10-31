@@ -230,8 +230,17 @@ public class HubMerchant : MonoBehaviour
         PauseMenuUI.Instance.SetCanOpenPauseMenu(false);
 
         if (merchantHasTalkLinesToShow) {
-            OnPlayerStartedTalkingWithHubMerchant?.Invoke(this, EventArgs.Empty);
+
             OnPlayerStartedTalkingWithAnyHubMerchant?.Invoke(this, EventArgs.Empty);
+
+            if (HUBManager.Instance != null && hubMerchantType == HubMerchantType.GemMerchant) {
+                if(HUBManager.Instance.GetIsEndGameSequence()) {
+                    playerInteractingWithMerchant = true;
+                    return;
+                }
+            }
+
+            OnPlayerStartedTalkingWithHubMerchant?.Invoke(this, EventArgs.Empty);
         }
         else {
             OnPlayerOpenedHubMerchantShop?.Invoke(this, EventArgs.Empty);

@@ -212,18 +212,18 @@ public class LevelManager : MonoBehaviour
 
                 // Demo level
                 endLevelPortal.transform.position = endLevelPortalPosition;
-                StartCoroutine(EnableEndLevelPortal(8f));
+                StartCoroutine(EnableEndLevelPortalCoroutine(8f));
 
             }
             else {
                 if(levelHubMerchant != null && !setEndLevelPositionRelativeToPlayer) {
                     endLevelPortalPosition = new Vector3(levelHubMerchant.transform.position.x + 10f, 0, 0);
                 }
-                StartCoroutine(EnableEndLevelPortal(delayToReturnToHub));
+                StartCoroutine(EnableEndLevelPortalCoroutine(12f));
             }
 
         } else {
-            StartCoroutine(EnableEndLevelPortal(delayToReturnToHub));
+            StartCoroutine(EnableEndLevelPortalCoroutine(delayToReturnToHub));
         }
 
         OnLevelSuccess?.Invoke(this, EventArgs.Empty);
@@ -286,7 +286,11 @@ public class LevelManager : MonoBehaviour
         SceneLoader.Instance.LoadHub(3f);
     }
 
-    private IEnumerator EnableEndLevelPortal(float delayToEnable) {
+    public void EnableEndLevelPortal(float delayToEnable) {
+        StartCoroutine(EnableEndLevelPortalCoroutine(delayToEnable));
+    }
+
+    private IEnumerator EnableEndLevelPortalCoroutine(float delayToEnable) {
         yield return new WaitForSeconds(delayToEnable);
         endLevelPortal.gameObject.SetActive(true);
         OnEndLevelPortalEnabled?.Invoke(this, new OnEndLevelPortalEnabledEventArgs {

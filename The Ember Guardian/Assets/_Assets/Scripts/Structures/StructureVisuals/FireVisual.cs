@@ -26,6 +26,7 @@ public class FireVisual : StructureVisual
     [SerializeField] private ParticleSystem playerRespawnPS;
     [SerializeField] private ParticleSystem orbInsertedPS;
     [SerializeField] private ParticleSystem extractingEmberPS;
+    [SerializeField] private ParticleSystem primordialFireLitPS;
 
     [SerializeField] private float calmLightIntensityValue;
     [SerializeField] private float mildLightIntensityValue;
@@ -146,6 +147,7 @@ public class FireVisual : StructureVisual
         Gradient continuousPSColorGradient = blueContinuousPSColorGradient;
         Gradient otherPSColorGradient = blueOtherPSColorGradient;
         ParticleSystem.MinMaxGradient fuelledPSMinMaxGradient = blueFuelledPSMinMaxGradient;
+        ParticleSystem.MinMaxGradient primordialPSMinMaxGradient = blueFuelledPSMinMaxGradient;
 
         RuntimeAnimatorController animatorController = primordialFireBlueAnimator;
 
@@ -156,6 +158,7 @@ public class FireVisual : StructureVisual
             continuousPSColorGradient = redContinuousPSColorGradient;
             otherPSColorGradient = redOtherPSColorGradient;
             fuelledPSMinMaxGradient = redFuelledPSMinMaxGradient;
+            primordialPSMinMaxGradient = redFuelledPSMinMaxGradient;
 
             animatorController = primordialFireRedAnimator;
         }
@@ -167,6 +170,7 @@ public class FireVisual : StructureVisual
             continuousPSColorGradient = greenContinuousPSColorGradient;
             otherPSColorGradient = greenOtherPSColorGradient;
             fuelledPSMinMaxGradient = greenFuelledPSMinMaxGradient;
+            primordialPSMinMaxGradient = greenFuelledPSMinMaxGradient;
 
             animatorController = primordialFireGreenAnimator;
         }
@@ -178,6 +182,7 @@ public class FireVisual : StructureVisual
             continuousPSColorGradient = purpleContinuousPSColorGradient;
             otherPSColorGradient = purpleOtherPSColorGradient;
             fuelledPSMinMaxGradient = purpleFuelledPSMinMaxGradient;
+            primordialPSMinMaxGradient = purpleFuelledPSMinMaxGradient;
 
             animatorController = primordialFirePurpleAnimator;
         }
@@ -213,6 +218,8 @@ public class FireVisual : StructureVisual
         ParticleSystem.MainModule mainModule2 = orbInsertedPS.main;
         mainModule2.startColor = fuelledPSMinMaxGradient;
 
+        ParticleSystem.MainModule mainModule3 = primordialFireLitPS.main;
+        mainModule3.startColor = primordialPSMinMaxGradient;
 
         fireAnimator.runtimeAnimatorController = animatorController;
     }
@@ -428,40 +435,82 @@ public class FireVisual : StructureVisual
         emission.rateOverTime = rate;
     }
 
-    [Button]
+
     public void StartLightPrimordialFireVisuals() {
         StartCoroutine(LightPrimordialFireCoroutine());
     }
 
     private IEnumerator LightPrimordialFireCoroutine() {
 
-        Fire.Instance.SetLerpDuration(1.5f);
+        CameraManager.Instance.ChangeCameraTarget(Fire.Instance.transform);
+
+        yield return new WaitForSeconds(2f);
+
+        Fire.Instance.SetLerpDuration(2f);
         lerping = true;
         lerpTimer = 0;
 
-        fireAnimator.ResetTrigger("Calm");
-        fireAnimator.SetTrigger("Extinguished");
-        finalFireLightLimiValue = 0;
-        finalFireAOEValue = 0;
+        Fire.State state = Fire.Instance.GetState();
+        SetFireInitialLerpValues(state);
+
+        fireAnimator.SetTrigger("Calm");
+        finalFireLightLimiValue = .25f;
+        finalFireAOEValue = .25f;
         finalFireLightIntensityValue = 0;
         finalFirePSEmissionRateValue = 0;
         ChangeContinuousPSEmissionRate(0);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
 
-        Fire.Instance.SetLerpDuration(4f);
+        LevelUI_Locations.Instance.ShowFireTextForTime(5f);
+        Fire.Instance.SetLerpDuration(2f);
         lerping = true;
         lerpTimer = 0;
 
         fireAnimator.SetTrigger("Insane");
-
-        finalFireAOEValue = fire.GetLevel2FireRadius();
-        finalFireLightLimiValue = mildLightRadius;
-        finalFireLightIntensityValue = insaneLightIntensityValue;
-        finalFirePSEmissionRateValue = insanePSEmissionRateValue;
+        SetFireInitialLerpValues(Fire.State.extinguished);
+        finalFireAOEValue = fire.GetLevel2FireRadius()*2;
+        finalFireLightLimiValue = mildLightRadius*2;
+        finalFireLightIntensityValue = insaneLightIntensityValue*2;
+        finalFirePSEmissionRateValue = insanePSEmissionRateValue*2;
         fireLimitLightSpriteRenderer.lightCookieSprite = fireLimitLightSprite2;
 
-        ChangeContinuousPSEmissionRate(continuousPSInsaneEmissionRate);
+        ChangeContinuousPSEmissionRate(continuousPSInsaneEmissionRate*2);
+
+        yield return new WaitForSeconds(4f);
+
+        CameraManager.Instance.ResetCameraTargetToPlayer();
+        //LevelManager.Instance.EnableEndLevelPortal(2f);
+    }
+
+    private void SetFireInitialLerpValues(Fire.State state) {
+        if (state == Fire.State.calm) {
+            initialFireAOEValue = fire.GetLevel1FireRadius();
+            initialFireLightIntensityValue = calmLightIntensityValue;
+            initialFirePSEmissionRateValue = calmPSEmissionRateValue;
+            initialFireLightLimitValue = calmLightRadius;
+        }
+
+        if (state == Fire.State.mild) {
+            initialFireAOEValue = fire.GetLevel1FireRadius();
+            initialFireLightIntensityValue = mildLightIntensityValue;
+            initialFirePSEmissionRateValue = mildPSEmissionRateValue;
+            initialFireLightLimitValue = calmLightRadius;
+        }
+
+        if (state == Fire.State.insane) {
+            initialFireAOEValue = fire.GetLevel2FireRadius();
+            initialFireLightIntensityValue = insaneLightIntensityValue;
+            initialFirePSEmissionRateValue = insanePSEmissionRateValue;
+            initialFireLightLimitValue = mildLightRadius;
+        }
+
+        if (state == Fire.State.wild) {
+            initialFireAOEValue = fire.GetLevel2FireRadius();
+            initialFireLightIntensityValue = wildLightIntensityValue;
+            initialFirePSEmissionRateValue = wildPSEmissionRateValue;
+            initialFireLightLimitValue = mildLightRadius;
+        }
     }
 
     private IEnumerator LerpFireLightIntensity(float initialIntensity, float destinationIntensity, float lerpDuration) {

@@ -19,6 +19,7 @@ public class FireSound : StructureSounds
     [SerializeField] private AudioClip[] orbDroppedInFireAudioClipArray2;
     [SerializeField] private AudioClip[] orbPaidAudioClipArray;
     [SerializeField] private AudioClip[] fireDamagedAudioClipArray;
+    [SerializeField] private AudioClip primordialFireLitAudioClip;
     [SerializeField] private AudioClip secondaryFireTickRemovedAudioClip;
     [SerializeField] private AudioClip extractingEmberAudioClip;
 

@@ -1,4 +1,5 @@
 using Cinemachine;
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private float referenceCameraOrthographicSize = 11f;
     [SerializeField] private float minCameraOrthographicSize = 7f;
     [SerializeField] private float maxCameraOrthographicSize = 11.5f;
+    [SerializeField] private Transform scrollTarget;
     private float zoomDuration = .5f; // Durée du zoom
 
     private Coroutine currentZoomCoroutine;
@@ -252,5 +254,27 @@ public class CameraManager : MonoBehaviour
 
     public bool IsChangingCameraOrthographicSize() {
         return isChangingOrthographicSize;
+    }
+
+    [Button]
+    public void StartScroll() {
+        cameraLockedByTransition = true;
+        virtualCamera.m_Follow = scrollTarget;
+        scrollTarget.position = Player.Instance.transform.position;
+        ZoomOut(false, .75f, .1f);
+        StartCoroutine(Scroll());
+    }
+
+    private IEnumerator Scroll() {
+        float scrollDistance = 100f;
+        float elapsed = 0f;
+        float scrollSpeed = .025f;
+
+        while(elapsed < scrollDistance) {
+            elapsed += scrollSpeed;
+            scrollTarget.position = new Vector3(scrollTarget.position.x + scrollSpeed, 0, 0);
+            yield return new WaitForEndOfFrame();
+        }
+        
     }
 }

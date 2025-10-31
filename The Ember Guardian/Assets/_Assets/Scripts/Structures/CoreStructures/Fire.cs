@@ -239,7 +239,12 @@ public class Fire : Structure, IDamageable {
 
     private void LevelManager_OnLevelSuccess(object sender, EventArgs e) {
         ES3.Save("lastPrimordialFireLit", primordialFireColor);
-        LevelUI_Locations.Instance.ShowFireTextForTime(5f);
+        OnPrimordialFireLit?.Invoke(this, EventArgs.Empty);
+
+    }
+
+    [Button]
+    public void InvokePrimordialFireLit() {
 
         OnPrimordialFireLit?.Invoke(this, EventArgs.Empty);
     }

@@ -18,6 +18,9 @@ public class HubMerchantTalkUI : MonoBehaviour
     [SerializeField] private MerchantTextLinesSO textLinesSO;
     [SerializeField] private List<string> merchantTalkLinesLocalizationKeys;
 
+    [SerializeField] private GameObject talkPanelUIGameObject_EndGame;
+    [SerializeField] private TextMeshProUGUI talkText_EndGame;
+
     [SerializeField] protected bool DEBUGShowTextLines;
 
     private Coroutine startTalkingCoroutine;
@@ -30,6 +33,7 @@ public class HubMerchantTalkUI : MonoBehaviour
     private bool playerIsTalkingToMerchant;
     private bool currentDialogLineShown;
     private bool showShopAfterDialog = true;
+    private bool showingEndGameText;
     private int talkLinesIndex;
 
     private void Awake() {
@@ -75,12 +79,13 @@ public class HubMerchantTalkUI : MonoBehaviour
 
     private void GameInput_OnPlayerInteractPerformed(object sender, System.EventArgs e) {
         if (!playerIsTalkingToMerchant) return;
+        if (showingEndGameText) return;
 
         if(currentDialogLineShown) {
 
             talkLinesIndex++;
 
-            if (talkLinesIndex == merchantTalkLinesLocalizationKeys.Count) {
+            if (talkLinesIndex >= merchantTalkLinesLocalizationKeys.Count) {
                 EndTalkUI();
                 hubMerchant.SetPlayerFinishedTalkingWithMerchant(showShopAfterDialog);
                 CameraManager.Instance.ZoomOut(true, 1f);
@@ -171,6 +176,42 @@ public class HubMerchantTalkUI : MonoBehaviour
         talkText.text = LocalizationManager.Instance.GetLocalizedText(merchantTalkLinesLocalizationKeys[talkLinesIndex]);
 
         OnAnyMerchantShowNewTalkLine?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void StartTalkingToMerchantCoroutine_EndGame() {
+        StartCoroutine(StartTalkingToMerchantCoroutine_EndGameCoroutine());
+    }
+
+    private IEnumerator StartTalkingToMerchantCoroutine_EndGameCoroutine() {
+        showingEndGameText = true;
+        talkText_EndGame.text = "";
+        talkPanelUIGameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1.51f);
+
+        talkPanelUIGameObject.SetActive(false);
+        talkPanelUIGameObject_EndGame.SetActive(true);
+        playerIsTalkingToMerchant = true;
+        currentDialogLineShown = false;
+
+        talkLinesIndex = 0;
+    }
+
+    public void ShowNextTextLine(bool endGameText = false) {
+        if(endGameText) {
+            talkText_EndGame.text = LocalizationManager.Instance.GetLocalizedText(merchantTalkLinesLocalizationKeys[talkLinesIndex]);
+        } else {
+            talkText.text = LocalizationManager.Instance.GetLocalizedText(merchantTalkLinesLocalizationKeys[talkLinesIndex]);
+        }
+
+        OnAnyMerchantShowNewTalkLine?.Invoke(this, EventArgs.Empty);
+        talkLinesIndex++;
+    }
+
+    public void SetEndGameCoroutineEnded() {
+        showingEndGameText = false;
+        talkPanelUIGameObject.SetActive(true);
+        talkPanelUIGameObject_EndGame.SetActive(false);
     }
 
     public HubMerchant.HubMerchantType GetHubMerchantType() {

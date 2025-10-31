@@ -107,7 +107,7 @@ public class LevelObjectives : MonoBehaviour
         }
     }
 
-    private void CompleteSurviveNightsObjective() {
+    public void CompleteSurviveNightsObjective() {
 
         if (LevelManager.Instance.GetLevelSO().talkToNpcAFterObjective) {
 
@@ -117,7 +117,7 @@ public class LevelObjectives : MonoBehaviour
         }
         else {
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.SurviveNights);
-            ShowReturnToHubObj(8f);
+            ShowReturnToHubObj(12f);
         }
     }
 
