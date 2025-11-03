@@ -830,7 +830,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void SetAudioTargerVolume(float volume) {
-        //Debug.Log("SetAudioTargerVolume " + volume);
+        Debug.Log("SetAudioTargerVolume " + volume);
         targetVolume = volume * musicSettingVolume * masterSettingVolume;
     }
 

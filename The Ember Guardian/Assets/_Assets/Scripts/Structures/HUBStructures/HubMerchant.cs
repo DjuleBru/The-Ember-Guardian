@@ -338,7 +338,6 @@ public class HubMerchant : MonoBehaviour
 
     #region SET PARAMETERS
 
-    
     public void SetPlayerFinishedTalkingWithMerchant(bool openShopPanel) {
         merchantHasTalkLinesToShow = false;
 
@@ -391,9 +390,15 @@ public class HubMerchant : MonoBehaviour
         isDecorationalDemoHubMerchant = false;
     }
 
+    public void SetDemoMerchantDecorational() {
+        isDecorationalDemoHubMerchant = true;
+        isFunctionalDemoHubMerchant = false;
+    }
+
     public void SetPlayerCanInteractWithMerchant(bool canInteract) {
         playerCanInteractWithMerchant = canInteract;
     }
+
 
     #endregion
 

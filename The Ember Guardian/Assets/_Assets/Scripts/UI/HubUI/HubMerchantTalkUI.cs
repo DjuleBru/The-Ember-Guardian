@@ -20,6 +20,7 @@ public class HubMerchantTalkUI : MonoBehaviour
 
     [SerializeField] private GameObject talkPanelUIGameObject_EndGame;
     [SerializeField] private TextMeshProUGUI talkText_EndGame;
+    [SerializeField] private MerchantTextLinesSO creditsTextLines;
 
     [SerializeField] protected bool DEBUGShowTextLines;
 
@@ -228,6 +229,12 @@ public class HubMerchantTalkUI : MonoBehaviour
     public HubMerchant GetHubMerchant() {
         return hubMerchant;
     }
+
+    public void SetCreditsTextLinesSO() {
+        textLinesSO = creditsTextLines;
+        merchantTalkLinesLocalizationKeys = creditsTextLines.merchantTextLinesLocalizationKeys;
+    }
+
     private void OnDestroy() {
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
         GameInput.Instance.OnPlayerInteractPerformed -= GameInput_OnPlayerInteractPerformed;

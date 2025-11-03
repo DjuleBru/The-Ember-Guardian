@@ -23,5 +23,8 @@ public class BottomBarMenu : MonoBehaviour
         string url = "https://docs.google.com/forms/d/e/1FAIpQLSdnO9PK4LJzSHybBWvU1Mygsf57VN8u3m3_I0eSAU26Fi8IPQ/viewform?usp=header";
         Application.OpenURL(url);
     }
+    public void Credits() {
+        CreditsManager.Instance.StartShowCredits();
+    }
 
 }

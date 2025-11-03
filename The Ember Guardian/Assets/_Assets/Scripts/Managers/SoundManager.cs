@@ -128,6 +128,10 @@ public class SoundManager : MonoBehaviour
             AddStructureBlueprint.OnAnyStructureBlueprintFailedAddedMaxAmount += AddStructureBlueprint_OnAnyStructureBlueprintFailedAddedMaxAmount;
         }
 
+        if(CreditsManager.Instance != null) {
+            CreditsManager.Instance.OnCreditsNameShown += CreditsManager_OnCreditsNameShown;
+        }
+
         StructureBlueprint.OnAnyBlueprintWithStructureHovered += StructureBlueprint_OnAnyBlueprintWithStructureHovered;
         GridVisualUnit.OnAnyGridWithoutStructureHovered += GridVisualUnit_OnAnyGidWithoutStructureHovered;
         GridVisualUnit.OnAnyGridHoveredWhileMovingBlueprint += GridVisualUnit_OnAnyGridHoveredWhileMovingBlueprint;
@@ -199,7 +203,6 @@ public class SoundManager : MonoBehaviour
         DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
     }
-
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -915,6 +918,10 @@ public class SoundManager : MonoBehaviour
 
     #region OTHER
 
+    private void CreditsManager_OnCreditsNameShown(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.creditsWoosh, .3f);
+    }
+
     private void HubMerchantTalkUI_OnAnyMerchantShowNewTalkLine(object sender, System.EventArgs e) {
         HubMerchantTalkUI hubMerchant = (HubMerchantTalkUI)sender;
         HubMerchant.HubMerchantType merchantType = hubMerchant.GetHubMerchantType();
@@ -1138,6 +1145,9 @@ public class SoundManager : MonoBehaviour
         if (VideoTipUI.Instance != null) {
             VideoTipUI.Instance.OnVideoTipPanelOpened -= VideoTipUI_OnVideoTipPanelOpened;
             VideoTipUI.Instance.OnVideoTipPanelClosed -= VideoTipUI_OnVideoTipPanelClosed;
+        }
+        if (CreditsManager.Instance != null) {
+            CreditsManager.Instance.OnCreditsNameShown -= CreditsManager_OnCreditsNameShown;
         }
 
         StructureUI_Fire.OnMainFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;

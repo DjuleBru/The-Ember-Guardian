@@ -24,6 +24,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private Transform scrollTarget;
     private float zoomDuration = .5f; // Durée du zoom
 
+    private Transform initialCameraFollowTarget;
     private Coroutine currentZoomCoroutine;
 
     private bool isChangingOrthographicSize;
@@ -46,6 +47,7 @@ public class CameraManager : MonoBehaviour
 
     private void Start() {
         brain = Camera.main.GetComponent<CinemachineBrain>();
+        initialCameraFollowTarget = virtualCamera.Follow;
         RestoreBlend();
 
         RefreshCameraOrthographicSize(false);
@@ -162,13 +164,22 @@ public class CameraManager : MonoBehaviour
 
     public void ChangeCameraTarget(Transform target, bool disablePlayerInputs = true) {
         virtualCamera.m_Follow = target;
-        Player.Instance.SetCameraHasOtherTarget(disablePlayerInputs);
+
+        if(Player.Instance != null) {
+            Player.Instance.SetCameraHasOtherTarget(disablePlayerInputs);
+        }
+
     }
 
     public void ResetCameraTargetToPlayer() {
         cameraCenteredOnPlayer = false;
         virtualCamera.m_Follow = Player.Instance.transform;
         Player.Instance.SetCameraHasOtherTarget(false);
+    }
+
+    public void ResetCameraTarget() {
+        cameraCenteredOnPlayer = false;
+        virtualCamera.m_Follow = initialCameraFollowTarget;
     }
 
     public void SetCameraNotCenteredOnPlayer() {

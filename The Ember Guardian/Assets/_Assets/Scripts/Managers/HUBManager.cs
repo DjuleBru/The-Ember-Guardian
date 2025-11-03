@@ -36,15 +36,6 @@ public class HUBManager : MonoBehaviour
     [SerializeField] private LevelSO level1SO;
     [SerializeField] private VideoPlayer endGameCinematicVideoPlayer;
     [SerializeField] private GameObject endGameCinematicVideoMainPanel;
-    [SerializeField] private GameObject creditsPanel;
-
-    [SerializeField] private TypewriterByCharacter creditTitleTypeWriter;
-    [SerializeField] private TypewriterByCharacter creditNamesTypeWriter;
-    [SerializeField] private TypewriterByCharacter creditNamesTypeWriter2;
-    [SerializeField] private TypewriterByCharacter creditNamesTypeWriter3;
-    [SerializeField] private TextMeshProUGUI creditNamesText;
-    [SerializeField] private TextMeshProUGUI creditNamesText2;
-    [SerializeField] private TextMeshProUGUI creditNamesText3;
 
     private float hubDelayToStartPlayingMusic = 3f;
 
@@ -75,7 +66,6 @@ public class HUBManager : MonoBehaviour
     private void Awake() {
         Instance = this;
 
-        creditsPanel.SetActive(false);
         if (!demoHUB) {
             gemMerchantIndicator.gameObject.SetActive(false);
             chestIndicator.gameObject.SetActive(false);
@@ -427,7 +417,7 @@ public class HUBManager : MonoBehaviour
                 endGameSequenceDone = true;
                 ES3.Save("endGameSequenceDone", true);
 
-                StartCoroutine(ShowCredits());
+                CreditsManager.Instance.StartShowCredits();
             }
         }
 
@@ -677,7 +667,9 @@ public class HUBManager : MonoBehaviour
         SceneLoader.Instance.StartFadeIn(1.5f, true);
         CameraManager.Instance.ZoomIn(false, 1.5f, 2f);
         CameraManager.Instance.ChangeCameraTarget(gemMerchant.GetCameraFocusTransform());
+        MusicManager.Instance.SetAudioVolume(.5f);
         gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().StartTalkingToMerchantCoroutine_EndGame();
+        gemMerchant.SetHasTalkLinesToShow(false);
 
         yield return new WaitForSeconds(3f);
         // Black screen
@@ -715,108 +707,26 @@ public class HUBManager : MonoBehaviour
     }
 
     [Button]
-    public void StartShowCredits() {
-        StartCoroutine(ShowCredits());
+    public void SetHubMerchantsCreditsMode(bool creditsMode) {
+        foreach(HubMerchant merchant in hubMerchantList) {
+            if(creditsMode) {
+                merchant.SetDemoMerchantDecorational();
+                merchant.SetHasTalkLinesToShow(true, false);
+                merchant.GetComponentInChildren<HubMerchantTalkUI>().SetCreditsTextLinesSO();
+            } else {
+                merchant.SetDemoMerchantFunctional();
+                merchant.SetHasTalkLinesToShow(false, false);
+            }
+        }
     }
 
-    private IEnumerator ShowCredits() {
-        yield return new WaitForSeconds(1f);
-        creditsPanel.SetActive(true);
-        creditTitleTypeWriter.ShowText("");
-        creditNamesTypeWriter.ShowText("");
-        creditNamesTypeWriter2.ShowText("");
-        creditNamesTypeWriter3.ShowText("");
+    public void SetHubFireInteractable(bool fireInteractable) {
+        hubFire.SetHubFireEmberExtractable(fireInteractable);
 
-        creditTitleTypeWriter.ShowText("Created by");
-        yield return new WaitForSeconds(1.5f);
-        creditNamesTypeWriter.ShowText("Ratbit");
-
-        yield return new WaitForSeconds(3f);
-        creditTitleTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(.5f);
-        creditNamesTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(1.5f);
-
-        creditTitleTypeWriter.ShowText("Published by");
-        yield return new WaitForSeconds(1.5f);
-        creditNamesTypeWriter.ShowText("Slug Disco");
-
-        yield return new WaitForSeconds(3f);
-        creditTitleTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(.5f);
-        creditNamesTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(1.5f);
-
-        creditTitleTypeWriter.ShowText("Programming");
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter.ShowText("Ratbit");
-
-        yield return new WaitForSeconds(3f);
-        creditTitleTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(.5f);
-        creditNamesTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(1.5f);
-
-        creditTitleTypeWriter.ShowText("Art");
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter.ShowText("Penubsmic");
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter2.ShowText("Krishna Palacio");
-
-        yield return new WaitForSeconds(3f);
-        creditTitleTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(.5f);
-        creditNamesTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(.5f);
-        creditNamesTypeWriter2.StartDisappearingText();
-        yield return new WaitForSeconds(1.5f);
-
-        creditTitleTypeWriter.ShowText("Original Music");
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter.ShowText("Jonathan Meyer");
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter2.ShowText("Alexey Samojlenko");
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter3.ShowText("Matryoshka");
-
-        yield return new WaitForSeconds(3f);
-        creditTitleTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(.5f);
-        creditNamesTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(.5f);
-        creditNamesTypeWriter2.StartDisappearingText();
-        yield return new WaitForSeconds(.5f);
-        creditNamesTypeWriter3.StartDisappearingText();
-        yield return new WaitForSeconds(1.5f);
-
-        creditNamesText.fontSize = 50f;
-        creditNamesText.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 50f);
-        creditNamesText2.fontSize = 50f;
-        creditNamesText2.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 50f);
-        creditNamesText3.fontSize = 50f;
-        creditNamesText3.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 50f);
-
-        creditTitleTypeWriter.ShowText("Special Thanks");
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter.ShowText("Joha");
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter2.ShowText("Tao");
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter3.ShowText("Javingor");
-        creditNamesTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(1f);
-
-        creditNamesTypeWriter.ShowText("Verneveyel");
-        creditNamesTypeWriter2.StartDisappearingText();
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter2.ShowText("Reuhnarr");
-        creditNamesTypeWriter3.StartDisappearingText();
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter3.ShowText("Romane");
-        creditNamesTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(1f);
-
-        creditsPanel.SetActive(true);
+        if(!fireInteractable) {
+            fireIndicator.SetActive(false);
+            chestIndicator.SetActive(false);
+        }
     }
 
     private void OnDestroy() {
