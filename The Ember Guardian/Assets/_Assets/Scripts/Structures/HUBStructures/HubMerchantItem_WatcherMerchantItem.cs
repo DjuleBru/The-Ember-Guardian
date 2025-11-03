@@ -525,6 +525,10 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
         }
     }
 
+
+    public WatcherItemCategory GetWatcherItemCategory() {
+        return watcherItemCategory;
+    }
     public StructureSO.StructureType GetStructureType() {
         return structureType;
     }

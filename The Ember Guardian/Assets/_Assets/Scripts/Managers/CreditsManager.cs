@@ -101,7 +101,8 @@ public class CreditsManager : MonoBehaviour
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             HUBManager.Instance.SetHubMerchantsCreditsMode(true);
-            HUBManager.Instance.SetHubFireInteractable(false);
+            HUBManager.Instance.SetHubFireAndChestInteractable(false);
+            HubChest.Instance.SetCanOpenChest(false);
             yield return new WaitForSeconds(1f);
         }
 
@@ -218,7 +219,7 @@ public class CreditsManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         creditNamesTypeWriter2.StartDisappearingText();
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
         EndShowCredits();
     }
 
@@ -227,7 +228,9 @@ public class CreditsManager : MonoBehaviour
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             CameraManager.Instance.ResetCameraTargetToPlayer();
             HUBManager.Instance.SetHubMerchantsCreditsMode(false);
-            HUBManager.Instance.SetHubFireInteractable(true);
+            HUBManager.Instance.SetHubFireAndChestInteractable(true);
+            MusicManager.Instance.FadeOutMusic(1f);
+            HubChest.Instance.SetCanOpenChest(true);
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
@@ -276,6 +279,10 @@ public class CreditsManager : MonoBehaviour
         creditsTitlePS.Play();
 
         totalChars = text.Length;
+    }
+
+    public bool GetCreditsPlaying() {
+        return isShowingCredits;
     }
 
     void OnDestroy() {

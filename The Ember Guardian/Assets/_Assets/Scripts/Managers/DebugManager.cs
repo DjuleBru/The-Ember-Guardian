@@ -36,6 +36,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugShowLaser;
     [SerializeField] private bool debugSurgeReload;
     [SerializeField] private bool logNightWaveData;
+    [SerializeField] private bool debugMode_Credits;
 
     int i = 0;
     private float screenshotTakeTimer;
@@ -173,5 +174,9 @@ public class DebugManager : MonoBehaviour
     }
     public bool GetDebugSurgeReload() {
         return debugSurgeReload;
+    }
+
+    public bool GetDebugMode_Credits() {
+        return debugMode_Credits;
     }
 }

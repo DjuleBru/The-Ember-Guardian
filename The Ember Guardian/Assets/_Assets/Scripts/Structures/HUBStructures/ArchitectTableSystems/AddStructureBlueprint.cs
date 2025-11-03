@@ -110,6 +110,17 @@ public class AddStructureBlueprint : ButtonUI
             }
         }
 
+        HubMerchantItem_WatcherMerchantItem watcherItem = merchantItem as HubMerchantItem_WatcherMerchantItem;
+        if (watcherItem != null) {
+            if (watcherItem.GetWatcherItemCategory() == HubMerchantItem_WatcherMerchantItem.WatcherItemCategory.newShrine) {
+                if(watcherItem.GetStructureType() == linkedStructureSO.structureType) {
+                    Debug.Log("BOUGH WATCHER ITEM " + linkedStructureSO.structureType + " " + watcherItem.GetItemLevel());
+                    SetStructureUnlocked();
+                }
+                
+            }
+        }
+
     }
 
     private void LoadStructureUnlocked() {

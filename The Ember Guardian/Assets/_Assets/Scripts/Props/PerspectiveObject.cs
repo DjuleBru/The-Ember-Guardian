@@ -64,11 +64,15 @@ public class PerspectiveObject : MonoBehaviour {
             // --- 3. Déplace en réaction au mouvement de la caméra ---
 
             Vector3 camDelta = cameraTransform.position - lastCameraPos;
-            offset -= camDelta * (depth * parallaxFactor);
+
+            // On applique le parallaxe uniquement sur l'axe X
+            offset.x -= camDelta.x * (depth * parallaxFactor);
+            offset.y = 0f;
+            offset.z = 0f;
+
             transform.position += offset;
             offset = Vector3.zero; // Réinitialise pour éviter l'accumulation
-        };
-
+        }
 
         lastCameraPos = cameraTransform.position;
     }

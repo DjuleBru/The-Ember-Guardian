@@ -147,12 +147,15 @@ public class HUBManager : MonoBehaviour
 
     private void HandleLastHubEnterSequence() {
 
-        //Fire.PrimordialFireColor lastPrimordialFireColorLit = ES3.Load("lastPrimordialFireLit", Fire.PrimordialFireColor.Red);
-        Fire.PrimordialFireColor lastPrimordialFireColorLit = Fire.PrimordialFireColor.Purple;
+        Fire.PrimordialFireColor lastPrimordialFireColorLit = ES3.Load("lastPrimordialFireLit", Fire.PrimordialFireColor.Red);
 
         // DEBUG MODE
-        //endGameSequenceDone = ES3.Load("endGameSequenceDone", false);
-        endGameSequenceDone = false;
+        endGameSequenceDone = ES3.Load("endGameSequenceDone", false);
+
+        if (DebugManager.Instance.GetDebugMode_Credits()) {
+            endGameSequenceDone = false;
+            lastPrimordialFireColorLit = Fire.PrimordialFireColor.Purple;
+        }
 
         if (lastPrimordialFireColorLit == Fire.PrimordialFireColor.Purple && !endGameSequenceDone) {
             HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
@@ -265,6 +268,7 @@ public class HUBManager : MonoBehaviour
 
     private void HubFire_OnPlayerTriggeredOut(object sender, System.EventArgs e) {
         if (!hubFireEmberExtractable) return;
+        if (CreditsManager.Instance.GetCreditsPlaying()) return;
         if (!firstHubEncounterRoutineOver) {
             if (emberExtracted) return;
         }
@@ -720,7 +724,7 @@ public class HUBManager : MonoBehaviour
         }
     }
 
-    public void SetHubFireInteractable(bool fireInteractable) {
+    public void SetHubFireAndChestInteractable(bool fireInteractable) {
         hubFire.SetHubFireEmberExtractable(fireInteractable);
 
         if(!fireInteractable) {

@@ -148,6 +148,7 @@ public class Portal : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!portalUnlocked) return;
         if (playerIsSetOnTeleporter) return;
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB && CreditsManager.Instance.GetCreditsPlaying()) return;
 
         if (collision.gameObject.GetComponent<Player>() != null) {
             playerInTriggerArea = true;
@@ -172,7 +173,6 @@ public class Portal : MonoBehaviour
             floorCollider.enabled = false;
         }
 
-        playerIsSetOnTeleporter = false;
 
         if (!gameObject.activeSelf) return;
 
@@ -184,6 +184,7 @@ public class Portal : MonoBehaviour
             if (!portalUnlocked) return;
 
             if (isHUBTeleporter && !GetPortalHasUnlockedUnfinishedLevels()) return;
+            if (playerIsSetOnTeleporter) return;
 
             OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
         }

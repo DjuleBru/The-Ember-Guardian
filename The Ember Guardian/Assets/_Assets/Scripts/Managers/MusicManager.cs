@@ -184,14 +184,18 @@ public class MusicManager : MonoBehaviour {
         }
 
         if (isHUBScene) {
-            if (streamerMode) {
-                audioSourceA.clip = hubMusicStreamerMode;
-            }
-            else {
-                audioSourceA.clip = hubMusic;
-            }
+            SetHubMusic();
         }
 
+    }
+
+    public void SetHubMusic() {
+        if (streamerMode) {
+            audioSourceA.clip = hubMusicStreamerMode;
+        }
+        else {
+            audioSourceA.clip = hubMusic;
+        }
     }
 
 

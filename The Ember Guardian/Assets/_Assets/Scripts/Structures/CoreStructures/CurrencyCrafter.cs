@@ -91,6 +91,7 @@ public class CurrencyCrafter : Structure
     }
 
     private void RefreshSpecialAmmoUnlocked() {
+
         GunSO primaryGunSO = PlayerShoot.Instance.GetPrimaryGunSO();
         GunSO secondaryGunSO = PlayerShoot.Instance.GetSecondaryGunSO();
         GunSO heldGunSO = PlayerShoot.Instance.GetHeldGunSO();
@@ -217,6 +218,7 @@ public class CurrencyCrafter : Structure
             }
 
             if(currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
+                SetStructurePrimaryFunctionUnlocked(true);
                 SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
 
                 if (currencyTypeBeingCrafted == PlayerCurrencies.CurrencyType.ammo_special) {
@@ -227,7 +229,6 @@ public class CurrencyCrafter : Structure
                 } else {
 
                     ActivateStructurePrimaryFunctionInteraction(true);
-                    SetStructurePrimaryFunctionUnlocked(true);
                     SetCurrentStructureInteractionType(StructureInteractionType.primaryFunction, true);
 
                 }
