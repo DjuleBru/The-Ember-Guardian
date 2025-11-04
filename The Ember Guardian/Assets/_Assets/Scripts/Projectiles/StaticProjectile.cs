@@ -99,7 +99,9 @@ public class StaticProjectile : MonoBehaviour
             if (fire != null) {
                 if (parentMob is Creature) {
                     collision.GetComponent<Fire>().TakeDamage(1, transform, false);
-                    parentMob.Die();
+                    if(!(parentMob as Creature).GetCreatureSO().isBoss) {
+                        parentMob.Die();
+                    }
                 };
                 hasHit = true;
             }

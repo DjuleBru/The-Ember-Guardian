@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: TarnishedWidow
   isBoss: 1
+  appearTwiceOnSecondPhase: 0
   description: Basic, slightly tanky, slow creature.
   creatureIcon: {fileID: 21300000, guid: 40ddd6d1c183d494bb18b8abf32d634b, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: a05da838eff8a33488dc5d4114a21a9e, type: 3}
@@ -37,17 +38,19 @@ MonoBehaviour:
   moveSpeedRandomizerDelta: 0
   maxHealth: 2150
   enteredLightattackRateDebuff: 2.5
+  nightSpawnYPosition: 2
   probabilityToAggroOnGunShot: 1
   immuneToPoison: 1
   immuneToShock: 1
   immuneToImmobilize: 1
   immuneToFire: 1
   hasCustomSpawnAnimation: 0
-  spawnAnimationDuration: 1
+  spawnAnimationDuration: 7.5
   baseMovementAnimationSpeed: 0.5
   workerTargetingPriority: 1
   playerTargetingPriority: 2
   barricadeTargetingPriority: 3
+  fireTargetingPriority: 2147483647
   probabilityToDropOrb: 1
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 05000000
@@ -76,10 +79,7 @@ MonoBehaviour:
   continuousAudioClip: []
   hasContinousMovementAudioClip: 0
   continuousMovementAudioClip: []
-  spawnAudioClips:
-  - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
-  - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
-  - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
+  spawnAudioClips: []
   spawnVolumeMultiplier: 0.75
   bulletHitAudioClips:
   - {fileID: 8300000, guid: 5f188511e9287924ab0bc56282bb5bb1, type: 3}

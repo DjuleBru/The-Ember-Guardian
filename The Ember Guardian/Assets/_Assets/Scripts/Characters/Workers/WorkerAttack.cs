@@ -70,7 +70,7 @@ public class WorkerAttack : MobAttack
         }
     }
 
-    protected override void Attack() {
+    public override void Attack() {
         if (attackTargetIDamageable is Creature) {
             homingProjectile = UnityEngine.Random.value < probabilityToHaveHomingProjectileOnCreature;
         }

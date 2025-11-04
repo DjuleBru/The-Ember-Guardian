@@ -5834,6 +5834,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1505661601195983796, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: maxDistanceToHear
+      value: 75
+      objectReference: {fileID: 0}
     - target: {fileID: 1926586374160934664, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.03
@@ -6238,7 +6242,7 @@ MonoBehaviour:
   minIntervalBetweenSameClip: 0.1
   maxInstancesPerClip: 10
   creatureContinousAudioSource: {fileID: 4766088066437605691}
-  canHearCreatureOutsideScreen: 0
+  canHearCreatureOutsideScreen: 1
   creatureIdleAudioSource: {fileID: 2472456054417652496}
   creature: {fileID: 8907704577248589371}
   creatureAI: {fileID: 7949393331764076333}

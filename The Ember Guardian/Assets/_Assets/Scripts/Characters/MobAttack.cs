@@ -15,6 +15,7 @@ public class MobAttack : MonoBehaviour
     [SerializeField] protected Transform staticProjectilePrefab;
 
     [SerializeField] protected Transform projectileSpawnPoint;
+    [SerializeField] protected List<Transform> multipleProjectileSpawnPointList;
     [SerializeField] protected float attackCooldown;
     [SerializeField] protected float attackAnimationDelay;
     [SerializeField] protected float totalAttackAnimationTime;
@@ -77,7 +78,7 @@ public class MobAttack : MonoBehaviour
 
     }
 
-    protected virtual void Attack() {
+    public virtual void Attack() {
         OnMobAttack?.Invoke(this, EventArgs.Empty);
         if(isAnimatedAttack) {
             StartCoroutine(AnimatedAttackCoroutine(totalAttackAnimationTime));
@@ -110,7 +111,12 @@ public class MobAttack : MonoBehaviour
                     if (Player.Instance.GetDead()) yield break;
                 }
 
-                SpawnProjectile();
+                Vector3 spawnPosition = projectileSpawnPoint.position;
+                if (multipleProjectileSpawnPointList != null && multipleProjectileSpawnPointList.Count > 0) {
+                    spawnPosition = multipleProjectileSpawnPointList[i].position;
+                }
+
+                SpawnProjectile(spawnPosition);
             }
             yield return new WaitForSeconds(delayBetweenProjectileSpawns);
         }
@@ -120,13 +126,14 @@ public class MobAttack : MonoBehaviour
         attackStarted = false;
     }
 
-    protected void SpawnProjectile() {
+    protected void SpawnProjectile(Vector3 spawnPosition) {
 
         Projectile projectile = GetNextProjectileInPool(projectileSO);
 
         Vector3 endPointRandomOffsetValue = GetEndPointRandomOffstetValue();
         projectile.gameObject.SetActive(true);
         projectile.transform.SetParent(null);
+        projectile.transform.position = spawnPosition;
 
         if (projectileSO.usesAnimationCurve) {
             projectile.ActivateAndInitialize(previousAttackTargetIDamageable.GetProjectileTarget(), projectileSO, transform, attackDamage, endPointRandomOffsetValue, homingProjectile);
@@ -164,6 +171,10 @@ public class MobAttack : MonoBehaviour
         for (int i = 0; i < projectileAmountShotInAttack; i++) {
             if (previousAttackTargetIDamageable != null) {
                 Vector3 spawnPosition = projectileSpawnPoint.position;
+
+                if(multipleProjectileSpawnPointList != null && multipleProjectileSpawnPointList.Count > 0) {
+                    spawnPosition = multipleProjectileSpawnPointList[i].position;
+                }
 
                 if (staticProjectileAutoTargetsPlayer) {
                     float xRandomizer = UnityEngine.Random.Range(-1.5f, 1.5f);

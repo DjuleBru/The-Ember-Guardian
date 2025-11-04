@@ -184,6 +184,7 @@ public class Creature : Mob
     }
 
     public override void Die() {
+        Debug.Log(this + " Die");
         CreatureDieFunction();
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
     }

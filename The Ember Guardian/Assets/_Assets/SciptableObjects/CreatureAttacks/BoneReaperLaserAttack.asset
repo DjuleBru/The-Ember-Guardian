@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d4031d27ff643044292075ec5021e470, type: 3}
-  m_Name: BoneReaponerAttack
+  m_Name: BoneReaperLaserAttack
   m_EditorClassIdentifier: 
   isRangedAttack: 0
   isProjectileAttack: 0
   isStaticProjectileAttack: 0
   isAnimatedAttack: 1
   attackCooldown: 4
-  minAttackRange: 5
-  maxAttackRange: 8
+  minAttackRange: 2
+  maxAttackRange: 3
   hasDifferentDayAndNightRange: 0
   minAttackRange_Night: 0
   maxAttackRange_Night: 0
@@ -26,13 +26,13 @@ MonoBehaviour:
   maxAttackRangeRandomizer: 0
   damage: 1
   damageToFire: 1
-  damageToBarricades: 2
+  damageToBarricades: 1
   canAttackPlayerBehindBarricades: 0
-  canAttackPlayerOnTower: 0
+  canAttackPlayerOnTower: 1
   blockSwitchXScaleWhileAttacking: 1
   startblockSwitchXScaleWhileAttackingTime: 0.5
   attackAnimationDelay: 0.7
-  totalAttackAnimationTime: 2.3
+  totalAttackAnimationTime: 2.4
   attackSFXDelayAfterAnimationStart: 0.3
   staticProjectilePrefab: {fileID: 0}
   staticProjectileAutoTargetsPlayer: 0
@@ -43,7 +43,7 @@ MonoBehaviour:
   attackRangeRandomizerMiss: 0
   attackSFXHandledByAnimation: 1
   attackAudioClips:
-  - {fileID: 8300000, guid: fcd21a6ada103754d96617e44d522eb3, type: 3}
+  - {fileID: 8300000, guid: e492a1ac4b1a6c94692929bd9d6a5b1a, type: 3}
   attackHitAudioClips: []
   attackStartedChargingAudioClips: []
   attackReleasedAudioClips: []

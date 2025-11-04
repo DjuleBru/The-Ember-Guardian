@@ -29,6 +29,7 @@ public class CreatureDetectionCollider : MonoBehaviour {
     private int workerTargetingPriority;
     private int playerTargetingPriority;
     private int barricadeTargetingPriority;
+    private int fireTargetingPriority;
 
     private void Awake() {
         creature = GetComponentInParent<Creature>();
@@ -45,6 +46,7 @@ public class CreatureDetectionCollider : MonoBehaviour {
         workerTargetingPriority = creature.GetCreatureSO().workerTargetingPriority;
         playerTargetingPriority = creature.GetCreatureSO().playerTargetingPriority;
         barricadeTargetingPriority = creature.GetCreatureSO().barricadeTargetingPriority;
+        fireTargetingPriority = creature.GetCreatureSO().fireTargetingPriority;
 
         if (creature.IsDayCreature()) {
             guardHitCreatureAggroProbability = .75f;
@@ -265,7 +267,7 @@ public class CreatureDetectionCollider : MonoBehaviour {
             }
 
             if (iDamageable is Fire fire) {
-                if (CanAddFireToTargets(fire)) currentPriority = int.MaxValue;
+                if (CanAddFireToTargets(fire)) currentPriority = fireTargetingPriority;
                 else continue;
             }
 

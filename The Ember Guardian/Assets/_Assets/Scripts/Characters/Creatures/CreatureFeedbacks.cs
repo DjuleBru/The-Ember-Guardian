@@ -40,7 +40,7 @@ public class CreatureFeedbacks : MonoBehaviour
         }
     }
 
-    private void CreatureAttack_OnMobAttack(object sender, System.EventArgs e) {
+    protected virtual void CreatureAttack_OnMobAttack(object sender, System.EventArgs e) {
         if(attackFeedbacks != null) {
             attackFeedbacks.PlayFeedbacks();
         }
@@ -58,7 +58,7 @@ public class CreatureFeedbacks : MonoBehaviour
         }
     }
 
-    protected void Creature_OnCreatureDied(object sender, System.EventArgs e) {
+    protected virtual void Creature_OnCreatureDied(object sender, System.EventArgs e) {
         died = true;
     }
 

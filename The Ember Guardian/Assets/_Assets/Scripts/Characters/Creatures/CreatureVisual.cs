@@ -12,6 +12,7 @@ public class CreatureVisual : MobVisual
     [SerializeField] private GameObject debuffedGameObject;
     [SerializeField] private SpriteRenderer glowSpriteRenderer;
     [SerializeField] private SpriteRenderer glowSpriteRenderer2;
+    [SerializeField] private SpriteRenderer glowSpriteRenderer3;
     [SerializeField] private SpriteRenderer vfxSprite;
     [SerializeField] private ParticleSystem creatureElitePS;
     [SerializeField] private Color damageEliteOutlineColor;
@@ -29,6 +30,9 @@ public class CreatureVisual : MobVisual
 
         if(glowSpriteRenderer2 != null) {
             glowSpriteRenderer2.sortingOrder = currentMaxSortingOrder + 2;
+        }
+        if (glowSpriteRenderer3 != null) {
+            glowSpriteRenderer3.sortingOrder = currentMaxSortingOrder + 2;
         }
     }
 
@@ -105,6 +109,9 @@ public class CreatureVisual : MobVisual
         }
         if (glowSpriteRenderer2 != null) {
             glowSpriteRenderer2.enabled = true;
+        }
+        if (glowSpriteRenderer3 != null) {
+            glowSpriteRenderer3.enabled = true;
         }
         if (vfxSprite != null) {
             vfxSprite.enabled = true;

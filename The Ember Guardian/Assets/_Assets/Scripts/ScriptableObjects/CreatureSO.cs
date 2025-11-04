@@ -154,6 +154,9 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     [Range(0, 5)]
     public int barricadeTargetingPriority;
+    [BoxGroup("AI")]
+    [LabelWidth(200)]
+    public int fireTargetingPriority = int.MaxValue;
 
 
     [BoxGroup("Drop Stats")]

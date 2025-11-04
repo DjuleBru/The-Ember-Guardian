@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CreatureAI_Colossus : CreatureAI {
+
+    public event EventHandler OnColossusWake;
+
     protected override void Awake() {
         base.Awake();
         rangedAttackSO = creature.GetCreatureSO().primaryAttackSO;
@@ -66,5 +70,9 @@ public class CreatureAI_Colossus : CreatureAI {
 
         // Dans les deux cas, on continue à se déplacer
         creatureMovement.SetMoveTarget(destination);
+    }
+
+    public override void TriggerBossSpawnAnimation() {
+        OnColossusWake?.Invoke(this, EventArgs.Empty);
     }
 }

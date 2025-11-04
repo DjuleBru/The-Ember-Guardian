@@ -39,6 +39,7 @@ public class SoundObject : MonoBehaviour
 
 
     protected void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
+
         if (audioClipArray.Length == 0) return;
         if (audioSource2D.volume == 0) return;
 
@@ -61,7 +62,8 @@ public class SoundObject : MonoBehaviour
         // Vérif cooldown global
         float lastTime;
         if (lastPlayedTime.TryGetValue(audioClip, out lastTime)) {
-            if (Time.time - lastTime < minIntervalBetweenSameClip) {
+            float timeDiff = Time.time - lastTime;
+            if (timeDiff < minIntervalBetweenSameClip && timeDiff != 0) {
                 return; // trop tôt : on ignore
             }
         }

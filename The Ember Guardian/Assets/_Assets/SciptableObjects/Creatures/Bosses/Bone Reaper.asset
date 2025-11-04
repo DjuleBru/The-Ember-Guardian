@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Bone Reaper
   isBoss: 1
-  appearTwiceOnSecondPhase: 1
+  appearTwiceOnSecondPhase: 0
   description: Basic, slightly tanky, slow creature.
-  creatureIcon: {fileID: 21300000, guid: 8c704e7de163834478f362f321073189, type: 3}
-  creatureIcon_Portrait: {fileID: 21300000, guid: af4a0f0ca65244a48b333362659b7229, type: 3}
+  creatureIcon: {fileID: 21300000, guid: 55e298fb34721884a929e441ca944c37, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 8f525f8aa73f8124c88a8638d9da2f6f, type: 3}
   creaturePrefab: {fileID: 2465624883499499618, guid: 0d6fb8661afd5e345b45d47c527c52c7, type: 3}
-  mass: 100
-  detectionRange_Day: 12
-  detectionRange_Night: 8
-  primaryAttackSO: {fileID: 11400000, guid: c928f3950e9f5684daafe9ced37c42dc, type: 2}
+  mass: 1000
+  detectionRange_Day: 15
+  detectionRange_Night: 15
+  primaryAttackSO: {fileID: 11400000, guid: 5f09de1e8626a054e88090142aaa4dc4, type: 2}
   hasRangedAndMeleeAttack: 0
   secondaryAttackSO: {fileID: 11400000, guid: fd3cab6579420e84a967ce56b8d12ce8, type: 2}
   specialAttackSO: {fileID: 0}
@@ -36,7 +36,7 @@ MonoBehaviour:
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.5
   moveSpeedRandomizerDelta: 0
-  maxHealth: 3000
+  maxHealth: 3500
   enteredLightattackRateDebuff: 2.5
   nightSpawnYPosition: 0
   probabilityToAggroOnGunShot: 1
@@ -45,11 +45,12 @@ MonoBehaviour:
   immuneToImmobilize: 1
   immuneToFire: 1
   hasCustomSpawnAnimation: 0
-  spawnAnimationDuration: 1
+  spawnAnimationDuration: 7.5
   baseMovementAnimationSpeed: 0.5
   workerTargetingPriority: 1
-  playerTargetingPriority: 3
+  playerTargetingPriority: 4
   barricadeTargetingPriority: 2
+  fireTargetingPriority: 3
   probabilityToDropOrb: 1
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 05000000
@@ -58,30 +59,25 @@ MonoBehaviour:
   spawnProbability: 0.4
   maxCreaturesPerPacket: 1
   dieAudioClips:
-  - {fileID: 8300000, guid: 743e83230ab0b6b41a44ee47a1961717, type: 3}
+  - {fileID: 8300000, guid: 424ecd3bb6cf8ec4dbe01174e97ee1d9, type: 3}
   dieVolumeMultiplier: 1.2
   aggroAudioClips: []
   aggroVolumeMultiplier: 0.8
-  idleAudioClips: []
+  idleAudioClips:
+  - {fileID: 8300000, guid: 32077fac78b80dd499f89013573de17d, type: 3}
+  - {fileID: 8300000, guid: 041ddb015857cf745a76f6d4780be9f4, type: 3}
+  - {fileID: 8300000, guid: bae3efceac2553b4898060dc7be73ff8, type: 3}
+  - {fileID: 8300000, guid: 038dcd79c38aba04f8a9074adea52df3, type: 3}
+  - {fileID: 8300000, guid: 74dac38854e18234da2615658a9e9846, type: 3}
+  - {fileID: 8300000, guid: 12162d6f5ff32a24598d06a74a89d25c, type: 3}
   idleVolumeMultiplier: 0.5
-  footStepAudioClips:
-  - {fileID: 8300000, guid: f0fd760d5348dd94581e17f0e0ad4fca, type: 3}
-  - {fileID: 8300000, guid: 8c7ec7563db270342b4e35614ea17c6a, type: 3}
-  - {fileID: 8300000, guid: 530b59db5156a984a91fc45fca8c69b5, type: 3}
-  - {fileID: 8300000, guid: 2c0f6ff0e8bc49c4fbae4dce6c216b90, type: 3}
-  - {fileID: 8300000, guid: 7d5f3ab6f2dea364f9ee41862bc9ca18, type: 3}
-  - {fileID: 8300000, guid: 6cbe0636a4aa51c46ba6b5483f32d398, type: 3}
-  - {fileID: 8300000, guid: 241013ec349163242bd74e1b4e8bae0f, type: 3}
-  - {fileID: 8300000, guid: c833e32228bb1fe4583a36de067ecd9f, type: 3}
+  footStepAudioClips: []
   footstepVolumeMultiplier: 2
   hasContinousAudioClip: 0
   continuousAudioClip: []
   hasContinousMovementAudioClip: 0
   continuousMovementAudioClip: []
-  spawnAudioClips:
-  - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
-  - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
-  - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
+  spawnAudioClips: []
   spawnVolumeMultiplier: 0.75
   bulletHitAudioClips:
   - {fileID: 8300000, guid: 88e9e8203ae13ff42ad519f67cc1db10, type: 3}

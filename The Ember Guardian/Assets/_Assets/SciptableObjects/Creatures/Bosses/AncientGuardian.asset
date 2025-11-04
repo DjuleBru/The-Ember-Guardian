@@ -45,11 +45,12 @@ MonoBehaviour:
   immuneToImmobilize: 1
   immuneToFire: 1
   hasCustomSpawnAnimation: 0
-  spawnAnimationDuration: 1
+  spawnAnimationDuration: 10
   baseMovementAnimationSpeed: 0.5
   workerTargetingPriority: 1
-  playerTargetingPriority: 3
+  playerTargetingPriority: 4
   barricadeTargetingPriority: 2
+  fireTargetingPriority: 3
   probabilityToDropOrb: 1
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 05000000
@@ -78,10 +79,7 @@ MonoBehaviour:
   continuousAudioClip: []
   hasContinousMovementAudioClip: 0
   continuousMovementAudioClip: []
-  spawnAudioClips:
-  - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
-  - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
-  - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
+  spawnAudioClips: []
   spawnVolumeMultiplier: 0.75
   bulletHitAudioClips:
   - {fileID: 8300000, guid: 88e9e8203ae13ff42ad519f67cc1db10, type: 3}

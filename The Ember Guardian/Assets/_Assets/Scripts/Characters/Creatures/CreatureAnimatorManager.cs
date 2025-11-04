@@ -147,7 +147,7 @@ public class CreatureAnimatorManager : MonoBehaviour
     private void Creature_OnCreatureStunStarted(object sender, EventArgs e) {
         stunned = true;
     }
-    protected void HandleScaleChange(float watchDir) {
+    protected virtual void HandleScaleChange(float watchDir) {
         if (watchDir < 0 && previousWatchDir > 0) {
             previousWatchDir = watchDir;
             Vector3 newScale = new Vector3(-1, 1, 1);
@@ -215,4 +215,5 @@ public class CreatureAnimatorManager : MonoBehaviour
         creature.SetGravityScale(1f);
         creature.EnableCollider(true);
     }
+
 }

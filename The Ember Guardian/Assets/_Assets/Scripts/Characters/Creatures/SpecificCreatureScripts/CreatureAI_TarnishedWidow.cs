@@ -48,6 +48,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
         //    creature.SetCreatureHealth(Mathf.RoundToInt(creature.GetCreatureSO().maxHealth*1.5f));
         //}
 
+        OnWidowJumpStarted?.Invoke(this, EventArgs.Empty);
         BossUI.Instance.LinkBoss(creature, !isFirstAppearance);
     }
 
@@ -227,5 +228,10 @@ public class CreatureAI_TarnishedWidow : CreatureAI
     public bool GetIsFirstAppearance() {
         return isFirstAppearance;
     }
+
+    public override void TriggerBossSpawnAnimation() {
+        OnWidowLanded?.Invoke(this, EventArgs.Empty);
+    }
+
 
 }

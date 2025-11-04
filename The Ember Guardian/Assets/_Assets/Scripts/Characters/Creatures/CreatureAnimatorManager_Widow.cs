@@ -9,12 +9,12 @@ public class CreatureAnimatorManager_Widow : CreatureAnimatorManager
     protected override void Awake() {
         base.Awake();
         widowAI = GetComponentInParent<CreatureAI_TarnishedWidow>();
+        widowAI.OnWidowJumpStarted += WidowAI_OnWidowJumpStarted;
+        widowAI.OnWidowLanded += WidowAI_OnWidowLanded;
     }
 
     protected override void Start() {
         base.Start();
-        widowAI.OnWidowJumpStarted += WidowAI_OnWidowJumpStarted;
-        widowAI.OnWidowLanded += WidowAI_OnWidowLanded;
     }
 
     private void WidowAI_OnWidowLanded(object sender, System.EventArgs e) {

@@ -261,6 +261,8 @@ public class Projectile : MonoBehaviour
             };
 
             if (parentMob is Creature) {
+                Creature creature = parentMob as Creature;
+                if (creature.GetCreatureSO().isBoss) return;
                 parentMob.Die();
             };
         }

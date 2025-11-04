@@ -559,6 +559,30 @@ public class CreaturesSpawnManager : MonoBehaviour {
         subWaveIndex = 0;
 
         while (subWaveIndex < subWaveNumber && waveNumber == currentWaveNumber) {
+
+            // === BOSS FIRST, puis cinématique ===
+            if (subWaveIndex == 0 && bossSpawnsThisNight) {
+                // récupère toutes les entrées boss (peut être 1 ou 2 selon ta logique)
+                var bossEntries = waveCreaturesDictionary[subWaveIndex]
+                    .Where(c => c.creature.isBoss)
+                    .ToList();
+
+                List<Creature> spawnedBosses = new List<Creature>();
+                foreach (var be in bossEntries) {
+                    var bossInstance = SpawnCreatureAtSide(be.creature, be.spawnSide); // <-- spawn d'abord
+                    spawnedBosses.Add(bossInstance);
+                }
+                Debug.Log("bossEntries " + bossEntries.Count);
+                Debug.Log("spawnedBosses " + spawnedBosses.Count);
+                // on les enlève du reste de la subwave pour éviter un double spawn
+                waveCreaturesDictionary[subWaveIndex].RemoveAll(c => c.creature.isBoss);
+
+                // maintenant on peut lancer la cinématique en visant des instances réelles
+                yield return StartCoroutine(HandleBossIntro(spawnedBosses));
+            }
+            // =====================================
+
+            // Maintenant seulement on compte les créatures restantes de la subwave
             remainingSubWaveCreatures = waveCreaturesDictionary[subWaveIndex].Count;
 
             if (DebugManager.Instance.GetLogNightWavesData()) {
@@ -566,30 +590,21 @@ public class CreaturesSpawnManager : MonoBehaviour {
                 Debug.Log("TotalSubWaveCreatures " + remainingSubWaveCreatures);
             }
 
-            // Grouper les créatures par type
+            // Grouper par type (ta logique existante)
             var groupedCreatures = waveCreaturesDictionary[subWaveIndex]
                 .GroupBy(c => c.creature)
-                .Select(group => group.ToList()) // Convertit chaque groupe en liste homogène
+                .Select(group => group.ToList())
                 .ToList();
 
-            // Mélanger les groupes pour éviter qu'ils ne soient toujours spawnés dans le même ordre
             groupedCreatures = groupedCreatures.OrderBy(g => UnityEngine.Random.value).ToList();
-
-            // File d'attente des groupes pour alterner leur apparition
             Queue<List<SpawnedCreatureInfo>> groupQueue = new Queue<List<SpawnedCreatureInfo>>(groupedCreatures);
 
             while (groupQueue.Count > 0) {
-                List<SpawnedCreatureInfo> currentGroup = groupQueue.Dequeue(); // Prendre un groupe
+                List<SpawnedCreatureInfo> currentGroup = groupQueue.Dequeue();
 
-                // Vérifier la taille max du paquet
                 int maxPacketSize = currentGroup[0].creature.maxCreaturesPerPacket;
-
-                if (currentSpecialWaveType == SpecialWaveType.ghouls || currentSpecialWaveType == SpecialWaveType.flying) {
-                    maxPacketSize *= 2;
-                }
-                if (currentSpecialWaveType == SpecialWaveType.crawlers) {
-                    maxPacketSize *= 3;
-                }
+                if (currentSpecialWaveType == SpecialWaveType.ghouls || currentSpecialWaveType == SpecialWaveType.flying) maxPacketSize *= 2;
+                if (currentSpecialWaveType == SpecialWaveType.crawlers) maxPacketSize *= 3;
 
                 int chunkSize = currentGroup.Count > maxPacketSize ? maxPacketSize : currentGroup.Count;
 
@@ -598,26 +613,20 @@ public class CreaturesSpawnManager : MonoBehaviour {
                     currentGroup.RemoveAt(0);
 
                     SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnSide);
-                    yield return new WaitForSeconds(0.2f); // Délai entre les créatures d'un même paquet
+                    yield return new WaitForSeconds(0.2f);
                 }
 
-                // Si le groupe n'est pas totalement vidé, on le remet dans la file pour plus tard
-                if (currentGroup.Count > 0) {
-                    groupQueue.Enqueue(currentGroup);
-                }
+                if (currentGroup.Count > 0) groupQueue.Enqueue(currentGroup);
 
-                // Pause plus longue avant de spawn le prochain paquet
                 yield return new WaitForSeconds(2f);
             }
 
-            // Attendre que toutes les créatures de cette subwave soient éliminées
             yield return new WaitUntil(() => remainingSubWaveCreatures <= maxRemainingSubWaveCreaturesForNextSubwave);
-
             subWaveIndex++;
         }
     }
 
-    private void SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
+    private Creature SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
         //Creature creature = GetCreatureFromPool(
         //    creatureToSpawn,
         //    GetSpawnPosition(spawnSide, creatureToSpawn),
@@ -628,11 +637,12 @@ public class CreaturesSpawnManager : MonoBehaviour {
         creature.SetAsDayCreature(false);
         CreaturesManager.Instance.AddCreatureToNightWave(creature);
 
-        if (!canSpawnElite || creatureToSpawn.isBoss || currentSpecialWaveType != SpecialWaveType.none) return;
-        float eliteRandomFloat = UnityEngine.Random.Range(0f, 1f);
-        if (eliteRandomFloat < eliteSpawnProbability) {
-            creature.SetAsEliteCreature();
+        if (canSpawnElite && !creatureToSpawn.isBoss && currentSpecialWaveType == SpecialWaveType.none) {
+            float eliteRandomFloat = UnityEngine.Random.Range(0f, 1f);
+            if (eliteRandomFloat < eliteSpawnProbability) creature.SetAsEliteCreature();
         }
+
+        return creature; // <— CHANGEMENT
     }
     private List<CreatureSO> GetCreatureSOListToSpawn(float difficultyBudget, int subWaveIndex) {
         List<CreatureSO> creaturesToSpawn = new List<CreatureSO>();
@@ -646,11 +656,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
         if (hasBoss && subWaveIndex == 0 && bossNightsSpawns.Contains(currentWaveNumber)) {
             int bossSpawnIndex = bossNightsSpawns.IndexOf(currentWaveNumber);
 
-            creaturesToSpawn.Add(bossCreatureType);
+            creaturesToSpawn.Insert(0, bossCreatureType);
             difficultyBudget -= bossCreatureType.difficulty;
 
             if(bossSpawnIndex != 0 && bossCreatureType.appearTwiceOnSecondPhase) {
-                creaturesToSpawn.Add(bossCreatureType);
+                creaturesToSpawn.Insert(0, bossCreatureType);
                 difficultyBudget -= bossCreatureType.difficulty;
             }
         }
@@ -900,6 +910,31 @@ public class CreaturesSpawnManager : MonoBehaviour {
         pool.Enqueue(creature);
 
         return creature;
+    }
+
+    private IEnumerator HandleBossIntro(List<Creature> bosses) {
+        // petite latence si besoin (VFX, SFX pré-roll)
+        yield return new WaitForSeconds(1f);
+
+        float delay = 2.5f;
+        if(bosses.Count > 1) {
+            delay = 1.75f;
+        }
+
+        foreach (Creature boss in bosses) {
+            CameraManager.Instance.ChangeCameraTarget(boss.transform);
+            yield return new WaitForSeconds(delay/4);
+            BossUI.Instance.Show();
+            yield return new WaitForSeconds(delay/4);
+
+            boss.GetComponent<CreatureAI>().TriggerBossSpawnAnimation();
+
+            yield return new WaitForSeconds(delay);
+        }
+
+
+        // légère pause post-ciné
+        CameraManager.Instance.ResetCameraTargetToPlayer();
     }
 
 }

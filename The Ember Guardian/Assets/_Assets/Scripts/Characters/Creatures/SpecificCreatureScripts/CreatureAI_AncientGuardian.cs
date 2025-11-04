@@ -119,6 +119,12 @@ public class CreatureAI_AncientGuardian : CreatureAI
         return true;
     }
 
+    public override void TriggerBossSpawnAnimation() {
+        creatureAttack.SetAttackSO(AOEAttackSO);
+        creatureAttack.Attack();
+        creatureAttack.SetAttackSO(standardAttackSO);
+    }
+
     private IEnumerator Teleport(bool startTeleport, float delayToTeleport = 0) {
         teleporting = true;
         creatureAttack.RemoveAttackTarget();

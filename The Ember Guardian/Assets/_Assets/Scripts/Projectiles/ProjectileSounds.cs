@@ -17,6 +17,7 @@ public class ProjectileSounds : SoundObject
         if(audioSource2D == null) {
             audioSource2D = GetComponent<AudioSource>();
         }
+
         PlaySound2D(projectile.GetProjectileSO().projectileInstantiatedAudioClips, projectileInstantiatedVolumeMultiplier);
     }
 

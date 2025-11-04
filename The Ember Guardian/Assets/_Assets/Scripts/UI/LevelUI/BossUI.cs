@@ -35,18 +35,18 @@ public class BossUI : MonoBehaviour
     }
 
     private void Update() {
-        if(tryingToShowPanel && !panelShown) {
+        //if(tryingToShowPanel && !panelShown) {
 
-            float distanceToPlayer = Mathf.Abs(linkedBoss.transform.position.x - Player.Instance.transform.position.x);
-            if(linkedBoss2 != null) {
-                distanceToPlayer = Mathf.Min(distanceToPlayer, Mathf.Abs(linkedBoss2.transform.position.x - Player.Instance.transform.position.x));
-            }
+        //    float distanceToPlayer = Mathf.Abs(linkedBoss.transform.position.x - Player.Instance.transform.position.x);
+        //    if(linkedBoss2 != null) {
+        //        distanceToPlayer = Mathf.Min(distanceToPlayer, Mathf.Abs(linkedBoss2.transform.position.x - Player.Instance.transform.position.x));
+        //    }
 
-            if(distanceToPlayer <= 20) {
-                Show();
-                tryingToShowPanel = false;
-            }
-        }
+        //    if(distanceToPlayer <= 20) {
+        //        Show();
+        //        tryingToShowPanel = false;
+        //    }
+        //}
     }
 
     public void LinkBoss(Creature creature, bool hasMultiplePhases) {
@@ -90,6 +90,8 @@ public class BossUI : MonoBehaviour
     }
 
     public void Show() {
+        if (panelShown) return;
+
         bossUIPanel.SetActive(true);
         bossUIPanelAnimator.SetTrigger("Show");
         panelShown = true;
@@ -112,14 +114,36 @@ public class BossUI : MonoBehaviour
         }
 
         yield return new WaitForSeconds(.1f);
-       
-        while (bossHealthBarFill.fillAmount < .99f) {
-            bossHealthBarFill.fillAmount += .01f;
-            bossHealthBarPhase1.fillAmount += .01f;
-            bossHealthBarPhase2.fillAmount += .01f;
-            yield return new WaitForEndOfFrame();
-        }
 
+        if (linkedBoss2 != null) {
+            while (bossHealthBarFill.fillAmount < .99f) {
+                bossHealthBarFill.fillAmount += .02f;
+                bossHealthBarPhase1.fillAmount += .02f;
+                bossHealthBarPhase2.fillAmount += .02f;
+                yield return new WaitForEndOfFrame();
+            }
+        }
+        else {
+            if (bossHasMultiplePhases) {
+              
+                while (bossHealthBarPhase2.fillAmount < .99f) {
+                    bossHealthBarPhase2.fillAmount += .02f;
+                    yield return new WaitForEndOfFrame();
+                } 
+                
+                while (bossHealthBarPhase1.fillAmount < .99f) {
+                    bossHealthBarPhase1.fillAmount += .02f;
+                    yield return new WaitForEndOfFrame();
+                }
+
+            } else {
+                while (bossHealthBarFill.fillAmount < .99f) {
+                    bossHealthBarFill.fillAmount += .02f;
+                    yield return new WaitForEndOfFrame();
+                }
+            }
+        }
+       
         bossHealthBarFill.fillAmount = 1f;
         bossHealthBarPhase1.fillAmount = 1f;
         bossHealthBarPhase2.fillAmount = 1f;

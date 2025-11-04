@@ -95,7 +95,7 @@ public class StaticProjectile_DarkTrap : StaticProjectile
                 }
             }
 
-            // Hit Barricade
+            // Hit Fire
             Fire fire = collision.gameObject.GetComponent<Fire>();
             if (fire != null) {
                 if (parentMob is Creature) {

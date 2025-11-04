@@ -545,6 +545,10 @@ public class CreatureAI : MonoBehaviour {
         }
     }
 
+    public virtual void TriggerBossSpawnAnimation() {
+
+    }
+
     protected void OnDestroy() {
         Player.Instance.OnPlayerDied -= Player_OnPlayerDied;
     }
