@@ -42,11 +42,14 @@ public class MainMenuUI_StartupMessagePanel : MonoBehaviour
     }
 
     public void SetErasedSaveFilePanel() {
+        panelText.font = LocalizationManager.Instance.GetCurrentFont();
         string loadedText = LocalizationManager.Instance.GetLocalizedText("startupMessagePanel_Text");
         loadedText = loadedText.Replace("\\n", "\n");
         panelName.text = LocalizationManager.Instance.GetLocalizedText("startupMessagePanel_Name");
         panelText.text = loadedText;
 
+        Debug.Log(SettingsManager.Instance.GetLanguage());
+        Debug.Log(LocalizationManager.Instance.GetLocalizedText("startupMessagePanel_Text"));
         panelNameImageAnimator.SetTrigger("DeletedSaveFile");
     }
 

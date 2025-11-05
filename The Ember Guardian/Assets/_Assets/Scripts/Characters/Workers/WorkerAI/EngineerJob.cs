@@ -189,7 +189,7 @@ public class EngineerJob : WorkerJob {
     }
 
     private void ChangeState(EngineerState newState) {
-        //Debug.Log("ChangeState " + newState);
+        Debug.Log("ChangeState " + newState);
         if (newState == state) return;
         if (worker.GetDead()) return;
 
@@ -229,7 +229,8 @@ public class EngineerJob : WorkerJob {
 
     private void CheckAvailableWork() {
         // Check held currencies
-        if(CheckDropCurrenciesInContainers()) return;
+        if (CheckBlockedByCreature()) return; // Pas de boulot si danger proche
+        if (CheckDropCurrenciesInContainers()) return;
 
         // Check structures
         Structure highestPriorityAvailableStructure = null;

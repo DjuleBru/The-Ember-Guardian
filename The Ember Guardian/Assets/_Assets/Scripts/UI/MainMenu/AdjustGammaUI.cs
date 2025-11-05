@@ -39,6 +39,7 @@ public class AdjustGammaUI : MonoBehaviour
         GameInput.Instance.OnPlayerBackPerformed += Gameinput_OnPlayerBackPerformed;
 
     }
+
     private void Gameinput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (!panelOpen) return;
         ClosePanel();

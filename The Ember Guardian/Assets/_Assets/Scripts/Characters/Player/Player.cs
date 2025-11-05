@@ -408,12 +408,18 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private void LevelManager_OnLevelFailed(object sender, EventArgs e) {
-        DieWithMainFireExtinguished();
+        if(dead) return;
+        StartCoroutine(DieWithMainFireExtinguishedCoroutine());
     }
 
-    public void DieWithMainFireExtinguished() {
+    private IEnumerator DieWithMainFireExtinguishedCoroutine() {
         OnPlayerDied?.Invoke(this, EventArgs.Empty);
         dead = true;
+        rb.velocity = Vector2.zero;
+
+        yield return new WaitForSeconds(1f);
+
+        CameraManager.Instance.ChangeCameraTarget(Fire.Instance.transform);
     }
 
     private IEnumerator RespawnCoroutine() {

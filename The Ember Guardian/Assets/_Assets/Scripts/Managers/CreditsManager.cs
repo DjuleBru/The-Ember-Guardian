@@ -97,8 +97,6 @@ public class CreditsManager : MonoBehaviour
 
     private IEnumerator ShowCredits() {
 
-        CameraManager.Instance.ChangeCameraTarget(cameraTargetTransformDuringCredits, false);
-
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             HUBManager.Instance.SetHubMerchantsCreditsMode(true);
             HUBManager.Instance.SetHubFireAndChestInteractable(false);
@@ -107,6 +105,7 @@ public class CreditsManager : MonoBehaviour
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+            CameraManager.Instance.ChangeCameraTarget(cameraTargetTransformDuringCredits, false);
             MainMenuUI.Instance.HideMainMenuButtons();
             MusicManager.Instance.SetAudioVolume(.75f);
             yield return new WaitForSeconds(2f);

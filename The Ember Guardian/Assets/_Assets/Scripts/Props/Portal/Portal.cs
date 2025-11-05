@@ -128,7 +128,7 @@ public class Portal : MonoBehaviour
         if (playerIsSetOnTeleporter) return;
         if (playerOpenedPortalUI) return;
 
-        if (isHUBTeleporter && !PlayerCurrencies.Instance.GetCarryingEmber() && !DEBUGMODE && MetaProgressionManager.Instance.GetLevelUnlocked(linkedLevelSOList[0])) {
+        if (isHUBTeleporter && !PlayerCurrencies.Instance.GetCarryingEmber() && !DEBUGMODE) {
             PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_carryEmber"), 2f);
             return;
         }
@@ -148,7 +148,7 @@ public class Portal : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision) {
         if (!portalUnlocked) return;
         if (playerIsSetOnTeleporter) return;
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB && CreditsManager.Instance.GetCreditsPlaying()) return;
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB && CreditsManager.Instance != null && CreditsManager.Instance.GetCreditsPlaying()) return;
 
         if (collision.gameObject.GetComponent<Player>() != null) {
             playerInTriggerArea = true;
@@ -159,6 +159,7 @@ public class Portal : MonoBehaviour
             Player.Instance.SetInPortalTriggerArea(true);
             OnPlayerEnteredTriggerArea?.Invoke(this, EventArgs.Empty);
         }
+
     }
 
     private void OnTriggerExit2D(Collider2D collision) {
@@ -184,7 +185,10 @@ public class Portal : MonoBehaviour
             if (!portalUnlocked) return;
 
             if (isHUBTeleporter && !GetPortalHasUnlockedUnfinishedLevels()) return;
-            if (playerIsSetOnTeleporter) return;
+            if (playerIsSetOnTeleporter) {
+                playerIsSetOnTeleporter = false;
+                return;
+            } 
 
             OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
         }

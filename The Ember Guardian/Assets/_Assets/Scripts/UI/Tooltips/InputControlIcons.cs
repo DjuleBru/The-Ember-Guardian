@@ -242,7 +242,7 @@ public class InputControlIcons : MonoBehaviour
                 spriteList.Add(gamepadR3Sprite);
             }
             if (control == Control.LightSwitch) {
-                spriteList.Add(gamepadDownArrowSprite);
+                spriteList.Add(gamepadUpArrowSprite);
             }
             if (control == Control.SwitchDog) {
                 spriteList.Add(gamepadYSprite);

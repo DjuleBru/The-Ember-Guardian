@@ -38,6 +38,7 @@ public class WeaponChangeButton : ButtonUI
             });
         }
 
+        weaponNameText.font = LocalizationManager.Instance.GetCurrentFont();
     }
 
     private void WeaponButtonPressHub() {

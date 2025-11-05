@@ -25,6 +25,11 @@ public class WeaponReplaceButton : ButtonUI {
         });
     }
 
+    protected override void Start() {
+        base.Start();
+        weaponNameText.font = LocalizationManager.Instance.GetCurrentFont();
+    }
+
     private void SwapWeapon() {
         bool primaryWeaponSwap = ChangeWeaponPanel.Instance.GetPrimaryWeaponSwap();
         bool levelReplace = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;

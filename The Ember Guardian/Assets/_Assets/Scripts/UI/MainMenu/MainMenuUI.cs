@@ -31,8 +31,6 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private Sprite fullGameLogo;
 
     [SerializeField] protected TextMeshProUGUI ctaText;
-    [SerializeField] protected Material ctaTextFontAsset;
-    [SerializeField] protected Material ctaTextFontAsset_JP;
 
     [SerializeField] protected GameObject mainMenuPanelGameObject;
 
@@ -49,7 +47,6 @@ public class MainMenuUI : MonoBehaviour {
 
         InitializeButtonNavigation();
 
-        Debug.Log("IS DEMO " + VersioningManager.Instance.GetIsDemo());
         if (VersioningManager.Instance.GetIsDemo()) {
             logoImage.sprite = demoLogo;
             wishlistButton_Menu.gameObject.SetActive(true);
@@ -88,12 +85,7 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     private void RefreshFonts() {
-        if (SettingsManager.Instance.GetLanguage() == LocalizationManager.Language.Japanese) {
-            ctaText.fontMaterial = ctaTextFontAsset_JP;
-        }
-        else {
-            ctaText.fontMaterial = ctaTextFontAsset;
-        }
+        ctaText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
     }
 
 
@@ -118,7 +110,11 @@ public class MainMenuUI : MonoBehaviour {
 
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
 
-            StartNewGame();
+            if(!VersioningManager.Instance.GetIsDemo()) {
+                SelectDifficultyUI.Instance.OpenPanel();
+            } else {
+                StartNewGame();
+            }
 
         } else {
 
@@ -158,12 +154,16 @@ public class MainMenuUI : MonoBehaviour {
             SetFirstSelectedButton();
         }
     }
-    private void StartNewGame() {
+    public void StartNewGame() {
         StartCoroutine(StartNewGameCoroutine());
     }
 
     private IEnumerator StartNewGameCoroutine() {
-        mainMenuPanelAnimator.SetTrigger("FadeOut");
+
+        if(VersioningManager.Instance.GetIsDemo()) {
+            mainMenuPanelAnimator.SetTrigger("FadeOut");
+        }
+
         OnGameStart?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(1f);

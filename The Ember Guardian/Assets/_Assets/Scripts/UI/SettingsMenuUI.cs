@@ -24,6 +24,7 @@ public class SettingsMenuUI : MonoBehaviour
     [SerializeField] protected Slider waterReflectionsSlider;
     [SerializeField] protected Slider zoomLevelSlider;
     [SerializeField] protected GameObject firstSelectedButton;
+    [SerializeField] protected GameObject difficultyButton;
     [SerializeField] protected Animator takesEffectOnReloadAnimator;
 
     // Valeurs actuelles de volume

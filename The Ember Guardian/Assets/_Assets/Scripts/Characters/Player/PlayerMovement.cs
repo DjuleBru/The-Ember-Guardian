@@ -184,35 +184,35 @@ public class PlayerMovement : MonoBehaviour {
             // Gun weight initialization
 
             gunWeightAccelerationFactor = PlayerShoot.Instance.GetGunWeightAccelerationFactor();
-            BuffMoveSpeed(gunWeightAccelerationFactor);
+            BuffMoveSpeed("gunWeightAccelerationFactor", gunWeightAccelerationFactor);
 
         } else {
             // Changing gun
 
-            DebuffMoveSpeed(gunWeightAccelerationFactor);
+            DebuffMoveSpeed("gunWeightAccelerationFactor", gunWeightAccelerationFactor);
             gunWeightAccelerationFactor = PlayerShoot.Instance.GetGunWeightAccelerationFactor();
-            BuffMoveSpeed(gunWeightAccelerationFactor);
+            BuffMoveSpeed("gunWeightAccelerationFactor", gunWeightAccelerationFactor);
         }
     }
 
     private void PlayerShoot_OnPlayerReloadHandEnded(object sender, EventArgs e) {
         float reloadAccelerationFactor = PlayerShoot.Instance.GetGunReloadAccelerationFactor();
-        DebuffMoveSpeed(reloadAccelerationFactor);
+        DebuffMoveSpeed("Reload ended", reloadAccelerationFactor);
     }
 
     private void PlayerShoot_OnPlayerReloadInterrupted(object sender, EventArgs e) {
         float reloadAccelerationFactor = PlayerShoot.Instance.GetGunReloadAccelerationFactor();
-        DebuffMoveSpeed(reloadAccelerationFactor);
+        DebuffMoveSpeed("Reload interrupted", reloadAccelerationFactor);
     }
 
     private void PlayerShoot_OnPlayerReloadInterruptedEnded(object sender, EventArgs e) {
         float reloadAccelerationFactor = PlayerShoot.Instance.GetGunReloadAccelerationFactor();
-        BuffMoveSpeed(reloadAccelerationFactor);
+        BuffMoveSpeed("reloadAccelerationFactor", reloadAccelerationFactor);
     }
 
     private void PlayerShoot_OnPlayerReload(object sender, EventArgs e) {
         float reloadAccelerationFactor = PlayerShoot.Instance.GetGunReloadAccelerationFactor();
-        BuffMoveSpeed(reloadAccelerationFactor);
+        BuffMoveSpeed("reloadAccelerationFactor", reloadAccelerationFactor);
     }
 
     private void PlayerState_OnMoveSpeedChanged(object sender, EventArgs e) {
@@ -254,13 +254,13 @@ public class PlayerMovement : MonoBehaviour {
     private void PlayerAim_OnPlayerAimSightEnded(object sender, EventArgs e) {
         if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
 
-        BuffMoveSpeed(PlayerStats.Instance.GetAimingSightDecelerationFactor());
+        BuffMoveSpeed("Sniper AimSight", PlayerStats.Instance.GetAimingSightDecelerationFactor());
     }
 
     private void PlayerAIm_OnPlayerAimSightStarted(object sender, EventArgs e) {
         if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
 
-        DebuffMoveSpeed(PlayerStats.Instance.GetAimingSightDecelerationFactor());
+        DebuffMoveSpeed("Sniper AimSight", PlayerStats.Instance.GetAimingSightDecelerationFactor());
     }
 
     private void GameInput_OnPlayerRunCanceled(object sender, System.EventArgs e) {
@@ -294,14 +294,14 @@ public class PlayerMovement : MonoBehaviour {
             if(!isMovingBackwards) {
 
                 isMovingBackwards = true;
-                BuffMoveSpeed(moveSpeedBackwardsMultiplier);
+                BuffMoveSpeed("moveSpeedBackwardsMultiplier", moveSpeedBackwardsMultiplier);
             }
 
         } else {
 
             if(isMovingBackwards) {
                 isMovingBackwards = false;
-                DebuffMoveSpeed(moveSpeedBackwardsMultiplier);
+                DebuffMoveSpeed("moveSpeedBackwardsMultiplier", moveSpeedBackwardsMultiplier);
             }
 
         }
@@ -520,19 +520,19 @@ public class PlayerMovement : MonoBehaviour {
 
     private void StartRunning() {
         isRunning = true;
-        BuffMoveSpeed(PlayerStats.Instance.GetRunAccelerationFactor());
+        BuffMoveSpeed("StartRunning", PlayerStats.Instance.GetRunAccelerationFactor());
         OnPlayerRunStarted?.Invoke(this, EventArgs.Empty);
     }
 
     private void StopRunning() {
         isRunning = false;
-        DebuffMoveSpeed(PlayerStats.Instance.GetRunAccelerationFactor());
+        DebuffMoveSpeed("Run ended", PlayerStats.Instance.GetRunAccelerationFactor());
         OnPlayerRunStopped?.Invoke(this, EventArgs.Empty);
     }
 
     private void StartExhausted() {
         isExhausted = true;
-        DebuffMoveSpeed(exhaustedSpeedFactor);
+        DebuffMoveSpeed("StartExhausted", exhaustedSpeedFactor);
 
         OnPlayerExhaustionStarted?.Invoke(this, EventArgs.Empty);
     }
@@ -542,21 +542,25 @@ public class PlayerMovement : MonoBehaviour {
 
         staminaTimer = 0;
         exhaustionTimer = 0;
-        BuffMoveSpeed(exhaustedSpeedFactor);
+        BuffMoveSpeed("exhausted", exhaustedSpeedFactor);
         OnPlayerExhaustionStopped?.Invoke(this, EventArgs.Empty);
         OnPlayerAlmostExhaustionStopped?.Invoke(this, EventArgs.Empty);
     }
 
-    public void BuffMoveSpeed(float buffAmount) {
-        //Debug.Log("BuffMoveSpeed " + buffAmount);
+    public void BuffMoveSpeed(string source, float buffAmount) {
         moveSpeed *= buffAmount;
         OnPlayerMovespeedChanged?.Invoke(this, EventArgs.Empty);
+        LogSpeedChange(source, buffAmount, true);
     }
 
-    public void DebuffMoveSpeed(float buffAmount) {
-        //Debug.Log("DebuffMoveSpeed " + buffAmount);
+    public void DebuffMoveSpeed(string source, float buffAmount) {
         moveSpeed /= buffAmount;
         OnPlayerMovespeedChanged?.Invoke(this, EventArgs.Empty);
+
+        LogSpeedChange(source, buffAmount,false);
+    }
+    private void LogSpeedChange(string source, float factor, bool added) {
+        Debug.Log($"[MoveSpeed] {(added ? "Buff" : "Debuff")} {source} x{factor} => New speed: {moveSpeed}");
     }
 
     public bool IsMovingBackwards() {

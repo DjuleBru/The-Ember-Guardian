@@ -156,28 +156,37 @@ public class LevelUI_Fire : MonoBehaviour
     }
 
     private void StructureUI_Fire_OnFireTickRemoved1(object sender, StructureUI_Fire.OnFireTickRemovedEventArgs e) {
+        //Debug.Log(Fire.Instance.GetFireFuelLevelCritical());
+        if (Fire.Instance.GetFireFuelLevelCritical()) {
+            DisplayFireUI();
+            RefreshProgressBar(e.currentBars);
+            criticalFuelAnimator.SetBool("FuelCritical", true);
+            fuelLevelCritical = true;
+            return;
+        }
 
         if (Mathf.Abs(Player.Instance.transform.position.x - Fire.Instance.transform.position.x) < minDistanceToFireToShowUI && !alwaysDisplay) return;
 
         DisplayFireUI();
         RefreshProgressBar(e.currentBars);
 
-        if (Fire.Instance.GetFireFuelLevelCritical()) {
-            criticalFuelAnimator.SetBool("FuelCritical", true);
-            fuelLevelCritical = true;
-        }
+
     }
 
     private void StructureUI_OnFireTickAdded(object sender, StructureUI_Fire.OnFireTickRemovedEventArgs e) {
+        if (Fire.Instance.GetFireFuelLevelCritical()) {
+            criticalFuelAnimator.SetBool("FuelCritical", true);
+            fuelLevelCritical = true;
+            DisplayFireUI();
+            RefreshProgressBarInstant(e.currentBars);
+            return;
+        }
+
         if (Mathf.Abs(Player.Instance.transform.position.x - Fire.Instance.transform.position.x) < minDistanceToFireToShowUI && !alwaysDisplay) return;
 
         DisplayFireUI();
         RefreshProgressBarInstant(e.currentBars);
 
-        if (Fire.Instance.GetFireFuelLevelCritical()) {
-            criticalFuelAnimator.SetBool("FuelCritical", true);
-            fuelLevelCritical = true;
-        }
     }
 
     private void RefreshBackgroundProgressBar() {

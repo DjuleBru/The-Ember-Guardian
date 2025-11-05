@@ -49,7 +49,7 @@ public class Gun_Minigun : Gun {
 
         isSpinning = false;
         OnMinigunStoppedSpinning?.Invoke(this, EventArgs.Empty);
-        PlayerMovement.Instance.BuffMoveSpeed(spinningMovementDebuff);
+        PlayerMovement.Instance.BuffMoveSpeed("MinigunSpin", spinningMovementDebuff);
 
         currentSpinCooldown = spinStartCooldown;
         PlayerStats.Instance.SetShootCooldownTime(currentSpinCooldown);
@@ -58,7 +58,7 @@ public class Gun_Minigun : Gun {
         isSpinning = true;
         spinTimer = 0;
         OnMinigunStartedSpinning?.Invoke(this, EventArgs.Empty);
-        PlayerMovement.Instance.DebuffMoveSpeed(spinningMovementDebuff);
+        PlayerMovement.Instance.DebuffMoveSpeed("MinigunSpin", spinningMovementDebuff);
     }
 
     private void PlayerShoot_OnWeaponSecondaryAbilityStarted(object sender, EventArgs e) {

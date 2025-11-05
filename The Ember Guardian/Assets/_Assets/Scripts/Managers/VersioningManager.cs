@@ -38,7 +38,13 @@ public class VersioningManager : MonoBehaviour
         int vBuild = isDemo ? demoPatch : patch;
 
         string versionString = FormatVersion(vMajor, vMinor, vPatch, vBuild);
+
+        if (isDemo) {
+            prefixText = "Demo";
+        }
+
         versioningText.text = prefixText + " v." + versionString;
+
     }
 
     public static string FormatVersion(int major, int minor, int patch, int build) {

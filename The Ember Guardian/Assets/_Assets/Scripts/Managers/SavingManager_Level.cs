@@ -20,7 +20,7 @@ public class SavingManager_Level : MonoBehaviour
 
     private void Awake() {
         Instance = this;
-
+        if (VersioningManager.Instance.GetIsDemo()) return;
         if (ES3.FileExists("LevelSave_temp.es3")) {
             ES3.DeleteFile("LevelSave_temp.es3");
         }
@@ -45,6 +45,7 @@ public class SavingManager_Level : MonoBehaviour
 
     private void Start() {
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
+        if (VersioningManager.Instance.GetIsDemo()) return;
 
         if (loadingSavedLevel) {
             LoadGame();
@@ -59,6 +60,7 @@ public class SavingManager_Level : MonoBehaviour
             return;
         };
 
+        if (VersioningManager.Instance.GetIsDemo()) return;
         SaveGame();
         CreateLevelSaveCopy();
     }

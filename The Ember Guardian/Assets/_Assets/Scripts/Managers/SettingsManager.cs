@@ -44,6 +44,12 @@ public class SettingsManager : MonoBehaviour
         MaximisedWindow,
         Fullscreen
     }
+    public enum Difficulty {
+        Easy,
+        Medium,
+        Hard
+    }
+    private Difficulty difficulty;
 
     private UIDisplayType currentUIDisplayType;
 
@@ -82,6 +88,7 @@ public class SettingsManager : MonoBehaviour
 
         gammaLevel = ES3.Load("gammaLevel", 0f, settingsSaveFileSettings);
         currentUIDisplayType = ES3.Load("currentUIDisplayType", UIDisplayType.Adaptive, settingsSaveFileSettings);
+        difficulty = ES3.Load("difficulty", Difficulty.Medium, settingsSaveFileSettings);
 
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         holdToRun = ES3.Load("holdToRun", true, settingsSaveFileSettings);
@@ -107,6 +114,14 @@ public class SettingsManager : MonoBehaviour
     }
 
     #region SET SETTINGS
+    public void SetDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+        ES3.Save("difficulty", difficulty);
+    }
+    public Difficulty GetDifficulty() {
+        return difficulty;
+    }
+
     public void ChangeUIDisplayType() {
         switch (currentUIDisplayType) {
             case UIDisplayType.Adaptive:

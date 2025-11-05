@@ -310,7 +310,7 @@ public class PlayerSkills : MonoBehaviour
         }
 
         if (skillType == SkillItem.SkillType.activeMoveSpeedBuff) {
-            PlayerMovement.Instance.DebuffMoveSpeed(moveSpeedBuffAmount);
+            PlayerMovement.Instance.DebuffMoveSpeed("activeMoveSpeedBuff", moveSpeedBuffAmount);
             moveSpeedBuffActive = false;
         }
 
@@ -358,7 +358,7 @@ public class PlayerSkills : MonoBehaviour
 
             case SkillItem.SkillType.activeMoveSpeedBuff:
 
-                PlayerMovement.Instance.BuffMoveSpeed(moveSpeedBuffAmount);
+                PlayerMovement.Instance.BuffMoveSpeed("activeMoveSpeedBuff", moveSpeedBuffAmount);
 
                 moveSpeedBuffTimer = skillBuffValue;
                 moveSpeedBuffActive = true;
@@ -626,7 +626,7 @@ public class PlayerSkills : MonoBehaviour
     private void ApplyPassiveSkillEffectInternal(PassiveSkillEffectSO skillEffect, float relativeBuffEffectValue) {
         switch (skillEffect.skillType) {
             case SkillItem.SkillType.passiveMoveSpeedBuff:
-                PlayerMovement.Instance.BuffMoveSpeed(1 + relativeBuffEffectValue / 100);
+                PlayerMovement.Instance.BuffMoveSpeed("passiveMoveSpeedBuff", 1 + relativeBuffEffectValue / 100);
                 break;
 
             case SkillItem.SkillType.passiveRunAccelerationFactorBuff:

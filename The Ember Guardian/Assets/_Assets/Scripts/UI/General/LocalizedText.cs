@@ -11,6 +11,7 @@ public class LocalizedText : MonoBehaviour {
     void Start() {
         textComponent = GetComponent<TextMeshProUGUI>();
         SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
+        UpdateText();
     }
 
     private void SettingsManager_OnLanguageChanged(object sender, System.EventArgs e) {

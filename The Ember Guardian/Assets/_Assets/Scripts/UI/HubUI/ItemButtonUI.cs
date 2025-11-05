@@ -609,7 +609,9 @@ public class ItemButtonUI : ButtonUI {
         if (!hubMerchantItem.GetItemUnlocked()) {
 
             if (ItemLockedFromOtherMerchantItem() || hideItemIconUntilUnlocked) {
-                lockedFromOtherMerchantImage.gameObject.SetActive(true);
+                if (lockedFromOtherMerchantImage.gameObject != null) {
+                    lockedFromOtherMerchantImage.gameObject.SetActive(true);
+                }
 
                 Color semiTransparentColor = Color.white;
                 semiTransparentColor.a = .5f;
@@ -618,7 +620,9 @@ public class ItemButtonUI : ButtonUI {
                 lockHoverInteractions = true;
             }
             else {
-                lockedFromOtherMerchantImage.gameObject.SetActive(false);
+                if (lockedFromOtherMerchantImage.gameObject != null) {
+                    lockedFromOtherMerchantImage.gameObject.SetActive(false);
+                }
                 iconImage.color = Color.white;
 
                 iconImage.gameObject.SetActive(true);
