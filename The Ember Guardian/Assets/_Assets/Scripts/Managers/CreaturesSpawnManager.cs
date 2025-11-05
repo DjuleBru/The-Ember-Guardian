@@ -111,6 +111,10 @@ public class CreaturesSpawnManager : MonoBehaviour {
     private bool debugInputs;
     private bool debugDontSpawnAtNight;
 
+    private float easyDifficultyNightWaveMultiplier = 0.8f;
+    private float hardDifficultyNightWaveMultiplier = 1.1f;
+    private float currentNightWaveDifficultyMultiplier = 1f;
+
     private void Awake() {
         Instance = this;
 
@@ -120,6 +124,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
+        SettingsManager.Instance.OnDifficultyChanged += SettingsManager_OnDifficultyChanged;
 
         LevelSO levelSO = LevelManager.Instance.GetLevelSO();
 
@@ -173,7 +178,18 @@ public class CreaturesSpawnManager : MonoBehaviour {
             Debug.Log("maxWaveDifficulty " + maxWaveDifficulty);
             Debug.Log("referenceMaxWaveDifficulty " + maxReferenceWaveDifficulty);
         }
+    }
 
+    private void SettingsManager_OnDifficultyChanged(object sender, EventArgs e) {
+        RefreshDifficultyMultiplier();
+    }
+    private void RefreshDifficultyMultiplier() {
+        if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
+            currentNightWaveDifficultyMultiplier = easyDifficultyNightWaveMultiplier;
+        }
+        if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Hard) {
+            currentNightWaveDifficultyMultiplier = hardDifficultyNightWaveMultiplier;
+        }
     }
 
     private void LevelManager_OnLevelLimitsChanged(object sender, EventArgs e) {
@@ -238,6 +254,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         currentWaveNumber = DayNightManager.Instance.GetCurrentDay() + 1;
+        RefreshDifficultyMultiplier();
 
         if (spawnEquallyFromBothSides) {
 
@@ -308,6 +325,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
         waveDifficulty *= cumulativeDifficultyMultiplier;
         minSubwaveDifficulty *= cumulativeDifficultyMultiplier;
         maxSubwaveDifficulty *= cumulativeDifficultyMultiplier;
+
+        // Appliquer le multiplicateur de difficullté
+        waveDifficulty *= currentNightWaveDifficultyMultiplier;
+        minSubwaveDifficulty *= currentNightWaveDifficultyMultiplier;
+        maxSubwaveDifficulty *= currentNightWaveDifficultyMultiplier;
 
         // Add boss
         if (hasBoss && bossSpawnsThisNight) {

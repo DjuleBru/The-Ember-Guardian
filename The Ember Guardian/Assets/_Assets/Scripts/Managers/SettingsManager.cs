@@ -33,6 +33,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnWaterPerspectiveChanged;
     public event EventHandler OnZoomLevelChanged;
     public event EventHandler OnUIDisplayChanged;
+    public event EventHandler OnDifficultyChanged;
 
     public enum UIDisplayType {
         Adaptive,
@@ -116,8 +117,27 @@ public class SettingsManager : MonoBehaviour
     #region SET SETTINGS
     public void SetDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
-        ES3.Save("difficulty", difficulty);
+        ES3.Save("difficulty", difficulty, settingsSaveFileSettings);
+        OnDifficultyChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    public void ChangeDifficulty() {
+        switch (difficulty) {
+            case Difficulty.Easy:
+                difficulty = Difficulty.Medium;
+                break;
+            case Difficulty.Medium:
+                difficulty = Difficulty.Hard;
+                break;
+            case Difficulty.Hard:
+                difficulty = Difficulty.Easy;
+                break;
+        }
+
+        ES3.Save("difficulty", difficulty, settingsSaveFileSettings);
+        OnDifficultyChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public Difficulty GetDifficulty() {
         return difficulty;
     }

@@ -127,6 +127,11 @@ public class BackgroundSoundsManager : MonoBehaviour
     }
 
     public void TransitionToClip(AudioClip newClip, float volumeToReach) {
+        if (audioSource1 == null || audioSource2 == null) {
+            Debug.LogError("Audio sources not assigned in BackgroundSoundsManager!");
+            return;
+        }
+
         if (isTransitioning) return; // Évite de lancer une nouvelle transition si une est en cours
 
         AudioSource activeSource = audioSource1.isPlaying ? audioSource1 : audioSource2;

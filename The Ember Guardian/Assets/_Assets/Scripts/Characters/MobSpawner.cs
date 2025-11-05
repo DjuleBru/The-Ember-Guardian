@@ -40,6 +40,9 @@ public class MobSpawner : MonoBehaviour
     [SerializeField] protected MobSpawner linkedMobSpawner;
     protected int eliteSpawnedAmount;
 
+    private float easyDifficultySpawnAmountMultiplier = 0.8f;
+    private float hardDifficultySpawnAmountMultiplier = 1.15f;
+
     private float creatureActivationDistance = 50f;
     private float checkTimer;
     private float checkInterval = 2f;
@@ -78,6 +81,19 @@ public class MobSpawner : MonoBehaviour
         if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
             firstDawnAfterLoad = true;
             return;
+        }
+
+        if(isCreatureSpawner) {
+            if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
+                mobAmountToSpawn = (int)(mobAmountToSpawn * easyDifficultySpawnAmountMultiplier);
+            }
+            if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Hard) {
+                mobAmountToSpawn = (int)(mobAmountToSpawn * hardDifficultySpawnAmountMultiplier);
+            }
+
+            if (mobAmountToSpawn == 0) {
+                mobAmountToSpawn = 1;
+            }
         }
 
         SpawnMobs(mobAmountToSpawn);

@@ -12,6 +12,9 @@ public class DayNightManager : MonoBehaviour
     [SerializeField] private float dawnDuration;
     [SerializeField] private float dayDuration;
     [SerializeField] private float duskDuration;
+    private float initialDawnDuration;
+    private float initialDayDuration;
+    private float initialDuskDuration;
     [SerializeField] private float nightDuration;
     private float duskDurationIncreasePerDay;
 
@@ -25,6 +28,8 @@ public class DayNightManager : MonoBehaviour
     private float cycleTimer;
     private float totalDayTimer;
     private float totalNightTimer;
+
+    private float easyDayCyclesDurationMultiplier = 1.1f;
 
     private bool allowDebugInputs;
 
@@ -52,10 +57,19 @@ public class DayNightManager : MonoBehaviour
 
     private void Start() {
         CreaturesManager.Instance.OnAllCreaturesAtNightKilled += CreaturesManager_OnAllCreaturesAtNightKilled;
+        SettingsManager.Instance.OnDifficultyChanged += SettingsManager_OnDifficultyChanged;
         Portal.OnAnyPlayerMovedOnTeleporter += Portal_OnAnyPlayerMovedOnTeleporter;
         Fire.Instance.OnFireEmberExtractionStarted += Fire_OnFireEmberExtractionStarted;
         Fire.Instance.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+
+        initialDawnDuration = dawnDuration;
+        initialDayDuration = dayDuration;
+        initialDuskDuration = duskDuration;
+
+        if(SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
+            SetEasyDifficultyDayDurations();
+        }
 
         duskDurationIncreasePerDay = LevelManager.Instance.GetLevelSO().duskDurationIncreasePerDay;
 
@@ -73,6 +87,7 @@ public class DayNightManager : MonoBehaviour
         state = State.Dawn;
         OnDawnStart?.Invoke(this, EventArgs.Empty);
     }
+
 
     private void Update() {
         if(allowDebugInputs) {
@@ -115,6 +130,21 @@ public class DayNightManager : MonoBehaviour
                 totalNightTimer += Time.deltaTime;
                 break;
         }
+    }
+
+    private void SettingsManager_OnDifficultyChanged(object sender, EventArgs e) {
+        if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
+            SetEasyDifficultyDayDurations();
+        } else {
+            dawnDuration = initialDawnDuration;
+            dayDuration = initialDayDuration;
+            duskDuration = initialDuskDuration;
+        }
+    }
+    private void SetEasyDifficultyDayDurations() {
+        dawnDuration = initialDawnDuration * easyDayCyclesDurationMultiplier;
+        dayDuration = initialDayDuration * easyDayCyclesDurationMultiplier;
+        duskDuration = initialDuskDuration * easyDayCyclesDurationMultiplier;
     }
 
     private void CreaturesManager_OnAllCreaturesAtNightKilled(object sender, EventArgs e) {

@@ -189,7 +189,6 @@ public class EngineerJob : WorkerJob {
     }
 
     private void ChangeState(EngineerState newState) {
-        Debug.Log("ChangeState " + newState);
         if (newState == state) return;
         if (worker.GetDead()) return;
 

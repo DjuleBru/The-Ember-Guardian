@@ -21,6 +21,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         ShowDamageNumbers,
         WaterSimulations,
         UIDisplay,
+        Difficulty,
     }
 
     [SerializeField] private SettingType settingType;
@@ -52,6 +53,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnShowDamageNumbersChanged += SettingsManager_OnShowDamageNumbersChanged;
         SettingsManager.Instance.OnWaterPerspectiveChanged += SettingsManager_OnWaterSimulationChanged;
         SettingsManager.Instance.OnUIDisplayChanged += SettingsManager_OnUIDisplayChanged;
+        SettingsManager.Instance.OnDifficultyChanged += SettingsManager_OnDifficultyChanged;
 
         RefreshVisual();
     }
@@ -98,9 +100,17 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.UIDisplay) {
             SettingsManager.Instance.ChangeUIDisplayType();
         }
+
+        if (settingType == SettingType.Difficulty) {
+            SettingsManager.Instance.ChangeDifficulty();
+        }
     }
 
     private void SettingsManager_OnWaterSimulationChanged(object sender, System.EventArgs e) {
+        RefreshVisual();
+    }
+
+    private void SettingsManager_OnDifficultyChanged(object sender, System.EventArgs e) {
         RefreshVisual();
     }
 
@@ -139,6 +149,11 @@ public class RadioButtonUI_Setting : RadioButtonUI
 
         if (settingType == SettingType.UIDisplay) {
             string displayTypeText = "menu_" + SettingsManager.Instance.GetCurrentUIDisplayType().ToString();
+            toggledText.text = LocalizationManager.Instance.GetLocalizedText(displayTypeText);
+        }
+
+        if (settingType == SettingType.Difficulty) {
+            string displayTypeText = "difficulty_" + SettingsManager.Instance.GetDifficulty().ToString().ToLower();
             toggledText.text = LocalizationManager.Instance.GetLocalizedText(displayTypeText);
         }
 

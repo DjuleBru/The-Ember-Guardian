@@ -23,6 +23,7 @@ public class SettingsMenuUI : MonoBehaviour
     [SerializeField] protected Slider dogVolumeSlider;
     [SerializeField] protected Slider waterReflectionsSlider;
     [SerializeField] protected Slider zoomLevelSlider;
+    [SerializeField] protected Button UIDisplayButton;
     [SerializeField] protected GameObject firstSelectedButton;
     [SerializeField] protected GameObject difficultyButton;
     [SerializeField] protected Animator takesEffectOnReloadAnimator;
@@ -70,6 +71,18 @@ public class SettingsMenuUI : MonoBehaviour
         zoomLevelSlider.onValueChanged.AddListener(UpdateZoomLevel);
 
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+
+        if(VersioningManager.Instance.GetIsDemo()) {
+            difficultyButton.gameObject.SetActive(false);
+            Navigation zoomSliderNav = zoomLevelSlider.navigation;
+            Navigation UIDisplayNav = UIDisplayButton.navigation;
+
+            zoomSliderNav.selectOnDown = UIDisplayButton;
+            UIDisplayNav.selectOnUp = zoomLevelSlider;
+
+            zoomLevelSlider.navigation = zoomSliderNav;
+            UIDisplayButton.navigation = UIDisplayNav;
+        }
     }
 
     protected void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
