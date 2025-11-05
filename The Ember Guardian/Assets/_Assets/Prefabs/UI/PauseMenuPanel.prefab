@@ -1098,7 +1098,6 @@ GameObject:
   - component: {fileID: 8804021360508306741}
   - component: {fileID: 7761288380113124142}
   - component: {fileID: 1570103549996757568}
-  - component: {fileID: 70962471372789514}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1237,22 +1236,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localizationKey: menu_wishlist
---- !u!114 &70962471372789514
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 913460954386273484}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78f9bc9a3972a8841b08b91e58c9e463, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 0
-  sizeMin: {x: 0, y: 0}
-  sizeMax: {x: 800, y: 1080}
 --- !u!1 &918390927587716730
 GameObject:
   m_ObjectHideFlags: 0

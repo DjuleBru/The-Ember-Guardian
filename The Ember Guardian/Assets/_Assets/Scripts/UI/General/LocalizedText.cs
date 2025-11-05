@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class LocalizedText : MonoBehaviour
-{
+public class LocalizedText : MonoBehaviour {
     [SerializeField] private string localizationKey;
     private TextMeshProUGUI textComponent;
 
     void Start() {
         textComponent = GetComponent<TextMeshProUGUI>();
         SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
-        UpdateText();
     }
 
     private void SettingsManager_OnLanguageChanged(object sender, System.EventArgs e) {
@@ -30,3 +29,4 @@ public class LocalizedText : MonoBehaviour
         }
     }
 }
+

@@ -26,15 +26,20 @@ public class LocalizationManager : MonoBehaviour
     private Dictionary<string, Dictionary<string, string>> localizedTexts;
     [SerializeField] private TMP_FontAsset standardFont;
     [SerializeField] private TMP_FontAsset japaneseFont;
+    [SerializeField] private TMP_FontAsset chineseFont;
 
     [SerializeField] private Material standardMaterial;
     [SerializeField] private Material standardMaterial_JP;
+    [SerializeField] private Material standardMaterial_CN;
     [SerializeField] private Material blueGlowMaterial;
     [SerializeField] private Material blueGlowMaterial_JP;
+    [SerializeField] private Material blueGlowMaterial_CN;
     [SerializeField] private Material greenGlowMaterial;
     [SerializeField] private Material greenGlowMaterial_JP;
+    [SerializeField] private Material greenGlowMaterial_CN;
     [SerializeField] private Material redGlowMaterial;
     [SerializeField] private Material redGlowMaterial_JP;
+    [SerializeField] private Material redGlowMaterial_CN;
 
     public enum Language {
         English,
@@ -52,6 +57,7 @@ public class LocalizationManager : MonoBehaviour
         public string German;
         public string Spanish;
         public string Japanese;
+        public string Chinese;
     }
     public class LocalizationData {
         public List<LocalizationEntry> entries;
@@ -92,7 +98,11 @@ public class LocalizationManager : MonoBehaviour
 
         if (currentLanguage == Language.Japanese) {
             fontToUse = japaneseFont;
-        } else {
+        }
+        else if (currentLanguage == Language.Chinese) {
+            fontToUse = chineseFont;
+        }
+        else  {
             fontToUse = standardFont;
         }
         // tu peux rajouter d'autres polices plus tard si besoin
@@ -113,6 +123,7 @@ public class LocalizationManager : MonoBehaviour
                     case "German": translatedText = entry.German; break;
                     case "Spanish": translatedText = entry.Spanish; break;
                     case "Japanese": translatedText = entry.Japanese; break;
+                    case "Chinese": translatedText = entry.Chinese; break;
                     default: translatedText = entry.English; break;
                 }
                 break;
@@ -141,6 +152,7 @@ public class LocalizationManager : MonoBehaviour
         Language currentLanguage = SettingsManager.Instance.GetLanguage();
 
         if (currentLanguage == Language.Japanese) return japaneseFont;
+        if (currentLanguage == Language.Chinese) return chineseFont;
         return standardFont;
     }
 
@@ -148,18 +160,21 @@ public class LocalizationManager : MonoBehaviour
         Language currentLanguage = SettingsManager.Instance.GetLanguage();
 
         if (currentLanguage == Language.Japanese) return blueGlowMaterial_JP;
+        if (currentLanguage == Language.Chinese) return blueGlowMaterial_CN;
         return blueGlowMaterial;
     }
     public Material GetGreenGlowMaterial() {
         Language currentLanguage = SettingsManager.Instance.GetLanguage();
 
         if (currentLanguage == Language.Japanese) return greenGlowMaterial_JP;
+        if (currentLanguage == Language.Chinese) return greenGlowMaterial_CN;
         return greenGlowMaterial;
     }
     public Material GetRedGlowMaterial() {
         Language currentLanguage = SettingsManager.Instance.GetLanguage();
 
         if (currentLanguage == Language.Japanese) return redGlowMaterial_JP;
+        if (currentLanguage == Language.Chinese) return redGlowMaterial_CN;
         return redGlowMaterial;
     }
 
@@ -167,6 +182,7 @@ public class LocalizationManager : MonoBehaviour
         Language currentLanguage = SettingsManager.Instance.GetLanguage();
 
         if (currentLanguage == Language.Japanese) return standardMaterial_JP;
+        if (currentLanguage == Language.Chinese) return standardMaterial_CN;
         return standardMaterial;
     }
 

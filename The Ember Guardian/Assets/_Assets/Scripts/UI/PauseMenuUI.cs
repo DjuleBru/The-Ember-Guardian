@@ -24,7 +24,6 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI backToMenuText;
     [SerializeField] protected TextMeshProUGUI ctaText;
     [SerializeField] protected Material ctaTextFontAsset;
-    [SerializeField] protected Material ctaTextFontAsset_JP;
 
     [SerializeField] protected Animator progressionSavedTextIndicator;
     [SerializeField] protected Color savedTextColor;
@@ -99,11 +98,7 @@ public class PauseMenuUI : MonoBehaviour
         backToMenuText.font = LocalizationManager.Instance.GetCurrentFont();
         exitGameText.font = LocalizationManager.Instance.GetCurrentFont();
 
-        if(SettingsManager.Instance.GetLanguage() == LocalizationManager.Language.Japanese) {
-            ctaText.fontMaterial = ctaTextFontAsset_JP;
-        } else {
-            ctaText.fontMaterial = ctaTextFontAsset;
-        }
+        ctaText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {

@@ -274,7 +274,8 @@ public class SettingsManager : MonoBehaviour
         LocalizationManager.Language.French,
         LocalizationManager.Language.German,
         LocalizationManager.Language.Spanish,
-        LocalizationManager.Language.Japanese
+        LocalizationManager.Language.Japanese,
+        LocalizationManager.Language.Chinese
         // pas de Chinese ici
         };
 
