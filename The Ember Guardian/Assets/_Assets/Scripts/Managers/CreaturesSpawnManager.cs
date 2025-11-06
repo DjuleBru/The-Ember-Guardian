@@ -934,6 +934,10 @@ public class CreaturesSpawnManager : MonoBehaviour {
         return creature;
     }
 
+    public SpecialWaveType GetSpecialWaveType() {
+        return currentSpecialWaveType;
+    }
+
     private IEnumerator HandleBossIntro(List<Creature> bosses) {
         // petite latence si besoin (VFX, SFX pré-roll)
         yield return new WaitForSeconds(1f);

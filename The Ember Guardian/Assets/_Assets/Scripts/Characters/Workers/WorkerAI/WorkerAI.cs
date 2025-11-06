@@ -35,6 +35,7 @@ public class WorkerAI : MonoBehaviour
     public event EventHandler OnEscortingChanged;
     public static event EventHandler OnAnyWorkerFollowPlayerStarted;
     public static event EventHandler OnAnyWorkerFollowPlayerStopped;
+    public static event EventHandler OnAnyWorkerAssignedJob;
 
     public class OnJobSetEventArgs:EventArgs {
         public bool triggerUITextLines;
@@ -69,23 +70,28 @@ public class WorkerAI : MonoBehaviour
             WorkerManager.Instance.RemoveJoblessWorker(worker);
             hunterJob.InitializeJob();
             hunterJob.enabled = true;
+            OnAnyWorkerAssignedJob?.Invoke(this, EventArgs.Empty);
         }
+
         if (currentJob == JobTypes.miner) {
             WorkerManager.Instance.RemoveJoblessWorker(worker);
             minerJob.InitializeJob();
             minerJob.enabled = true;
+            OnAnyWorkerAssignedJob?.Invoke(this, EventArgs.Empty);
         }
 
         if (currentJob == JobTypes.engineer) {
             WorkerManager.Instance.RemoveJoblessWorker(worker);
             engineerJob.InitializeJob();
             engineerJob.enabled = true;
+            OnAnyWorkerAssignedJob?.Invoke(this, EventArgs.Empty);
         }
 
         if (currentJob == JobTypes.guard) {
             WorkerManager.Instance.RemoveJoblessWorker(worker);
             guardJob.InitializeJob();
             guardJob.enabled = true;
+            OnAnyWorkerAssignedJob?.Invoke(this, EventArgs.Empty);
         }
 
         if (currentJob == JobTypes.jobless) {

@@ -563,6 +563,10 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         return statDescriptionList;
     }
 
+    public DogTamerItemCategory GetDogTamerItemCategory() {
+        return itemCategory;
+    }
+ 
     public override string GetItemType() {
         return itemType.ToString();
     }

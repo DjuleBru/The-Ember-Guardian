@@ -19,6 +19,7 @@ public class DogDigAbility : MonoBehaviour
     private float digDoubleProbability;
 
     public event EventHandler OnSniffStart;
+    public static event EventHandler OnAnyResourceDug;
 
     private void Awake() {
         Instance = this;
@@ -120,6 +121,7 @@ public class DogDigAbility : MonoBehaviour
 
                 collectible.ApplyRandomUpwardsForce(5, 8);
                 collectible.SetCollectibleUnInteractable(.75f);
+                OnAnyResourceDug?.Invoke(this, EventArgs.Empty);
 
                 yield return new WaitForSeconds(.2f);
             }

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 62068585111757049}
   - component: {fileID: 7760990002756632626}
   - component: {fileID: 7030013162275876189}
+  - component: {fileID: 1562867240775226878}
+  - component: {fileID: 2150242001418039349}
   m_Layer: 0
   m_Name: MetaProgressionManager
   m_TagString: Untagged
@@ -59,6 +61,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e00dce060c8c50d45bec8f5aedfa01d7, type: 2}
   - {fileID: 11400000, guid: c808ecc4cb5f41a408b016d110cbea35, type: 2}
   defaultLastHUBPortalUsedByPlayer: {fileID: 0}
+  dropRedOrbsUnlocked: 0
   defaultMerchantTextLinesSO: {fileID: 11400000, guid: 640d874f0f212a74d9a6b7d8805632c6, type: 2}
 --- !u!114 &7030013162275876189
 MonoBehaviour:
@@ -72,3 +75,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0b8945e8eb90048a3062bca5418081, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1562867240775226878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625864511861975053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6947c37583b07104ba9c7229ac829cc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2150242001418039349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625864511861975053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2653a4b8fb8083146966809952e2fdb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finalBossCreatureSO: {fileID: 11400000, guid: 88be53ca85937274c9ab1915d33f4218, type: 2}

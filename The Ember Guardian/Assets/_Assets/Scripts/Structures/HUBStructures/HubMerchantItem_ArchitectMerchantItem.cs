@@ -537,7 +537,9 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
         return architectItemType.ToString();
     }
 
-
+    public ArchitectItemType GetArchitectItemType() {
+        return architectItemType;
+    }
     public ArchitectItemCategory GetArchitectItemCategory() {
         return architectItemCategory;
     }

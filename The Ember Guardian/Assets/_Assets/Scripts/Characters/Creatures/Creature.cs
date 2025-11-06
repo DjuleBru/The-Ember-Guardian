@@ -40,6 +40,7 @@ public class Creature : Mob
     public event EventHandler OnCreatureTargetable;
     public event EventHandler OnCreatureIdleSoundTriggered;
     public event EventHandler OnCreatureEnabled;
+    public static event EventHandler OnAnyCreatureKilledByDog;
 
     protected float triggerSoundTimer;
     protected float triggerSoundTime = 5f;
@@ -471,6 +472,10 @@ public class Creature : Mob
         base.TakeDamage(damage, damageSource, critHit, ignoreTemporaryInvincibility, weakSpotHit);
         bool playerIsDamageSource = (damageSource.GetComponent<Player>() != null);
 
+        if(health <= 0 && damageSource == Dog.Instance.transform) {
+            OnAnyCreatureKilledByDog?.Invoke(this, EventArgs.Empty);
+        }
+
         ShowDamageNumber(damage, critHit, weakSpotHit, playerIsDamageSource);
     }
 
@@ -661,6 +666,10 @@ public class Creature : Mob
 
     public bool GetCreatureActive() {
         return creatureActive;
+    }
+
+    public int GetInFireLightAmount() {
+        return inFireLightAmount;
     }
 
     protected void OnDestroy() {

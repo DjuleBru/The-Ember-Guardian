@@ -58,6 +58,7 @@ public class SceneLoader : MonoBehaviour
 
     private void Start() {
         SetPlayerLeftFromLevel();
+        AchievementsManager.Instance.SaveSteamStats();
 
         if (sceneType != SceneType.Level) return;
         if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
@@ -166,5 +167,9 @@ public class SceneLoader : MonoBehaviour
         if (sceneType == SceneType.HUB) {
             MetaProgressionManager.Instance.SetPlayerLeftFromLevel(false);
         }
+    }
+
+    private void OnApplicationQuit() {
+        Steamworks.SteamClient.Shutdown();
     }
 }

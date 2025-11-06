@@ -41,6 +41,7 @@ public class Worker : Mob {
     public event EventHandler OnWorkerCollectedCurrency;
     public event EventHandler OnWorkerDroppedCurrency;
     public event EventHandler OnWorkerDroppedAllCurrencies;
+    public static event EventHandler OnAnyWorkerDroppedAllCurrencies;
     public event EventHandler OnWildJobTypeSet;
 
     private void Awake() {

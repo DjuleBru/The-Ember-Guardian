@@ -30,6 +30,7 @@ public class WorkerManager : MonoBehaviour
 
     public event EventHandler OnJoblessWorkerAmountChanged;
     public event EventHandler OnRecruitedWorkerDied;
+    public event EventHandler OnWorkerAssignedToJob;
     public event EventHandler<OnClosestWorkerChangedEventArgs> OnClosestWorkerChanged;
 
     public class OnClosestWorkerChangedEventArgs : EventArgs {
@@ -313,6 +314,10 @@ public class WorkerManager : MonoBehaviour
             }
         }
         return recruitedMiners;
+    }
+
+    public int GetWorkersAssignedToAJob() {
+        return 0;
     }
 
 }
