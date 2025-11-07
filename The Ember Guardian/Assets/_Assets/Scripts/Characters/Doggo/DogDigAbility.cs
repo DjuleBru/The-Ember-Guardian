@@ -76,7 +76,6 @@ public class DogDigAbility : MonoBehaviour
 
         int bigBlueOrbDiggedOut = UnityEngine.Random.Range(0, 2);
         int smallBlueOrbDiggedOut = UnityEngine.Random.Range(0, 2);
-
         if (randomNumber < digProbability) {
             // Dig successful ! 
 

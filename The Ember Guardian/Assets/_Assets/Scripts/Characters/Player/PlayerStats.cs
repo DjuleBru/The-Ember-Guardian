@@ -592,10 +592,16 @@ public class PlayerStats : MonoBehaviour
         Debug.Log("BuffPlayerAmmoRegen " + ammoRegenTime);
         OnPlayerAmmoRegenTimeChanged?.Invoke(this, EventArgs.Empty);
     }
+    public void SetPlayerAmmoRegen(float time) {
+        ammoRegenTime = time;
+        Debug.Log("SetPlayerAmmoRegen " + ammoRegenTime);
+        OnPlayerAmmoRegenTimeChanged?.Invoke(this, EventArgs.Empty);
+    }
 
     public void BuffChanceToDropx2(float buffAmount) {
         Debug.Log("BuffChanceToDropx2 " + buffAmount);
         chanceToDropx2 += buffAmount;
+        Debug.Log("chanceToDropx2 " + chanceToDropx2);
     }
     #endregion
 

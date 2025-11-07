@@ -46,26 +46,30 @@ public class PayCurrencyUI : MonoBehaviour
     public void SetPlayerInteracting(bool isInteracting) {
         if (playerInteracting == isInteracting) return;
 
-        PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
         currencyIndex = 0;
+        if (currencyTemplateWorldUIList.Count > 0) {
+            PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
 
-        if (!isInteracting) {
-            foreach (PayCurrencyTemplateWorldUI orbTemplateWorldUI in currencyTemplateWorldUIList) {
-                orbTemplateWorldUI.SetCurrencyPaid(false);
+            if (!isInteracting) {
+                foreach (PayCurrencyTemplateWorldUI orbTemplateWorldUI in currencyTemplateWorldUIList) {
+                    orbTemplateWorldUI.SetCurrencyPaid(false);
+                }
+
+                PlayerCurrencies.Instance.CancelCurrencyPayment(currenciesFailedToPayFallInWater);
+                UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, false);
+
+                if (payingCurrencyContinuousCoroutine != null) {
+                    StopCoroutine(payingCurrencyContinuousCoroutine);
+                }
+
+                OnCurrencyPaymentFailedOrCanceled?.Invoke(this, EventArgs.Empty);
+
             }
-
-            PlayerCurrencies.Instance.CancelCurrencyPayment(currenciesFailedToPayFallInWater);
-            UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, false);
-
-            if(payingCurrencyContinuousCoroutine != null) {
-                StopCoroutine(payingCurrencyContinuousCoroutine);
+            else {
+                UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, true);
             }
-
-            OnCurrencyPaymentFailedOrCanceled?.Invoke(this, EventArgs.Empty);
-
-        } else {
-            UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, true);
-        }
+        } 
+       
 
         playerInteracting = isInteracting;
     }

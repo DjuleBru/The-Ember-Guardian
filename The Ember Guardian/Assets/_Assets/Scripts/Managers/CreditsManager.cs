@@ -119,7 +119,7 @@ public class CreditsManager : MonoBehaviour
 
         InitBoxForNewText(LocalizationManager.Instance.GetLocalizedText("Created by"));
         yield return new WaitForSeconds(1.5f);
-        creditNamesTypeWriter.ShowText("Ratbit");
+        creditNamesTypeWriter.ShowText("Julien Taconet");
 
         yield return new WaitForSeconds(3f);
         creditTitleTypeWriter.StartDisappearingText();
@@ -137,21 +137,25 @@ public class CreditsManager : MonoBehaviour
         creditNamesTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(1.5f);
 
-        InitBoxForNewText(LocalizationManager.Instance.GetLocalizedText("Programming"));
+        InitBoxForNewText(LocalizationManager.Instance.GetLocalizedText("Pixel Artists"));
         yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter.ShowText("Ratbit");
+        creditNamesTypeWriter.ShowText("Penubsmic");
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter2.ShowText("Krishna Palacio");
 
         yield return new WaitForSeconds(3f);
         creditTitleTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(.5f);
         creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(.5f);
+        creditNamesTypeWriter2.StartDisappearingText();
         yield return new WaitForSeconds(1.5f);
 
-        InitBoxForNewText(LocalizationManager.Instance.GetLocalizedText("Art"));
+        InitBoxForNewText(LocalizationManager.Instance.GetLocalizedText("Concept Artists"));
         yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter.ShowText("Penubsmic");
+        creditNamesTypeWriter.ShowText("Amy");
         yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter2.ShowText("Krishna Palacio");
+        creditNamesTypeWriter2.ShowText("Nico Square");
 
         yield return new WaitForSeconds(3f);
         creditTitleTypeWriter.StartDisappearingText();

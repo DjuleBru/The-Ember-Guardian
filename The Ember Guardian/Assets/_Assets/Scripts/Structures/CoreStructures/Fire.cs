@@ -84,6 +84,8 @@ public class Fire : Structure, IDamageable {
     public event EventHandler OnFireEmberExtractionStopped;
     public event EventHandler OnPrimordialFireLit;
     public static event EventHandler OnAnyFireEmberExtractionStopped;
+    public static event EventHandler OnAnySecondaryFireReset;
+    public static event EventHandler OnFireExtinguishedByPlayerRespawning;
 
     private bool lockFireInteractionFunctionsUpdate;
     private bool justFuelledFire;
@@ -190,6 +192,7 @@ public class Fire : Structure, IDamageable {
         fuelLevel = wildFuelTreshold - 1;
         ChangeState(State.calm);
         SetStructurePrimaryFunctionUnlocked(false);
+        OnAnySecondaryFireReset?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update() {
@@ -377,6 +380,11 @@ public class Fire : Structure, IDamageable {
             respawningPlayerTimer -= Time.deltaTime;
             fuelLevel -= Time.deltaTime * respawningPlayerFuelRateDepletion;
             if (respawningPlayerTimer < 0) {
+                respawningPlayer = false;
+            }
+
+            if(fuelLevel < 0) {
+                OnFireExtinguishedByPlayerRespawning?.Invoke(this, EventArgs.Empty);
                 respawningPlayer = false;
             }
         }

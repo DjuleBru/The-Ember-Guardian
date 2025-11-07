@@ -5,12 +5,13 @@ using UnityEngine;
 public class AchievementsProgressManager : MonoBehaviour
 {
     [SerializeField] private CreatureSO finalBossCreatureSO;
-    private bool mushroomMerchantUnlocked;
-    private bool architectTableUnlocked;
-    private bool fireFuelDepletionUnlocked;
-    private bool fireOrbConversionRate;
-    private bool fireFuelCapacity;
+    private bool mushroomMerchantUnlocked_ACHIEVEMENT;
+    private bool architectTableUnlocked_ACHIEVEMENT;
+    private bool fireFuelDepletionUnlocked_ACHIEVEMENT;
+    private bool fireOrbConversionRate_ACHIEVEMENT;
+    private bool fireFuelCapacity_ACHIEVEMENT;
 
+    private int boneReaperDeathAmount;
     private int hunterAmount;
     private int minerAmount;
     private int guardAmount;
@@ -18,33 +19,76 @@ public class AchievementsProgressManager : MonoBehaviour
 
     private bool specialWave;
     private bool nightStarted;
+    private bool loadedLevel;
     private bool playerShot;
+    private bool playerMoving;
     private bool dropppingMoreThanTreshold;
     private int successfulSurgeReloadsIndex;
     private int currentWorkersAssignedJobs;
+    private int creaturesKilledWithoutMoving;
 
+    private bool bulletBouncedOff;
+    private float bulletBouncedOffTimer;
     private bool pettingDog;
+    private bool dogInCampZoneArea;
+    private bool playerExploredWholeDay;
     private float pettingDogTimer;
     private float pettingDogTimerTreshold = 5f;
 
     private int resourcesDugByDogTreshold = 50;
-    private int killCreaturesTreshold = 1000;
-    private int killCreaturesInFireTreshold = 100;
+    private int resourcesFetchedByDogTreshold = 50;
+    private int creaturesKilledByDogTreshold = 50;
+    private int killCreaturesTreshold = 5000;
+    private int killCreaturesInFireTreshold = 500;
+    private int killCreaturesWithoutMovingTreshold = 30;
     private int successfulSurgeReloadTreshold = 3;
-    private int assignedJobsTreshold = 15;
-    private int orbDroppedByWorkerTreshold = 20;
+    private int assignedJobsTreshold = 20;
+    private int orbDroppedByWorkerTreshold = 25;
+    private int nightsToSurviveTreshold = 100;
+
+    private int secondaryFiresLitTreshold = 4;
+
+    private int huntingFlagsTooFar;
+    private bool nightJustStarted;
+    private float nightJustStartedTimer;
+    private float nightJustStartedTime = 10f;
+
+    List<StructureSO.StructureType> allStructureTypeList = new List<StructureSO.StructureType> {
+        StructureSO.StructureType.ammoCrafter,
+        StructureSO.StructureType.barricade,
+        StructureSO.StructureType.hunterShrine,
+        StructureSO.StructureType.minerShrine,
+        StructureSO.StructureType.guardShrine,
+        StructureSO.StructureType.tower,
+        StructureSO.StructureType.orbProcessor,
+        StructureSO.StructureType.merchant_skills,
+        StructureSO.StructureType.merchant_traps,
+        StructureSO.StructureType.observationTower,
+        StructureSO.StructureType.sniperTower,
+        StructureSO.StructureType.machineGunTower,
+        StructureSO.StructureType.mortarTower,
+        StructureSO.StructureType.secondaryFire,
+        StructureSO.StructureType.fastTravelTeleporter,
+        StructureSO.StructureType.orbExtractor,
+        StructureSO.StructureType.engineerShrine,
+        StructureSO.StructureType.currencyStorage_BigOrb,
+        StructureSO.StructureType.currencyStorage_SmallOrb,
+        StructureSO.StructureType.currencyStorage_Ammo,
+        StructureSO.StructureType.currencyStorage_SpecialAmmo,
+    };
 
 
     private void Awake() {
-        mushroomMerchantUnlocked = ES3.Load("mushroomMerchantUnlocked", false);
-        architectTableUnlocked = ES3.Load("architectTableUnlocked", false);
-        fireOrbConversionRate = ES3.Load("fireOrbConversionRate", false);
-        fireFuelDepletionUnlocked = ES3.Load("fireFuelDepletionUnlocked", false);
-        fireFuelCapacity = ES3.Load("fireFuelCapacity", false);
+        mushroomMerchantUnlocked_ACHIEVEMENT = ES3.Load("mushroomMerchantUnlocked_ACHIEVEMENT", false);
+        architectTableUnlocked_ACHIEVEMENT = ES3.Load("architectTableUnlocked_ACHIEVEMENT", false);
+        fireOrbConversionRate_ACHIEVEMENT = ES3.Load("fireOrbConversionRate_ACHIEVEMENT", false);
+        fireFuelDepletionUnlocked_ACHIEVEMENT = ES3.Load("fireFuelDepletionUnlocked_ACHIEVEMENT", false);
+        fireFuelCapacity_ACHIEVEMENT = ES3.Load("fireFuelCapacity_ACHIEVEMENT", false);
+        boneReaperDeathAmount = ES3.Load("boneReaperDeathAmount", 0);
     }
 
     private void Start() {
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() ==  SceneLoader.SceneType.Tutorial) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() ==  SceneLoader.SceneType.Tutorial) {
 
             if(EndLevelArea.Instance != null) {
                 EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
@@ -65,6 +109,17 @@ public class AchievementsProgressManager : MonoBehaviour
             Worker.OnAnyWorkerDied += Worker_OnAnyWorkerDied;
             Worker.OnAnyOrbDroppedByWorker += Worker_OnAnyOrbDroppedByWorker;
             Worker.OnAnyWorkerDroppedAllCurrencies += Worker_OnAnyWorkerDroppedAllCurrencies;
+            Dog.Instance.OnDogTypeChanged += Dog_OnDogTypeChanged;
+            DogAI_Retreiver.OnAnyOrbDroppedByDog += DogAI_Retreiver_OnAnyOrbDroppedByDog;
+            StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
+            Fire.OnAnySecondaryFireReset += Fire_OnAnySecondaryFireReset;
+            Fire.Instance.OnFireFuelled += Fire_OnFireFuelled;
+            Fire.OnFireExtinguishedByPlayerRespawning += Fire_OnFireExtinguishedByPlayerRespawning;
+            HuntingFlag_PlayerDefined.OnHuntingFlagBackToSafetyCarriedByPlayer += HuntingFlag_PlayerDefined_OnHuntingFlagBackToSafetyCarriedByPlayer;
+            HuntingFlag_PlayerDefined.OnHuntingFlagTooFarCarriedByPlayer += HuntingFlag_PlayerDefined_OnHuntingFlagTooFarCarriedByPlayer;
+            Player.Instance.OnPlayerEnteredCamp += Player_OnPlayerEnteredCamp;
+            Player.Instance.OnPlayerExitedCamp += Player_OnPlayerExitedCamp;
+            ParticleCollision.OnAnyParticleBouncedOff += ParticleCollision_OnAnyParticleBouncedOff;
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
@@ -78,6 +133,7 @@ public class AchievementsProgressManager : MonoBehaviour
         }
     }
 
+
     #region UPDATE RELATED
     private void Update() {
         if(pettingDog) {
@@ -87,6 +143,73 @@ public class AchievementsProgressManager : MonoBehaviour
                 TryUnlockSuccess("PET_DOG");
             }
         }
+
+        if(bulletBouncedOff) {
+            bulletBouncedOffTimer += Time.deltaTime;
+            if(bulletBouncedOffTimer > PlayerShoot.Instance.GetHeldGunSO().shootCooldownTime) {
+                bulletBouncedOff = false;
+            }
+        }
+
+        if(nightJustStarted) {
+            nightJustStartedTimer += Time.deltaTime;
+            if(nightJustStartedTimer > nightJustStartedTime) {
+                nightJustStarted = false;
+            }
+        }
+
+
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+            if(dogInCampZoneArea) {
+                if (!CampZoneManager.Instance.IsWithinCampZoneLimits(Dog.Instance.transform.position)) {
+                    dogInCampZoneArea = false;
+                }
+            }
+
+            if (Mathf.Abs(PlayerMovement.Instance.GetMoveSpeed()) < 1) {
+                playerMoving = false;
+            }
+            else {
+                playerMoving = true;
+                creaturesKilledWithoutMoving = 0;
+            }
+
+        }
+    }
+
+    private void ParticleCollision_OnAnyParticleBouncedOff(object sender, System.EventArgs e) {
+        ParticleCollision pc = (ParticleCollision)sender;
+        if (!pc.GetIsPlayerBullet()) return;
+
+        bulletBouncedOff = true;
+        bulletBouncedOffTimer = 0;
+    }
+
+    private void Player_OnPlayerExitedCamp(object sender, System.EventArgs e) {
+        if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dawn) {
+            playerExploredWholeDay = true;
+        } else {
+            playerExploredWholeDay = false;
+        }
+    }
+
+    private void Player_OnPlayerEnteredCamp(object sender, System.EventArgs e) {
+
+        if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            if(dogInCampZoneArea && playerExploredWholeDay) {
+                TryUnlockSuccess("DOG_WAIT_CAMP");
+            }
+        } else {
+            playerExploredWholeDay = false;
+        }
+    }
+
+    private void HuntingFlag_PlayerDefined_OnHuntingFlagTooFarCarriedByPlayer(object sender, System.EventArgs e) {
+        huntingFlagsTooFar++;
+    }
+
+    private void HuntingFlag_PlayerDefined_OnHuntingFlagBackToSafetyCarriedByPlayer(object sender, System.EventArgs e) {
+        huntingFlagsTooFar--;
     }
 
     private void PetDog_OnPlayerStoppedPettingDog(object sender, System.EventArgs e) {
@@ -118,28 +241,28 @@ public class AchievementsProgressManager : MonoBehaviour
             HubMerchantItem_ArchitectMerchantItem architectItem = sender as HubMerchantItem_ArchitectMerchantItem;
 
             if (architectItem.GetArchitectItemType() == HubMerchantItem_ArchitectMerchantItem.ArchitectItemType.FireFuelDepletion) {
-                fireFuelDepletionUnlocked = true;
-                ES3.Save("fireFuelDepletionUnlocked", true);
+                fireFuelDepletionUnlocked_ACHIEVEMENT = true;
+                ES3.Save("fireFuelDepletionUnlocked_ACHIEVEMENT", true);
 
-                if(fireOrbConversionRate && fireFuelCapacity) {
+                if(fireOrbConversionRate_ACHIEVEMENT && fireFuelCapacity_ACHIEVEMENT) {
                     TryUnlockSuccess("ALL_FIRE_UPGRADES");
                 }
             }
 
             if (architectItem.GetArchitectItemType() == HubMerchantItem_ArchitectMerchantItem.ArchitectItemType.FireOrbConversionRate) {
-                fireOrbConversionRate = true;
-                ES3.Save("fireOrbConversionRate", true);
+                fireOrbConversionRate_ACHIEVEMENT = true;
+                ES3.Save("fireOrbConversionRate_ACHIEVEMENT", true);
 
-                if (fireFuelDepletionUnlocked && fireFuelCapacity) {
+                if (fireFuelDepletionUnlocked_ACHIEVEMENT && fireFuelCapacity_ACHIEVEMENT) {
                     TryUnlockSuccess("ALL_FIRE_UPGRADES");
                 }
             }
 
             if (architectItem.GetArchitectItemType() == HubMerchantItem_ArchitectMerchantItem.ArchitectItemType.MaxFuelCapacity) {
-                fireFuelCapacity = true;
-                ES3.Save("fireFuelCapacity", true);
+                fireFuelCapacity_ACHIEVEMENT = true;
+                ES3.Save("fireFuelCapacity_ACHIEVEMENT", true);
 
-                if (fireOrbConversionRate && fireFuelDepletionUnlocked) {
+                if (fireOrbConversionRate_ACHIEVEMENT && fireFuelDepletionUnlocked_ACHIEVEMENT) {
                     TryUnlockSuccess("ALL_FIRE_UPGRADES");
                 }
             }
@@ -160,6 +283,50 @@ public class AchievementsProgressManager : MonoBehaviour
 
     #endregion
 
+  
+    private void Fire_OnFireFuelled(object sender, System.EventArgs e) {
+        float remainingFuelBeforeFuelled = Fire.Instance.GetCurrentFuelLevel() - StructureStats.Instance.GetOrbFuelValue();
+
+        if (remainingFuelBeforeFuelled < StructureStats.Instance.GetInitialMaxFuelTreshold() / 100f && remainingFuelBeforeFuelled > 0) {
+            TryUnlockSuccess("FUEL_FIRE_ALMOST_EMPTY");
+        }
+    }
+
+
+    private void Fire_OnFireExtinguishedByPlayerRespawning(object sender, System.EventArgs e) {
+        TryUnlockSuccess("LOOSE_RESPAWNING");
+    }
+    private void Fire_OnAnySecondaryFireReset(object sender, System.EventArgs e) {
+        AchievementsManager.Instance.AddToSteamStat("SECONDARY_FIRES_LIT_v3", 1);
+        if (AchievementsManager.Instance.GetSteamStat("SECONDARY_FIRES_LIT_v3") >= secondaryFiresLitTreshold) {
+            TryUnlockSuccess("SECONDARY_FIRES");
+        }
+    }
+
+    private void StructureLocation_OnAnyStructureBuilt(object sender, StructureLocation.OnAnyStructureBuiltEventArgs e) {
+        StructureLocation location = sender as StructureLocation;
+
+        if(allStructureTypeList.Contains(location.GetStructureSOToBuild().structureType)) {
+            allStructureTypeList.Remove(location.GetStructureSOToBuild().structureType);
+
+            if(allStructureTypeList.Count == 0) {
+                TryUnlockSuccess("BUILD_ALL_STRUCTURES");
+            }
+
+            if(!allStructureTypeList.Contains(StructureSO.StructureType.sniperTower) && !allStructureTypeList.Contains(StructureSO.StructureType.mortarTower) && !allStructureTypeList.Contains(StructureSO.StructureType.machineGunTower)) {
+                TryUnlockSuccess("SPECIAL_TOWERS");
+            }
+        }
+    }
+
+    private void Dog_OnDogTypeChanged(object sender, Dog.OnDogTypeChangedEventArgs e) {
+        if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
+            StartCoroutine(TryUnlockSuccessAfterDelay("GOLDEN_RETREIVER", 2f));
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
+            StartCoroutine(TryUnlockSuccessAfterDelay("DARK_COMPANION", 2f));
+        }
+    }
     private void Worker_OnAnyWorkerDroppedAllCurrencies(object sender, System.EventArgs e) {
         if (dropppingMoreThanTreshold) {
             dropppingMoreThanTreshold = false;
@@ -169,13 +336,24 @@ public class AchievementsProgressManager : MonoBehaviour
 
     private void Worker_OnAnyOrbDroppedByWorker(object sender, System.EventArgs e) {
         Worker worker = sender as Worker;
-        if ((worker.GetCurrencyAmount(PlayerCurrencies.CurrencyType.bigBlueOrb) + worker.GetCurrencyAmount(PlayerCurrencies.CurrencyType.smallBlueOrb)) > orbDroppedByWorkerTreshold - 1) {
+        int orbsToDrop =worker.GetCurrencyAmount(PlayerCurrencies.CurrencyType.bigBlueOrb);
+
+        if (orbsToDrop > orbDroppedByWorkerTreshold - 1) {
             dropppingMoreThanTreshold = true;
         }
     }
 
     private void Worker_OnAnyWorkerDied(object sender, System.EventArgs e) {
         Worker worker = sender as Worker;
+
+        if(huntingFlagsTooFar > 0) {
+            if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night && nightJustStarted) {
+                if(!CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position)) {
+                    TryUnlockSuccess("EMBERLING_LATE");
+                }
+            }
+        }
+
         if(worker.GetComponent<WorkerAI>().GetJob() != WorkerAI.JobTypes.wild && worker.GetComponent<WorkerAI>().GetJob() != WorkerAI.JobTypes.jobless) {
             currentWorkersAssignedJobs--;
             if(currentWorkersAssignedJobs < 0) {
@@ -257,11 +435,29 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+        if(DayNightManager.Instance.GetCurrentDay() == 0) {
+            boneReaperDeathAmount = 0;
+        } else {
+            AchievementsManager.Instance.AddToSteamStat("NIGHTS_SURVIVED_v3", 1);
+            if (AchievementsManager.Instance.GetSteamStat("NIGHTS_SURVIVED_v3") >= nightsToSurviveTreshold) {
+                TryUnlockSuccess("TOTAL_NIGHTS_SURVIVED");
+            }
+        }
+
+        if (CampZoneManager.Instance.IsWithinCampZoneLimits(Dog.Instance.transform.position)) {
+            dogInCampZoneArea = true;
+        }
+
         if (specialWave) {
             TryUnlockSuccess("SPECIAL_WAVE");
         }
 
         if(!playerShot) {
+            if (DayNightManager.Instance.GetCurrentDay() == 0) return;
+            if (SavingManager_Level.Instance.GetLoadingSavedLevel() && !loadedLevel) {
+                loadedLevel = true;
+                return;
+            } 
             TryUnlockSuccess("NO_SHOT_FIRED");
         }
     }
@@ -269,57 +465,89 @@ public class AchievementsProgressManager : MonoBehaviour
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
         specialWave = CreaturesSpawnManager.Instance.GetSpecialWaveType() != CreaturesSpawnManager.SpecialWaveType.none;
         playerShot = false;
+        nightJustStarted = true;
+        nightJustStartedTimer = 0;
     }
 
     private void DogDigAbility_OnAnyResourceDug(object sender, System.EventArgs e) {
-        AchievementsManager.Instance.AddToSteamStat("RESOURCES_DUG_BY_DOG", 1);
-        if(AchievementsManager.Instance.GetSteamStat("RESOURCES_DUG_BY_DOG") >= resourcesDugByDogTreshold) {
+        AchievementsManager.Instance.AddToSteamStat("RESOURCES_DUG_BY_DOG_v3", 1);
+        if(AchievementsManager.Instance.GetSteamStat("RESOURCES_DUG_BY_DOG_v3") >= resourcesDugByDogTreshold) {
             TryUnlockSuccess("DOG_RESOURCES");
+        }
+    }
+
+    private void DogAI_Retreiver_OnAnyOrbDroppedByDog(object sender, System.EventArgs e) {
+        AchievementsManager.Instance.AddToSteamStat("RESOURCES_DROPPED_BY_DOG", 1);
+        if (AchievementsManager.Instance.GetSteamStat("RESOURCES_DROPPED_BY_DOG") >= resourcesFetchedByDogTreshold) {
+            TryUnlockSuccess("DOG_FETCH");
         }
     }
 
     private void Creature_OnAnyCreatureKilledByDog(object sender, System.EventArgs e) {
         TryUnlockSuccess("FIRST_KILL_DOG");
+
+        AchievementsManager.Instance.AddToSteamStat("CREATURES_KILLED_BY_DOG", 1);
+        if (AchievementsManager.Instance.GetSteamStat("CREATURES_KILLED_BY_DOG") >= creaturesKilledByDogTreshold) {
+            TryUnlockSuccess("DOG_KILL_CREATURES");
+        }
     }
 
     private void Creature_OnAnyMobDied(object sender, System.EventArgs e) {
-        Creature creature = sender as Creature;
+        if(sender is Creature) {
+            Creature creature = sender as Creature;
 
-        if(creature.GetCreatureSO() == finalBossCreatureSO) {
-            TryUnlockSuccess("FINAL_BOSS");
-        }
-
-        AchievementsManager.Instance.AddToSteamStat("KILL_ENEMIES", 1);
-
-        if(AchievementsManager.Instance.GetSteamStat("KILL_ENEMIES") >= killCreaturesTreshold) {
-            TryUnlockSuccess("KILL_ENEMIES");
-        }
-
-        if(creature.GetInFireLightAmount() > 0) {
-            AchievementsManager.Instance.AddToSteamStat("KILL_ENEMIES_IN_FIRE", 1);
-
-            if (AchievementsManager.Instance.GetSteamStat("KILL_ENEMIES_IN_FIRE") >= killCreaturesInFireTreshold) {
-                TryUnlockSuccess("KILL_ENEMIES_IN_FIRE");
+            if(!playerMoving) {
+                creaturesKilledWithoutMoving++;
+                if(creaturesKilledWithoutMoving >= killCreaturesWithoutMovingTreshold) {
+                    TryUnlockSuccess("KILL_CREATURES_WITHOUT_MOVING");
+                }
             }
 
+            if(bulletBouncedOff) {
+                TryUnlockSuccess("RICOCHET");
+            }
+
+            if (creature.GetCreatureSO() == finalBossCreatureSO) {
+                boneReaperDeathAmount++;
+                ES3.Save("boneReaperDeathAmount", boneReaperDeathAmount);
+                if (boneReaperDeathAmount == 2) {
+                    StartCoroutine(TryUnlockSuccessAfterDelay("FINAL_BOSS", 4f));
+                }
+            }
+
+            AchievementsManager.Instance.AddToSteamStat("KILLED_CREATURES", 1);
+
+            if (AchievementsManager.Instance.GetSteamStat("KILLED_CREATURES") >= killCreaturesTreshold) {
+                TryUnlockSuccess("KILL_ENEMIES");
+            }
+
+            if (creature.GetInFireLightAmount() > 0) {
+                AchievementsManager.Instance.AddToSteamStat("KILLED_CREATURES_INSIDE_FIRE_v3", 1);
+
+                if (AchievementsManager.Instance.GetSteamStat("KILLED_CREATURES_INSIDE_FIRE_v3") >= killCreaturesInFireTreshold) {
+                    TryUnlockSuccess("KILL_ENEMIES_IN_FIRE");
+                }
+
+            }
         }
+       
     }
 
     private void LevelManager_OnLevelSuccess(object sender, System.EventArgs e) {
         if (LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel[0] == HubMerchant.HubMerchantType.MushroomMerchant) {
-            mushroomMerchantUnlocked = true;
-            ES3.Save("mushroomMerchantUnlocked", true);
+            mushroomMerchantUnlocked_ACHIEVEMENT = true;
+            ES3.Save("mushroomMerchantUnlocked_ACHIEVEMENT", true);
 
-            if(architectTableUnlocked) {
+            if(architectTableUnlocked_ACHIEVEMENT) {
                 TryUnlockSuccess("ALL_NPC_UNLOCKED");
             }
         }
 
         if (LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel[0] == HubMerchant.HubMerchantType.ArchitectTable) {
-            architectTableUnlocked = true;
-            ES3.Save("architectTableUnlocked", architectTableUnlocked);
+            architectTableUnlocked_ACHIEVEMENT = true;
+            ES3.Save("architectTableUnlocked_ACHIEVEMENT", architectTableUnlocked_ACHIEVEMENT);
 
-            if (mushroomMerchantUnlocked) {
+            if (mushroomMerchantUnlocked_ACHIEVEMENT) {
                 TryUnlockSuccess("ALL_NPC_UNLOCKED");
             }
         }
@@ -328,14 +556,18 @@ public class AchievementsProgressManager : MonoBehaviour
     private void LevelUI_Locations_OnLocationTextShown(object sender, System.EventArgs e) {
         LevelSO.LevelEnvironment environment = LevelManager.Instance.GetLevelSO().environmentType;
 
+        if (environment == LevelSO.LevelEnvironment.TheVerdantGraveyard) {
+            StartCoroutine(TryUnlockSuccessAfterDelay("VERDANT_GRAVEYARD", 3f));
+        }
+
         if (environment == LevelSO.LevelEnvironment.CorruptedCity) {
-            TryUnlockSuccess("CORRUPTED_CITY");
+            StartCoroutine(TryUnlockSuccessAfterDelay("CORRUPTED_CITY",3f));
         }
         if (environment == LevelSO.LevelEnvironment.TheLumenHollow) {
-            TryUnlockSuccess("LUMEN_HOLLOW");
+            StartCoroutine(TryUnlockSuccessAfterDelay("LUMEN_HOLLOW", 3f));
         }
         if (environment == LevelSO.LevelEnvironment.TheFracturedDistrict) {
-            TryUnlockSuccess("VICTORIAN_CITY");
+            StartCoroutine(TryUnlockSuccessAfterDelay("FRACTURED_DISCTRICT", 3f));
         }
 
     }
@@ -353,7 +585,12 @@ public class AchievementsProgressManager : MonoBehaviour
             AchievementsManager.Instance.UnlockAchievement(id);
        }
     }
-
+    private IEnumerator TryUnlockSuccessAfterDelay(string id, float delay) {
+        yield return new WaitForSeconds(delay);
+        if (!AchievementsManager.Instance.IsThisAchievementUnlocked(id)) {
+            AchievementsManager.Instance.UnlockAchievement(id);
+        }
+    }
     private void OnDestroy() {
         
     }

@@ -11,20 +11,23 @@ public class WindParallaxTexture : MonoBehaviour
     private float fadeDuration = 2f; // Durée totale du fade-in
     private WindManager.WindStrength previousWindStrength = WindManager.WindStrength.none;
 
+    private Coroutine settingWindTextureVariablesCoroutine;
+
     private void Start() {
         windTextureMaterial = windTextureSprite.material;
 
         WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
-        StartCoroutine(SetTextureVariables());
+        settingWindTextureVariablesCoroutine = StartCoroutine(SetTextureVariables());
     }
 
     private void WindManager_OnWindStrengthChanged(object sender, System.EventArgs e) {
-        StartCoroutine(SetTextureVariables());
+        if(settingWindTextureVariablesCoroutine == null) {
+            settingWindTextureVariablesCoroutine = StartCoroutine(SetTextureVariables());
+        }
         previousWindStrength = WindManager.Instance.GetWindStrength();
     }
 
     private IEnumerator SetTextureVariables() {
-
         WindManager.WindStrength currentWindStrength = WindManager.Instance.GetWindStrength();
         float windStrength = GetWindStrengthForWindTexture(currentWindStrength) * -WindManager.Instance.GetWindDir();
 
@@ -41,6 +44,8 @@ public class WindParallaxTexture : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
 
+        Debug.Log("currentWindStrength " + currentWindStrength);
+        Debug.Log("windStrength " + windStrength);
         windTextureMaterial.SetFloat("_TextureScrollXSpeed", windStrength);
 
     }

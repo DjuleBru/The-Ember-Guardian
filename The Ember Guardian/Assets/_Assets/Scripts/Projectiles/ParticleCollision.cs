@@ -188,4 +188,9 @@ public class ParticleCollision : MonoBehaviour
         this.collisionDistanceThreshold = collisionDistanceTreshold;
     } 
 
+    public bool GetIsPlayerBullet() {
+        Debug.Log("source " + source);
+        return source == null;
+    }
+
 }

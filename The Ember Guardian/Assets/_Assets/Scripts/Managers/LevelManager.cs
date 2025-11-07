@@ -164,7 +164,7 @@ public class LevelManager : MonoBehaviour
         if(levelHubMerchantInteractionIndex == 2) {
             float delayToShowReturnToHubObj = 2f;
             if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
-                delayToShowReturnToHubObj = 4f;
+                delayToShowReturnToHubObj = 7f;
             }
 
             LevelObjectives.Instance.ShowReturnToHubObj(delayToShowReturnToHubObj);

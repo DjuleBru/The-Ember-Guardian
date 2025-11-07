@@ -563,7 +563,7 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
-    public void AddPassiveSkill(SkillItem skillItem, bool triggerSFX = true) {
+    public void AddPassiveSkill(SkillItem skillItem, bool addedFromLoad = false) {
 
         SkillSO skillSO = skillItem.GetSkillSO();
         SkillItem skillItemCopy = new SkillItem();
@@ -587,13 +587,14 @@ public class PlayerSkills : MonoBehaviour
 
         OnPassiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
             skillItemAdded = skillItemCopy,
-            triggerAddSFX = triggerSFX,
+            triggerAddSFX = !addedFromLoad,
         });
 
-        ApplyPassiveSkillEffect(skillItem);
+        ApplyPassiveSkillEffect(skillItem, addedFromLoad);
+
     }
 
-    public void ApplyPassiveSkillEffect(SkillItem skillItem) {
+    public void ApplyPassiveSkillEffect(SkillItem skillItem, bool applyFromLoad) {
         SkillSO skillItemSO = skillItem.GetSkillSO();
         PassiveSkillEffectSO skillEffect = skillItemSO.passiveSkillEffect;
 
@@ -609,20 +610,95 @@ public class PlayerSkills : MonoBehaviour
 
         // Si le skill commence à un niveau supérieur à 1 (comme au lancement du joueur),
         // on veut appliquer tous les niveaux précédents aussi.
-        if (skillItem.currentLevel > 1) {
 
-            for (int i = 1; i <= skillItem.currentLevel; i++) {
-                float valueAtThisLevel = skillEffect.GetValueAtLevel(i);
-                float prevValue = (i > 1) ? skillEffect.GetValueAtLevel(i - 1) : 0f;
-                float delta = valueAtThisLevel - prevValue;
-                ApplyPassiveSkillEffectInternal(skillEffect, delta);
-            }
-
-        }
-        else {
+        if(applyFromLoad) {
+            ApplyPassiveSkillEffectAbsolute(skillEffect, totalBuffValue);
+        } else {
             ApplyPassiveSkillEffectInternal(skillEffect, relativeBuffEffectValue);
         }
+
     }
+    private void ApplyPassiveSkillEffectAbsolute(PassiveSkillEffectSO skillEffect, float absoluteBuffEffectValue) {
+        switch (skillEffect.skillType) {
+            case SkillItem.SkillType.passiveMoveSpeedBuff:
+                PlayerMovement.Instance.BuffMoveSpeed("passiveMoveSpeedBuff", 1 + absoluteBuffEffectValue / 100);
+                break;
+
+            case SkillItem.SkillType.passiveRunAccelerationFactorBuff:
+                PlayerStats.Instance.BuffRunAccelerationFactor(absoluteBuffEffectValue / 100);
+                break;
+
+            case SkillItem.SkillType.passiveRunMaxTimeBuff:
+                PlayerStats.Instance.BuffStamina(absoluteBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveMaxHPIncrease:
+                PlayerStats.Instance.BuffMaxHP((int)absoluteBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveHealthRegen:
+                PlayerStats.Instance.SetPlayerHealthRegen((int)absoluteBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveAmmoGenerator:
+                PlayerStats.Instance.SetPlayerAmmoRegen((int)absoluteBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveChanceToDoubleXPDrop:
+                PlayerStats.Instance.BuffChanceToDropx2((int)absoluteBuffEffectValue);
+                break;
+
+            case SkillItem.SkillType.passiveShieldGenerator:
+                PlayerSkills.Instance.GetPassiveShield().SetShieldRegenTime(absoluteBuffEffectValue);
+                PlayerSkills.Instance.GetPassiveShield().UnlockShield();
+                break;
+
+            case SkillItem.SkillType.passiveLastBulletDealsTwiceDamage:
+                lastBulletDealsMoreDamage = true;
+                lastBulletDealsMoreDamageBuff = 1 + absoluteBuffEffectValue / 100;
+                break;
+
+            case SkillItem.SkillType.passiveShootOnReload:
+                shootOnReload = true;
+                Debug.Log("relativeBuffEffectValue " + absoluteBuffEffectValue);
+                shootOnReloadShotAmount += (int)absoluteBuffEffectValue;
+                Debug.Log("shootOnReloadShotAmount " + shootOnReloadShotAmount);
+                break;
+
+            case SkillItem.SkillType.passiveMeleeAttackMagmaShot:
+                meleeAttackMagmaShot = true;
+                meleeAttackMagmaShotBurnDuration += (int)absoluteBuffEffectValue;
+                break;
+
+            case SkillItem.SkillType.passiveDashFireTrail:
+                fireDashRoll = true;
+                fireDashRollBurnDuration += (int)absoluteBuffEffectValue;
+                break;
+
+            case SkillItem.SkillType.passiveDmgIncreaseInLight:
+                increasedDamageInFireLight = true;
+                damageBuffInFireLight = 1 + absoluteBuffEffectValue / 100;
+                if (enteredLight) {
+                    OnPlayerInFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
+                    damageInFireLightCurrentlyBuffed = true;
+                }
+                break;
+
+            case SkillItem.SkillType.passiveDmgIncreaseNotInLight:
+                increasedDamageOutFireLight = true;
+                damageBuffOutFireLight = 1 + absoluteBuffEffectValue / 100;
+                if (!enteredLight) {
+                    OnPlayerOutFireLightBuffedDmg?.Invoke(this, EventArgs.Empty);
+                    damageOutFireLightCurrentlyBuffed = true;
+                }
+                break;
+
+            default:
+                Debug.LogWarning($"Unhandled passive skill type: {skillEffect.skillType}");
+                break;
+        }
+    }
+
     private void ApplyPassiveSkillEffectInternal(PassiveSkillEffectSO skillEffect, float relativeBuffEffectValue) {
         switch (skillEffect.skillType) {
             case SkillItem.SkillType.passiveMoveSpeedBuff:

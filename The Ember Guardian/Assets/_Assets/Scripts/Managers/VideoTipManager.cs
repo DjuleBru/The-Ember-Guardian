@@ -15,7 +15,7 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO rollTip;
     [SerializeField] private VideoTipSO healTentTip;
     [SerializeField] private VideoTipSO setupEconomyTip;
-    [SerializeField] private VideoTipSO setupDefensesTip;
+    //[SerializeField] private VideoTipSO setupDefensesTip;
     [SerializeField] private VideoTipSO trapTip;
     [SerializeField] private VideoTipSO emberExtractionTip;
     [SerializeField] private VideoTipSO dayNightCycleTip;

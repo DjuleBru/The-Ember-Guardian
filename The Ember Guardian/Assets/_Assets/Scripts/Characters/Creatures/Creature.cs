@@ -184,6 +184,7 @@ public class Creature : Mob
 
     }
 
+    [Button]
     public override void Die() {
         Debug.Log(this + " Die");
         CreatureDieFunction();

@@ -58,7 +58,6 @@ public class SceneLoader : MonoBehaviour
 
     private void Start() {
         SetPlayerLeftFromLevel();
-        AchievementsManager.Instance.SaveSteamStats();
 
         if (sceneType != SceneType.Level) return;
         if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
@@ -114,6 +113,8 @@ public class SceneLoader : MonoBehaviour
     }
 
     private IEnumerator LoadSceneAfterCrossfade(string sceneName, float crossfadeDuration) {
+        AchievementsManager.Instance.SaveSteamStats();
+
         transitionAnimator.SetTrigger("Start");
         transitionAnimator.speed = 1/crossfadeDuration;
 

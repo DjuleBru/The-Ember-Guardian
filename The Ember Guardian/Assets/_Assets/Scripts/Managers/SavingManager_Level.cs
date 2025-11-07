@@ -792,7 +792,7 @@ public class SavingManager_Level : MonoBehaviour
             item.Initialize(PlayerSkills.Instance.GetSkillSO(s.skillType));
             item.currentLevel = s.level;
 
-            PlayerSkills.Instance.AddPassiveSkill(item, false);
+            PlayerSkills.Instance.AddPassiveSkill(item, true);
         }
 
         PlayerSkills.Instance.SetPlayerSkillsInitialized();

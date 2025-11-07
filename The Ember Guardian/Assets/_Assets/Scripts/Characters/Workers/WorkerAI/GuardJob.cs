@@ -337,7 +337,6 @@ public class GuardJob : WorkerJob {
     private void ChangeState(GuardState newState) {
         if (newState == state) return;
 
-        Debug.Log("newState " + newState);
         previousState = state;
 
         if(newState == GuardState.headingToEscort) {

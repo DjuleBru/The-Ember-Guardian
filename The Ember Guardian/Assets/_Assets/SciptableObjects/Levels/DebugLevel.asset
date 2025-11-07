@@ -48,7 +48,7 @@ MonoBehaviour:
   dayCreatureTypes: []
   nightCreatureTypes:
   - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
-  hasBoss: 1
+  hasBoss: 0
   bossCreatureType: {fileID: 11400000, guid: 88be53ca85937274c9ab1915d33f4218, type: 2}
   bossNightSpawns: 0100000002000000
   bossNightWaveDifficultyMultiplier: 0.33
@@ -79,9 +79,9 @@ MonoBehaviour:
   hasFog: 0
   fogFrontAlpha: 1
   fogBackAlpha: 1
-  hasWind: 0
+  hasWind: 1
   initialWindStrength: 0
-  windStrengthsAllowedInLevel: 
+  windStrengthsAllowedInLevel: 0000000001000000020000000300000004000000
   hasRain: 0
   initialRainIntensity: 0
   rainIntensitiesAllowedInLevel: 

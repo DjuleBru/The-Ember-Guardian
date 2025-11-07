@@ -38,7 +38,6 @@ public class PassiveShield : MonoBehaviour, IDamageable
         } else {
             activateShieldTime += shieldRegenTime;
         }
-
     }
 
     public void ActivateShield() {

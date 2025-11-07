@@ -201,6 +201,7 @@ public class Worker : Mob {
                 if (collectedCurrencies.Count == 0) {
                     droppingCurrencies = false;
                     OnWorkerDroppedAllCurrencies?.Invoke(this, EventArgs.Empty);
+                    OnAnyWorkerDroppedAllCurrencies?.Invoke(this, EventArgs.Empty);
                 }
             }
         }

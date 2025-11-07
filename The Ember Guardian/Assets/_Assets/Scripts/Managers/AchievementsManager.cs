@@ -9,19 +9,31 @@ public class AchievementsManager : MonoBehaviour
 {
 
     public static AchievementsManager Instance;
+    private bool playerConnected;
 
     private void Awake() {
-        Instance = this;
+        Instance = this; 
+        
+        try {
+            Steamworks.SteamClient.Init(3570060);
+            Debug.Log(Steamworks.SteamClient.Name);
+            playerConnected = true;
+        }
+        catch (System.Exception e) {
+            Debug.Log(e);
+        }
+
     }
- 
+
     private void Update() {
+        if (!playerConnected) return;
         SteamClient.RunCallbacks();
     }
 
     [Button]
     public bool IsThisAchievementUnlocked(string id) {
         var ach = new Steamworks.Data.Achievement(id);
-        Debug.Log("Achievement " + id + "status : " + ach.State);
+        //Debug.Log("Achievement " + id + "status : " + ach.State);
 
         return ach.State;
     }
@@ -31,7 +43,7 @@ public class AchievementsManager : MonoBehaviour
         var ach = new Steamworks.Data.Achievement(id);
         ach.Trigger();
 
-        Debug.Log("Achievement " + id + "unlocked");
+        //Debug.Log("Achievement " + id + "unlocked");
     }
 
     [Button]
@@ -39,12 +51,12 @@ public class AchievementsManager : MonoBehaviour
         var ach = new Steamworks.Data.Achievement(id);
         ach.Clear();
 
-        Debug.Log("Achievement " + id + "Cleared : ");
+        //Debug.Log("Achievement " + id + "Cleared : ");
     }
 
     [Button]
     public int GetSteamStat(string id) {
-        Debug.Log(id + " = " + Steamworks.SteamUserStats.GetStatInt(id));
+        //Debug.Log(id + " = " + Steamworks.SteamUserStats.GetStatInt(id));
         return Steamworks.SteamUserStats.GetStatInt(id);
     }
 
@@ -52,19 +64,18 @@ public class AchievementsManager : MonoBehaviour
     public void SetSteamStat(string id, int value) {
         Steamworks.SteamUserStats.SetStat(id, value);
 
-        Debug.Log("Setting " + id + "to: " + value);
+        //Debug.Log("Setting " + id + "to: " + value);
     }
 
     [Button]
     public void AddToSteamStat(string id, int value) {
         Steamworks.SteamUserStats.AddStat(id, value);
 
-        Debug.Log("Adding " + value + " to: " + id);
+        //Debug.Log("Adding " + value + " to: " + id);
     }
 
     [Button]
     public void SaveSteamStats() {
         Steamworks.SteamUserStats.StoreStats();
     }
-
 }

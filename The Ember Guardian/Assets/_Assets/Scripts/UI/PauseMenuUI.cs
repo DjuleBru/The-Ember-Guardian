@@ -255,6 +255,7 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     public virtual void ExitGameWithNoConfirmation() {
+        AchievementsManager.Instance.SaveSteamStats();
         Application.Quit();
     }
 

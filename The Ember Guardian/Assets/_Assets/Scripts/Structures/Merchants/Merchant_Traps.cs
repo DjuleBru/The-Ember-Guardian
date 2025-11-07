@@ -51,7 +51,6 @@ public class Merchant_Traps : Merchant
 
                 trapItem.currentLevel = savedLevel+1;
                 trapItem.price = trapSO.trapUpgradeSO.GetPriceAtLevel(savedLevel);
-
                 allMinorMerchantItems.Add(trapItem);
                 trapUpgradeList.Add(trapItem);
             }

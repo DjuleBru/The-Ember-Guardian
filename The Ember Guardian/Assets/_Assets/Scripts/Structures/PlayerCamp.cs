@@ -79,8 +79,6 @@ public class PlayerCamp : MonoBehaviour
             StartCoroutine(InitializeBuiltAtStartStructureLocations());
             InitializeWorldStructureLocations();
         }
-
-
     }
 
     private void LoadCustomCampLayout() {
@@ -204,7 +202,8 @@ public class PlayerCamp : MonoBehaviour
             if (structureLocation == null) continue;
             if (structureLocation.GetStructureLocationUnlocked()) continue;
 
-            //Debug.Log(structureLocation + " " + structureLocation.transform.position + " IsWithinBarricadePosition " + IsWithinBarricadePosition(structureLocation.transform.position, minBarricadePosition, maxBarricadePosition));
+            //Debug.Log(structureLocation + " " + structureLocation.transform.position + " IsWithinBarricadePosition " + IsWithinBarricadePosition(structureLocation.transform.position, minBarricadePosition, maxBarricadePosition) + " min " + minBarricadePosition + " max " + maxBarricadePosition);
+            
             if (IsWithinBarricadePosition(structureLocation.transform.position, minBarricadePosition, maxBarricadePosition)) {
                 structureLocation.UnlockStructureLocation();
             }
@@ -284,12 +283,12 @@ public class PlayerCamp : MonoBehaviour
             leftBarricade3.UnlockStructureLocation();
             rightBarricade3.UnlockStructureLocation();
 
-            TryUnlockStructureLocationsBetweenBarricades(allStructureLocations, -maxCampLimit, leftBarricade3Position);
-            TryUnlockStructureLocationsBetweenBarricades(trapLocations, -maxCampLimit, leftBarricade3Position);
-            TryUnlockStructureLocationsBetweenBarricades(towerLocations, -maxCampLimit, leftBarricade3Position);
-            TryUnlockStructureLocationsBetweenBarricades(allStructureLocations, rightBarricade3Position, maxCampLimit);
-            TryUnlockStructureLocationsBetweenBarricades(trapLocations, rightBarricade3Position, maxCampLimit);
-            TryUnlockStructureLocationsBetweenBarricades(towerLocations, rightBarricade3Position, maxCampLimit);
+            TryUnlockStructureLocationsBetweenBarricades(allStructureLocations, -maxCampLimit, leftBarricade2Position);
+            TryUnlockStructureLocationsBetweenBarricades(trapLocations, -maxCampLimit, leftBarricade2Position);
+            TryUnlockStructureLocationsBetweenBarricades(towerLocations, -maxCampLimit, leftBarricade2Position);
+            TryUnlockStructureLocationsBetweenBarricades(allStructureLocations, rightBarricade2Position, maxCampLimit);
+            TryUnlockStructureLocationsBetweenBarricades(trapLocations, rightBarricade2Position, maxCampLimit);
+            TryUnlockStructureLocationsBetweenBarricades(towerLocations, rightBarricade2Position, maxCampLimit);
         }
     }
 

@@ -399,10 +399,6 @@ public class PlayerMovement : MonoBehaviour {
             targetSpeed /= WindManager.Instance.GetWindStrengthImpactOnSpeed();
         }
 
-        //if (isMovingBackwards) {
-        //    targetSpeed *= moveSpeedBackwardsMultiplier;
-        //}
-
         float speedDif = targetSpeed - rb.velocity.x;
 
         float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? acceleration : deceleration;

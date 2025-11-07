@@ -519,7 +519,7 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
         base.SetNewItemUnlocked(unlocked);
 
         if (unlocked && itemBought) {
-            if (watcherItemType == WatcherItemType.MinerShrine || watcherItemType == WatcherItemType.EngineerShrine) {
+            if (watcherItemType == WatcherItemType.MinerShrine || watcherItemType == WatcherItemType.EngineerShrine || watcherItemType == WatcherItemType.GuardShrine) {
                 InvokeOnAnyHubMerchantItemArchitectTableUnlocks();
             }
         }

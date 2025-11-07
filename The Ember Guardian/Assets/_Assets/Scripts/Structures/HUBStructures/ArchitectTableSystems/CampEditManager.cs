@@ -372,9 +372,9 @@ public class CampEditManager : MonoBehaviour {
 
     private void ScrollRectEvents_OnDragStarted(object sender, EventArgs e) {
         dragging = true;
-        if (currentMode == CampEditMode.MovingStructure && !blueprintHasMoved) {
-            StopMoving();
-        }
+        //if (currentMode == CampEditMode.MovingStructure && !blueprintHasMoved) {
+        //    StopMoving();
+        //}
     }
 
     private void ScrollRectEvents_OnDragEnded(object sender, EventArgs e) {

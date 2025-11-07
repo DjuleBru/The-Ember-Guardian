@@ -56,7 +56,6 @@ public class MainMenuUI : MonoBehaviour {
             logoImage.sprite = fullGameLogo;
             wishlistButton_Menu.gameObject.SetActive(false);
             fullGameDescriptionPanel.SetActive(false);
-            Debug.Log("CAC");
         }
 
         if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
