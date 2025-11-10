@@ -37,7 +37,7 @@ public class PlayerTalkUI : MonoBehaviour
             int randomTextInt = UnityEngine.Random.Range(0, 4);
 
             string localizationKeyText = "player_bossSpawnsThisNight" + randomTextInt;
-            ShowTalkText(localizationKeyText, 5f);
+            ShowTalkText(LocalizationManager.Instance.GetLocalizedText(localizationKeyText), 5f);
         }
     }
 

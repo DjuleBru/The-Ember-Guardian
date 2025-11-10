@@ -70,15 +70,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4180268832326320235, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Radius
-      value: 0.22
+      value: 0.2811552
+      objectReference: {fileID: 0}
+    - target: {fileID: 4180268832326320235, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.0024462044
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559383177539395646, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Size.x
+      value: 1.375
+      objectReference: {fileID: 0}
+    - target: {fileID: 4559383177539395646, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Size.y
+      value: 1.375
       objectReference: {fileID: 0}
     - target: {fileID: 4559383177539395646, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 416485406, guid: cb704a8ad2a127e4fb34f9a39fdfe2af, type: 3}
+      objectReference: {fileID: 352741219, guid: 0db42111813b7a544b7aff6c76cd33ea, type: 3}
     - target: {fileID: 4559383177539395646, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4559383177539395646, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -86,7 +98,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 02ccbdb33f1a5c54eae20384cc69f9a1, type: 2}
     - target: {fileID: 6239366878450202533, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_Radius
-      value: 0.2
+      value: 0.23669314
+      objectReference: {fileID: 0}
+    - target: {fileID: 6239366878450202533, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.0024462044
       objectReference: {fileID: 0}
     - target: {fileID: 7811116705413329226, guid: dec5af72bb10db44b857ae2431180b1a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -191,7 +207,7 @@ Animator:
   m_GameObject: {fileID: 752257877726830592}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f3f518ef6ed4a314f8f5fd3532b54238, type: 2}
+  m_Controller: {fileID: 9100000, guid: b0feaaed09f347b42ae286fc2847f5fa, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -236,3 +252,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16384
   solidCollider: {fileID: 6107622544754403661}
+  alignToGroundOnImpact: 0
+  rotationOnImpact: {x: 0, y: 0, z: 0}
