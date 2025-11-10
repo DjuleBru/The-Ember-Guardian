@@ -103,6 +103,8 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboardMouseClickSprite;
     public Sprite keyboardMouseMiddleClickSprite;
     public Sprite keyboardMouseRightClickSprite;
+    public Sprite keyboardMouse4ClickSprite;
+    public Sprite keyboardMouse5ClickSprite;
     public Sprite keyboardMouseSprite;
     public Sprite keyboardEscSprite;
     public Sprite keyboardSpaceSprite;
@@ -188,6 +190,8 @@ public class InputControlIcons : MonoBehaviour
             { "LMB", keyboardMouseClickSprite },
             { "RMB", keyboardMouseRightClickSprite },
             { "MMB", keyboardMouseMiddleClickSprite },
+            { "Forward", keyboardMouse4ClickSprite },
+            { "Back", keyboardMouse5ClickSprite },
             { "Tab", keyboardTabSprite },
             { "Escape", keyboardEscSprite },
             { "Left Alt", keyboardAltSprite },
@@ -212,7 +216,6 @@ public class InputControlIcons : MonoBehaviour
 
     public List<Sprite> GetControlIconSprite(Control control) {
         List<Sprite> spriteList = new List<Sprite>();
-
         if(GameInput.Instance.IsUsingGamepad()) {
             if (control == Control.Reload) {
                 spriteList.Add(gamepadXSprite);

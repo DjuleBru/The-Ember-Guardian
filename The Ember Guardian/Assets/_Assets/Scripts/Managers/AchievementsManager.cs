@@ -32,6 +32,7 @@ public class AchievementsManager : MonoBehaviour
 
     [Button]
     public bool IsThisAchievementUnlocked(string id) {
+        if (!playerConnected) return true;
         var ach = new Steamworks.Data.Achievement(id);
         //Debug.Log("Achievement " + id + "status : " + ach.State);
 
@@ -40,6 +41,7 @@ public class AchievementsManager : MonoBehaviour
 
     [Button]
     public void UnlockAchievement(string id) {
+        if (!playerConnected) return;
         var ach = new Steamworks.Data.Achievement(id);
         ach.Trigger();
 
@@ -48,6 +50,7 @@ public class AchievementsManager : MonoBehaviour
 
     [Button]
     public void ClearAchievementStatus(string id) {
+        if (!playerConnected) return;
         var ach = new Steamworks.Data.Achievement(id);
         ach.Clear();
 
@@ -56,12 +59,15 @@ public class AchievementsManager : MonoBehaviour
 
     [Button]
     public int GetSteamStat(string id) {
+        if (!playerConnected) return 0;
+
         //Debug.Log(id + " = " + Steamworks.SteamUserStats.GetStatInt(id));
         return Steamworks.SteamUserStats.GetStatInt(id);
     }
 
     [Button]
     public void SetSteamStat(string id, int value) {
+        if (!playerConnected) return;
         Steamworks.SteamUserStats.SetStat(id, value);
 
         //Debug.Log("Setting " + id + "to: " + value);
@@ -69,6 +75,7 @@ public class AchievementsManager : MonoBehaviour
 
     [Button]
     public void AddToSteamStat(string id, int value) {
+        if (!playerConnected) return;
         Steamworks.SteamUserStats.AddStat(id, value);
 
         //Debug.Log("Adding " + value + " to: " + id);
@@ -76,6 +83,7 @@ public class AchievementsManager : MonoBehaviour
 
     [Button]
     public void SaveSteamStats() {
+        if (!playerConnected) return;
         Steamworks.SteamUserStats.StoreStats();
     }
 }

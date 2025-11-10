@@ -509,6 +509,8 @@ public class CreatureAI : MonoBehaviour {
     }
 
     protected void Creature_OnMobHitObstacle(object sender, EventArgs e) {
+        if (!creature.IsDayCreature()) return;
+
         roamTimer = 0;
         ChangeState(State.idle);
     }

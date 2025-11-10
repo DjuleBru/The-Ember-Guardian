@@ -165,7 +165,6 @@ public class AchievementsProgressManager : MonoBehaviour
                     dogInCampZoneArea = false;
                 }
             }
-
             if (Mathf.Abs(PlayerMovement.Instance.GetMoveSpeed()) < 1) {
                 playerMoving = false;
             }
