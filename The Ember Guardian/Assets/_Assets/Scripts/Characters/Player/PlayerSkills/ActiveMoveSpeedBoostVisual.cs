@@ -49,4 +49,12 @@ public class ActiveMoveSpeedBoostVisual : MonoBehaviour
         footStepPS.Play();
         OnMoveSpeedFootStepTriggered?.Invoke(this, EventArgs.Empty);
     }
+
+    private void OnDestroy() {
+
+        playerAnimator.OnFootStepTriggered -= PlayerAnimator_OnFootStepTriggered;
+        PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
+        PlayerSkills.Instance.OnLeftActiveSkillDeactivated -= PlayerSkills_OnLeftActiveSkillDeactivated;
+        PlayerSkills.Instance.OnRightActiveSkillDeactivated -= PlayerSkills_OnRightActiveSkillDeactivated;
+    }
 }

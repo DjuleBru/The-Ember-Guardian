@@ -247,6 +247,8 @@ public class PlayerFeedbacks : MonoBehaviour
         Gun.OnAnySurgeReloadSuccess -= Gun_OnAnyGunJamRepaired;
 
         PassiveShield.OnAnyPassiveShieldDied -= PassiveShield_OnAnyPassiveShieldDied;
+        PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
+        PlayerSkills.Instance.OnActiveSkillDeactivated -= PlayerSKills_OnActiveSkillDeactivated;
 
         Mob.OnAnyMobCritDamageTaken -= Mob_OnAnyMobCritDamageTaken;
     }

@@ -181,7 +181,7 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
         }
     }
 
-    public void Die() {
+    public void Die(Transform damageSource = null) {
         depleted = true;
         OnScavengableDepleted?.Invoke(this, EventArgs.Empty);
 

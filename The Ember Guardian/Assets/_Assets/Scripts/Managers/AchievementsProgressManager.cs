@@ -88,6 +88,7 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void Start() {
+        if (VersioningManager.Instance.GetIsDemo()) return;
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() ==  SceneLoader.SceneType.Tutorial) {
 
             if(EndLevelArea.Instance != null) {
@@ -97,7 +98,7 @@ public class AchievementsProgressManager : MonoBehaviour
             LevelUI_Locations.Instance.OnLocationTextShown += LevelUI_Locations_OnLocationTextShown;
             LevelManager.Instance.OnLevelSuccess += LevelManager_OnLevelSuccess;
             Fire.Instance.OnPrimordialFireLit += Fire_OnPrimordialFireLit;
-            Creature.OnAnyMobDied += Creature_OnAnyMobDied;
+            Creature.OnAnyCreatureDied += Creature_OnAnyCreatureDied;
             Creature.OnAnyCreatureKilledByDog += Creature_OnAnyCreatureKilledByDog;
             DogDigAbility.OnAnyResourceDug += DogDigAbility_OnAnyResourceDug;
             DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
@@ -132,6 +133,7 @@ public class AchievementsProgressManager : MonoBehaviour
             PetDog.Instance.OnPlayerStoppedPettingDog += PetDog_OnPlayerStoppedPettingDog;
         }
     }
+
 
 
     #region UPDATE RELATED
@@ -491,45 +493,45 @@ public class AchievementsProgressManager : MonoBehaviour
         }
     }
 
-    private void Creature_OnAnyMobDied(object sender, System.EventArgs e) {
-        if(sender is Creature) {
-            Creature creature = sender as Creature;
+    private void Creature_OnAnyCreatureDied(object sender, Creature.OnCreatureDiedEventArgs e) {
+        if (e.damageSource != Player.Instance.transform) return;
 
-            if(!playerMoving) {
-                creaturesKilledWithoutMoving++;
-                if(creaturesKilledWithoutMoving >= killCreaturesWithoutMovingTreshold) {
-                    TryUnlockSuccess("KILL_CREATURES_WITHOUT_MOVING");
-                }
-            }
+        Creature creature = sender as Creature;
 
-            if(bulletBouncedOff) {
-                TryUnlockSuccess("RICOCHET");
-            }
-
-            if (creature.GetCreatureSO() == finalBossCreatureSO) {
-                boneReaperDeathAmount++;
-                ES3.Save("boneReaperDeathAmount", boneReaperDeathAmount);
-                if (boneReaperDeathAmount == 2) {
-                    StartCoroutine(TryUnlockSuccessAfterDelay("FINAL_BOSS", 4f));
-                }
-            }
-
-            AchievementsManager.Instance.AddToSteamStat("KILLED_CREATURES", 1);
-
-            if (AchievementsManager.Instance.GetSteamStat("KILLED_CREATURES") >= killCreaturesTreshold) {
-                TryUnlockSuccess("KILL_ENEMIES");
-            }
-
-            if (creature.GetInFireLightAmount() > 0) {
-                AchievementsManager.Instance.AddToSteamStat("KILLED_CREATURES_INSIDE_FIRE_v3", 1);
-
-                if (AchievementsManager.Instance.GetSteamStat("KILLED_CREATURES_INSIDE_FIRE_v3") >= killCreaturesInFireTreshold) {
-                    TryUnlockSuccess("KILL_ENEMIES_IN_FIRE");
-                }
-
+        if (!playerMoving) {
+            creaturesKilledWithoutMoving++;
+            if (creaturesKilledWithoutMoving >= killCreaturesWithoutMovingTreshold) {
+                TryUnlockSuccess("KILL_CREATURES_WITHOUT_MOVING");
             }
         }
-       
+
+        if (bulletBouncedOff) {
+            TryUnlockSuccess("RICOCHET");
+        }
+
+        if (creature.GetCreatureSO() == finalBossCreatureSO) {
+            boneReaperDeathAmount++;
+            ES3.Save("boneReaperDeathAmount", boneReaperDeathAmount);
+            if (boneReaperDeathAmount == 2) {
+                StartCoroutine(TryUnlockSuccessAfterDelay("FINAL_BOSS", 4f));
+            }
+        }
+
+        AchievementsManager.Instance.AddToSteamStat("KILLED_CREATURES", 1);
+
+        if (AchievementsManager.Instance.GetSteamStat("KILLED_CREATURES") >= killCreaturesTreshold) {
+            TryUnlockSuccess("KILL_ENEMIES");
+        }
+
+        if (creature.GetInFireLightAmount() > 0) {
+            AchievementsManager.Instance.AddToSteamStat("KILLED_CREATURES_INSIDE_FIRE_v3", 1);
+
+            if (AchievementsManager.Instance.GetSteamStat("KILLED_CREATURES_INSIDE_FIRE_v3") >= killCreaturesInFireTreshold) {
+                TryUnlockSuccess("KILL_ENEMIES_IN_FIRE");
+            }
+
+        }
+
     }
 
     private void LevelManager_OnLevelSuccess(object sender, System.EventArgs e) {
@@ -591,6 +593,48 @@ public class AchievementsProgressManager : MonoBehaviour
         }
     }
     private void OnDestroy() {
-        
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
+
+            if (EndLevelArea.Instance != null) {
+                EndLevelArea.Instance.OnEndLevelFireLit -= EndLevelArea_OnEndLevelFireLit;
+            }
+
+            LevelUI_Locations.Instance.OnLocationTextShown -= LevelUI_Locations_OnLocationTextShown;
+            LevelManager.Instance.OnLevelSuccess -= LevelManager_OnLevelSuccess;
+            Fire.Instance.OnPrimordialFireLit -= Fire_OnPrimordialFireLit;
+            Creature.OnAnyCreatureDied -= Creature_OnAnyCreatureDied;
+            Creature.OnAnyCreatureKilledByDog -= Creature_OnAnyCreatureKilledByDog;
+            DogDigAbility.OnAnyResourceDug -= DogDigAbility_OnAnyResourceDug;
+            DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;
+            DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+            PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShot;
+            Gun.OnAnySurgeReloadSuccess -= Gun_OnAnySurgeReloadSuccess;
+            PlayerShoot.Instance.OnSpinningBulletFail -= PlayerShoot_OnSpinningBulletFail;
+            WorkerAI.OnAnyWorkerAssignedJob -= WorkerAI_OnAnyWorkerAssignedJob;
+            Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;
+            Worker.OnAnyOrbDroppedByWorker -= Worker_OnAnyOrbDroppedByWorker;
+            Worker.OnAnyWorkerDroppedAllCurrencies -= Worker_OnAnyWorkerDroppedAllCurrencies;
+            Dog.Instance.OnDogTypeChanged -= Dog_OnDogTypeChanged;
+            DogAI_Retreiver.OnAnyOrbDroppedByDog -= DogAI_Retreiver_OnAnyOrbDroppedByDog;
+            StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
+            Fire.OnAnySecondaryFireReset -= Fire_OnAnySecondaryFireReset;
+            Fire.Instance.OnFireFuelled -= Fire_OnFireFuelled;
+            Fire.OnFireExtinguishedByPlayerRespawning -= Fire_OnFireExtinguishedByPlayerRespawning;
+            HuntingFlag_PlayerDefined.OnHuntingFlagBackToSafetyCarriedByPlayer -= HuntingFlag_PlayerDefined_OnHuntingFlagBackToSafetyCarriedByPlayer;
+            HuntingFlag_PlayerDefined.OnHuntingFlagTooFarCarriedByPlayer -= HuntingFlag_PlayerDefined_OnHuntingFlagTooFarCarriedByPlayer;
+            Player.Instance.OnPlayerEnteredCamp -= Player_OnPlayerEnteredCamp;
+            Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
+            ParticleCollision.OnAnyParticleBouncedOff -= ParticleCollision_OnAnyParticleBouncedOff;
+        }
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+            CampEditManager.Instance.OnAnyChangeMade -= CampEditManager_OnAnyChangeMade;
+        }
+
+        if (PetDog.Instance != null) {
+            PetDog.Instance.OnPlayerStartedPettingDog -= PetDog_OnPlayerStartedPettingDog;
+            PetDog.Instance.OnPlayerStoppedPettingDog -= PetDog_OnPlayerStoppedPettingDog;
+        }
     }
 }

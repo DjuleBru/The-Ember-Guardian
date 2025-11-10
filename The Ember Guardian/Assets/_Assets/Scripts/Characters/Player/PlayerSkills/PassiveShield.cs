@@ -60,7 +60,7 @@ public class PassiveShield : MonoBehaviour, IDamageable
         OnAnyPassiveShieldDied?.Invoke(this, EventArgs.Empty);
     }
 
-    public void Die() {
+    public void Die(Transform damageSource = null) {
 
     }
 

@@ -54,6 +54,8 @@ public class ActiveWorkerAttackSpeedVisual : MonoBehaviour
     private void OnDestroy() {
         FastTravelTP.OnAnyPlayerWarped -= FastTravelTP_OnAnyPlayerWarped;
         FastTravelTP.OnAnyPlayerWarpedOut -= FastTravelTP_OnAnyPlayerWarpedOut;
+        PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
+        PlayerSkills.Instance.OnActiveSkillDeactivated -= PlayerSkills_OnActiveSkillDeactivated;
         Portal.OnAnyPlayerTeleported -= Portal_OnAnyPlayerTeleported;
     }
 }

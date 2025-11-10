@@ -152,7 +152,7 @@ public class Mob : MonoBehaviour, IDamageable
         }
     }
 
-    public virtual void Die() {
+    public virtual void Die(Transform damageSource = null) {
         dead = true;
         OnMobDied?.Invoke(this, EventArgs.Empty);
         OnAnyMobDied?.Invoke(this, EventArgs.Empty);

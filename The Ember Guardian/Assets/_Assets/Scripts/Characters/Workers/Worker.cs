@@ -220,7 +220,7 @@ public class Worker : Mob {
     }
 
     [Button]
-    public override void Die() {
+    public override void Die(Transform damageSource = null) {
         base.Die();
 
         GetComponent<Collider2D>().enabled = false;

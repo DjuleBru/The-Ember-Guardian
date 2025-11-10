@@ -138,4 +138,8 @@ public class GunFeedbacks : MonoBehaviour
         if (!gun.GetGunSO().triggersShootSFXOnEachBuller) return;
         mmfPlayer.PlayFeedbacks();
     }
+    private void OnDestroy() {
+        PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
+        PlayerSkills.Instance.OnActiveSkillDeactivated -= PlayerSkills_OnActiveSkillDeactivated;
+    }
 }

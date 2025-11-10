@@ -132,6 +132,7 @@ public class CreatureDetectionCollider : MonoBehaviour {
 
     // --- Le reste du script reste inchangé ---
     private void HandleUnAggro() {
+
         if (playerShotCreature) {
             playerShotCreatureTimer -= Time.deltaTime;
             if (playerShotCreatureTimer <= 0) {
@@ -139,7 +140,11 @@ public class CreatureDetectionCollider : MonoBehaviour {
             }
         }
 
-        if (creatureAI.GetAttackTarget() == Player.Instance as IDamageable) {
+        var target = creatureAI.GetAttackTarget();
+        if (creatureAI == null || creatureMovement == null) return;
+        if (target == null) return;
+
+        if (target == Player.Instance as IDamageable) {
 
             bool playerIsFacingCreature = PlayerAim.Instance.GetAimDirFloat() * creatureMovement.GetLastMoveDirFloat() <= 0;
             bool creatureIsFleeingRight = creatureMovement.GetLastMoveDirFloat() > 0 && transform.position.x > 0;
@@ -155,8 +160,9 @@ public class CreatureDetectionCollider : MonoBehaviour {
                 RemoveIDamageableInDetectionRange(Player.Instance);
             }
         }
-        if (creatureAI.GetAttackTarget() is Worker) {
-            Worker worker = creatureAI.GetAttackTarget() as Worker;
+
+        if (target is Worker) {
+            Worker worker = target as Worker;
             bool playerIsFacingWorker = worker.GetComponent<MobMovement>().GetMoveDirFloat() * creatureMovement.GetLastMoveDirFloat() <= 0;
             if (playerIsFacingWorker) {
                 unaggroTimer = unaggroTime;

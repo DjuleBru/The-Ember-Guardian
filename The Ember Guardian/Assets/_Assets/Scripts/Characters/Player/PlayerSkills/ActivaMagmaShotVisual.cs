@@ -30,4 +30,9 @@ public class ActivaMagmaShotVisual : MonoBehaviour
         }
     }
 
+    private void OnDestroy() {
+        PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
+        PlayerSkills.Instance.OnActiveSkillDeactivated -= PlayerSkills_OnActiveSkillDeactivated;
+    }
+
 }

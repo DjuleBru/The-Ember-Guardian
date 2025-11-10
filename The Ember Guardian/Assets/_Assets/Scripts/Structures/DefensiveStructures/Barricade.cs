@@ -52,7 +52,7 @@ public class Barricade : Structure, IDamageable {
         OnAnyBarricadeBuilt?.Invoke(this, EventArgs.Empty);
     }
 
-    public void Die() {
+    public void Die(Transform damageSource = null) {
         OnBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         OnAnyBarricadeDestroyed?.Invoke(this, EventArgs.Empty);
         OnBarricadeBreached?.Invoke(this, EventArgs.Empty);

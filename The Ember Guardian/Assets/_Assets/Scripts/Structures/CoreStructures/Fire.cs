@@ -692,7 +692,7 @@ public class Fire : Structure, IDamageable {
         CheckFireStateDowngrade();
     }
 
-    public void Die() {
+    public void Die(Transform damageSource = null) {
 
     }
 

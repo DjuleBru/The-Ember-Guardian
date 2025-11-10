@@ -16,7 +16,7 @@ public class Animal : Mob
         AnimalManager.Instance.AddAnimalSpawned(this);
     }
 
-    public override void Die() {
+    public override void Die(Transform damageSource = null) {
         base.Die();
 
         AnimalManager.Instance.RemoveAnimalSpawned(this);

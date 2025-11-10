@@ -170,7 +170,7 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
         }
     }
 
-    public void Die() {
+    public void Die(Transform damageSource = null) {
         OnScavengableDepleted?.Invoke(this, EventArgs.Empty);
         BuildObstacle();
         UnassignAllMiners();

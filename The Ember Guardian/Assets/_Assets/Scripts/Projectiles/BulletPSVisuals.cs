@@ -117,4 +117,9 @@ public class BulletPSVisuals : MonoBehaviour
         ParticleSystem.MainModule bulletModule = bulletPS.main;
         bulletModule.startColor = new ParticleSystem.MinMaxGradient(initialBulletPSColor, initialBulletPSColor);
     }
+
+    private void OnDestroy() {
+        PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
+        PlayerSkills.Instance.OnActiveSkillDeactivated -= PlayerSkills_OnActiveSkillDeactivated;
+    }
 }

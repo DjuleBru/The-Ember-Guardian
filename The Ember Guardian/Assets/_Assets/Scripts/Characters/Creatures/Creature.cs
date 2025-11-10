@@ -32,10 +32,16 @@ public class Creature : Mob
     protected bool eliteSpeedCreature;
     protected bool eliteDamageCreature;
 
+    public event EventHandler OnCreatureDied;
+    public static event EventHandler<OnCreatureDiedEventArgs> OnAnyCreatureDied;
+
+    public class OnCreatureDiedEventArgs : EventArgs {
+        public Transform damageSource;
+    }
+
     public event EventHandler OnCreatureEnteredLight;
     public event EventHandler OnCreatureExitedLight;
 
-    public event EventHandler OnCreatureDied;
     public event EventHandler OnCreatureUntargetable;
     public event EventHandler OnCreatureTargetable;
     public event EventHandler OnCreatureIdleSoundTriggered;
@@ -185,10 +191,14 @@ public class Creature : Mob
     }
 
     [Button]
-    public override void Die() {
+    public override void Die(Transform damageSource = null) {
         Debug.Log(this + " Die");
         CreatureDieFunction();
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
+
+        OnAnyCreatureDied?.Invoke(this, new OnCreatureDiedEventArgs {
+            damageSource = damageSource
+        });
     }
 
     private void CreatureDieFunction() {
@@ -473,7 +483,13 @@ public class Creature : Mob
         base.TakeDamage(damage, damageSource, critHit, ignoreTemporaryInvincibility, weakSpotHit);
         bool playerIsDamageSource = (damageSource.GetComponent<Player>() != null);
 
-        if(health <= 0 && damageSource == Dog.Instance.transform) {
+        if (health <= 0) {
+            OnAnyCreatureDied?.Invoke(this, new OnCreatureDiedEventArgs {
+                damageSource = damageSource,
+            });
+        }
+
+        if (health <= 0 && damageSource == Dog.Instance.transform) {
             OnAnyCreatureKilledByDog?.Invoke(this, EventArgs.Empty);
         }
 

@@ -61,5 +61,7 @@ public class ActiveHealOnKills : MonoBehaviour
 
     private void OnDestroy() {
         Creature.OnAnyMobDied -= Creature_OnAnyMobDied;
+        PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
+        PlayerSkills.Instance.OnActiveSkillDeactivated -= PlayerSkills_OnActiveSkillDeactivated;
     }
 }

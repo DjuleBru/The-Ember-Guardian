@@ -389,7 +389,7 @@ public class Player : MonoBehaviour, IDamageable
         return GetAllMenusClosed() && GetPlayerControlInputsEnabled() && !inPortalTriggerArea;
     }
 
-    public void Die() {
+    public void Die(Transform damageSource = null) {
         bool isTutorial = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial;
         if (!isTutorial) {
             PlayerCurrencies.Instance.SetCarryingEmber(false);

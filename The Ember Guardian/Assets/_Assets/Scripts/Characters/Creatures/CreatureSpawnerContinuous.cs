@@ -133,7 +133,7 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
         }
     }
 
-    public void Die() {
+    public void Die(Transform damageSource = null) {
         dead = true;
         GetComponent<Collider2D>().enabled = false;
         OnSpawnerDied?.Invoke(this, EventArgs.Empty);
