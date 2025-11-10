@@ -43,6 +43,7 @@ public class MainMenuUI_StartupMessagePanel : MonoBehaviour
 
     public void SetErasedSaveFilePanel() {
         panelText.font = LocalizationManager.Instance.GetCurrentFont();
+        panelName.font = LocalizationManager.Instance.GetCurrentFont();
         string loadedText = LocalizationManager.Instance.GetLocalizedText("startupMessagePanel_Text");
         loadedText = loadedText.Replace("\\n", "\n");
         panelName.text = LocalizationManager.Instance.GetLocalizedText("startupMessagePanel_Name");

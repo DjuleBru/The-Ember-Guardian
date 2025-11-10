@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class BottomBarMenu : MonoBehaviour
 {
+    [SerializeField] private GameObject creditsGO;
+    private void Start() {
+        if(VersioningManager.Instance.GetIsDemo()) {
+            creditsGO.SetActive(false);
+        }
+    }
     public void OpenSteamPage() {
         string url = "https://store.steampowered.com/app/3570060/The_Ember_Guardian/";
         Application.OpenURL(url);
