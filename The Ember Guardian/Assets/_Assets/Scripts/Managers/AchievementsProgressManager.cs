@@ -88,6 +88,7 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void Start() {
+        if (VersioningManager.Instance.GetIsDemo()) return;
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() ==  SceneLoader.SceneType.Tutorial) {
 
             if(EndLevelArea.Instance != null) {
@@ -591,6 +592,48 @@ public class AchievementsProgressManager : MonoBehaviour
         }
     }
     private void OnDestroy() {
-        
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level || SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) {
+
+            if (EndLevelArea.Instance != null) {
+                EndLevelArea.Instance.OnEndLevelFireLit -= EndLevelArea_OnEndLevelFireLit;
+            }
+
+            LevelUI_Locations.Instance.OnLocationTextShown -= LevelUI_Locations_OnLocationTextShown;
+            LevelManager.Instance.OnLevelSuccess -= LevelManager_OnLevelSuccess;
+            Fire.Instance.OnPrimordialFireLit -= Fire_OnPrimordialFireLit;
+            Creature.OnAnyMobDied -= Creature_OnAnyMobDied;
+            Creature.OnAnyCreatureKilledByDog -= Creature_OnAnyCreatureKilledByDog;
+            DogDigAbility.OnAnyResourceDug -= DogDigAbility_OnAnyResourceDug;
+            DayNightManager.Instance.OnNightStart -= DayNightManager_OnNightStart;
+            DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;
+            PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShot;
+            Gun.OnAnySurgeReloadSuccess -= Gun_OnAnySurgeReloadSuccess;
+            PlayerShoot.Instance.OnSpinningBulletFail -= PlayerShoot_OnSpinningBulletFail;
+            WorkerAI.OnAnyWorkerAssignedJob -= WorkerAI_OnAnyWorkerAssignedJob;
+            Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;
+            Worker.OnAnyOrbDroppedByWorker -= Worker_OnAnyOrbDroppedByWorker;
+            Worker.OnAnyWorkerDroppedAllCurrencies -= Worker_OnAnyWorkerDroppedAllCurrencies;
+            Dog.Instance.OnDogTypeChanged -= Dog_OnDogTypeChanged;
+            DogAI_Retreiver.OnAnyOrbDroppedByDog -= DogAI_Retreiver_OnAnyOrbDroppedByDog;
+            StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
+            Fire.OnAnySecondaryFireReset -= Fire_OnAnySecondaryFireReset;
+            Fire.Instance.OnFireFuelled -= Fire_OnFireFuelled;
+            Fire.OnFireExtinguishedByPlayerRespawning -= Fire_OnFireExtinguishedByPlayerRespawning;
+            HuntingFlag_PlayerDefined.OnHuntingFlagBackToSafetyCarriedByPlayer -= HuntingFlag_PlayerDefined_OnHuntingFlagBackToSafetyCarriedByPlayer;
+            HuntingFlag_PlayerDefined.OnHuntingFlagTooFarCarriedByPlayer -= HuntingFlag_PlayerDefined_OnHuntingFlagTooFarCarriedByPlayer;
+            Player.Instance.OnPlayerEnteredCamp -= Player_OnPlayerEnteredCamp;
+            Player.Instance.OnPlayerExitedCamp -= Player_OnPlayerExitedCamp;
+            ParticleCollision.OnAnyParticleBouncedOff -= ParticleCollision_OnAnyParticleBouncedOff;
+        }
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+            CampEditManager.Instance.OnAnyChangeMade -= CampEditManager_OnAnyChangeMade;
+        }
+
+        if (PetDog.Instance != null) {
+            PetDog.Instance.OnPlayerStartedPettingDog -= PetDog_OnPlayerStartedPettingDog;
+            PetDog.Instance.OnPlayerStoppedPettingDog -= PetDog_OnPlayerStoppedPettingDog;
+        }
     }
 }
