@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1da5760bf3fcd04fb5aecfd92e8fa35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  emptyGO_replaceWishlistButton: {fileID: 1120113061815576298}
   firstSelectedButton: {fileID: 7645037482768296959}
   pausePanel: {fileID: 1968220271406244033}
   fullGameDescriptionPanel: {fileID: 7849242474670339380}
@@ -65,7 +66,6 @@ MonoBehaviour:
   backToMenuText: {fileID: 7462983937572594741}
   ctaText: {fileID: 160649248873599271}
   ctaTextFontAsset: {fileID: 2100000, guid: 87fedd9a9c6afce47a4d1fea49afd430, type: 2}
-  ctaTextFontAsset_JP: {fileID: 2100000, guid: 0433feadbfeae104eb3f4136487c8919, type: 2}
   progressionSavedTextIndicator: {fileID: 7187315685161661026}
   savedTextColor: {r: 0.45490196, g: 0.67058825, b: 0.4392157, a: 1}
   unsavedTextColor: {r: 0.7647059, g: 0.5686275, b: 0.13333334, a: 1}
@@ -3040,6 +3040,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1120113061815576298 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7351123534019808483, guid: f3b889857c3d82c4f9a7374e445dc473, type: 3}
+  m_PrefabInstance: {fileID: 7606332436960061961}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1550507017950621124 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8938412604149942221, guid: f3b889857c3d82c4f9a7374e445dc473, type: 3}

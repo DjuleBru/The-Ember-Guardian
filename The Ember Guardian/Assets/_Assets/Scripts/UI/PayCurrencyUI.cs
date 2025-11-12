@@ -79,8 +79,6 @@ public class PayCurrencyUI : MonoBehaviour
         PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
         currencyIndex = 0;
         payingCurrencyContinuousCoroutine = StartCoroutine(SetPayingCurrencyAfterDelay(delayBetweenDrops, currencyTypeToPay));
-
-        //UICurrencyManager.PlayerInventoryUI.SetPayingCurrency(this, currencyTypeToPay, true);
     }
 
     private IEnumerator SetPayingCurrencyAfterDelay(float delay, PlayerCurrencies.CurrencyType currencyTypeToPay) {

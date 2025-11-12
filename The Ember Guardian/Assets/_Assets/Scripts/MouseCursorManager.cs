@@ -392,6 +392,8 @@ public class MouseCursorManager : MonoBehaviour
         if (isUsingGamepad) {
             ShowMouse(false);
             ShowWeaponAndMouseCursorGO(false);
+        } else {
+            ShowWeaponAndMouseCursorGO(true);
         }
 
         if (AllMenusClosed()) return;

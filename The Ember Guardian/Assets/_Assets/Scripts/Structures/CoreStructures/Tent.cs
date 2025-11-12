@@ -49,6 +49,8 @@ public class Tent : Structure
         if (GetHasCurrenciesToPay() && playerInteracting && Player.Instance.GetHP() < PlayerStats.Instance.GetMaxHP()) {
             payCurrencyUI.SetPlayerInteractingContinuous(.2f); // Continue l'interaction
         } else {
+
+            Debug.Log("Player stopped healing : GetHasCurrenciesToPay() " + GetHasCurrenciesToPay() + " playerInteracting " + playerInteracting + " Player.Instance.GetHP() < PlayerStats.Instance.GetMaxHP() " + (Player.Instance.GetHP() < PlayerStats.Instance.GetMaxHP()));
             payCurrencyUI.SetPlayerInteracting(false);
         }
     }
@@ -86,7 +88,6 @@ public class Tent : Structure
         fastTravelTP.gameObject.SetActive(true);
     }
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
-        //Debug.Log(currentStructureInteractionType);
         if (currentStructureInteractionType == StructureInteractionType.primaryFunction) {
             TriggerStructurePrimaryFunction();
             return;

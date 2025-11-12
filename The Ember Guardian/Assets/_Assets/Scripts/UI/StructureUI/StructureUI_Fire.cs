@@ -209,7 +209,14 @@ public class StructureUI_Fire : StructureUI
 
     private void UpdateTargetBarAmount() {
         float currentStateFuelLevel = fire.GetCurrentFuelLevel() - currentFuelLowLimit;
-        targetBarAmount = Mathf.FloorToInt(currentStateFuelLevel / tickFuelValue) +1;
+
+        // low level maxBarAmount = 6
+        if(maxBarAmount > 6) {
+            targetBarAmount = Mathf.Clamp(Mathf.FloorToInt(currentStateFuelLevel / tickFuelValue) + 1, 0, maxBarAmount);
+        } else {
+            targetBarAmount = Mathf.FloorToInt(currentStateFuelLevel / tickFuelValue) + 1;
+        }
+
     }
 
     private void RefreshBarState() {
@@ -242,9 +249,16 @@ public class StructureUI_Fire : StructureUI
         currentFuelDelta = currentFuelHighLimit - currentFuelLowLimit;
 
         maxBarAmount = Mathf.FloorToInt(currentFuelDelta / tickFuelValue);
+        //maxBarAmount = Mathf.FloorToInt(currentFuelDelta / tickFuelValue) + 1;
         progressBar.sizeDelta = new Vector2(progressTemplateWidth, maxBarAmount * progressTemplateHeight);
+
         RefreshBackgroundProgressBar(maxBarAmount);
         RefreshFireSlotVisuals();
+
+        //Debug.Log("currentFuelHighLimit " + currentFuelHighLimit);
+        //Debug.Log("currentFuelLowLimit " + currentFuelLowLimit);
+        //Debug.Log("currentFuelDelta " + currentFuelDelta);
+        //Debug.Log("maxBarAmount " + maxBarAmount);
 
         OnFireMaxBarAmountChanged?.Invoke(this, EventArgs.Empty);
 
@@ -275,7 +289,6 @@ public class StructureUI_Fire : StructureUI
         for (int i = 0; i < barAmount; i++) {
 
             PlayerUI_TickTemplate[] fireTickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>(true);
-
             if (fireTickArray.Length > maxBarAmount) {
                 RefreshBarState();
 

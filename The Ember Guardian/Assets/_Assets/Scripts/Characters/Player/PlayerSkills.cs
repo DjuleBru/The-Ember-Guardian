@@ -156,7 +156,7 @@ public class PlayerSkills : MonoBehaviour
             SkillItem skillItem = new SkillItem();
             skillItem.Initialize(randomPassiveSkillSO);
             skillItem.currentLevel = initialPassiveSkillLevel;
-            AddPassiveSkill(skillItem);
+            AddPassiveSkill(skillItem, true, true);
         }
 
 
@@ -563,7 +563,7 @@ public class PlayerSkills : MonoBehaviour
         }
     }
 
-    public void AddPassiveSkill(SkillItem skillItem, bool addedFromLoad = false) {
+    public void AddPassiveSkill(SkillItem skillItem, bool addedFromLoad = false, bool triggerSFX = true) {
 
         SkillSO skillSO = skillItem.GetSkillSO();
         SkillItem skillItemCopy = new SkillItem();
@@ -587,7 +587,7 @@ public class PlayerSkills : MonoBehaviour
 
         OnPassiveSkillAdded?.Invoke(this, new OnSkillAddedEventArgs {
             skillItemAdded = skillItemCopy,
-            triggerAddSFX = !addedFromLoad,
+            triggerAddSFX = triggerSFX,
         });
 
         ApplyPassiveSkillEffect(skillItem, addedFromLoad);

@@ -23,7 +23,7 @@ public class SoundManager : MonoBehaviour
     private float criticalFireTickRemovedMinDelay = .3f;
 
     private float lastOrbSoundTime = 0f;
-    private float orbSoundCooldown = 0.05f; // 50ms
+    private float orbSoundCooldown = 0.1f; // 50ms
 
     private void Awake() {
         Instance = this;

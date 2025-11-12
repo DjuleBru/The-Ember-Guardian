@@ -50,7 +50,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -178,7 +178,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -306,7 +306,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -438,7 +438,6 @@ MonoBehaviour:
   cycleTransitionWhoosh: {fileID: 1255502220591178360}
   dayAudioClip: {fileID: 8300000, guid: 38c4f314ad163b84787dfdffb1469918, type: 3}
   nightAudioClip: {fileID: 8300000, guid: 5396d31f09ed7a542bc0c8ccf7e20904, type: 3}
-  cavernAudioClip: {fileID: 0}
   soundRefs: {fileID: 11400000, guid: 310b2c272c2ebc249808f70cfdd0f0fd, type: 2}
   audioClipVolume_Day: 0.1
   audioClipVolume_Night: 0.2
@@ -493,7 +492,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

@@ -82,6 +82,7 @@ public class Worker : Mob {
         OnAnyWorkerRecruited?.Invoke(this, EventArgs.Empty);
     }
 
+    [Button]
     public void CollectCurrency(PlayerCurrencies.CurrencyType currencyType) {
         if (!collectedCurrencies.ContainsKey(currencyType)) {
             collectedCurrencies[currencyType] = 0;

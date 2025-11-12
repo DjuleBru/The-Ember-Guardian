@@ -188,13 +188,6 @@ public class Fire : Structure, IDamageable {
         }
     }
 
-    private void ResetSecondaryFire() {
-        fuelLevel = wildFuelTreshold - 1;
-        ChangeState(State.calm);
-        SetStructurePrimaryFunctionUnlocked(false);
-        OnAnySecondaryFireReset?.Invoke(this, EventArgs.Empty);
-    }
-
     private void Update() {
         HandleFuelDecrease();
         HandleFuelFireCooldown();
@@ -222,7 +215,12 @@ public class Fire : Structure, IDamageable {
         CheckFireSecondaryFunctionInteractable();
         debugFuelLevel = fuelLevel;
     }
-
+    private void ResetSecondaryFire() {
+        fuelLevel = wildFuelTreshold - 1;
+        ChangeState(State.calm);
+        SetStructurePrimaryFunctionUnlocked(false);
+        OnAnySecondaryFireReset?.Invoke(this, EventArgs.Empty);
+    }
     private void LoadStats() {
         orbFuelValue = StructureStats.Instance.GetOrbFuelValue();
 
@@ -448,6 +446,7 @@ public class Fire : Structure, IDamageable {
     private void CheckFireFeedable() {
         if (!isMainFire) return;
         if (lockFireInteractionFunctionsUpdate) return;
+        if (extractingEmber) return;
 
         if(fuelLevel + fuelTickValue <= currentMaxFuelTreshold) {
             SetStructurePrimaryFunctionUnlocked(true);
@@ -520,6 +519,8 @@ public class Fire : Structure, IDamageable {
         if (isEndLevelFire) return;
         if (isSecondaryFire) return;
 
+        //Debug.Log("fuelLevel " + fuelLevel);
+        //Debug.Log("currentMaxFuelTreshold - fuelTickValue*3 " + (currentMaxFuelTreshold - fuelTickValue * 3));
         if(fuelLevel > (currentMaxFuelTreshold - fuelTickValue*3)) {
             EnableMainFireEmberExtraction(true);
 

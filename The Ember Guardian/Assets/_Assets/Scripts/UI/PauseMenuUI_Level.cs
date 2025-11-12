@@ -7,18 +7,66 @@ using UnityEngine.UI;
 
 public class PauseMenuUI_Level : PauseMenuUI {
 
+    [SerializeField] protected GameObject restartGameButtonGO;
+    [SerializeField] protected Button_Confirm buttonConfirm_RestartLevel;
     [SerializeField] protected Button_Confirm buttonConfirm_BackToHub;
     [SerializeField] protected TextMeshProUGUI backToHubText;
+    [SerializeField] protected TextMeshProUGUI restartLevelText;
 
+    [SerializeField] protected Button manualButton;
+    [SerializeField] protected Button backToHubButton;
+
+    protected bool confirmRestartLevel;
     protected bool confirmBackToHub;
 
     protected override void Start() {
         base.Start();
+
+        //SetButtonNavigations();
+
         buttonConfirm_BackToHub.OnButtonDeselected += ButtonConfirm_BackToHub_OnButtonDeselected;
+        buttonConfirm_BackToHub.OnButtonDeHovered += ButtonConfirm_BackToHub_OnButtonDeHovered;
+        buttonConfirm_RestartLevel.OnButtonDeselected += ButtonConfirm_RestartLevel_OnButtonDeselected;
+        buttonConfirm_RestartLevel.OnButtonDeHovered += ButtonConfirm_RestartLevel_OnButtonDeHovered;
 
         backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_backToHub");
         backToHubText.font = LocalizationManager.Instance.GetCurrentFont();
     }
+
+    private void ButtonConfirm_RestartLevel_OnButtonDeHovered(object sender, EventArgs e) {
+        confirmRestartLevel = false;
+        restartLevelText.text = LocalizationManager.Instance.GetLocalizedText("menu_restartLevel");
+        restartLevelText.font = LocalizationManager.Instance.GetCurrentFont();
+        progressionSavedTextIndicator.SetTrigger("Hide");
+    }
+
+    private void ButtonConfirm_BackToHub_OnButtonDeHovered(object sender, EventArgs e) {
+        confirmBackToHub = false;
+        backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_backToHub");
+        backToHubText.font = LocalizationManager.Instance.GetCurrentFont();
+        progressionSavedTextIndicator.SetTrigger("Hide");
+    }
+
+    private void ButtonConfirm_RestartLevel_OnButtonDeselected(object sender, EventArgs e) {
+        confirmRestartLevel = false;
+        restartLevelText.text = LocalizationManager.Instance.GetLocalizedText("menu_restartLevel");
+        restartLevelText.font = LocalizationManager.Instance.GetCurrentFont();
+        progressionSavedTextIndicator.SetTrigger("Hide");
+    }
+
+    //private void SetButtonNavigations() {
+    //    Navigation manualButtonNav = manualButton.navigation;
+    //    Navigation backToHubButtonNav = backToHubButton.navigation;
+
+    //    if (VersioningManager.Instance.GetIsDemo()) {
+    //        restartGameButtonGO.SetActive(false);
+    //        manualButtonNav.selectOnDown = backToHubButton;
+    //        backToHubButtonNav.selectOnDown = manualButton;
+
+    //        manualButton.navigation = manualButtonNav;
+    //        backToHubButton.navigation = backToHubButtonNav;
+    //    }
+    //}
 
     private void ButtonConfirm_BackToHub_OnButtonDeselected(object sender, System.EventArgs e) {
         confirmBackToHub = false;
@@ -67,6 +115,23 @@ public class PauseMenuUI_Level : PauseMenuUI {
 
         }
     }
+    public void RestartLevelButton() {
+
+        if (confirmRestartLevel) {
+
+            ShowPauseMenu(false);
+            SavingManager_Level.Instance.DeleteLevelSave();
+            SceneLoader.Instance.LoadLevel(LevelManager.Instance.GetLevelSO(), 1.5f);
+
+        }
+        else {
+
+            confirmRestartLevel = true;
+            restartLevelText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
+            restartLevelText.font = LocalizationManager.Instance.GetCurrentFont();
+            ShowProgressionWillBeLost();
+        }
+    }
 
     public void ReturnToHubFromGame() {
         MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber(0f);
@@ -103,7 +168,6 @@ public class PauseMenuUI_Level : PauseMenuUI {
 
     private void ShowProgressionWillBeLost() {
         progressionSavedTextIndicator.SetTrigger("Show");
-
 
         progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("menu_progressionWillBeLost");
         progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = progressionLostTextColor;

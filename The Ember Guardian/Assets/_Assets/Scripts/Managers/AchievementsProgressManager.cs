@@ -535,23 +535,26 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void LevelManager_OnLevelSuccess(object sender, System.EventArgs e) {
-        if (LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel[0] == HubMerchant.HubMerchantType.MushroomMerchant) {
-            mushroomMerchantUnlocked_ACHIEVEMENT = true;
-            ES3.Save("mushroomMerchantUnlocked_ACHIEVEMENT", true);
+        if(LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel.Count > 0) {
+            if (LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel[0] == HubMerchant.HubMerchantType.MushroomMerchant) {
+                mushroomMerchantUnlocked_ACHIEVEMENT = true;
+                ES3.Save("mushroomMerchantUnlocked_ACHIEVEMENT", true);
 
-            if(architectTableUnlocked_ACHIEVEMENT) {
-                TryUnlockSuccess("ALL_NPC_UNLOCKED");
+                if (architectTableUnlocked_ACHIEVEMENT) {
+                    TryUnlockSuccess("ALL_NPC_UNLOCKED");
+                }
+            }
+
+            if (LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel[0] == HubMerchant.HubMerchantType.ArchitectTable) {
+                architectTableUnlocked_ACHIEVEMENT = true;
+                ES3.Save("architectTableUnlocked_ACHIEVEMENT", architectTableUnlocked_ACHIEVEMENT);
+
+                if (mushroomMerchantUnlocked_ACHIEVEMENT) {
+                    TryUnlockSuccess("ALL_NPC_UNLOCKED");
+                }
             }
         }
-
-        if (LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel[0] == HubMerchant.HubMerchantType.ArchitectTable) {
-            architectTableUnlocked_ACHIEVEMENT = true;
-            ES3.Save("architectTableUnlocked_ACHIEVEMENT", architectTableUnlocked_ACHIEVEMENT);
-
-            if (mushroomMerchantUnlocked_ACHIEVEMENT) {
-                TryUnlockSuccess("ALL_NPC_UNLOCKED");
-            }
-        }
+      
     }
 
     private void LevelUI_Locations_OnLocationTextShown(object sender, System.EventArgs e) {

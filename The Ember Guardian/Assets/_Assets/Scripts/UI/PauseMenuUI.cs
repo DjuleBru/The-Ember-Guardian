@@ -11,6 +11,7 @@ public class PauseMenuUI : MonoBehaviour
     public static PauseMenuUI Instance;
     public bool isPaused {  get; protected set; }
 
+    [SerializeField] protected GameObject emptyGO_replaceWishlistButton;
     [SerializeField] protected GameObject firstSelectedButton;
     [SerializeField] protected GameObject pausePanel;
     [SerializeField] protected GameObject fullGameDescriptionPanel;
@@ -71,9 +72,11 @@ public class PauseMenuUI : MonoBehaviour
         }
 
         if (!VersioningManager.Instance.GetIsDemo()) {
+            emptyGO_replaceWishlistButton.gameObject.SetActive(true);
             ctaButton.gameObject.SetActive(false);
             videoTipsButton.gameObject.SetActive(true);
         } else {
+            emptyGO_replaceWishlistButton.gameObject.SetActive(false);
             ctaButton.gameObject.SetActive(true);
             videoTipsButton.gameObject.SetActive(false);
         }

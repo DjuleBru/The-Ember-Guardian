@@ -54,6 +54,13 @@ public class SavingManager_Level : MonoBehaviour
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
     }
 
+    public void DeleteLevelSave() {
+        if (ES3.FileExists("LevelSave.es3")) {
+            ES3.DeleteFile("LevelSave.es3");
+        }
+    }
+
+
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         if (firstDawnAfterGameStart) {
             firstDawnAfterGameStart = false;
@@ -792,7 +799,7 @@ public class SavingManager_Level : MonoBehaviour
             item.Initialize(PlayerSkills.Instance.GetSkillSO(s.skillType));
             item.currentLevel = s.level;
 
-            PlayerSkills.Instance.AddPassiveSkill(item, true);
+            PlayerSkills.Instance.AddPassiveSkill(item, true, false);
         }
 
         PlayerSkills.Instance.SetPlayerSkillsInitialized();
