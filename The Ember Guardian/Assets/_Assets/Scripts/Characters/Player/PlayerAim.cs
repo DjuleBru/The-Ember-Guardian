@@ -837,6 +837,8 @@ public class PlayerAim : MonoBehaviour
     }
 
     public Vector3 GetMouseWorldPosition(Vector3 screenPosition, Camera worldCamera) {
+        if (worldCamera == null) return Vector3.zero;
+
         Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
         return worldPosition;
     }

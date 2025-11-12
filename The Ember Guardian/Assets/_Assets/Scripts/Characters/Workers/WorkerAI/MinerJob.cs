@@ -44,6 +44,7 @@ public class MinerJob : WorkerJob {
         attackRangeRandomized = UnityEngine.Random.Range(attackRange - attackRange / 4, attackRange + attackRange / 4);
     }
 
+
     private void Update() {
         closestCreature = workerDetectionCollider.GetClosestCreature();
 
@@ -182,6 +183,11 @@ public class MinerJob : WorkerJob {
 
     }
 
+    private void Worker_OnWorkerDied(object sender, EventArgs e) {
+        Debug.Log("Worker_OnWorkerDied");
+        UnAssignScavengable();
+    }
+
     private void DayIdleStateUpdate() {
         RoamInCampCenter();
 
@@ -296,6 +302,7 @@ public class MinerJob : WorkerJob {
     }
 
     public void UnAssignScavengable() {
+        Debug.Log("UnAssignScavengable " + assignedScavengable);
         if (assignedScavengable == null) return;
 
         assignedScavengable.UnassignMiner(this);
@@ -318,6 +325,7 @@ public class MinerJob : WorkerJob {
 
     public override void InitializeJob() {
         base.InitializeJob();
+        worker.OnWorkerDied += Worker_OnWorkerDied;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
         ScavengableObstacle.OnAnyScavengableObstacleActivatedMining += ScavengableObstacle_OnAnyScavengableObstacleActivatedMining;

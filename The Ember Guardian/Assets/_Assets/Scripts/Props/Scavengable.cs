@@ -281,6 +281,7 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     }
 
     public void UnassignMiner(MinerJob miner) {
+        Debug.Log("UnassignMiner " + miner);
         MinerStopsMining(miner);
 
         if (minerAssignedList.Contains(miner)) {

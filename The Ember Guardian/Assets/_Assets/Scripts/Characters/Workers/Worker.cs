@@ -36,6 +36,7 @@ public class Worker : Mob {
     public static event EventHandler OnAnyWorkerRecruited;
     public static event EventHandler OnAnyWorkerAssignedHunter;
     public static event EventHandler OnAnyWorkerDied;
+    public event EventHandler OnWorkerDied;
     public event EventHandler OnWorkerHovered;
     public event EventHandler OnWorkerUnhovered;
     public event EventHandler OnWorkerCollectedCurrency;
@@ -227,6 +228,7 @@ public class Worker : Mob {
         GetComponent<Collider2D>().enabled = false;
         GetComponent<Rigidbody2D>().gravityScale = 0;
         WorkerManager.Instance.RemoveWorker(this);
+        OnWorkerDied?.Invoke(this, EventArgs.Empty);
         OnAnyWorkerDied?.Invoke(this, EventArgs.Empty);
 
         StartCoroutine(DestroyGameObjectAfterDelay(1f));

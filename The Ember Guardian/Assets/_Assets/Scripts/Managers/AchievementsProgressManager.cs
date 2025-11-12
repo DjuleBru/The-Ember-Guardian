@@ -95,7 +95,10 @@ public class AchievementsProgressManager : MonoBehaviour
                 EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
             }
 
-            LevelUI_Locations.Instance.OnLocationTextShown += LevelUI_Locations_OnLocationTextShown;
+            if(LevelUI_Locations.Instance != null) {
+                LevelUI_Locations.Instance.OnLocationTextShown += LevelUI_Locations_OnLocationTextShown;
+            }
+
             LevelManager.Instance.OnLevelSuccess += LevelManager_OnLevelSuccess;
             Fire.Instance.OnPrimordialFireLit += Fire_OnPrimordialFireLit;
             Creature.OnAnyCreatureDied += Creature_OnAnyCreatureDied;
@@ -602,7 +605,10 @@ public class AchievementsProgressManager : MonoBehaviour
                 EndLevelArea.Instance.OnEndLevelFireLit -= EndLevelArea_OnEndLevelFireLit;
             }
 
-            LevelUI_Locations.Instance.OnLocationTextShown -= LevelUI_Locations_OnLocationTextShown;
+            if(LevelUI_Locations.Instance != null) {
+                LevelUI_Locations.Instance.OnLocationTextShown -= LevelUI_Locations_OnLocationTextShown;
+            }
+
             LevelManager.Instance.OnLevelSuccess -= LevelManager_OnLevelSuccess;
             Fire.Instance.OnPrimordialFireLit -= Fire_OnPrimordialFireLit;
             Creature.OnAnyCreatureDied -= Creature_OnAnyCreatureDied;
