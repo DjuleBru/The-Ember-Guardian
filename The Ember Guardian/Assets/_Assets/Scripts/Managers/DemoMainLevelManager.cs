@@ -50,7 +50,7 @@ public class DemoMainLevelManager : MonoBehaviour
     private bool ammoCraftCollected;
     private bool recruitWorkerTooltipShown;
     private bool tabMenuTooltipShown;
-    private bool surgeWindow;
+    private bool firstSurgeReloadTriggered;
 
     private int demoLevelLostAmount;
     private bool demoMainLevelTutorialCompleted;
@@ -168,11 +168,11 @@ public class DemoMainLevelManager : MonoBehaviour
     private void PlayerShoot_OnPlayerShot(object sender, EventArgs e) {
         if (!demoMainLevelTutorialCompleted) return;
         if (demoFirstLevelCompleted) return;
-        if (surgeWindow) return;
+        if (firstSurgeReloadTriggered) return;
 
         PlayerShoot.Instance.SetCanStartSurgeWindow(true);
         PlayerShoot.Instance.SurgeWindowNextBullet(true);
-        surgeWindow = true;
+        firstSurgeReloadTriggered = true;
     }
 
     private void GameInput_OnPlayerSecondaryGunSelected(object sender, EventArgs e) {

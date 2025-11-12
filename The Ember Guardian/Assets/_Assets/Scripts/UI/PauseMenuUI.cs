@@ -72,10 +72,10 @@ public class PauseMenuUI : MonoBehaviour
 
         if (!VersioningManager.Instance.GetIsDemo()) {
             ctaButton.gameObject.SetActive(false);
-            videoTipsButton.gameObject.SetActive(true);
+            //videoTipsButton.gameObject.SetActive(true);
         } else {
             ctaButton.gameObject.SetActive(true);
-            videoTipsButton.gameObject.SetActive(false);
+            //videoTipsButton.gameObject.SetActive(false);
         }
 
         backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_mainMenu");
@@ -273,6 +273,7 @@ public class PauseMenuUI : MonoBehaviour
         else {
             confirmBackToMenu = true;
             backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
+            Debug.Log(backToMenuText.text);
             SetProgressionSaved(false);
             progressionSavedTextIndicator.SetTrigger("Show");
         }

@@ -36,6 +36,7 @@ public class PauseMenuUI_Level : PauseMenuUI {
 
         else {
             confirmBackToMenu = true;
+            backToMenuText.text = LocalizationManager.Instance.GetLocalizedText("menu_confirm");
             ShowProgressionSavedText();
             progressionSavedTextIndicator.SetTrigger("Show");
         }

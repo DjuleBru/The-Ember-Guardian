@@ -209,7 +209,13 @@ public class StructureUI_Fire : StructureUI
 
     private void UpdateTargetBarAmount() {
         float currentStateFuelLevel = fire.GetCurrentFuelLevel() - currentFuelLowLimit;
-        targetBarAmount = Mathf.FloorToInt(currentStateFuelLevel / tickFuelValue) +1;
+
+        if(maxBarAmount > 6) {
+            targetBarAmount = Mathf.Clamp(Mathf.FloorToInt(currentStateFuelLevel / tickFuelValue) + 1,0,maxBarAmount);
+        } else {
+            targetBarAmount = Mathf.FloorToInt(currentStateFuelLevel / tickFuelValue) + 1;
+        }
+
     }
 
     private void RefreshBarState() {

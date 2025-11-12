@@ -125,7 +125,9 @@ public class AchievementsProgressManager : MonoBehaviour
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
-            CampEditManager.Instance.OnAnyChangeMade += CampEditManager_OnAnyChangeMade;
+            if (CampEditManager.Instance != null) {
+                CampEditManager.Instance.OnAnyChangeMade += CampEditManager_OnAnyChangeMade;
+            }
         }
 
         if(PetDog.Instance != null) {
@@ -628,7 +630,10 @@ public class AchievementsProgressManager : MonoBehaviour
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
-            CampEditManager.Instance.OnAnyChangeMade -= CampEditManager_OnAnyChangeMade;
+            if(CampEditManager.Instance != null) {
+                CampEditManager.Instance.OnAnyChangeMade -= CampEditManager_OnAnyChangeMade;
+            }
+
         }
 
         if (PetDog.Instance != null) {

@@ -11,8 +11,9 @@ public class DemoLevelIntroManager : MonoBehaviour {
 
     private bool playerWithinCamp;
     private bool dayNightCyclePaused;
-    private bool ammoCollected;
+    private bool chestOpened;
     private bool playerReloaded;
+    private bool playerLoadedBelt;
 
     public static DemoLevelIntroManager Instance;
 
@@ -51,8 +52,11 @@ public class DemoLevelIntroManager : MonoBehaviour {
     }
 
     private void InitialChest_OnChestOpened(object sender, System.EventArgs e) {
-        LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.OpenChest, LevelUI_ObjectiveUI.SubObjectiveType.LoadBelt);
-        ammoCollected = true;
+
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.OpenChest);
+
+        LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(new List<LevelUI_ObjectiveUI.SubObjectiveType> { LevelUI_ObjectiveUI.SubObjectiveType.LoadBelt, LevelUI_ObjectiveUI.SubObjectiveType.ReloadGun});
+        chestOpened = true;
     }
 
     private void Update() {
@@ -74,7 +78,11 @@ public class DemoLevelIntroManager : MonoBehaviour {
     }
 
     private void PlayerShoot_OnPlayerAmmoRefilled(object sender, PlayerShoot.OnAmmoRefilledEventArgs e) {
-        LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.LoadBelt, LevelUI_ObjectiveUI.SubObjectiveType.ReloadGun);
+        if (playerLoadedBelt) return;
+
+        playerLoadedBelt = true;
+        LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LoadBelt);
+        CheckNightStart();
     }
 
     private void PlayerInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -96,8 +104,12 @@ public class DemoLevelIntroManager : MonoBehaviour {
 
         List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectiveTypes = new List<LevelUI_ObjectiveUI.SubObjectiveType> {
             LevelUI_ObjectiveUI.SubObjectiveType.HeadBackToCamp,
-            LevelUI_ObjectiveUI.SubObjectiveType.OpenChest,
         };
+
+
+        if(!chestOpened) {
+            subObjectiveTypes.Add(LevelUI_ObjectiveUI.SubObjectiveType.OpenChest);
+        }
 
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveTypes);
     }
@@ -109,6 +121,7 @@ public class DemoLevelIntroManager : MonoBehaviour {
     private void CheckNightStart() {
         if (!playerWithinCamp) return;
         if (!playerReloaded) return;
+        if (!playerLoadedBelt) return;
 
         StartCoroutine(StartNightAfterDelay());
     }
