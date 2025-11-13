@@ -54,6 +54,11 @@ public class CreaturesManager : MonoBehaviour
         Creature closestCreatureInRadius = null;
 
         foreach (Creature creature in creaturesSpawnedList) {
+            if(creature == null) {
+                RemoveCreatureSpawned(creature);
+                continue;
+            }
+
             float distanceToCreature = Mathf.Abs(creature.transform.position.x - position.x);
             bool creatureIsOneHitAwayFromDeathAndAlreadyTargeted = creature.GetCreatureTargeted() && creature.GetCreatureHealth() <= damage;
             

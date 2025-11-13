@@ -22,6 +22,10 @@ public class PlayerTooltipManager : MonoBehaviour
     private bool shootBarricadeShown;
     private bool secondaryWeaponAbilityShown;
 
+    private bool prepareSwapDogTooltip;
+    private bool selectOtherDogTooltipShown;
+    private bool selectOtherDogTooltipBeingShown;
+
     private int tryReloadAttemptAmount;
 
     #region GUN SECONDARY ABILITIES INSTRUCTIONS
@@ -65,11 +69,14 @@ public class PlayerTooltipManager : MonoBehaviour
         PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
         HuntingFlag_PlayerDefined.OnHuntingFlagTooFarCarriedByPlayer += HuntingFlag_PlayerDefined_OnHuntingFlagTooFar;
         ParticleCollision.OnAnyParticleHitBarricade += ParticleCollision_OnAnyParticleHitBarricade;
+        Dog.Instance.OnDogTypeChanged += Dog_OnDogTypeChanged;
 
         gunSOAbilityPreparedList = ES3.Load("gunSOAbilityPreparedList", new List<GunSO>());
         selectOtherGunTooltipShown = ES3.Load("selectOtherGunTooltipShown", false);
         huntingFlagTooFarShown = ES3.Load("huntingFlagTooFarShown", false);
         shootBarricadeShown = ES3.Load("shootBarricadeShown", false);
+        selectOtherDogTooltipShown = ES3.Load("selectOtherDogTooltipShown", false);
+        prepareSwapDogTooltip = ES3.Load("prepareSwapDogTooltip", false);
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
 
@@ -159,6 +166,12 @@ public class PlayerTooltipManager : MonoBehaviour
             TryShowChangeGunTooltip();
 
         }
+
+        if (hubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.DogTamer) {
+
+            TryShowChangeDogTooltip();
+
+        }
     }
 
     private void TryShowGunSecondaryAbilityTooltip() {
@@ -223,6 +236,26 @@ public class PlayerTooltipManager : MonoBehaviour
         selectOtherGunTooltipShown = true;
         selectOtherGunTooltipBeingShown = true;
         ES3.Save("selectOtherGunTooltipShown", true);
+    }
+
+    private void TryShowChangeDogTooltip() {
+        if (!prepareSwapDogTooltip) return;
+        if (selectOtherDogTooltipShown) return;
+
+        PrepareTooltipInstruction(LocalizationManager.Instance.GetLocalizedText("menu_press"), LocalizationManager.Instance.GetLocalizedText("tooltip_changeDogType"), InputControlIcons.Control.OpenPlayerMenu, 99f);
+        StartCoroutine(ShowPreparedTooltipInstructionAfterDelay(1.5f));
+
+        selectOtherDogTooltipBeingShown = true;
+        selectOtherDogTooltipShown = true;
+        prepareSwapDogTooltip = false;
+        ES3.Save("selectOtherDogTooltipShown", true);
+        ES3.Save("prepareSwapDogTooltip", false);
+    }
+
+    private void Dog_OnDogTypeChanged(object sender, Dog.OnDogTypeChangedEventArgs e) {
+        if (!selectOtherDogTooltipBeingShown) return;
+        tooltipLeft.HideTooltip(1f);
+        selectOtherDogTooltipBeingShown = false;
     }
 
     private void GameInput_OnWeaponSecondaryAbilityPerformed(object sender, System.EventArgs e) {

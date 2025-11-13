@@ -432,9 +432,12 @@ MonoBehaviour:
   roamChangeDestinationRate: 1.5
   roamRadius: 2
   repositionCooldown: 0
-  distanceToDropOnTarget: 2.5
-  distanceToDropOnTargetRandomizer: 1.5
-  playerYTargetAltitude: 1.5
+  distanceToDropOnTarget: 7
+  distanceToDropOnTargetRandomizer: 2
+  playerYTargetAltitude: 1
+  moveSpeedBuffWhenDropping: 3
+  diveAttack: 1
+  diveAttackFollowTargetStrength: 3
 --- !u!4 &6325799707120231391 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1304696204632015260, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
@@ -457,3 +460,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c7858aa2cdeea45b26389f08103b9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creatureAI_Flying: {fileID: 4559363108854811627}

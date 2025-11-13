@@ -79,6 +79,7 @@ public class MobAttack : MonoBehaviour
     }
 
     public virtual void Attack() {
+        Debug.Log("Attack");
         OnMobAttack?.Invoke(this, EventArgs.Empty);
         if(isAnimatedAttack) {
             StartCoroutine(AnimatedAttackCoroutine(totalAttackAnimationTime));
@@ -90,6 +91,7 @@ public class MobAttack : MonoBehaviour
         } else if (isStaticProjectileAttack) {
             StartCoroutine(SpawnStaticProjectileAfterDelay(attackAnimationDelay, totalAttackAnimationTime));
         } else {
+            Debug.Log("DealDamageAfterDelay");
             StartCoroutine(DealDamageAfterDelay(attackAnimationDelay, totalAttackAnimationTime));
         }
     }
@@ -272,7 +274,7 @@ public class MobAttack : MonoBehaviour
     }
 
     public virtual void DealDamage() {
-
+        Debug.Log("DealDamage");
         if (attackTargetIDamageable != null) {
             attackTargetIDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
         }
@@ -304,7 +306,6 @@ public class MobAttack : MonoBehaviour
     }
 
     public void SetAttackTarget(IDamageable iDamageable) {
-        //Debug.Log("SetAttackTarget");
 
         if (GetIsRangedAttack() && attackTimer == 0) {
             attackTimer = UnityEngine.Random.Range(0, attackCooldown / 3);
@@ -314,6 +315,7 @@ public class MobAttack : MonoBehaviour
         previousAttackTargetIDamageable = attackTargetIDamageable;
         attackTargetGameObject = (attackTargetIDamageable as MonoBehaviour).gameObject;
 
+        //Debug.Log("SetAttackTarget " + attackTargetGameObject);
         OnAttackTargetSet?.Invoke(this, EventArgs.Empty);
     }
 

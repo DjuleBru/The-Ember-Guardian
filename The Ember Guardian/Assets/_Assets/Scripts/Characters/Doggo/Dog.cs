@@ -174,6 +174,9 @@ public class Dog : MonoBehaviour
         OnDogTypeChanged?.Invoke(this, new OnDogTypeChangedEventArgs {
             selectedFromMenu = false
         });
+
+        // For Hub (TooltipManager)
+        ES3.Save("prepareSwapDogTooltip", true);
     }
 
     public List<DogAI> GetDogAIList() {

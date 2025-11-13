@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +12,15 @@ public class CreatureAI_Flying : CreatureAI
     [SerializeField] private float distanceToDropOnTarget;
     [SerializeField] private float distanceToDropOnTargetRandomizer;
     [SerializeField] private float playerYTargetAltitude = 1.5f;
+    [SerializeField] private float moveSpeedBuffWhenDropping = 1.5f;
+    [SerializeField] private bool diveAttack;
+    [SerializeField] private float diveAttackFollowTargetStrength = 2f;
+    private bool diveAttackTargetSet;
+
     private float distanceToDropOnTargetRandomized;
     private float repositionTimer; // Temps entre le repositionnement après une attaque
     private bool isRepositioning;
+    private bool droppingOnTarget;
 
     private Vector3 fireTargetDestination;
 
@@ -22,10 +29,15 @@ public class CreatureAI_Flying : CreatureAI
     private float yOffset;
 
     private Vector3 lastPlayerHitPosition;
+    private Vector3 diveAttackTargetDestination;
+
+    public event EventHandler OnCreatureDropOnTarget;
+    public event EventHandler OnCreatureDropOnTargetEnded;
 
     protected override void Start() {
         base.Start();
         creatureAttack.OnMobAttackHit += MobAttack_OnMobAttackHit;
+        creatureAttack.OnMobAttack += CreatureAttack_OnMobAttack;
         repositionCooldown = creatureAttack.GetCurrentCreatureAttackSO().attackCooldown - .1f;
 
         float altitudeRandomizer = creature.GetCreatureSO().flightAltitudeRandomizer;
@@ -34,12 +46,14 @@ public class CreatureAI_Flying : CreatureAI
         maxAltitude = creature.GetCreatureSO().flightMaxAltitude;
     }
 
+    private void CreatureAttack_OnMobAttack(object sender, EventArgs e) {
+        if (diveAttack) {
+            StartCoroutine(RepositionAfterAttackAfterDelay(.2f));
+        }
+    }
+
     private void MobAttack_OnMobAttackHit(object sender, System.EventArgs e) {
-        isRepositioning = true;
-        repositionTimer = repositionCooldown;
-        roamTimer = 0;
-        creatureAttack.RemoveAttackTarget();
-        lastPlayerHitPosition = transform.position;
+        RepositionAfterAttack();
     }
 
     protected override void Update() {
@@ -61,6 +75,26 @@ public class CreatureAI_Flying : CreatureAI
         }
 
         StateSwitch();
+    }
+
+    private void RepositionAfterAttack() {
+        isRepositioning = true;
+        repositionTimer = repositionCooldown;
+        roamTimer = 0;
+        creatureAttack.RemoveAttackTarget();
+        lastPlayerHitPosition = transform.position;
+
+        if (diveAttack && droppingOnTarget) {
+            droppingOnTarget = false;
+            creatureMovement.DebuffMoveSpeed(moveSpeedBuffWhenDropping);
+        }
+
+        diveAttackTargetSet = false;
+    }
+
+    private IEnumerator RepositionAfterAttackAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+        RepositionAfterAttack();
     }
 
     protected override void MoveTowardsFire() {
@@ -90,11 +124,18 @@ public class CreatureAI_Flying : CreatureAI
             fireTargetDestination = Fire.Instance.transform.position;
             if (distanceToFireX > distanceToDropOnTargetRandomized) {
                 // La cible est loin : vole à une altitude variable entre min et max altitude avec oscillation
+                droppingOnTarget = false;
                 fireTargetDestination.y += yOffset;
             }
             else {
                 // La cible est proche : vole à hauteur fixe autour de playerYTargetAltitude
                 fireTargetDestination.y += playerYTargetAltitude;
+
+                if (diveAttack && !droppingOnTarget) {
+                    droppingOnTarget = true;
+                    OnCreatureDropOnTarget?.Invoke(this, EventArgs.Empty);
+                    creatureMovement.BuffMoveSpeed(moveSpeedBuffWhenDropping);
+                }
             }
         }
 
@@ -105,6 +146,7 @@ public class CreatureAI_Flying : CreatureAI
         if ((attackTarget as MonoBehaviour) == null) return;
 
         Vector3 targetDestination = (attackTarget as MonoBehaviour).transform.position;
+        Vector3 playerPos = (attackTarget as MonoBehaviour).transform.position;
 
         float distanceToPlayerX = Mathf.Abs(transform.position.x - targetDestination.x);
 
@@ -118,36 +160,92 @@ public class CreatureAI_Flying : CreatureAI
             yOffset = Mathf.Sin(Time.time * 2f) * 0.5f + UnityEngine.Random.Range(minAltitude, maxAltitude);
         }
 
+        // --- AVANT LA DIVE ---
         if (distanceToPlayerX > distanceToDropOnTargetRandomized) {
             // Si la mouche est encore loin, reste à une altitude variable
+            droppingOnTarget = false;
             targetDestination.y += yOffset;
 
         } else {
 
+            // Basse altitude proche du joueur
             // Add y position randomized
             targetDestination.y += playerYTargetAltitude;
+
+            // On initialise le dive si pas encore lancé
+            if (!diveAttackTargetSet) {
+                diveAttackTargetSet = true;
+                diveAttackTargetDestination = targetDestination;
+            }
+
+            if(diveAttack && !droppingOnTarget) {
+                droppingOnTarget = true;
+                OnCreatureDropOnTarget?.Invoke(this, EventArgs.Empty);
+                creatureMovement.BuffMoveSpeed(moveSpeedBuffWhenDropping);
+            }
         }
+
+        // --- PENDANT LE DIVE ---
+        if (diveAttack && diveAttackTargetSet) {
+
+            // Suivi inertiel du joueur (seulement en X)
+            Vector3 targetForLerp = new Vector3(
+                playerPos.x,
+                diveAttackTargetDestination.y,
+                playerPos.z
+            );
+
+            diveAttackTargetDestination = Vector3.Lerp(
+                diveAttackTargetDestination,
+                targetForLerp,
+                diveAttackFollowTargetStrength * Time.deltaTime
+            );
+        }
+
+
+        Vector3 attackTargetPosition = targetDestination;
+        if(diveAttack && diveAttackTargetSet) {
+            attackTargetPosition = diveAttackTargetDestination;
+        }
+
 
         if (Vector3.Distance(transform.position, targetDestination) < minAttackRange) {
             ChangeState(State.attacking);
             return;
         }
 
-        creatureMovement.SetMoveTarget(targetDestination);
+
+        creatureMovement.SetMoveTarget(attackTargetPosition);
+
+        if (diveAttack && diveAttackTargetSet) {
+
+            if (Vector3.Distance(transform.position, diveAttackTargetDestination) < minAttackRange) {
+                RepositionAfterAttack();
+                OnCreatureDropOnTargetEnded?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
+        }
+
     }
 
     protected void RoamAroundLastPlayerHitPosition() {
-
+      
         roamTimer -= Time.deltaTime;
 
         if (roamTimer < 0) {
             roamTimer = roamChangeDestinationRate;
 
             // Add y position randomized
-            float yRandomized = UnityEngine.Random.Range(minAltitude, minAltitude*2);
-            lastPlayerHitPosition.y += yRandomized;
+            float yRandomized = UnityEngine.Random.Range(minAltitude, maxAltitude);
+            Vector3 repositionDestination = lastPlayerHitPosition;
+            repositionDestination.y += yRandomized;
 
-            RoamBehavior.RoamAroundPoint(creatureMovement, roamRadius, lastPlayerHitPosition, true);
+            float xRandomized = UnityEngine.Random.Range(-roamRadius, roamRadius);
+            repositionDestination.x += xRandomized;
+
+            creatureMovement.SetMoveTarget(repositionDestination);
+            //RoamBehavior.RoamAroundPoint(creatureMovement, roamRadius, lastPlayerHitPosition, true);
         }
     }
 }
