@@ -29,7 +29,7 @@
  },
  {
    "key": "Spanish",
-   "English": "obj",
+   "English": "",
    "Japanese": "スペイン語",
    "Spanish": "Español",
    "Chinese": "西班牙语",
@@ -104,7 +104,7 @@
    "English": "Exit Game",
    "Japanese": "ゲーム終了",
    "Spanish": "Salir",
-   "Chinese": "退出游戏",
+   "Chinese": "设置",
    "French": "Quitter",
    "German": "Spiel Verlassen"
  },
@@ -1641,7 +1641,7 @@
  {
    "key": "VideoTip_Reloading2",
    "English": "1. <b>Press</b>[icon:Reload] to reload : ammo is drawn from your belt in priority.",
-   "Japanese": "1. <b>Press</b>[icon:Reload] でリロード：弾薬は弾帯から優先してリロードする。",
+   "Japanese": "1. [icon:Reload] <b>を押して</b>でリロード：弾薬は弾帯から優先してリロードする。",
    "Spanish": "1. <b>Presiona</b>[icon:Reload] para recargar: la munición se toma primero de tu cinturón.",
    "Chinese": "1. <b>按下</b>[icon:Reload] 进行装弹：优先从弹药带中取弹。",
    "French": "• 1. <b>Appuyez</b> sur [icon:Reload] pour recharger : les munitions sont d’abord prélevées dans la ceinture.",
@@ -4595,7 +4595,7 @@
    "English": "To drop gems",
    "Japanese": "宝石を落とす",
    "Spanish": "Para soltar gemas",
-   "Chinese": "丢弃宝石",
+   "Chinese": "丢出宝石",
    "French": "Déposer les gemmes",
    "German": "Um Edelsteine abzulegen"
  },
@@ -4883,7 +4883,7 @@
    "English": "Finally got my shipment. <wiggle a=.05 f=2>That thing you call a weapon?</wiggle> We can do better.",
    "Japanese": "ようやく荷物が届いた。<wiggle a=.05 f=2>お前が武器と呼んでいる代物はこれか？</wiggle>俺たちならもっとマシなものが作れる。",
    "Spanish": "Finalmente recibí mi envío. <wiggle a=.05 f=2>¿Esa cosa es a la que llamas arma?</wiggle> Podemos hacerlo mejor.",
-   "Chinese": "终于拿到补给了。<wiggle a=.05 f=2>你管那破玩意儿叫武器？</wiggle> 我们的货好多了。",
+   "Chinese": "终于拿到补给了。<wiggle a=.05 f=2>你管那破玩意儿叫武器？</wiggle> 我的货好多了。",
    "French": "J’ai enfin reçu ma cargaison. <wiggle a=.05 f=2>Ce truc que tu appelles une arme ?</wiggle> On peut faire mieux.",
    "German": "Ich hab endlich meine Lieferung bekommen. <wiggle a=.05 f=2>Das Ding, das du eine Waffe nennst?</wiggle> Das können wir endlich wegwerfen."
  },
@@ -5549,7 +5549,7 @@
    "English": "Master",
    "Japanese": "メイン音量",
    "Spanish": "Master",
-   "Chinese": "精通",
+   "Chinese": "主音量",
    "French": "Master",
    "German": "Master"
  },
@@ -5660,6 +5660,15 @@
    "Chinese": "收集",
    "French": "Récolter",
    "German": "Einsammeln"
+ },
+ {
+   "key": "menu_viewDefaultGamepadBindings",
+   "English": "View default bindings",
+   "Japanese": "",
+   "Spanish": "",
+   "Chinese": "",
+   "French": "Contrôles par défaut",
+   "German": ""
  }
 ]
 }
