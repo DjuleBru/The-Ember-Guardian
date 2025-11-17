@@ -15,6 +15,8 @@ public class SettingsMenuUI : MonoBehaviour
     [SerializeField] protected GameObject keyboardMappingPanelBackButton;
     [SerializeField] protected GameObject keyboardMappingButton;
     [SerializeField] protected GameObject controllerMappingPanelGameObject;
+    [SerializeField] protected GameObject controllerBindingsViewPanelGameObject;
+    [SerializeField] protected GameObject controllerViewBackButton;
     [SerializeField] protected GameObject controllerMappingBackButton;
     [SerializeField] protected GameObject controllerMappingButton;
     [SerializeField] protected Slider masterVolumeSlider;
@@ -43,6 +45,7 @@ public class SettingsMenuUI : MonoBehaviour
         settingsPanelGameObject.gameObject.SetActive(false);
         keyboardMappingPanelGameObject.gameObject.SetActive(false);
         controllerMappingPanelGameObject.gameObject.SetActive(false);
+        controllerBindingsViewPanelGameObject.gameObject.SetActive(false);
     }
 
     protected void Start() {
@@ -87,8 +90,11 @@ public class SettingsMenuUI : MonoBehaviour
 
     protected void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
         if (!panelOpen) return;
+        if (PauseMenuUI.Instance.GetRebindingKeys()) return;
+
         CloseSettingsPanel();
     }
+
     protected void UpdateMasterVolume(float value) {
         currentMasterVolume = value;
         // Implémenter ici l'ajustement du volume de la musique (ex: AudioManager)
@@ -183,6 +189,7 @@ public class SettingsMenuUI : MonoBehaviour
 
     public void OpenControllerMappingGameObject() {
         controllerMappingPanelGameObject.gameObject.SetActive(true);
+        KeyRebindingUI_Controller.Instance_Controller.UpdateVisual();
         EventSystem.current.SetSelectedGameObject(controllerMappingBackButton);
     }
 
@@ -190,6 +197,16 @@ public class SettingsMenuUI : MonoBehaviour
         controllerMappingPanelGameObject.gameObject.SetActive(false);
         EventSystem.current.SetSelectedGameObject(controllerMappingButton);
     }
+    public void OpenControllerViewGameObject() {
+        controllerBindingsViewPanelGameObject.gameObject.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(controllerViewBackButton);
+    }
+
+    public void CloseControllerViewGameObject() {
+        controllerBindingsViewPanelGameObject.gameObject.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(controllerMappingBackButton);
+    }
+
 
 
     protected void OnDestroy() {

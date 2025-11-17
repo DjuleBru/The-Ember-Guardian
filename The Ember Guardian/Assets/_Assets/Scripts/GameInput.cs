@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ public class GameInput : MonoBehaviour
         collectCurrencyFromContainer,
         commandWorkers,
         refundGun,
+        swapGun,
     }
 
     private PlayerInputActions playerInputActions;
@@ -455,91 +457,174 @@ public class GameInput : MonoBehaviour
         return holdingInteract;
     }
 
-    public string GetBindingText(Binding binding) {
-        switch(binding) {
+    [Button]
+    public string GetBindingText(Binding binding, bool gamepad = false) {
+        if(gamepad) {
+            switch (binding) {
 
-            case Binding.moveLeft:
-                return HandleLanguageConversions(playerInputActions.Player.Move.bindings[1].ToDisplayString());
+                case Binding.moveLeft:
+                    return playerInputActions.Player.Move.bindings[4].ToDisplayString();
 
-            case Binding.moveRight:
-                return HandleLanguageConversions(playerInputActions.Player.Move.bindings[2].ToDisplayString());
+                case Binding.moveRight:
+                    return playerInputActions.Player.Move.bindings[5].ToDisplayString();
 
-            case Binding.buildingFunctionLeft:
-                return HandleLanguageConversions(playerInputActions.Player.LeftRightSwitch.bindings[1].ToDisplayString());
+                case Binding.buildingFunctionLeft:
+                    return playerInputActions.Player.LeftRightSwitch.bindings[4].ToDisplayString();
 
-            case Binding.buildingFunctionRight:
-                return HandleLanguageConversions(playerInputActions.Player.LeftRightSwitch.bindings[2].ToDisplayString());
+                case Binding.buildingFunctionRight:
+                    return playerInputActions.Player.LeftRightSwitch.bindings[5].ToDisplayString();
 
-            case Binding.interact:
-                return HandleLanguageConversions(playerInputActions.Player.Interact.bindings[0].ToDisplayString());
+                case Binding.interact:
+                    return playerInputActions.Player.Interact.bindings[1].ToDisplayString();
 
-            case Binding.run:
-                return HandleLanguageConversions(playerInputActions.Player.Run.bindings[0].ToDisplayString());
+                case Binding.run:
+                    return playerInputActions.Player.Run.bindings[1].ToDisplayString();
 
-            case Binding.roll:
-                return HandleLanguageConversions(playerInputActions.Player.Jump.bindings[0].ToDisplayString());
+                case Binding.roll:
+                    return playerInputActions.Player.Jump.bindings[1].ToDisplayString();
 
-            case Binding.meleeAttack:
-                return  HandleLanguageConversions(playerInputActions.Player.MeleeAttack.bindings[0].ToDisplayString());
+                case Binding.meleeAttack:
+                    return playerInputActions.Player.MeleeAttack.bindings[1].ToDisplayString();
 
-            case Binding.shoot:
-                return HandleLanguageConversions(playerInputActions.Player.Shoot.bindings[0].ToDisplayString());
+                case Binding.shoot:
+                    return playerInputActions.Player.Shoot.bindings[1].ToDisplayString();
 
-            case Binding.reload:
-                return HandleLanguageConversions(playerInputActions.Player.Reload.bindings[0].ToDisplayString());
+                case Binding.reload:
+                    return playerInputActions.Player.Reload.bindings[1].ToDisplayString();
 
-            case Binding.secondary:
-                return HandleLanguageConversions(playerInputActions.Player.WeaponSecondaryAbility.bindings[0].ToDisplayString());
+                case Binding.secondary:
+                    return playerInputActions.Player.WeaponSecondaryAbility.bindings[1].ToDisplayString();
 
-            case Binding.selectPrimaryGun:
-                return HandleLanguageConversions(playerInputActions.Player.SelectPrimaryGun.bindings[0].ToDisplayString());
+                case Binding.swapGun:
+                    return playerInputActions.Player.SwapGun.bindings[0].ToDisplayString();
 
-            case Binding.selectSecondaryGun:
-                return HandleLanguageConversions(playerInputActions.Player.SelectSecondaryGun.bindings[0].ToDisplayString());
+                case Binding.ability1:
+                    return playerInputActions.Player.LeftSkill.bindings[1].ToDisplayString();
 
-            case Binding.ability1:
-                return HandleLanguageConversions(playerInputActions.Player.LeftSkill.bindings[0].ToDisplayString());
+                case Binding.ability2:
+                    return playerInputActions.Player.RightSkill.bindings[1].ToDisplayString();
 
-            case Binding.ability2:
-                return HandleLanguageConversions(playerInputActions.Player.RightSkill.bindings[0].ToDisplayString());
+                case Binding.pause:
+                    return playerInputActions.Player.Pause.bindings[1].ToDisplayString();
 
-            case Binding.pause:
-                return HandleLanguageConversions(playerInputActions.Player.Pause.bindings[0].ToDisplayString());
+                case Binding.characterMenu:
+                    return playerInputActions.Player.OpenPlayerTab.bindings[1].ToDisplayString();
 
-            case Binding.characterMenu:
-                return HandleLanguageConversions(playerInputActions.Player.OpenPlayerTab.bindings[0].ToDisplayString());
+                case Binding.hoverWorkers:
+                    return playerInputActions.Player.HoverWorkers.bindings[1].ToDisplayString();
 
-            case Binding.hoverWorkers:
-                return HandleLanguageConversions(playerInputActions.Player.HoverWorkers.bindings[0].ToDisplayString());
+                case Binding.callDoggo:
+                    return playerInputActions.Player.CallDog.bindings[1].ToDisplayString();
 
-            case Binding.callDoggo:
-                return HandleLanguageConversions(playerInputActions.Player.CallDog.bindings[0].ToDisplayString());
+                case Binding.torchOnOff:
+                    return playerInputActions.Player.SwitchGunLight.bindings[1].ToDisplayString();
 
-            case Binding.torchOnOff:
-                return HandleLanguageConversions(playerInputActions.Player.SwitchGunLight.bindings[0].ToDisplayString());
+                case Binding.editCampDeselect:
+                    return playerInputActions.Player.CampCustomizationDeselect.bindings[1].ToDisplayString();
 
-            case Binding.editCampDeselect:
-                return HandleLanguageConversions(playerInputActions.Player.CampCustomizationDeselect.bindings[0].ToDisplayString());
+                case Binding.collectCurrencyFromContainer:
+                    return playerInputActions.Player.CollectCurrencyFromContainer.bindings[1].ToDisplayString();
 
-            case Binding.collectCurrencyFromContainer:
-                return HandleLanguageConversions(playerInputActions.Player.CollectCurrencyFromContainer.bindings[0].ToDisplayString());
+                case Binding.editCampSelect:
+                    return playerInputActions.Player.CampCustomizationSelect.bindings[1].ToDisplayString();
 
-            case Binding.editCampSelect:
-                return HandleLanguageConversions(playerInputActions.Player.CampCustomizationSelect.bindings[0].ToDisplayString());
+                case Binding.refundGun:
+                    return playerInputActions.Player.RefundWeapon.bindings[1].ToDisplayString();
 
-            case Binding.commandWorkers:
-                return HandleLanguageConversions(playerInputActions.Player.CommandWorker.bindings[0].ToDisplayString());
+            }
+        } else {
+            switch (binding) {
 
+                case Binding.moveLeft:
+                    return HandleLanguageConversions(playerInputActions.Player.Move.bindings[1].ToDisplayString());
+
+                case Binding.moveRight:
+                    return HandleLanguageConversions(playerInputActions.Player.Move.bindings[2].ToDisplayString());
+
+                case Binding.buildingFunctionLeft:
+                    return HandleLanguageConversions(playerInputActions.Player.LeftRightSwitch.bindings[1].ToDisplayString());
+
+                case Binding.buildingFunctionRight:
+                    return HandleLanguageConversions(playerInputActions.Player.LeftRightSwitch.bindings[2].ToDisplayString());
+
+                case Binding.interact:
+                    return HandleLanguageConversions(playerInputActions.Player.Interact.bindings[0].ToDisplayString());
+
+                case Binding.run:
+                    return HandleLanguageConversions(playerInputActions.Player.Run.bindings[0].ToDisplayString());
+
+                case Binding.roll:
+                    return HandleLanguageConversions(playerInputActions.Player.Jump.bindings[0].ToDisplayString());
+
+                case Binding.meleeAttack:
+                    return HandleLanguageConversions(playerInputActions.Player.MeleeAttack.bindings[0].ToDisplayString());
+
+                case Binding.shoot:
+                    return HandleLanguageConversions(playerInputActions.Player.Shoot.bindings[0].ToDisplayString());
+
+                case Binding.reload:
+                    return HandleLanguageConversions(playerInputActions.Player.Reload.bindings[0].ToDisplayString());
+
+                case Binding.secondary:
+                    return HandleLanguageConversions(playerInputActions.Player.WeaponSecondaryAbility.bindings[0].ToDisplayString());
+
+                case Binding.selectPrimaryGun:
+                    return HandleLanguageConversions(playerInputActions.Player.SelectPrimaryGun.bindings[0].ToDisplayString());
+
+                case Binding.selectSecondaryGun:
+                    return HandleLanguageConversions(playerInputActions.Player.SelectSecondaryGun.bindings[0].ToDisplayString());
+
+                case Binding.ability1:
+                    return HandleLanguageConversions(playerInputActions.Player.LeftSkill.bindings[0].ToDisplayString());
+
+                case Binding.ability2:
+                    return HandleLanguageConversions(playerInputActions.Player.RightSkill.bindings[0].ToDisplayString());
+
+                case Binding.pause:
+                    return HandleLanguageConversions(playerInputActions.Player.Pause.bindings[0].ToDisplayString());
+
+                case Binding.characterMenu:
+                    return HandleLanguageConversions(playerInputActions.Player.OpenPlayerTab.bindings[0].ToDisplayString());
+
+                case Binding.hoverWorkers:
+                    return HandleLanguageConversions(playerInputActions.Player.HoverWorkers.bindings[0].ToDisplayString());
+
+                case Binding.callDoggo:
+                    return HandleLanguageConversions(playerInputActions.Player.CallDog.bindings[0].ToDisplayString());
+
+                case Binding.torchOnOff:
+                    return HandleLanguageConversions(playerInputActions.Player.SwitchGunLight.bindings[0].ToDisplayString());
+
+                case Binding.editCampDeselect:
+                    return HandleLanguageConversions(playerInputActions.Player.CampCustomizationDeselect.bindings[0].ToDisplayString());
+
+                case Binding.collectCurrencyFromContainer:
+                    return HandleLanguageConversions(playerInputActions.Player.CollectCurrencyFromContainer.bindings[0].ToDisplayString());
+
+                case Binding.editCampSelect:
+                    return HandleLanguageConversions(playerInputActions.Player.CampCustomizationSelect.bindings[0].ToDisplayString());
+
+                case Binding.commandWorkers:
+                    return HandleLanguageConversions(playerInputActions.Player.CommandWorker.bindings[0].ToDisplayString());
+
+                case Binding.refundGun:
+                    return HandleLanguageConversions(playerInputActions.Player.RefundWeapon.bindings[0].ToDisplayString());
+
+            }
         }
+        
 
         return playerInputActions.Player.Interact.bindings[0].ToDisplayString();
     }
 
-    public void RebindBinding(Binding binding, Action onActionRebound) {
+    public void RebindBinding(Binding binding, Action onActionRebound, bool gamepad) {
+        Debug.Log("RebindBinding " + binding + " " + gamepad);
+
         playerInputActions.Player.Disable();
         InputAction inputAction;
         int bindingIndex;
 
+        
         switch(binding) {
             default:
             case Binding.moveLeft:
@@ -599,7 +684,7 @@ public class GameInput : MonoBehaviour
                 bindingIndex = 0;
                 break;
             case Binding.callDoggo:
-                inputAction = playerInputActions.Player.Back;
+                inputAction = playerInputActions.Player.CallDog;
                 bindingIndex = 0;
                 break;
             case Binding.torchOnOff:
@@ -624,9 +709,96 @@ public class GameInput : MonoBehaviour
                 break;
         }
 
+        if (gamepad) {
+            switch (binding) {
+                default:
+                case Binding.moveLeft:
+                    inputAction = playerInputActions.Player.Move;
+                    bindingIndex = 4;
+                    break;
+                case Binding.moveRight:
+                    inputAction = playerInputActions.Player.Move;
+                    bindingIndex = 5;
+                    break;
+                case Binding.interact:
+                    inputAction = playerInputActions.Player.Interact;
+                    bindingIndex = 1;
+                    break;
+                case Binding.run:
+                    inputAction = playerInputActions.Player.Run;
+                    bindingIndex = 1;
+                    break;
+                case Binding.roll:
+                    inputAction = playerInputActions.Player.Jump;
+                    bindingIndex = 1;
+                    break;
+                case Binding.meleeAttack:
+                    inputAction = playerInputActions.Player.MeleeAttack;
+                    bindingIndex = 1;
+                    break;
+                case Binding.shoot:
+                    inputAction = playerInputActions.Player.Shoot;
+                    bindingIndex = 1;
+                    break;
+                case Binding.reload:
+                    inputAction = playerInputActions.Player.Reload;
+                    bindingIndex = 1;
+                    break;
+                case Binding.secondary:
+                    inputAction = playerInputActions.Player.WeaponSecondaryAbility;
+                    bindingIndex = 1;
+                    break;
+                case Binding.ability1:
+                    inputAction = playerInputActions.Player.LeftSkill;
+                    bindingIndex = 1;
+                    break;
+                case Binding.ability2:
+                    inputAction = playerInputActions.Player.RightSkill;
+                    bindingIndex = 1;
+                    break;
+                case Binding.swapGun:
+                    inputAction = playerInputActions.Player.SwapGun;
+                    bindingIndex = 0;
+                    break;
+                case Binding.hoverWorkers:
+                    inputAction = playerInputActions.Player.HoverWorkers;
+                    bindingIndex = 1;
+                    break;
+                case Binding.callDoggo:
+                    inputAction = playerInputActions.Player.CallDog;
+                    bindingIndex = 1;
+                    break;
+                case Binding.torchOnOff:
+                    inputAction = playerInputActions.Player.SwitchGunLight;
+                    bindingIndex = 1;
+                    break;
+                case Binding.buildingFunctionLeft:
+                    inputAction = playerInputActions.Player.LeftRightSwitch;
+                    bindingIndex = 4;
+                    break;
+                case Binding.buildingFunctionRight:
+                    inputAction = playerInputActions.Player.LeftRightSwitch;
+                    bindingIndex = 5;
+                    break;
+                case Binding.characterMenu:
+                    inputAction = playerInputActions.Player.OpenPlayerTab;
+                    bindingIndex = 1;
+                    break;
+                case Binding.pause:
+                    inputAction = playerInputActions.Player.Pause;
+                    bindingIndex = 1;
+                    break;
+            }
+        }
+
         // Effectuer le rebinding
+        string controlsMatch = "<Mouse>";
+        if (gamepad) {
+            controlsMatch = "<Gamepad>";
+        }
+
         inputAction.PerformInteractiveRebinding(bindingIndex)
-            .WithControlsHavingToMatchPath("<Mouse>")
+            .WithControlsHavingToMatchPath(controlsMatch)
 
             .OnComplete(callback => {
                 playerInputActions.Player.Enable();
