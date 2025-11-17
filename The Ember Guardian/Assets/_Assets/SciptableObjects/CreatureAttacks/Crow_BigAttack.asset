@@ -16,20 +16,23 @@ MonoBehaviour:
   isProjectileAttack: 0
   isStaticProjectileAttack: 0
   isAnimatedAttack: 0
-  attackCooldown: 3
-  minAttackRange: 0.75
-  maxAttackRange: 1.5
+  attackCooldown: 6
+  minAttackRange: 1.5
+  maxAttackRange: 2
   hasDifferentDayAndNightRange: 0
   minAttackRange_Night: 0
   maxAttackRange_Night: 0
   attackRangeRandomizer: 0.2
+  maxAttackRangeRandomizer: 0
   damage: 1
   damageToFire: 1
   damageToBarricades: 1
   canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 1
-  attackAnimationDelay: 0.3
-  totalAttackAnimationTime: 0.5
+  blockSwitchXScaleWhileAttacking: 0
+  startblockSwitchXScaleWhileAttackingTime: 0.1
+  attackAnimationDelay: 0
+  totalAttackAnimationTime: 0.1
   attackSFXDelayAfterAnimationStart: 0
   staticProjectilePrefab: {fileID: 0}
   staticProjectileAutoTargetsPlayer: 0
@@ -39,13 +42,11 @@ MonoBehaviour:
   projectileSO: {fileID: 0}
   attackRangeRandomizerMiss: 0
   attackSFXHandledByAnimation: 0
-  attackAudioClips: []
-  attackHitAudioClips:
-  - {fileID: 8300000, guid: 0cf1acdeceaff2547b4ad8abfe4d893e, type: 3}
-  - {fileID: 8300000, guid: ba5447ba12544e549ba9214c09d11829, type: 3}
-  - {fileID: 8300000, guid: 5c1d40756d9536741a09badcfdb0c976, type: 3}
-  - {fileID: 8300000, guid: cbd9d2b8bb2d6f74b947080c099fe69a, type: 3}
-  - {fileID: 8300000, guid: 4197fc59d80a1104cbe1b88312a401cc, type: 3}
+  attackAudioClips:
+  - {fileID: 8300000, guid: a82c77ab091a7214587bcd39e593a2ed, type: 3}
+  - {fileID: 8300000, guid: c298a9dc45c89804585c77812c6459d0, type: 3}
+  - {fileID: 8300000, guid: 1fd4fa9d0646b134291a5b61ebcb4520, type: 3}
+  attackHitAudioClips: []
   attackStartedChargingAudioClips: []
   attackReleasedAudioClips: []
   attackVolumeMultiplier: 0.5

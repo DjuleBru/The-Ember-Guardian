@@ -192,7 +192,6 @@ public class Creature : Mob
 
     [Button]
     public override void Die(Transform damageSource = null) {
-        Debug.Log(this + " Die");
         CreatureDieFunction();
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
 

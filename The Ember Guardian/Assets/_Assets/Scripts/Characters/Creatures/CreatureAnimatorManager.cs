@@ -23,6 +23,7 @@ public class CreatureAnimatorManager : MonoBehaviour
     protected float baseMovementAnimationSpeed;
 
     public event EventHandler OnFootStepTriggered;
+    public event EventHandler OnCustomEventTrigger;
 
     protected virtual void Awake() {
         creature = GetComponentInParent<Creature>();
@@ -214,6 +215,10 @@ public class CreatureAnimatorManager : MonoBehaviour
         creature.SetCreatureCanBeTargeted(true);
         creature.SetGravityScale(1f);
         creature.EnableCollider(true);
+    }
+
+    public void TriggerCustomEvent() {
+        OnCustomEventTrigger?.Invoke(this, EventArgs.Empty);
     }
 
 }

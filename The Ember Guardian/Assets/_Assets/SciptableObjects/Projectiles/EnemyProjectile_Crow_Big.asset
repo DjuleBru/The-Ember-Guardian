@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 7911136206213874445, guid: 4dfddc8a0c7b688428c639d866d80d68, type: 3}
   isExplosiveProjectile: 0
-  canBeDestoyedByBullets: 1
+  canBeDestoyedByBullets: 0
   usesAnimationCurve: 0
   projectileTrajectoryAnimationCurve:
     serializedVersion: 2
@@ -110,15 +110,15 @@ MonoBehaviour:
   projectileTrajectoryYCurve: 0
   trajectoryEndPointRandomOffsetValue: 1
   usesForce: 1
-  trajectoryMode: 0
-  straightLineSpeed: 8
+  trajectoryMode: 1
+  straightLineSpeed: 10
   straightLineYTargetRandomizer: 0
   minApexY: 2
   maxApexY: 10
   distanceToTargetForMinApex: 2
   distanceToTargetForMaxApex: 15
   apexRandomizer: 1
-  gravityScale: 2
+  gravityScale: 0
   projectileInstantiatedAudioClips: []
   projectileHitAudioClips:
-  - {fileID: 8300000, guid: 5c7df53dfdc69904e892691f7a73dd23, type: 3}
+  - {fileID: 8300000, guid: 81438c85f3403f04d884900ebd722f9f, type: 3}

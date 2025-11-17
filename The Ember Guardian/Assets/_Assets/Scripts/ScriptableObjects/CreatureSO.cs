@@ -82,6 +82,16 @@ public class CreatureSO : ScriptableObject
     public float flightAltitudeRandomizer;
     [VerticalGroup("Game Data/Stats")]
     [LabelWidth(200)]
+    [Range(0, 20)]
+    [ShowIf("flying")]
+    public float minRepositionDistanceToPlayer = 0;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
+    [Range(0, 20)]
+    [ShowIf("flying")]
+    public float maxRepositionDistanceToPlayer = 8;
+    [VerticalGroup("Game Data/Stats")]
+    [LabelWidth(200)]
     [Range(0.1f, 20)]
     public float dayMoveSpeed;
     [VerticalGroup("Game Data/Stats")]

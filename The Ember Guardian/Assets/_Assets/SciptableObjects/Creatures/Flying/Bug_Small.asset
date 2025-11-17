@@ -31,8 +31,10 @@ MonoBehaviour:
   flightMinAltitude: 3
   flightMaxAltitude: 8
   flightAltitudeRandomizer: 2
-  dayMoveSpeed: 4
-  nightMoveSpeed: 4
+  minRepositionDistanceToPlayer: 0
+  maxRepositionDistanceToPlayer: 8
+  dayMoveSpeed: 4.5
+  nightMoveSpeed: 4.5
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.5
   moveSpeedRandomizerDelta: 0.25

@@ -42,6 +42,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5eb9be5c901d03349a40690831d066c5, type: 2}
   unlocksNewGemType: 1
   newGemTypeUnlockedByLevelList: 0400000009000000
+  gemDropPool: 50
   isReplayableLevel: 0
   totalDayCreatureDifficulty: 0
   dayCreatureTypes: []
@@ -49,6 +50,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a0c1321c3dbd0704c9f6bf0aec0e77b3, type: 2}
   - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
   - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  - {fileID: 11400000, guid: 36802e739061e214e80d0ea19b7dad91, type: 2}
   - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
   - {fileID: 11400000, guid: b27e7bc56456c4540924d93c318c5c13, type: 2}
   - {fileID: 11400000, guid: f7b0d72c1be53c04b86e62b6d02243c8, type: 2}
@@ -94,8 +96,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6aff3c3b53839b84999b8acaf10537cd, type: 3}
   - {fileID: 8300000, guid: 6be0e396dd03dd54e83c4b1bd9269e22, type: 3}
   - {fileID: 8300000, guid: da679ddcf110a004aa68e7770839a596, type: 3}
-  - {fileID: 8300000, guid: 225988420223d59428ac58bc41ac618a, type: 3}
   - {fileID: 8300000, guid: cfe595955de0ac64d8b321b39f2e80b8, type: 3}
+  - {fileID: 8300000, guid: d540ce52e147eeb4b842b73eca4e971d, type: 3}
+  - {fileID: 8300000, guid: 74923f1082ebfea49ae9c00761f882b2, type: 3}
   levelExplorationTracksStreamerMode: []
   showDirectionAtStart: 0
   directionToShow: 1

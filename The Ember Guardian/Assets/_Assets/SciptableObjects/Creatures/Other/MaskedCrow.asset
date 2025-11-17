@@ -20,23 +20,25 @@ MonoBehaviour:
   creatureIcon_Portrait: {fileID: 21300000, guid: 717f83a08d4d08644918858973ad5dec, type: 3}
   creaturePrefab: {fileID: 2465624883499499618, guid: 05d2b9f2c0393fa4aaa31690597b8d60, type: 3}
   mass: 25
-  detectionRange_Day: 15
-  detectionRange_Night: 15
+  detectionRange_Day: 20
+  detectionRange_Night: 20
   primaryAttackSO: {fileID: 11400000, guid: c8340f507c081ff41bba333c7fbfca37, type: 2}
-  hasRangedAndMeleeAttack: 0
-  secondaryAttackSO: {fileID: 0}
+  hasRangedAndMeleeAttack: 1
+  secondaryAttackSO: {fileID: 11400000, guid: 853a446b6d169614daf8f9f07e7b1e9f, type: 2}
   specialAttackSO: {fileID: 11400000, guid: 853a446b6d169614daf8f9f07e7b1e9f, type: 2}
   flying: 0
   canFlank: 0
   flightMinAltitude: 0
   flightMaxAltitude: 0
   flightAltitudeRandomizer: 0
-  dayMoveSpeed: 3
-  nightMoveSpeed: 3
+  minRepositionDistanceToPlayer: 0
+  maxRepositionDistanceToPlayer: 8
+  dayMoveSpeed: 5
+  nightMoveSpeed: 5
   aggroMoveSpeedBuff: 1.1
   enteredLightMoveSpeedDebuff: 1.3
   moveSpeedRandomizerDelta: 0.5
-  maxHealth: 45
+  maxHealth: 75
   enteredLightattackRateDebuff: 2.5
   nightSpawnYPosition: 2
   probabilityToAggroOnGunShot: 1
@@ -54,24 +56,27 @@ MonoBehaviour:
   probabilityToDropOrb: 0.5
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
-  difficulty: 6
-  initialWaveSpawn: 3
+  difficulty: 10
+  initialWaveSpawn: 2
   spawnProbability: 0.4
   maxCreaturesPerPacket: 2
   dieAudioClips:
-  - {fileID: 8300000, guid: 012709c5ea965c44a945131254e77563, type: 3}
-  - {fileID: 8300000, guid: 55513b5fe67635042a93e16e45e32faa, type: 3}
+  - {fileID: 8300000, guid: f4b44e9fed609194cae8f26e64962b27, type: 3}
+  - {fileID: 8300000, guid: 88fe0ae7de2a3df4e8b4eca393f8eda6, type: 3}
+  - {fileID: 8300000, guid: 110b4c99f9e2f2f418f4f2d6aafc86b6, type: 3}
   dieVolumeMultiplier: 1.5
   aggroAudioClips:
-  - {fileID: 8300000, guid: f5680875d7fd75341b8739bcbf311f3b, type: 3}
-  - {fileID: 8300000, guid: 5e61f7311e3c77d4ba048f23049db1db, type: 3}
-  - {fileID: 8300000, guid: cf635f3ba78e31840a3f4e9511263213, type: 3}
-  aggroVolumeMultiplier: 0.5
+  - {fileID: 8300000, guid: fed9af101b596ec4288ec6858da33bda, type: 3}
+  - {fileID: 8300000, guid: 7a37079bfbca3c7409e6813f5d2de26c, type: 3}
+  - {fileID: 8300000, guid: d9f096279f8726b4c8bc56e93b235253, type: 3}
+  - {fileID: 8300000, guid: 6c2fff637439f804fb5f880c3024ae2b, type: 3}
+  aggroVolumeMultiplier: 0.8
   idleAudioClips:
-  - {fileID: 8300000, guid: ddc721f6345d1df4691af1a8c185dd67, type: 3}
-  - {fileID: 8300000, guid: a91bc433b093edc4e8a6c1cd0ff2fbf8, type: 3}
-  - {fileID: 8300000, guid: 9a6dbb53f4da0e94ca1d65240e9e7b8e, type: 3}
-  idleVolumeMultiplier: 0.5
+  - {fileID: 8300000, guid: a765efb860f2c84488b5cc80051e2aff, type: 3}
+  - {fileID: 8300000, guid: 27303c3b2e9236345b9dea86e0200b90, type: 3}
+  - {fileID: 8300000, guid: 2918c0962e11f1247b6e9b4fc1e24551, type: 3}
+  - {fileID: 8300000, guid: eb0c20bef5f636840aef2d792de01a04, type: 3}
+  idleVolumeMultiplier: 0.6
   footStepAudioClips:
   - {fileID: 8300000, guid: 6c21cb43be1fda34caf16432ebc427b6, type: 3}
   - {fileID: 8300000, guid: b6ae59eff4f97e649a18297818a2d612, type: 3}

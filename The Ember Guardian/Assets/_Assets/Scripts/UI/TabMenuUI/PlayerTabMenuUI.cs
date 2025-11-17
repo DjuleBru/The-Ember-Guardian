@@ -48,8 +48,6 @@ public class PlayerTabMenuUI : MonoBehaviour
     private void GameInput_OnPlayerPausePerformed(object sender, EventArgs e) {
         if (!tabMenuOpen) return;
         if (!canCloseTab) return;
-        if (changeWeaponPanelOpen) return;
-        if (skillDescriptionPanelOpen) return;
 
         StartCoroutine(OpenCloseTabAfterFrame());
     }
@@ -57,8 +55,6 @@ public class PlayerTabMenuUI : MonoBehaviour
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (!tabMenuOpen) return;
         if (!canCloseTab) return;
-        if (changeWeaponPanelOpen) return;
-        if (skillDescriptionPanelOpen) return;
 
         StartCoroutine(OpenCloseTabAfterFrame());
     }

@@ -79,9 +79,8 @@ public class MobAttack : MonoBehaviour
     }
 
     public virtual void Attack() {
-        Debug.Log("Attack");
         OnMobAttack?.Invoke(this, EventArgs.Empty);
-        if(isAnimatedAttack) {
+        if (isAnimatedAttack) {
             StartCoroutine(AnimatedAttackCoroutine(totalAttackAnimationTime));
             return;
         }
@@ -91,7 +90,6 @@ public class MobAttack : MonoBehaviour
         } else if (isStaticProjectileAttack) {
             StartCoroutine(SpawnStaticProjectileAfterDelay(attackAnimationDelay, totalAttackAnimationTime));
         } else {
-            Debug.Log("DealDamageAfterDelay");
             StartCoroutine(DealDamageAfterDelay(attackAnimationDelay, totalAttackAnimationTime));
         }
     }

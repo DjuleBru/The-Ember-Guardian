@@ -144,6 +144,9 @@ public class AddStructureBlueprint : ButtonUI
     }
 
     private void SetStructureUnlocked() {
+        if (this == null) return;
+        Debug.Log(this + " SetStructureUnlocked " + linkedStructureSO);
+        Debug.Log(this + " plusIcon " + plusIcon);
 
         locked = false;
         structureIconImage.sprite = linkedStructureSO.structureSprite;
@@ -153,7 +156,6 @@ public class AddStructureBlueprint : ButtonUI
         RefreshStructureAmounts();
         newItemGO.SetActive(true);
         newItem = true;
-        Debug.Log("SetStructureUnlocked " + linkedStructureSO);
         ArchitectTable.Instance.GetArchitectTableHubMerchant().SetMerchantHasNewItems();
 
     }

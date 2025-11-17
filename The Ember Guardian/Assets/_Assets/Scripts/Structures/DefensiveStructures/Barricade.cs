@@ -59,7 +59,7 @@ public class Barricade : Structure, IDamageable {
     }
     
     public Transform GetProjectileTarget() {
-        return transform;
+        return projectileTarget;
     }
 
     [Button]

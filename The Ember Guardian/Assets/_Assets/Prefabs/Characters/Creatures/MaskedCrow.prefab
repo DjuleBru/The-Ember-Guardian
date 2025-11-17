@@ -78,7 +78,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 8.375, y: 5.75}
+  m_Size: {x: 4.625, y: 6.9375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -158,16 +158,16 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 6395452d77bac1542814acc737c565e0, type: 2}
     - target: {fileID: 1926586374160934664, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.077
+      value: 1.641
       objectReference: {fileID: 0}
     - target: {fileID: 1926586374160934664, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.36
+      value: 1.01
       objectReference: {fileID: 0}
     - target: {fileID: 2165978147866165786, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creatureAI
       value: 
-      objectReference: {fileID: 9197724468927473887}
+      objectReference: {fileID: 4362364595389482055}
     - target: {fileID: 2201482587927928448, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: speedLerpDuration
       value: 0.5
@@ -244,6 +244,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1.21
       objectReference: {fileID: 0}
+    - target: {fileID: 6184710609068459157, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: secondaryAttackProjectileSpawnPosition
+      value: 
+      objectReference: {fileID: 4036066844901482436}
     - target: {fileID: 6409776439602011119, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -307,7 +311,7 @@ PrefabInstance:
     - target: {fileID: 8571825916105848638, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creatureAI
       value: 
-      objectReference: {fileID: 9197724468927473887}
+      objectReference: {fileID: 4362364595389482055}
     - target: {fileID: 8571825916105848638, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creatureAnimatorManager
       value: 
@@ -338,14 +342,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 38783848799533230, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 9197724468927473887}
+      addedObject: {fileID: 4362364595389482055}
   m_SourcePrefab: {fileID: 100100000, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
 --- !u!1 &2465624883499499618 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 38783848799533230, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
   m_PrefabInstance: {fileID: 2503545580168280268}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &9197724468927473887
+--- !u!114 &4362364595389482055
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -354,15 +358,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 2465624883499499618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da5c29bedbe15e345b52bcdc97d1ad7d, type: 3}
+  m_Script: {fileID: 11500000, guid: 0588c19c98f141247a25ded3915b3616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   roamChangeDestinationRate: 10
   roamRadius: 3
-  minAllowedDistanceFromPlayer: 3.5
+  minAllowedDistanceFromPlayer: 12
+  projectileAttackSO: {fileID: 11400000, guid: c8340f507c081ff41bba333c7fbfca37, type: 2}
+  jumpAttackSO: {fileID: 11400000, guid: 853a446b6d169614daf8f9f07e7b1e9f, type: 2}
+  animatorManager: {fileID: 5016929063948371635}
+  damageTresholdToSwitchAttack: 0.33
 --- !u!4 &3505303790524414288 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1304696204632015260, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 2503545580168280268}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4036066844901482436 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1926586374160934664, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
   m_PrefabInstance: {fileID: 2503545580168280268}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &5016929063948371635 stripped

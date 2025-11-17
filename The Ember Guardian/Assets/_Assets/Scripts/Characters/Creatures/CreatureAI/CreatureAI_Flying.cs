@@ -8,13 +8,15 @@ public class CreatureAI_Flying : CreatureAI
     private float minAltitude = 2f;
     private float maxAltitude = 7f;
 
-    [SerializeField] private float repositionCooldown; // Temps entre le repositionnement après une attaque
     [SerializeField] private float distanceToDropOnTarget;
     [SerializeField] private float distanceToDropOnTargetRandomizer;
     [SerializeField] private float playerYTargetAltitude = 1.5f;
     [SerializeField] private float moveSpeedBuffWhenDropping = 1.5f;
     [SerializeField] private bool diveAttack;
     [SerializeField] private float diveAttackFollowTargetStrength = 2f;
+    private float repositionCooldown; // Temps entre le repositionnement après une attaque
+    protected float minRepositionDistanceToPlayer;
+    protected float maxRepositionDistanceToPlayer;
     private bool diveAttackTargetSet;
 
     private float distanceToDropOnTargetRandomized;
@@ -39,22 +41,17 @@ public class CreatureAI_Flying : CreatureAI
         creatureAttack.OnMobAttackHit += MobAttack_OnMobAttackHit;
         creatureAttack.OnMobAttack += CreatureAttack_OnMobAttack;
         repositionCooldown = creatureAttack.GetCurrentCreatureAttackSO().attackCooldown - .1f;
+        roamChangeDestinationRate = repositionCooldown;
 
         float altitudeRandomizer = creature.GetCreatureSO().flightAltitudeRandomizer;
         float randomY = UnityEngine.Random.Range(0, altitudeRandomizer);
         minAltitude = creature.GetCreatureSO().flightMinAltitude + randomY;
         maxAltitude = creature.GetCreatureSO().flightMaxAltitude;
+
+        minRepositionDistanceToPlayer = creature.GetCreatureSO().minRepositionDistanceToPlayer;
+        maxRepositionDistanceToPlayer = creature.GetCreatureSO().maxRepositionDistanceToPlayer;
     }
 
-    private void CreatureAttack_OnMobAttack(object sender, EventArgs e) {
-        if (diveAttack) {
-            StartCoroutine(RepositionAfterAttackAfterDelay(.2f));
-        }
-    }
-
-    private void MobAttack_OnMobAttackHit(object sender, System.EventArgs e) {
-        RepositionAfterAttack();
-    }
 
     protected override void Update() {
         if (died) return;
@@ -76,17 +73,26 @@ public class CreatureAI_Flying : CreatureAI
 
         StateSwitch();
     }
+    protected virtual void CreatureAttack_OnMobAttack(object sender, EventArgs e) {
+        if (diveAttack) {
+            StartCoroutine(RepositionAfterAttackAfterDelay(.2f));
+        }
+    }
+
+    private void MobAttack_OnMobAttackHit(object sender, System.EventArgs e) {
+        RepositionAfterAttack();
+    }
 
     private void RepositionAfterAttack() {
         isRepositioning = true;
         repositionTimer = repositionCooldown;
         roamTimer = 0;
         creatureAttack.RemoveAttackTarget();
-        lastPlayerHitPosition = transform.position;
+        lastPlayerHitPosition = Player.Instance.transform.position;
 
         if (diveAttack && droppingOnTarget) {
             droppingOnTarget = false;
-            creatureMovement.DebuffMoveSpeed(moveSpeedBuffWhenDropping);
+            creatureMovement.ResetTempMoveSpeedBuffs();
         }
 
         diveAttackTargetSet = false;
@@ -208,12 +214,10 @@ public class CreatureAI_Flying : CreatureAI
             attackTargetPosition = diveAttackTargetDestination;
         }
 
-
         if (Vector3.Distance(transform.position, targetDestination) < minAttackRange) {
             ChangeState(State.attacking);
             return;
         }
-
 
         creatureMovement.SetMoveTarget(attackTargetPosition);
 
@@ -240,10 +244,13 @@ public class CreatureAI_Flying : CreatureAI
             float yRandomized = UnityEngine.Random.Range(minAltitude, maxAltitude);
             Vector3 repositionDestination = lastPlayerHitPosition;
             repositionDestination.y += yRandomized;
+            repositionDestination.y += playerYTargetAltitude;
 
-            float xRandomized = UnityEngine.Random.Range(-roamRadius, roamRadius);
+            float xRandomized = UnityEngine.Random.Range(minRepositionDistanceToPlayer, maxRepositionDistanceToPlayer);
+            if(UnityEngine.Random.value < 0.5) {
+                xRandomized *= -1;
+            }
             repositionDestination.x += xRandomized;
-
             creatureMovement.SetMoveTarget(repositionDestination);
             //RoamBehavior.RoamAroundPoint(creatureMovement, roamRadius, lastPlayerHitPosition, true);
         }

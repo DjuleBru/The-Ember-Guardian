@@ -16,7 +16,7 @@ MonoBehaviour:
   isProjectileAttack: 0
   isStaticProjectileAttack: 0
   isAnimatedAttack: 0
-  attackCooldown: 4
+  attackCooldown: 5
   minAttackRange: 0.5
   maxAttackRange: 1.5
   hasDifferentDayAndNightRange: 0
@@ -43,7 +43,9 @@ MonoBehaviour:
   attackRangeRandomizerMiss: 0
   attackSFXHandledByAnimation: 1
   attackAudioClips:
-  - {fileID: 8300000, guid: 4d00f44bd66c0f947951191efbf15582, type: 3}
+  - {fileID: 8300000, guid: a82c77ab091a7214587bcd39e593a2ed, type: 3}
+  - {fileID: 8300000, guid: c298a9dc45c89804585c77812c6459d0, type: 3}
+  - {fileID: 8300000, guid: 1fd4fa9d0646b134291a5b61ebcb4520, type: 3}
   attackHitAudioClips: []
   attackStartedChargingAudioClips: []
   attackReleasedAudioClips: []

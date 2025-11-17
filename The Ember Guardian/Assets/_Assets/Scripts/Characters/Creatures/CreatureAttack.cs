@@ -58,6 +58,7 @@ public class CreatureAttack : MobAttack
     }
 
     public void SetAttackSO(CreatureAttackSO attackSO) {
+        Debug.Log("SetAttackSO " + attackSO);
         if (attackSO == null) return;
 
         currentCreatureAttackSO = attackSO;
@@ -73,8 +74,15 @@ public class CreatureAttack : MobAttack
 
         attackCooldown = attackSO.attackCooldown;
         attackDamage = attackSO.damage;
+
         minAttackRange = attackSO.minAttackRange;
         maxAttackRange = attackSO.maxAttackRange;
+
+        if(attackSO.hasDifferentDayAndNightRange && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+            minAttackRange = attackSO.minAttackRange_Night;
+            maxAttackRange = attackSO.maxAttackRange_Night;
+        }
+
         attackRangeRandomizer = attackSO.attackRangeRandomizer;
         attackRangeMaxDistanceMiss = attackSO.attackRangeRandomizerMiss;
 

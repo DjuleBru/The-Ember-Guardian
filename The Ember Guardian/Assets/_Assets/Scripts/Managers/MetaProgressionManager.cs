@@ -533,7 +533,6 @@ public class MetaProgressionManager : MonoBehaviour
 
     public bool GetGunUnlocked(GunSO gunSO) {
         string key = gunSO.name;
-
         if (gunSO.gunType == GunSO.GunType.Rifle) return true;
 
         return ES3.Load(key, false);

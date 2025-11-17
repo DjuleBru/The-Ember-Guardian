@@ -84,6 +84,7 @@ public class DogAI : MonoBehaviour
     protected float biteAnimationDelay = .5f;
     protected float biteCooldown;
     protected int biteDamage;
+    protected float maxBiteDistance_GermanShepherd = 2f;
 
     public event EventHandler OnStateChanged;
     public event EventHandler OnDogBite;
@@ -425,7 +426,7 @@ public class DogAI : MonoBehaviour
 
     protected virtual void HandleBarkToAttack() {
         barkingTimer += Time.deltaTime;
-        if (closestCreature == null || closestCreature.transform.position.y > 2f) return;
+        if (closestCreature == null || closestCreature.transform.position.y > maxBiteDistance_GermanShepherd) return;
 
         if (barkingTimer > barkTimeToAttack && biteReady) {
             barkingTimer = 0;
@@ -529,6 +530,15 @@ public class DogAI : MonoBehaviour
     protected virtual void HeadToAttackClosestCreature() {
         float distanceToCreature = Mathf.Abs(transform.position.x - closestCreature.transform.position.x);
 
+        if(dogAIType == Dog.DogType.GermanShepherd) {
+            // Flying creature went back up ?
+            if(closestCreature.transform.position.y > maxBiteDistance_GermanShepherd) {
+                dogMovement.SetMoveTarget(transform.position);
+                ChangeState(State.barking);
+                return;
+            }
+        }
+
         if(distanceToCreature < biteRange && biteReady) {
             dogMovement.SetMoveTarget(transform.position);
             OnDogBite?.Invoke(this, EventArgs.Empty);
@@ -556,6 +566,17 @@ public class DogAI : MonoBehaviour
         yield return new WaitForSeconds(biteAnimationDelay - standStillDelay);
 
         if (creature != null) {
+
+            if (dogAIType == Dog.DogType.GermanShepherd) {
+                // Flying creature went back up ?
+                if (closestCreature.transform.position.y > maxBiteDistance_GermanShepherd) {
+                    dogMovement.SetMoveTarget(transform.position);
+                    ChangeState(State.barking);
+                    biteStarted = false;
+                    yield break;
+                }
+            }
+
             closestCreature.TakeDamage(biteDamage, transform);
         }
 

@@ -36,6 +36,7 @@ public class MobSpawner : MonoBehaviour
     [SerializeField] protected bool canSpawnEliteCreatures;
     [SerializeField] protected float eliteSpawnProbability;
     [SerializeField] protected int eliteSpawnAmount;
+    [SerializeField] protected bool flying_SpawnAtSpawnPosition;
 
     [SerializeField] protected MobSpawner linkedMobSpawner;
     protected int eliteSpawnedAmount;
@@ -176,7 +177,7 @@ public class MobSpawner : MonoBehaviour
                 CreatureSO creatureSO = mob.GetComponent<Creature>().GetCreatureSO();
                 mob.GetComponent<Creature>().SetAsDayCreature(true);
 
-                if(creatureSO.flying) {
+                if(creatureSO.flying && !flying_SpawnAtSpawnPosition) {
                     float yPositionRandomized = UnityEngine.Random.Range(creatureSO.flightMaxAltitude, creatureSO.flightMaxAltitude);
                     spawnPositionRandomized.y += yPositionRandomized;
                     mob.transform.position = spawnPositionRandomized;

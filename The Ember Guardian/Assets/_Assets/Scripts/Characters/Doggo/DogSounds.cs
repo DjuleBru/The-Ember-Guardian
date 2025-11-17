@@ -96,7 +96,6 @@ public class DogSounds : SoundObject
     }
 
     private void DogAI_OnDogBite(object sender, System.EventArgs e) {
-        Debug.Log("DogAI_OnDogBite " + Dog.Instance.GetDogType());
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
             dogAudioSource.PlayOneShot(biteAudioClips_darkCompanion[Random.Range(0, biteAudioClips_darkCompanion.Length)], masterVolume * dogVolume * .7f);
         }

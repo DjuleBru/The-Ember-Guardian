@@ -31,6 +31,8 @@ MonoBehaviour:
   flightMinAltitude: 0
   flightMaxAltitude: 0
   flightAltitudeRandomizer: 0
+  minRepositionDistanceToPlayer: 0
+  maxRepositionDistanceToPlayer: 8
   dayMoveSpeed: 2.5
   nightMoveSpeed: 2.5
   aggroMoveSpeedBuff: 1.2
@@ -50,11 +52,12 @@ MonoBehaviour:
   workerTargetingPriority: 1
   playerTargetingPriority: 2
   barricadeTargetingPriority: 3
+  fireTargetingPriority: 2147483647
   probabilityToDropOrb: 0.5
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
   difficulty: 15
-  initialWaveSpawn: 2
+  initialWaveSpawn: 3
   spawnProbability: 0.4
   maxCreaturesPerPacket: 2
   dieAudioClips:

@@ -13,17 +13,17 @@ public class CreatureAnimatorManager_FlyingDive : CreatureAnimatorManager
         creatureAttack.OnMobAttack += CreatureAttack_OnMobAttack;
     }
 
-    private void CreatureAI_Flying_OnCreatureDropOnTargetEnded(object sender, System.EventArgs e) {
+    protected void CreatureAI_Flying_OnCreatureDropOnTargetEnded(object sender, System.EventArgs e) {
         animator.ResetTrigger("Attack_Start");
         animator.SetTrigger("Attack_End");
     }
 
-    private void CreatureAttack_OnMobAttack(object sender, System.EventArgs e) {
+    protected virtual void CreatureAttack_OnMobAttack(object sender, System.EventArgs e) {
         animator.ResetTrigger("Attack_Start");
         animator.SetTrigger("Attack_End");
     }
 
-    private void CreatureAI_Flying_OnCreatureDropOnTarget(object sender, System.EventArgs e) {
+    protected void CreatureAI_Flying_OnCreatureDropOnTarget(object sender, System.EventArgs e) {
         animator.ResetTrigger("Attack_End");
         animator.SetTrigger("Attack_Start");
     }

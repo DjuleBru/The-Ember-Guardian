@@ -172,8 +172,8 @@ public class Portal : MonoBehaviour
         if (playerIsSetOnTeleporter) {
             OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
             floorCollider.enabled = false;
+            playerIsSetOnTeleporter = false;
         }
-
 
         if (!gameObject.activeSelf) return;
 
@@ -182,25 +182,19 @@ public class Portal : MonoBehaviour
 
         } else {
 
-            if (!portalUnlocked) return;
+            if (!portalUnlocked) return; 
 
             if (isHUBTeleporter && !GetPortalHasUnlockedUnfinishedLevels()) return;
-            if (playerIsSetOnTeleporter) {
-                playerIsSetOnTeleporter = false;
-                return;
-            } 
 
             OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
         }
 
         floorCollider.enabled = false;
-        playerIsSetOnTeleporter = false;
 
     }
 
     private IEnumerator RemoveTeleporter() {
         playerInTriggerArea = false;
-        //OnPlayerExitedTriggerArea?.Invoke(this, EventArgs.Empty);
         floorCollider.enabled = false;
         GetComponent<Collider2D>().enabled = false;
 
