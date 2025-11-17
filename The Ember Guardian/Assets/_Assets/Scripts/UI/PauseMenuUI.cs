@@ -39,6 +39,7 @@ public class PauseMenuUI : MonoBehaviour
     protected bool menuOpen;
     protected bool confirmExitGame;
     protected bool confirmBackToMenu;
+    protected bool rebindingKey;
     protected bool canOpenPauseMenu = true;
 
     protected void Awake() {
@@ -150,6 +151,7 @@ public class PauseMenuUI : MonoBehaviour
 
     protected void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (PlayerTabMenuUI.Instance.GetTabMenuOpen()) return;
+        if (rebindingKey) return;
 
         if (VideoTipUI.Instance.GetPanelOpen()) {
             VideoTipUI.Instance.ClosePanel();
@@ -165,6 +167,7 @@ public class PauseMenuUI : MonoBehaviour
         if (PlayerTabMenuUI.Instance.GetTabMenuOpen()) return;
         if (!canOpenPauseMenu) return;
         if (SceneLoader.Instance.GetIsCrossfading()) return;
+        if (rebindingKey) return;
 
         if (VideoTipUI.Instance.GetPanelOpen()) {
             VideoTipUI.Instance.ClosePanel();
@@ -174,6 +177,7 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     protected void OpenClosePauseMenu() {
+        Debug.Log("OpenClosePauseMenu");
         isPaused = !isPaused;
         ShowPauseMenu(isPaused);
     }
@@ -324,6 +328,23 @@ public class PauseMenuUI : MonoBehaviour
             progressionSavedTextIndicator.GetComponent<TextMeshProUGUI>().color = unsavedTextColor;
 
         }
+    }
+
+    private IEnumerator SetRebindingKeyAfterFramesCoroutine(bool rebinding) {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        rebindingKey = rebinding;
+    }
+
+    public void SetRebindingKeyAfterFrames(bool rebinding) {
+        StartCoroutine(SetRebindingKeyAfterFramesCoroutine(rebinding));
+    }
+    public void SetRebindingKey(bool rebinding) {
+        rebindingKey = rebinding;
+    }
+    public bool GetRebindingKeys() {
+        return rebindingKey;
     }
 
     protected void OnDestroy() {

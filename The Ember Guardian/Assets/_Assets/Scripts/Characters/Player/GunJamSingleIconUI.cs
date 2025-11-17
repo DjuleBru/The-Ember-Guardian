@@ -88,7 +88,7 @@ public class GunJamSingleIconUI : MonoBehaviour
     }
 
     private void RefreshInput() {
-        Sprite sprite = InputControlIcons.Instance.GetSingleControlIconSprite(binding);
+        Sprite sprite = InputControlIcons.Instance.GetSingleControlIconSprite(binding, GameInput.Instance.IsUsingGamepad());
         inputImage.sprite = sprite;
         inputImageBackground.sprite = sprite;
     }

@@ -9,59 +9,59 @@ public class KeyRebindingUI : MonoBehaviour
 {
     public static KeyRebindingUI Instance;
 
-    [SerializeField] private GameObject waitingForRebindGameObject;
+    [SerializeField] protected GameObject waitingForRebindGameObject;
 
-    [SerializeField] private Button resetBindingsButton;
-    [SerializeField] private Button moveLeftButton;
-    [SerializeField] private Button moveRightButton;
-    [SerializeField] private Button interactButton;
-    [SerializeField] private Button runButton;
-    [SerializeField] private Button rollButton;
-    [SerializeField] private Button meleeAttackButton;
+    [SerializeField] protected Button resetBindingsButton;
+    [SerializeField] protected Button moveLeftButton;
+    [SerializeField] protected Button moveRightButton;
+    [SerializeField] protected Button interactButton;
+    [SerializeField] protected Button runButton;
+    [SerializeField] protected Button rollButton;
+    [SerializeField] protected Button meleeAttackButton;
 
-    [SerializeField] private Button shootButton;
-    [SerializeField] private Button reloadButton;
-    [SerializeField] private Button secondaryButton;
-    [SerializeField] private Button ability1Button;
-    [SerializeField] private Button ability2Button;
-    [SerializeField] private Button selectPrimaryGunButton;
-    [SerializeField] private Button selectSecondaryGunButton;
+    [SerializeField] protected Button shootButton;
+    [SerializeField] protected Button reloadButton;
+    [SerializeField] protected Button secondaryButton;
+    [SerializeField] protected Button ability1Button;
+    [SerializeField] protected Button ability2Button;
+    [SerializeField] protected Button selectPrimaryGunButton;
+    [SerializeField] protected Button selectSecondaryGunButton;
 
-    [SerializeField] private Button callDoggoButton;
-    [SerializeField] private Button torchButton;
-    [SerializeField] private Button hoverWorkersButton;
-    [SerializeField] private Button buildingFunctionRightButton;
-    [SerializeField] private Button buildingFunctionLeftButton;
+    [SerializeField] protected Button callDoggoButton;
+    [SerializeField] protected Button torchButton;
+    [SerializeField] protected Button hoverWorkersButton;
+    [SerializeField] protected Button buildingFunctionRightButton;
+    [SerializeField] protected Button buildingFunctionLeftButton;
 
-    [SerializeField] private Button pauseButton;
-    [SerializeField] private Button characterMenuButton;
+    [SerializeField] protected Button pauseButton;
+    [SerializeField] protected Button characterMenuButton;
 
-    [SerializeField] private TextMeshProUGUI moveLeftText;
-    [SerializeField] private TextMeshProUGUI moveRightText;
-    [SerializeField] private TextMeshProUGUI interactText;
-    [SerializeField] private TextMeshProUGUI runText;
-    [SerializeField] private TextMeshProUGUI rollText;
-    [SerializeField] private TextMeshProUGUI meleeAttackText;
+    [SerializeField] protected TextMeshProUGUI moveLeftText;
+    [SerializeField] protected TextMeshProUGUI moveRightText;
+    [SerializeField] protected TextMeshProUGUI interactText;
+    [SerializeField] protected TextMeshProUGUI runText;
+    [SerializeField] protected TextMeshProUGUI rollText;
+    [SerializeField] protected TextMeshProUGUI meleeAttackText;
 
-    [SerializeField] private TextMeshProUGUI shootText;
-    [SerializeField] private TextMeshProUGUI reloadText;
-    [SerializeField] private TextMeshProUGUI secondaryText;
-    [SerializeField] private TextMeshProUGUI ability1Text;
-    [SerializeField] private TextMeshProUGUI ability2Text;
-    [SerializeField] private TextMeshProUGUI selectPrimaryGunText;
-    [SerializeField] private TextMeshProUGUI selectSecondaryGunText;
+    [SerializeField] protected TextMeshProUGUI shootText;
+    [SerializeField] protected TextMeshProUGUI reloadText;
+    [SerializeField] protected TextMeshProUGUI secondaryText;
+    [SerializeField] protected TextMeshProUGUI ability1Text;
+    [SerializeField] protected TextMeshProUGUI ability2Text;
+    [SerializeField] protected TextMeshProUGUI selectPrimaryGunText;
+    [SerializeField] protected TextMeshProUGUI selectSecondaryGunText;
 
-    [SerializeField] private TextMeshProUGUI hoverWorkersText;
-    [SerializeField] private TextMeshProUGUI callDoggoText;
-    [SerializeField] private TextMeshProUGUI torchText;
-    [SerializeField] private TextMeshProUGUI buildingFunctionLeftText;
-    [SerializeField] private TextMeshProUGUI buildingFunctionRightText;
+    [SerializeField] protected TextMeshProUGUI hoverWorkersText;
+    [SerializeField] protected TextMeshProUGUI callDoggoText;
+    [SerializeField] protected TextMeshProUGUI torchText;
+    [SerializeField] protected TextMeshProUGUI buildingFunctionLeftText;
+    [SerializeField] protected TextMeshProUGUI buildingFunctionRightText;
 
-    [SerializeField] private TextMeshProUGUI pauseText;
-    [SerializeField] private TextMeshProUGUI characterMenuText;
+    [SerializeField] protected TextMeshProUGUI pauseText;
+    [SerializeField] protected TextMeshProUGUI characterMenuText;
 
-    private void Awake() {
-        Instance = this;
+    protected virtual void Awake() {
+        SetInstance();
         waitingForRebindGameObject.gameObject.SetActive(false);
 
         resetBindingsButton.onClick.AddListener(() => {
@@ -69,69 +69,86 @@ public class KeyRebindingUI : MonoBehaviour
             UpdateVisual();
         });
 
-        moveLeftButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.moveLeft);
-        });
-        moveRightButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.moveRight);
-        });
+        InitializeRebindButtons(false);
+    }
+
+    protected virtual void InitializeRebindButtons(bool gamepad) {
+        if(!gamepad) {
+            moveLeftButton.onClick.AddListener(() => {
+                RebindBinding(GameInput.Binding.moveLeft, gamepad);
+            });
+            moveRightButton.onClick.AddListener(() => {
+                RebindBinding(GameInput.Binding.moveRight, gamepad);
+            });
+        }
+       
         interactButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.interact);
+            RebindBinding(GameInput.Binding.interact, gamepad);
         });
         runButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.run);
+            RebindBinding(GameInput.Binding.run, gamepad);
         });
         rollButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.roll);
-        }); 
+            RebindBinding(GameInput.Binding.roll, gamepad);
+        });
         meleeAttackButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.meleeAttack);
+            RebindBinding(GameInput.Binding.meleeAttack, gamepad);
         });
         shootButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.shoot);
+            RebindBinding(GameInput.Binding.shoot, gamepad);
         });
         reloadButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.reload);
+            RebindBinding(GameInput.Binding.reload, gamepad);
         });
         secondaryButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.secondary);
+            RebindBinding(GameInput.Binding.secondary, gamepad);
         });
         ability1Button.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.ability1);
+            RebindBinding(GameInput.Binding.ability1, gamepad);
         });
         ability2Button.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.ability2);
+            RebindBinding(GameInput.Binding.ability2, gamepad);
         });
-        selectPrimaryGunButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.selectPrimaryGun);
-        });
-        selectSecondaryGunButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.selectSecondaryGun);
-        });
-        hoverWorkersButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.hoverWorkers);
-        });
+
+        if(!gamepad) {
+            selectPrimaryGunButton.onClick.AddListener(() => {
+                RebindBinding(GameInput.Binding.selectPrimaryGun, gamepad);
+            });
+            selectSecondaryGunButton.onClick.AddListener(() => {
+                RebindBinding(GameInput.Binding.selectSecondaryGun, gamepad);
+            });
+
+        }
+
+        //hoverWorkersButton.onClick.AddListener(() => {
+        //    RebindBinding(GameInput.Binding.hoverWorkers, gamepad);
+        //});
+
         callDoggoButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.callDoggo);
+            RebindBinding(GameInput.Binding.callDoggo, gamepad);
         });
         torchButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.torchOnOff);
+            RebindBinding(GameInput.Binding.torchOnOff, gamepad);
         });
         buildingFunctionLeftButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.buildingFunctionLeft);
+            RebindBinding(GameInput.Binding.buildingFunctionLeft, gamepad);
         });
         buildingFunctionRightButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.buildingFunctionRight);
+            RebindBinding(GameInput.Binding.buildingFunctionRight, gamepad);
         });
         pauseButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.pause);
+            RebindBinding(GameInput.Binding.pause, gamepad);
         });
         characterMenuButton.onClick.AddListener(() => {
-            RebindBinding(GameInput.Binding.characterMenu);
+            RebindBinding(GameInput.Binding.characterMenu, gamepad);
         });
     }
 
-    public void UpdateVisual() {
+    protected virtual void SetInstance() {
+        Instance = this;
+    }
+
+    public virtual void UpdateVisual() {
         moveLeftText.text = GameInput.Instance.GetBindingText(GameInput.Binding.moveLeft);
         moveRightText.text = GameInput.Instance.GetBindingText(GameInput.Binding.moveRight);
         interactText.text = GameInput.Instance.GetBindingText(GameInput.Binding.interact);
@@ -157,12 +174,14 @@ public class KeyRebindingUI : MonoBehaviour
         characterMenuText.text = GameInput.Instance.GetBindingText(GameInput.Binding.characterMenu);
     }
 
-    private void RebindBinding(GameInput.Binding binding) {
+    protected virtual void RebindBinding(GameInput.Binding binding, bool gamepad) {
         ShowWaitingToRebind();
+        PauseMenuUI.Instance.SetRebindingKey(true);
         GameInput.Instance.RebindBinding(binding, () => {
             HideWaitingToRebind();
             UpdateVisual();
-            });
+            PauseMenuUI.Instance.SetRebindingKeyAfterFrames(false);
+        }, gamepad);
         
     }
 

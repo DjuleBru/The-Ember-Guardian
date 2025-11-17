@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,6 +50,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite gamepadLeftArrowSprite;
     public Sprite gamepadRightArrowSprite;
     public Sprite gamepadSelectSprite;
+    public Sprite gamepadStartSprite;
 
     public Sprite keyboardASprite;
     public Sprite keyboardZSprite;
@@ -128,6 +130,7 @@ public class InputControlIcons : MonoBehaviour
     public Sprite keyboardQuestionMarkSprite;
 
     public Dictionary<string, Sprite> keyboardIconLookup = new Dictionary<string, Sprite>();
+    public Dictionary<string, Sprite> gamepadIconLookup = new Dictionary<string, Sprite>();
 
     private void Awake() {
         Instance = this;
@@ -212,6 +215,31 @@ public class InputControlIcons : MonoBehaviour
             { ":", keyboardColonSprite },
             { "/", keyboardFrontslashSprite },
         };
+
+
+        gamepadIconLookup = new Dictionary<string, Sprite>() {
+        { "LS/Left",           gamepadLLeftRightSprite },
+        { "LS/Right",           gamepadLLeftRightSprite },
+        { "RS/Left",           gamepadRJoystickSprite },
+        { "RS/Right",           gamepadRJoystickSprite },
+        { "A",           gamepadASprite },
+        { "B",           gamepadBSprite },
+        { "X",           gamepadXSprite },
+        { "Y",           gamepadYSprite },
+        { "RB",          gamepadRbSprite },
+        { "LB",          gamepadLbSprite },
+        { "RT",          gamepadRtSprite },
+        { "LT",          gamepadLtSprite },
+        { "Left Stick Press",  gamepadL3Sprite },  
+        { "Right Stick Press", gamepadR3Sprite },
+        { "D-Pad/Up",     gamepadUpArrowSprite },
+        { "D-Pad/Down",   gamepadDownArrowSprite },
+        { "D-Pad/Left",   gamepadLeftArrowSprite },
+        { "D-Pad/Right",  gamepadRightArrowSprite },
+        { "Start",        gamepadStartSprite },
+        { "Select",        gamepadSelectSprite },
+
+    };
     }
 
     public List<Sprite> GetControlIconSprite(Control control) {
@@ -520,53 +548,16 @@ public class InputControlIcons : MonoBehaviour
         return spriteList;
     }
 
-    public Sprite GetSingleControlIconSprite(GameInput.Binding control) {
-        if (GameInput.Instance.IsUsingGamepad()) {
-            if (control == GameInput.Binding.reload) {
-                return gamepadYSprite;
-            }
-            if (control == GameInput.Binding.ability1) {
-                return gamepadLbSprite;
-            }
-            if (control == GameInput.Binding.ability2) {
-                return gamepadRbSprite;
-            }
-            if (control == GameInput.Binding.shoot) {
-                return gamepadRtSprite;
-            }
-            if (control == GameInput.Binding.interact) {
-                return gamepadXSprite;
-            }
-            if (control == GameInput.Binding.run) {
-                return gamepadL3Sprite;
-            }
-            if (control == GameInput.Binding.meleeAttack) {
-                return gamepadR3Sprite;
-            }
-            if (control == GameInput.Binding.torchOnOff) {
-                return gamepadUpArrowSprite;
-            }
-            if (control == GameInput.Binding.callDoggo) {
-                return gamepadBSprite;
-            }
-            if (control == GameInput.Binding.secondary) {
-                return gamepadLtSprite;
-            }
-            if (control == GameInput.Binding.roll) {
-                return gamepadASprite;
-            }
-            if (control == GameInput.Binding.characterMenu) {
-                return gamepadSelectSprite;
-            }
-            if (control == GameInput.Binding.buildingFunctionLeft) {
-                return gamepadLeftArrowSprite;
-            }
-            if (control == GameInput.Binding.buildingFunctionRight) {
-                return gamepadRightArrowSprite;
+    [Button]
+    public Sprite GetSingleControlIconSprite(GameInput.Binding control, bool gamepad) {
+        string binding = GameInput.Instance.GetBindingText(control, gamepad);
+
+        if (gamepad) {
+            if (gamepadIconLookup.TryGetValue(binding, out Sprite gamepadSprite)) {
+                return gamepadSprite;
             }
         }
         else {
-            string binding = GameInput.Instance.GetBindingText(control);
             if (keyboardIconLookup.TryGetValue(binding, out Sprite icon1)) {
                 return icon1;
             }
@@ -574,4 +565,6 @@ public class InputControlIcons : MonoBehaviour
 
         return keyboardQuestionMarkSprite;
     }
+
+
 }
