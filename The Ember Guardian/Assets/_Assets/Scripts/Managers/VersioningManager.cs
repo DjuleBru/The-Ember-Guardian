@@ -12,6 +12,7 @@ public class VersioningManager : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI versioningText;
     [SerializeField] protected bool saveFileIncompatible;
     [SerializeField] protected bool isDemo;
+    [SerializeField] protected bool hordeModeImplemented;
     [SerializeField] protected string prefixText;
     [SerializeField] private int state = 0;
     [SerializeField] private int major = 9;
@@ -126,6 +127,10 @@ public class VersioningManager : MonoBehaviour
 
     public bool GetIsDemo() {
         return isDemo;
+    }
+
+    public bool GetHordeModeImplemented() {
+        return hordeModeImplemented;
     }
 
 }

@@ -72,6 +72,8 @@ public class StructureStats : MonoBehaviour
         if (!ES3.KeyExists("StructureStats"))
             return;
 
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) return;
+
         var structureData = ES3.Load<Dictionary<string, object>>("StructureStats");
 
         // Structures de base

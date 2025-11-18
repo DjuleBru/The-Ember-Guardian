@@ -278,6 +278,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""8cc5c0f1-c23e-42c5-abda-3a3e53069c8f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1061,6 +1070,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""CallDog"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""452274d8-a492-4076-b7d7-783c2d7724ce"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard"",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1120,6 +1140,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_CommandWorker = m_Player.FindAction("CommandWorker", throwIfNotFound: true);
         m_Player_RefundWeapon = m_Player.FindAction("RefundWeapon", throwIfNotFound: true);
         m_Player_CallDog = m_Player.FindAction("CallDog", throwIfNotFound: true);
+        m_Player_Escape = m_Player.FindAction("Escape", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -1214,6 +1235,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_CommandWorker;
     private readonly InputAction m_Player_RefundWeapon;
     private readonly InputAction m_Player_CallDog;
+    private readonly InputAction m_Player_Escape;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -1246,6 +1268,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @CommandWorker => m_Wrapper.m_Player_CommandWorker;
         public InputAction @RefundWeapon => m_Wrapper.m_Player_RefundWeapon;
         public InputAction @CallDog => m_Wrapper.m_Player_CallDog;
+        public InputAction @Escape => m_Wrapper.m_Player_Escape;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1339,6 +1362,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CallDog.started += instance.OnCallDog;
             @CallDog.performed += instance.OnCallDog;
             @CallDog.canceled += instance.OnCallDog;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1427,6 +1453,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @CallDog.started -= instance.OnCallDog;
             @CallDog.performed -= instance.OnCallDog;
             @CallDog.canceled -= instance.OnCallDog;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1492,5 +1521,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnCommandWorker(InputAction.CallbackContext context);
         void OnRefundWeapon(InputAction.CallbackContext context);
         void OnCallDog(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
     }
 }

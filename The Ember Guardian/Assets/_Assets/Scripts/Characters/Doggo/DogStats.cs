@@ -132,6 +132,8 @@ public class DogStats : MonoBehaviour {
             return;
         }
 
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) return;
+
         var dogData = ES3.Load<Dictionary<string, object>>("DogStats");
 
         // Abilities

@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance;
 
     [SerializeField] private LevelSO levelSO;
+    [SerializeField] private bool isHordeMode;
     [SerializeField] private Portal endLevelPortal;
     [SerializeField] private HubMerchant levelHubMerchant;
 
@@ -49,42 +50,45 @@ public class LevelManager : MonoBehaviour
 
 
     private void Start() {
-        if(conditionalLockedStructureLocation != null && !conditionalLockedStructureLocationUnlocked) {
-            conditionalLockedStructureLocation.gameObject.SetActive(false);
-            conditionalLockedStructureLocation.OnStructureBuilt += ConditionalLockedStructureLocation_OnStructureBuilt;
-        }
-
-        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
-            EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
-        }
-
-        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindAndDestroyTwoNests) {
-            EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
-            EndLevelArea.Instance_Left.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
-        }
-
-        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
-            LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
-        }
-
-        if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
-            LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
-        }
-
-        if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
-            levelHubMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
-        }
-
-        if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
-            levelHubMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
-            LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
-
-            if(!SavingManager_Level.Instance.GetLoadingSavedLevel()) {
-                levelHubMerchant.SetHasTalkLinesToShowAfterDelay(false, false, 1f);
+      
+        if(!isHordeMode) {
+            if (conditionalLockedStructureLocation != null && !conditionalLockedStructureLocationUnlocked) {
+                conditionalLockedStructureLocation.gameObject.SetActive(false);
+                conditionalLockedStructureLocation.OnStructureBuilt += ConditionalLockedStructureLocation_OnStructureBuilt;
             }
 
-        }
+            if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest) {
+                EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+            }
 
+            if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindAndDestroyTwoNests) {
+                EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+                EndLevelArea.Instance_Left.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;
+            }
+
+            if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindMoreCompanions) {
+                LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
+            }
+
+            if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
+                LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
+            }
+
+            if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
+                levelHubMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
+            }
+
+            if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.CollectOrbs) {
+                levelHubMerchant.OnPlayerStoppedInteractingWithHubMerchant += LevelHubMerchant_OnPlayerStoppedInteractingWithHubMerchant;
+                LevelUI_ObjectiveUI.Instance.OnObjectiveCompleted += LevelUI_OnObjectiveCompleted;
+
+                if (!SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+                    levelHubMerchant.SetHasTalkLinesToShowAfterDelay(false, false, 1f);
+                }
+
+            }
+        }
+        
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         ES3.Save("lastLevelEnvironment", levelSO.environmentType);
 
@@ -99,7 +103,6 @@ public class LevelManager : MonoBehaviour
         if(SavingManager_Level.Instance != null) {
             if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
         }
-
 
         if(levelHubMerchant != null) {
             if (levelHubMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.WorkerMerchant) return;
@@ -254,11 +257,7 @@ public class LevelManager : MonoBehaviour
     }
 
     public void ShowNewLocationUI() {
-        //if (!levelRegionUnlocked) {
-        //    MetaProgressionManager.Instance.SetLevelRegionUnlocked(levelSO.environmentType);
-        //    LevelUI_Locations.Instance.ShowLocationText(levelSO.GetLevelEnvironmentTypeString());
-        //    OnNewLocationShown?.Invoke(this, EventArgs.Empty);
-        //}
+        MetaProgressionManager.Instance.SetLevelRegionUnlocked(levelSO.environmentType);
 
         LevelUI_Locations.Instance.ShowLocationText(levelSO.GetLevelEnvironmentTypeString());
         OnNewLocationShown?.Invoke(this, EventArgs.Empty);
@@ -376,6 +375,10 @@ public class LevelManager : MonoBehaviour
     }
     public bool GetConditionalLockedStructureLocationBuilt() {
         return conditionalLockedStructureLocationBuilt;
+    }
+
+    public bool IsHordeMode() {
+        return isHordeMode;
     }
 
     public void SetConditionalLockedStructureLocationState(bool conditionalLockedStructureLocationUnlocked, bool conditionalLockedStructureLocationBuilt) {

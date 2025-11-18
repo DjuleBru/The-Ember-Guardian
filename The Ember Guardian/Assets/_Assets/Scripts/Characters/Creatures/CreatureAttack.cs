@@ -58,7 +58,6 @@ public class CreatureAttack : MobAttack
     }
 
     public void SetAttackSO(CreatureAttackSO attackSO) {
-        Debug.Log("SetAttackSO " + attackSO);
         if (attackSO == null) return;
 
         currentCreatureAttackSO = attackSO;

@@ -161,6 +161,7 @@ public class SceneLoader : MonoBehaviour
 
     private void SetPlayerLeftFromLevel() {
         if (sceneType == SceneType.Level) {
+            if (LevelManager.Instance.IsHordeMode()) return;
             MetaProgressionManager.Instance.SetPlayerLeftFromLevel(true);
             MetaProgressionManager.Instance.SetLastLevel(SceneManager.GetActiveScene().name);
         }

@@ -142,8 +142,8 @@ public class PlayerStats : MonoBehaviour
         // Valeur isolée, pas dans le batch
         exhaustionTime = ES3.Load("exhaustionTime", 0);
 
-        if (!ES3.KeyExists("MetaBuffs"))
-            return;
+        if (!ES3.KeyExists("MetaBuffs")) return;
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) return;
 
         var buffData = ES3.Load<Dictionary<string, object>>("MetaBuffs");
 

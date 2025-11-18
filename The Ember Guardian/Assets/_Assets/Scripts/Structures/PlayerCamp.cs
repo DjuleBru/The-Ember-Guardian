@@ -64,9 +64,11 @@ public class PlayerCamp : MonoBehaviour
             structure.gameObject.SetActive(false);
         }
 
-        ammoCrafterBuiltAtStart = StructureStats.Instance.GetStartWithAmmoCrafter();
-        researchTowerBuiltAtStart = StructureStats.Instance.GetStartWithResearchTower();
-        barricades1BuiltAtStart = StructureStats.Instance.GetStartWithBarricades();
+        if(!LevelManager.Instance.IsHordeMode()) {
+            ammoCrafterBuiltAtStart = StructureStats.Instance.GetStartWithAmmoCrafter();
+            researchTowerBuiltAtStart = StructureStats.Instance.GetStartWithResearchTower();
+            barricades1BuiltAtStart = StructureStats.Instance.GetStartWithBarricades();
+        }
 
         if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
 
@@ -83,6 +85,7 @@ public class PlayerCamp : MonoBehaviour
 
     private void LoadCustomCampLayout() {
         List<CampEditManager.StructurePlacementData> structurePlacementData = ES3.Load("campLayout", new List<CampEditManager.StructurePlacementData>());
+
         customLayout = structurePlacementData.Count > 0;
 
         // Camp has never been customized

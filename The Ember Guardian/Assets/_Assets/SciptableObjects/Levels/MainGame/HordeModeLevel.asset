@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98c9817fe527eb54b819e5a9ffd80cea, type: 3}
+  m_Name: HordeModeLevel
+  m_EditorClassIdentifier: 
+  linkedSceneName: HordeModeLevel
+  isBranchingLevel: 0
+  requiredLevelSO1: {fileID: 0}
+  requiredLevelSO2: {fileID: 0}
+  parallelLevelSO: {fileID: 0}
+  levelImage: {fileID: 21300000, guid: 04ce6b5dffb7df845a2d4cca8dcfa03e, type: 3}
+  levelNameLocalizationKey: HordeMode
+  levelDescriptionLocalizationKey: HordeMode_Description
+  faunaAmount: 0
+  scrapAmount: 0
+  minesAmount: 0
+  chestAmount: 0
+  wildEmberlingsAmount: 0
+  unlockablesList: 
+  duskDurationIncreasePerDay: 0.5
+  levelObjectiveType: 13
+  endLevelType: 16
+  talkToNpcAFterObjective: 0
+  nightsToSurviveAmount: 999
+  isNewEnvironmentDiscoveryLevel: 0
+  newEnvironmentDiscoveryAudioClip: {fileID: 8300000, guid: d1c6e922a5617014e87918ddfdd86c66, type: 3}
+  levelsUnlockedByLevel: []
+  merchantsUnlockedInLevel: 
+  gemMerchantTextLinesAfterLevel: {fileID: 0}
+  newMerchantTextLinesAfterLevel: []
+  unlocksNewGemType: 1
+  newGemTypeUnlockedByLevelList: 
+  gemDropPool: 70
+  isReplayableLevel: 1
+  totalDayCreatureDifficulty: 0
+  dayCreatureTypes:
+  - {fileID: 11400000, guid: b27e7bc56456c4540924d93c318c5c13, type: 2}
+  - {fileID: 11400000, guid: f7b0d72c1be53c04b86e62b6d02243c8, type: 2}
+  nightCreatureTypes:
+  - {fileID: 11400000, guid: 8898d03ff715c7c409d5b3c133b71a7c, type: 2}
+  - {fileID: 11400000, guid: 26cc5086e8f63254286b9f57e4a7047a, type: 2}
+  - {fileID: 11400000, guid: dd9bd7e456afcce49ae102a2f4d17de6, type: 2}
+  - {fileID: 11400000, guid: 36802e739061e214e80d0ea19b7dad91, type: 2}
+  - {fileID: 11400000, guid: 30c45ff74017778438c5c78eed18975c, type: 2}
+  - {fileID: 11400000, guid: ab8dd169f91741b48848a62dab906029, type: 2}
+  hasBoss: 1
+  bossCreatureType: {fileID: 11400000, guid: a8489a867b556644aade49405764f086, type: 2}
+  bossNightSpawns: 05000000
+  bossNightWaveDifficultyMultiplier: 0.5
+  startWaveToSpawnFromBothSides: 1
+  baseDifficulty: 25
+  intialMinSubwaveDifficulty: 10
+  minSubwaveDifficulty: 25
+  intialMaxSubwaveDifficulty: 15
+  maxSubwaveDifficulty: 65
+  growthFactor: 1.4
+  typicalLevelDaysToComplete: 5
+  minMaxSubwaveDifficultyGrowthFactor: 1.5
+  setDifficultyAnimationCurve: 0
+  difficultyAtMaxWave: 0
+  difficultyAnimationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxWaveInAnimationCurve: 0
+  canSpawnElite: 1
+  hasSpecialWaveTypes: 1
+  specialWaveTypesInLevel: 010000000200000003000000
+  specialWaveProbability: 0.25
+  maxSpecialWaveAmount: 1
+  environmentType: 0
+  hasFog: 0
+  fogFrontAlpha: 0
+  fogBackAlpha: 0
+  hasWind: 1
+  initialWindStrength: 0
+  windStrengthsAllowedInLevel: 0000000001000000020000000300000004000000
+  hasRain: 0
+  initialRainIntensity: 0
+  rainIntensitiesAllowedInLevel: 
+  levelRandomBackgroundTracks: []
+  levelExplorationTracks:
+  - {fileID: 8300000, guid: 6aff3c3b53839b84999b8acaf10537cd, type: 3}
+  - {fileID: 8300000, guid: 6be0e396dd03dd54e83c4b1bd9269e22, type: 3}
+  - {fileID: 8300000, guid: da679ddcf110a004aa68e7770839a596, type: 3}
+  - {fileID: 8300000, guid: cfe595955de0ac64d8b321b39f2e80b8, type: 3}
+  - {fileID: 8300000, guid: d540ce52e147eeb4b842b73eca4e971d, type: 3}
+  - {fileID: 8300000, guid: 74923f1082ebfea49ae9c00761f882b2, type: 3}
+  levelExplorationTracksStreamerMode: []
+  showDirectionAtStart: 0
+  directionToShow: -1

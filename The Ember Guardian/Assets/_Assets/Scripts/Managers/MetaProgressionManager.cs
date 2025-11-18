@@ -10,6 +10,7 @@ public class MetaProgressionManager : MonoBehaviour
 {
     public static MetaProgressionManager Instance;
     [SerializeField] private bool destroySaveOnApplicationQuit;
+    [SerializeField] protected bool hordeModeUnlocked;
     [SerializeField] private List<LevelSO> allLevelSOList;
     private bool flagCarry_Debug;
 
@@ -76,6 +77,10 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     #region GENERAL
+
+    public bool GetHordeModeUnlocked() {
+        return hordeModeUnlocked;
+    }
 
     public void DeleteLevelSaveFile() {
         ES3.DeleteFile("LevelSave.es3");

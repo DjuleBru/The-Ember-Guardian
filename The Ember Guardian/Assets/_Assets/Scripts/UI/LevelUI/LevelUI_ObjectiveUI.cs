@@ -300,14 +300,20 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
         string subObjectiveKey = "SubObj_" + subObjectiveType.ToString();
 
         if (subObjectiveType == SubObjectiveType.SurviveNights) {
+            if(LevelManager.Instance.IsHordeMode()) {
+                return LocalizationManager.Instance.GetLocalizedText("SubObj_Survive") + " " +  LocalizationManager.Instance.GetLocalizedText("SubObj_Nights") + " " + "(" + LevelObjectives.Instance.GetNightsSurvived() + ")";
+            }
             return LocalizationManager.Instance.GetLocalizedText("SubObj_Survive") + " " + LevelObjectives.Instance.GetNightsToSurvive() + " " + LocalizationManager.Instance.GetLocalizedText("SubObj_Nights") + " " + "(" + LevelObjectives.Instance.GetNightsSurvived() + "/" + LevelObjectives.Instance.GetNightsToSurvive() + ")";
         }
+
         if (subObjectiveType == SubObjectiveType.ProgressWithScavengers) {
             return LocalizationManager.Instance.GetLocalizedText("SubObj_ProgressWithScavengers") + " " + LevelObjectives.Instance.GetObstaclesToRemove() + " " + LocalizationManager.Instance.GetLocalizedText("SubObj_Obstacles") + " " + "(" + LevelObjectives.Instance.GetObstaclesRemoved() + "/" + LevelObjectives.Instance.GetObstaclesToRemove() + ")";
         }
+
         if (subObjectiveType == SubObjectiveType.CollectOrbs) {
             return LocalizationManager.Instance.GetLocalizedText("SubObj_CollectOrbs") + " (" + LevelObjectives.Instance.GetWatcherArtifactFillAmount() + "/" + LevelObjectives.Instance.GetWatcherArtifactTotalFillAmount() + ")";
         }
+
         return LocalizationManager.Instance.GetLocalizedText(subObjectiveKey);
         
     }

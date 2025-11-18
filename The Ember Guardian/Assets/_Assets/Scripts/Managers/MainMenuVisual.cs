@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ using Water2D;
 
 public class MainMenuVisual : MonoBehaviour
 {
+
+    public static MainMenuVisual Instance;
+
     [SerializeField] private bool showDebugEnvironment;
     [SerializeField] private LevelSO.LevelEnvironment debugEnvironment;
     private bool isDemo;
@@ -82,6 +86,10 @@ public class MainMenuVisual : MonoBehaviour
 
     private LevelSO.LevelEnvironment levelEnvironment;
 
+    private void Awake() {
+        Instance = this;
+    }
+
     private void Start() {
         // This is saved in LevelManager Start and HubManager Start
         LevelSO.LevelEnvironment defaultEnvironment = LevelSO.LevelEnvironment.City;
@@ -96,6 +104,13 @@ public class MainMenuVisual : MonoBehaviour
         if(showDebugEnvironment) {
             levelEnvironment = debugEnvironment;
         }
+
+        SetEnvironment(levelEnvironment);
+
+    }
+
+    [Button]
+    public void SetEnvironment(LevelSO.LevelEnvironment levelEnvironment) {
 
         DisableAllVisuals();
 

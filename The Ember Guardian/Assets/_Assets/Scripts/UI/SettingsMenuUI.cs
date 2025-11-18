@@ -90,7 +90,9 @@ public class SettingsMenuUI : MonoBehaviour
 
     protected void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
         if (!panelOpen) return;
-        if (PauseMenuUI.Instance.GetRebindingKeys()) return;
+        if(PauseMenuUI.Instance != null) {
+            if (PauseMenuUI.Instance.GetRebindingKeys()) return;
+        }
 
         CloseSettingsPanel();
     }

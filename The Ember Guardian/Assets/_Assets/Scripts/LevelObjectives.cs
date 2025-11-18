@@ -167,7 +167,6 @@ public class LevelObjectives : MonoBehaviour
 
             }
 
-            Debug.Log(LevelManager.Instance.GetLevelSO().levelObjectiveType);
             if (LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindWatcherArtifact) {
 
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.BuildWatcherArtifact);

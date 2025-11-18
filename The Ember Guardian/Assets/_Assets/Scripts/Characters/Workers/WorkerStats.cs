@@ -58,11 +58,9 @@ public class WorkerStats : MonoBehaviour
     }
 
     private void LoadStatValues() {
-        workerInteractions_Debug = DebugManager.Instance.GetDebugMode_WorkerInteractions();
-        interactionWithWorkersUnlocked = ES3.Load("interactionWithWorkersUnlocked", workerInteractions_Debug);
-
         if (!ES3.KeyExists("WorkerStats"))
             return;
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) return;
 
         var workerData = ES3.Load<Dictionary<string, object>>("WorkerStats");
 

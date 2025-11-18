@@ -13,6 +13,9 @@ public class MainMenuUI : MonoBehaviour {
     protected bool mainMenuPanelOpen;
     protected bool confirmExitGame;
     protected bool confirmResetProgression;
+    protected bool hasResetHordeMode;
+    protected bool confirmHordeModeResetProgression;
+    protected bool selectingHordeModeContinueOrNewGame;
 
     [SerializeField] protected GameObject mainMenuPanel;
     [SerializeField] protected GameObject fullGameDescriptionPanel;
@@ -20,9 +23,18 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] protected Button continueButton;
     [SerializeField] protected Button newGameButton;
     [SerializeField] protected Button discordButton;
+    [SerializeField] protected Button hordeModeButton;
+    [SerializeField] protected Button settingsButton;
     [SerializeField] protected Button wishlistButton_Menu;
     [SerializeField] protected Button wishlistButton_FullGamePanel;
+    [SerializeField] protected GameObject standardMenuGO;
+    [SerializeField] protected GameObject hordeModeMenuGO;
+    [SerializeField] protected Button hordeMode_newGameGameButton;
+    [SerializeField] protected Button hordeMode_continueGameButton;
     [SerializeField] protected Button_Confirm buttonConfirm_ResetProgression;
+    [SerializeField] protected Button_Confirm buttonConfirm_ResetHordeModeProgression;
+    [SerializeField] protected TextMeshProUGUI newHordeModeGameText;
+    [SerializeField] protected TextMeshProUGUI continueHordeModeGameText;
     [SerializeField] protected TextMeshProUGUI continueGameText;
     [SerializeField] protected TextMeshProUGUI newGameText;
     [SerializeField] private GameObject swapCharacter_WorldCanvas;
@@ -42,8 +54,10 @@ public class MainMenuUI : MonoBehaviour {
 
     private void Start() {
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
         buttonConfirm_ResetProgression.OnButtonDeselected += ButtonConfirm_ResetProgression_OnButtonDeselected;
+        buttonConfirm_ResetHordeModeProgression.OnButtonDeselected += ButtonConfirm_ResetHordeModeProgression_OnButtonDeselected;
 
         InitializeButtonNavigation();
 
@@ -67,6 +81,23 @@ public class MainMenuUI : MonoBehaviour {
         }
 
         RefreshFonts();
+
+
+        hordeModeMenuGO.SetActive(false);
+        if (!MetaProgressionManager.Instance.GetHordeModeUnlocked()) {
+            hordeModeButton.interactable = false;
+        }
+
+        if (!VersioningManager.Instance.GetHordeModeImplemented()) {
+            hordeModeButton.gameObject.SetActive(false);
+        }
+
+    }
+
+    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        if(selectingHordeModeContinueOrNewGame) {
+            OpenCloseHordeModeSelectButtons(false);
+        }
     }
 
     public void HandleMenuStartup() {
@@ -85,8 +116,8 @@ public class MainMenuUI : MonoBehaviour {
 
     private void RefreshFonts() {
         ctaText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
+        continueHordeModeGameText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
     }
-
 
     private void SetFirstSelectedButton() {
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
@@ -106,7 +137,6 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public virtual void NewGameButton() {
-
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
 
             if(!VersioningManager.Instance.GetIsDemo()) {
@@ -140,6 +170,55 @@ public class MainMenuUI : MonoBehaviour {
         SettingsMenuUI.Instance.OpenSettingsPanel();
         HideMainMenuButtons();
     }
+
+    public virtual void HordeModeButton() {
+        if (!ES3.FileExists("HordeMode.es3")) {
+            NewHordeModeGame();
+        } else {
+            if (!ES3.KeyExists("GameInProgress", "HordeMode.es3") || hasResetHordeMode) {
+                NewHordeModeGame();
+            } else {
+                OpenCloseHordeModeSelectButtons(true);
+            }
+        }
+    }
+
+    public void NewHordeModeGame_ButtonConfirm() {
+        if (confirmHordeModeResetProgression) {
+            hasResetHordeMode = true;
+            NewHordeModeGame();
+        }
+        else {
+            confirmHordeModeResetProgression = true;
+            newHordeModeGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_resetHordeMode");
+        }
+    }
+
+    public void NewHordeModeGame() {
+        HordeModeUI.Instance.OpenHordeModePanel();
+        HideMainMenuButtons();
+    }
+
+    public void ContinueHordeModeGame() {
+
+    }
+
+    public void BackFromHordeModeMenu() {
+        OpenCloseHordeModeSelectButtons(false);
+    }
+
+    private void OpenCloseHordeModeSelectButtons(bool open) {
+        selectingHordeModeContinueOrNewGame = open;
+        hordeModeMenuGO.SetActive(open);
+        standardMenuGO.SetActive(!open);
+
+        if(open) {
+            EventSystem.current.SetSelectedGameObject(hordeMode_continueGameButton.gameObject);
+        } else {
+            EventSystem.current.SetSelectedGameObject(hordeModeButton.gameObject);
+        }
+    }
+
 
     public virtual void ExitGameButton() {
         Application.Quit();
@@ -240,12 +319,18 @@ public class MainMenuUI : MonoBehaviour {
         newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_newGame");
     }
 
+    private void ButtonConfirm_ResetHordeModeProgression_OnButtonDeselected(object sender, EventArgs e) {
+        confirmHordeModeResetProgression = false;
+        newHordeModeGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_startHordeMode");
+    }
+
     private void InitializeButtonNavigation() {
         Navigation wishlishButtonNav = wishlistButton_Menu.navigation;
         Navigation wishlishButtonFullGamePanelNav = wishlistButton_FullGamePanel.navigation;
         Navigation newGameButtonNav = newGameButton.navigation;
         Navigation resumeGameButtonNav = continueButton.navigation;
         Navigation discordButtonNav = discordButton.navigation;
+        Navigation settingsButtonNav = settingsButton.navigation;
 
 
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
@@ -256,6 +341,15 @@ public class MainMenuUI : MonoBehaviour {
             discordButtonNav.selectOnLeft = continueButton;
             discordButton.navigation = discordButtonNav;
 
+        }
+
+
+        if (!VersioningManager.Instance.GetHordeModeImplemented() || VersioningManager.Instance.GetIsDemo() || !MetaProgressionManager.Instance.GetHordeModeUnlocked()) {
+            newGameButtonNav.selectOnDown = settingsButton;
+            settingsButtonNav.selectOnUp = newGameButton;
+
+            settingsButton.navigation = settingsButtonNav;
+            newGameButton.navigation = newGameButtonNav;
         }
 
         if (VersioningManager.Instance.GetIsDemo()) {

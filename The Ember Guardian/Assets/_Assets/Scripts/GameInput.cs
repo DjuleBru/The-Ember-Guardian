@@ -101,6 +101,7 @@ public class GameInput : MonoBehaviour
 
     public event EventHandler OnCurrencyCollectedFromContainer;
     public event EventHandler OnRefundGunPerformed;
+    public event EventHandler OnEscapePerformed;
 
     private bool interactPressed;
     private bool holdingInteract;
@@ -193,6 +194,11 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.CollectCurrencyFromContainer.performed += CollectCurrencyFromContainer_performed;
 
         playerInputActions.Player.RefundWeapon.performed += RefundWeapon_performed;
+        playerInputActions.Player.Escape.performed += Escape_performed;
+    }
+
+    private void Escape_performed(InputAction.CallbackContext obj) {
+        OnEscapePerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void CallDog_performed(InputAction.CallbackContext obj) {
