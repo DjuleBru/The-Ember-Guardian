@@ -34,7 +34,14 @@ public class CampGridControllerNavigator : MonoBehaviour
     }
 
     private void Update() {
-        if (!architectTableHubMerchant.GetPlayerInteractingWithMerchant()) return;
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+            if (!HordeModeUI.Instance.GetCustomizeCampPanelOpen()) return;
+        }
+
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            if (!architectTableHubMerchant.GetPlayerInteractingWithMerchant()) return;
+        }
+
         if (!isNavigating) return;
         float horizontal = Input.GetAxis("Horizontal");
 
@@ -83,7 +90,6 @@ public class CampGridControllerNavigator : MonoBehaviour
     private IEnumerator SetStopNavigationSelectedButtonAfterDelay() {
         yield return new WaitForEndOfFrame();
         EventSystem.current.SetSelectedGameObject(StopNavigationSelectedButton);
-        Debug.Log(StopNavigationSelectedButton);
     }
 
     private void HighlightCurrent() {
@@ -121,7 +127,14 @@ public class CampGridControllerNavigator : MonoBehaviour
     }
 
     private void GameInput_OnPlayerNavigateUIPerformed(object sender, System.EventArgs e) {
-        if (!architectTableHubMerchant.GetPlayerInteractingWithMerchant()) return;
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+            if (!HordeModeUI.Instance.GetCustomizeCampPanelOpen()) return;
+        }
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            if (!architectTableHubMerchant.GetPlayerInteractingWithMerchant()) return;
+        }
+
         Vector2 input = GameInput.Instance.GetUINavigationVector();
         if (input == Vector2.zero) return;
 

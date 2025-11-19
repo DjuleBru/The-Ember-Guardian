@@ -9,29 +9,30 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     public static ChangeWeaponPanel Instance;
 
-    private int totalWeaponAmount = 12;
-    private bool panelOpen;
-    private bool primaryWeaponSwap;
-    private bool openedOnce;
-    private bool isLevelScene;
+    protected int totalWeaponAmount = 12;
+    protected bool panelOpen;
+    protected bool primaryWeaponSwap;
+    protected bool openedOnce;
+    protected bool isLevelScene;
 
-    [SerializeField] private Transform changeWeaponSlotContainer;
-    [SerializeField] private Transform changeWeaponSlotTemplate;
-    [SerializeField] private Transform emptyWeaponSlotTemplate;
-    private List<GameObject> changeWeaponButtons;
+    [SerializeField] protected Transform changeWeaponSlotContainer;
+    [SerializeField] protected Transform changeWeaponSlotTemplate;
+    [SerializeField] protected Transform emptyWeaponSlotTemplate;
+    protected List<GameObject> changeWeaponButtons;
 
-    private WeaponChangeButton lastChangeButtonThatOpenedThisPanel;
+    protected WeaponChangeButton lastChangeButtonThatOpenedThisPanel;
 
     public event EventHandler OnChangeWeaponPanelClosed;
     public event EventHandler OnChangeWeaponPanelOpened;
 
-    private void Awake() {
+    protected void Awake() {
         Instance = this;
     }
 
-    private void Start() {
-        PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
+    protected virtual void Start() {
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+
+        PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
 
         Gun.OnAnyGunUnlocked += Gun_OnAnyGunUnlocked;
         PlayerShoot.Instance.OnPrimaryWeaponChanged += PlayerShoot_OnPrimaryWeaponChanged;
@@ -50,7 +51,7 @@ public class ChangeWeaponPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void PlayerTabMenuUI_OnPlayerTabClosed(object sender, EventArgs e) {
+    protected void PlayerTabMenuUI_OnPlayerTabClosed(object sender, EventArgs e) {
         if (panelOpen) {
             panelOpen = false;
             gameObject.SetActive(false);
@@ -59,18 +60,18 @@ public class ChangeWeaponPanel : MonoBehaviour
         }
     }
 
-    private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
+    protected void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
         if(panelOpen) {
             ClosePanel();
         }
     }
 
 
-    private void PlayerShoot_OnPlayerWeaponReplaced(object sender, EventArgs e) {
+    protected void PlayerShoot_OnPlayerWeaponReplaced(object sender, EventArgs e) {
         UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
     }
 
-    private void PlayerShoot_OnSecondaryWeaponChanged(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnSecondaryWeaponChanged(object sender, System.EventArgs e) {
         if (isLevelScene) {
             UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
         }
@@ -80,7 +81,7 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     }
 
-    private void PlayerShoot_OnPrimaryWeaponChanged(object sender, System.EventArgs e) {
+    protected void PlayerShoot_OnPrimaryWeaponChanged(object sender, System.EventArgs e) {
         if(isLevelScene) {
             UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
         } else {
@@ -89,7 +90,7 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     }
 
-    private void Gun_OnAnyGunUnlocked(object sender, System.EventArgs e) {
+    protected void Gun_OnAnyGunUnlocked(object sender, System.EventArgs e) {
         if (isLevelScene) {
             UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
         }
@@ -99,7 +100,7 @@ public class ChangeWeaponPanel : MonoBehaviour
 
     }
 
-    private void UpdateWeaponSlots(List<GunSO> gunSOList) {
+    protected void UpdateWeaponSlots(List<GunSO> gunSOList) {
         changeWeaponSlotTemplate.gameObject.SetActive(true);
         emptyWeaponSlotTemplate.gameObject.SetActive(true);
         changeWeaponButtons = new List<GameObject>();
@@ -133,7 +134,7 @@ public class ChangeWeaponPanel : MonoBehaviour
         lastChangeButtonThatOpenedThisPanel = changeButton;
     }
 
-    public void OpenClosePanel(bool calledFromPrimaryWeaponButton) {
+    public virtual void OpenClosePanel(bool calledFromPrimaryWeaponButton) {
 
         if(panelOpen) {
 
@@ -179,7 +180,7 @@ public class ChangeWeaponPanel : MonoBehaviour
         OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
     }
 
-    private void OnDestroy() {
+    protected virtual void OnDestroy() {
         Gun.OnAnyGunUnlocked -= Gun_OnAnyGunUnlocked;
         PlayerShoot.Instance.OnPrimaryWeaponChanged -= PlayerShoot_OnPrimaryWeaponChanged;
         PlayerShoot.Instance.OnSecondaryWeaponChanged -= PlayerShoot_OnSecondaryWeaponChanged;

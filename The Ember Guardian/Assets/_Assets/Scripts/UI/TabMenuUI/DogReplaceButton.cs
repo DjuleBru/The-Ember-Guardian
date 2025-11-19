@@ -21,18 +21,37 @@ public class DogReplaceButton : ButtonUI
     }
 
     private void SwapDog() {
-        Dog.Instance.SetDogType(linkedDogType, true);
-        OnDogSwapped?.Invoke(this, EventArgs.Empty);
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+            HordeModeUI.Instance.SetSelectedDog(linkedDogType);
+        } else {
+            Dog.Instance.SetDogType(linkedDogType, true);
+            OnDogSwapped?.Invoke(this, EventArgs.Empty);
+            ChangeDogPanel.Instance.OpenClosePanel();
+        }
 
-        ChangeDogPanel.Instance.OpenClosePanel();
     }
 
     private void UpdateDogIconImage(Dog.DogType dogType) {
+
         dogIconImage.sprite = DogStats.Instance.GetDogIconSprite(dogType);
+
     }
 
     public void SetLinkedDog(Dog.DogType type) {
         linkedDogType = type;
         UpdateDogIconImage(type);
+    }
+
+    protected override void ButtonUI_OnAnyButtonSelected(object sender, EventArgs e) {
+        if (!GameInput.Instance.IsUsingGamepad()) return;
+        ButtonUI buttonUI = sender as ButtonUI;
+
+        if (this == buttonUI) {
+            buttonSelected = true;
+        }
+
+        if (this != buttonUI && buttonSelected) {
+            buttonSelected = false;
+        }
     }
 }

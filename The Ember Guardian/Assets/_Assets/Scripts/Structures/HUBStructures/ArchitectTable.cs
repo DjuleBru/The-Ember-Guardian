@@ -6,32 +6,32 @@ using UnityEngine;
 public class ArchitectTable : MonoBehaviour
 {
     public static ArchitectTable Instance;
-    private bool architectTableUnlocked;
+    protected bool architectTableUnlocked;
 
-    private int maxAmmoCrafterAmount;
-    private int maxSecondaryFireAmount;
-    private int maxTrapSlotsAmount;
-    private int maxTowerAmount;
-    private int maxSniperTowerAmount;
-    private int maxMachineGunTowerAmount;
-    private int maxMortarPositionsAmount;
-    private int maxFastTravelTP;
+    protected int maxAmmoCrafterAmount;
+    protected int maxSecondaryFireAmount;
+    protected int maxTrapSlotsAmount;
+    protected int maxTowerAmount;
+    protected int maxSniperTowerAmount;
+    protected int maxMachineGunTowerAmount;
+    protected int maxMortarPositionsAmount;
+    protected int maxFastTravelTP;
 
-    private int initialMaxAmmoCrafterAmount = 1;
-    private int initialMaxSecondaryFireAmount = 2;
-    private int initialMaxTrapSlotsAmount = 6;
-    private int initialMaxTowerAmount = 6;
-    private int initialMaxSniperTowerAmount = 1;
-    private int initialMaxMachineGunTowerAmount = 1;
-    private int initialMaxMortarPositionsAmount = 1;
-    private int initialMaxFastTravelTP = 1;
+    protected int initialMaxAmmoCrafterAmount = 1;
+    protected int initialMaxSecondaryFireAmount = 2;
+    protected int initialMaxTrapSlotsAmount = 6;
+    protected int initialMaxTowerAmount = 6;
+    protected int initialMaxSniperTowerAmount = 1;
+    protected int initialMaxMachineGunTowerAmount = 1;
+    protected int initialMaxMortarPositionsAmount = 1;
+    protected int initialMaxFastTravelTP = 1;
 
-    [SerializeField] private GameObject activeHubMerchantGameObject;
-    [SerializeField] private GameObject inActiveHubMerchantGameObject;
-    [SerializeField] private GameObject allStructureBlueprintsParent;
-    private HubMerchant architectTableHubMerchant;
+    [SerializeField] protected GameObject activeHubMerchantGameObject;
+    [SerializeField] protected GameObject inActiveHubMerchantGameObject;
+    [SerializeField] protected GameObject allStructureBlueprintsParent;
+    protected HubMerchant architectTableHubMerchant;
 
-    private void Awake() {
+    protected virtual void Awake() {
         Instance = this;
 
         architectTableHubMerchant= GetComponent<HubMerchant>();
@@ -69,7 +69,7 @@ public class ArchitectTable : MonoBehaviour
         }
     }
 
-    private void LoadStats() {
+    protected void LoadStats() {
         //Debug.Log("ARCHITECT TABLE LOAD STATS");
         if (!ES3.KeyExists("ArchitectTableStats")) {
             // Si aucune sauvegarde, on garde les valeurs initiales

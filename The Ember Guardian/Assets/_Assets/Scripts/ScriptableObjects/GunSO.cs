@@ -29,6 +29,12 @@ public class GunSO : ScriptableObject
     public Sprite gunSprite;
     [BoxGroup("Visual")]
     [LabelWidth(300)]
+    public Sprite gunSprite_mainMenu;
+    [BoxGroup("Visual")]
+    [LabelWidth(300)]
+    public Sprite gunSprite_mainMenuLights;
+    [BoxGroup("Visual")]
+    [LabelWidth(300)]
     public Sprite reticleSprite;
     [BoxGroup("Visual")]
     [LabelWidth(300)]

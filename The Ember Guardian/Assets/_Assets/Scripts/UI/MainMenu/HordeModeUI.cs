@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,25 +12,70 @@ public class HordeModeUI : MonoBehaviour
 
     [SerializeField] private GameObject hordeModePanelGO;
     [SerializeField] private GameObject firstSelectedButton;
+    [SerializeField] private GameObject customizeCampButtonWorlUI;
+    [SerializeField] private GameObject swapWeaponButtonWorlUI;
+    [SerializeField] private GameObject SwapDogButtonWorlUI;
+    [SerializeField] private ChangeWeaponPanel_HordeMode changeWeaponPanel;
+    [SerializeField] private ChangeDogPanel_HordeMode changeDogPanel;
+    [SerializeField] private ArchitectTable_MainMenu architectTable;
     [SerializeField] private Transform hordeModeMenuCameraTarget;
     [SerializeField] private TextMeshProUGUI levelEnvironmentText;
+    [SerializeField] private List<CanvasGroup> allUICanvasGroups;
 
     private LevelSO.LevelEnvironment currentSelectedEnvironment;
     private List<LevelSO.LevelEnvironment> unlockedEnvironmentList;
     private bool panelOpen;
+    private bool changeWeaponPanelOpen;
+    private bool changeDogPanelOpen;
+    private bool customizeCampPanelOpen;
     private Animator panelAnimator;
+
+    private GunSO.GunType selectedGunType;
+    public event EventHandler OnWeaponSelected;
+    private Dog.DogType selectedDogType;
+    public event EventHandler OnDogSelected;
 
     private void Awake() {
         Instance = this;
         hordeModePanelGO.gameObject.SetActive(false);
+        customizeCampButtonWorlUI.gameObject.SetActive(false);
+        SwapDogButtonWorlUI.gameObject.SetActive(false);
+        swapWeaponButtonWorlUI.gameObject.SetActive(false);
         panelAnimator = GetComponent<Animator>();
     }
 
     private void Start() {
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnEscapePerformed += GameInput_OnEscapePerformed;
+        GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
 
         InitializeUnlockedEnvironments();
+    }
+
+    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
+        if (!GameInput.Instance.IsUsingGamepad()) return;
+
+        if(panelOpen) {
+            EventSystem.current.SetSelectedGameObject(swapWeaponButtonWorlUI);
+        }
+    }
+
+    private void Update() {
+        if (!panelOpen) return;
+
+        if(Input.GetMouseButtonDown(0) ||  Input.GetMouseButtonDown(1)) {
+            if (!EventSystem.current.IsPointerOverGameObject()) {
+
+                if(changeWeaponPanelOpen) {
+                    CloseChangeWeaponPanel();
+                }
+                if (changeDogPanelOpen) {
+                    CloseChangeDogPanel();
+                }
+
+            }
+        }
+        
     }
 
     private void InitializeUnlockedEnvironments() {
@@ -50,15 +96,135 @@ public class HordeModeUI : MonoBehaviour
     }
 
     private void GameInput_OnEscapePerformed(object sender, System.EventArgs e) {
+        BackOrEscape();
+    }
+
+    private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
+        BackOrEscape();
+    }
+
+    private void BackOrEscape() {
+        if (customizeCampPanelOpen) {
+            CloseCustomizeCampPanel();
+            if (GameInput.Instance.IsUsingGamepad()) {
+                EventSystem.current.SetSelectedGameObject(SwapDogButtonWorlUI);
+            }
+            return;
+        }
+
+        if (changeDogPanelOpen) {
+            CloseChangeDogPanel();
+            if (GameInput.Instance.IsUsingGamepad()) {
+                EventSystem.current.SetSelectedGameObject(SwapDogButtonWorlUI);
+            }
+            return;
+        }
+
+        if (changeWeaponPanelOpen) {
+            CloseChangeWeaponPanel();
+            if (GameInput.Instance.IsUsingGamepad()) {
+                EventSystem.current.SetSelectedGameObject(swapWeaponButtonWorlUI);
+            }
+            return;
+        }
+
         if (panelOpen) {
             CloseHordeModePanel();
         }
     }
 
-    private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
-        if (panelOpen) {
-            CloseHordeModePanel();
+    public void OpenCloseChangeWeaponPanel() {
+        if (changeDogPanelOpen) {
+            CloseChangeDogPanel();
         }
+
+        changeWeaponPanel.OpenClosePanel(true);
+        changeWeaponPanelOpen = !changeWeaponPanelOpen;
+    }
+
+    public void SetSelectedWeapon(GunSO gunSO) {
+        selectedGunType = gunSO.gunType;
+        OnWeaponSelected?.Invoke(this, EventArgs.Empty);
+
+        if(GameInput.Instance.IsUsingGamepad()) {
+            EventSystem.current.SetSelectedGameObject(swapWeaponButtonWorlUI);
+        }
+
+        CloseChangeWeaponPanel();
+    }
+
+    public GunSO.GunType GetSelectedGunType() {
+        return selectedGunType;
+    }
+
+    public void OpenCloseChangeDogPanel() {
+        if(changeWeaponPanelOpen) {
+            CloseChangeWeaponPanel();
+        }
+
+        changeDogPanel.OpenClosePanel();
+        changeDogPanelOpen = !changeDogPanelOpen;
+    }
+
+    public void OpenCloseCustomizeCampPanel() {
+        if (changeDogPanelOpen) {
+            CloseChangeDogPanel();
+        }
+
+        if (changeWeaponPanelOpen) {
+            CloseChangeWeaponPanel();
+        }
+
+
+        architectTable.OpenCloseCustomizeCampPanel();
+        customizeCampPanelOpen = !customizeCampPanelOpen;
+
+        foreach(CanvasGroup canvasGroup in allUICanvasGroups) {
+            if(customizeCampPanelOpen) {
+                canvasGroup.alpha = 0f;
+            } else {
+                canvasGroup.alpha = 1.0f;
+            }
+
+        }
+    }
+
+    private void CloseChangeDogPanel() {
+        changeDogPanel.OpenClosePanel();
+        changeDogPanelOpen = false;
+    }
+
+    private void CloseChangeWeaponPanel() {
+        changeWeaponPanel.OpenClosePanel(true);
+        changeWeaponPanelOpen = false;
+    }
+    private void CloseCustomizeCampPanel() {
+        architectTable.OpenCloseCustomizeCampPanel();
+        customizeCampPanelOpen = !customizeCampPanelOpen;
+
+        foreach (CanvasGroup canvasGroup in allUICanvasGroups) {
+            canvasGroup.alpha = 1.0f;
+        }
+    }
+
+
+    public void SetSelectedDog(Dog.DogType dogType) {
+        selectedDogType = dogType;
+        OnDogSelected?.Invoke(this, EventArgs.Empty);
+
+        if (GameInput.Instance.IsUsingGamepad()) {
+            EventSystem.current.SetSelectedGameObject(SwapDogButtonWorlUI);
+        }
+
+        CloseChangeDogPanel();
+    }
+
+    public Dog.DogType GetSelectedDogType() {
+        return selectedDogType;
+    }
+
+    public bool GetCustomizeCampPanelOpen() {
+        return customizeCampPanelOpen;
     }
 
     #region BUTTONS
@@ -108,6 +274,9 @@ public class HordeModeUI : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         panelAnimator.SetTrigger("Show");
+        customizeCampButtonWorlUI.gameObject.SetActive(true);
+        SwapDogButtonWorlUI.gameObject.SetActive(true);
+        swapWeaponButtonWorlUI.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(.5f);
 
@@ -119,6 +288,9 @@ public class HordeModeUI : MonoBehaviour
         CameraManager.Instance.ResetCameraTarget();
         CameraManager.Instance.ZoomOut(true);
         panelAnimator.SetTrigger("Hide");
+        customizeCampButtonWorlUI.gameObject.SetActive(false);
+        SwapDogButtonWorlUI.gameObject.SetActive(false);
+        swapWeaponButtonWorlUI.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(1f);
 

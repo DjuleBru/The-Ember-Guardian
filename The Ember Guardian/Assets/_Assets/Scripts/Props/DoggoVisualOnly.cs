@@ -17,18 +17,25 @@ public class DoggoVisualOnly : MonoBehaviour
             dogType = GetValue(dogData, "dogType", Dog.DogType.GermanShepherd);
         }
 
-        RefreshActiveDog();
+        RefreshActiveDog(dogType);
 
        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             Dog.Instance.OnDogTypeChanged += Dog_OnDogTypeChanged;
        }
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+            HordeModeUI.Instance.OnDogSelected += HordeModeUI_OnDogSelected;
+        }
+    }
+
+    private void HordeModeUI_OnDogSelected(object sender, System.EventArgs e) {
+        RefreshActiveDog(HordeModeUI.Instance.GetSelectedDogType());
     }
 
     private void Dog_OnDogTypeChanged(object sender, Dog.OnDogTypeChangedEventArgs e) {
-        RefreshActiveDog();
+        RefreshActiveDog(Dog.Instance.GetDogType());
     }
 
-    private void RefreshActiveDog() {
+    private void RefreshActiveDog(Dog.DogType dogType) {
         germanShepherdGO.SetActive(false);
         retreiverGO.SetActive(false);
         darkCompanionGO.SetActive(false);
@@ -48,8 +55,6 @@ public class DoggoVisualOnly : MonoBehaviour
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             bool retreiverUnlocked = DogStats.Instance.GetRetreiverUnlocked();
             bool darkCompanionUnlocked = DogStats.Instance.GetDarkCompanionUnlocked();
-
-            dogType = Dog.Instance.GetDogType();
 
             if (dogType == Dog.DogType.GermanShepherd) {
                 germanShepherdGO.SetActive(false);

@@ -3,25 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ChangeDogPanel : MonoBehaviour
 {
     public static ChangeDogPanel Instance;
 
-    private bool panelOpen;
+    protected bool panelOpen;
 
-    [SerializeField] private Transform changeDogSlotContainer;
-    [SerializeField] private Transform changeDogSlotTemplate;
-    [SerializeField] private Transform emptyDogSlotTemplate;
-    private List<GameObject> changeDogButtons;
+    [SerializeField] protected Transform changeDogSlotContainer;
+    [SerializeField] protected Transform changeDogSlotTemplate;
+    [SerializeField] protected Transform emptyDogSlotTemplate;
+    protected List<GameObject> changeDogButtons;
 
     public event EventHandler OnChangeDogPanelOpened;
     public event EventHandler OnChangeDogPanelClosed;
 
-    private void Awake() {
+    protected void Awake() {
         Instance = this;
     }
-    private void Start() {
+    protected virtual void Start() {
         PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
 
@@ -33,7 +34,7 @@ public class ChangeDogPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void UpdateDogSlots(Dog.DogType activeDogType) {
+    protected virtual void UpdateDogSlots(Dog.DogType activeDogType) {
         changeDogSlotTemplate.gameObject.SetActive(true);
         emptyDogSlotTemplate.gameObject.SetActive(true);
         changeDogButtons = new List<GameObject>();
@@ -59,22 +60,54 @@ public class ChangeDogPanel : MonoBehaviour
 
         changeDogSlotTemplate.gameObject.SetActive(false);
         emptyDogSlotTemplate.gameObject.SetActive(false);
+
+        SetupNavigation();
     }
 
-    private void Dog_OnDogTypeChanged(object sender, EventArgs e) {
+    protected void SetupNavigation() {
+        if (changeDogButtons == null || changeDogButtons.Count == 0)
+            return;
+
+        for (int i = 0; i < changeDogButtons.Count; i++) {
+            GameObject go = changeDogButtons[i];
+            var selectable = go.GetComponent<Selectable>();
+            if (selectable == null) continue;
+
+            Navigation nav = new Navigation {
+                mode = Navigation.Mode.Explicit
+            };
+
+            // Up
+            if (i == 0)
+                nav.selectOnUp = changeDogButtons[changeDogButtons.Count - 1].GetComponent<Selectable>(); // wrap
+            else
+                nav.selectOnUp = changeDogButtons[i - 1].GetComponent<Selectable>();
+
+            // Down
+            if (i == changeDogButtons.Count - 1)
+                nav.selectOnDown = changeDogButtons[0].GetComponent<Selectable>(); // wrap
+            else
+                nav.selectOnDown = changeDogButtons[i + 1].GetComponent<Selectable>();
+
+            selectable.navigation = nav;
+        }
+    }
+
+    protected void Dog_OnDogTypeChanged(object sender, EventArgs e) {
         UpdateDogSlots(Dog.Instance.GetDogType());
     }
 
-    private void DogState_OnNewDogUnlocked(object sender, EventArgs e) {
+    protected void DogState_OnNewDogUnlocked(object sender, EventArgs e) {
         UpdateDogSlots(Dog.Instance.GetDogType());
     }
 
-    private void PlayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
+    protected void PlayerTabMenuUI_OnPlayerTabOpened(object sender, System.EventArgs e) {
         panelOpen = false;
         gameObject.SetActive(false);
         OnChangeDogPanelClosed?.Invoke(this, EventArgs.Empty);
     }
-    private void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
+
+    protected void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
         if (panelOpen) {
             OpenClosePanel();
         }
@@ -89,7 +122,10 @@ public class ChangeDogPanel : MonoBehaviour
         }
         else {
             if (changeDogButtons.Count > 0) {
-                EventSystem.current.SetSelectedGameObject(changeDogButtons[0]);
+                if(GameInput.Instance.IsUsingGamepad()) {
+                    EventSystem.current.SetSelectedGameObject(changeDogButtons[0]);
+                }
+
                 OnChangeDogPanelOpened?.Invoke(this, EventArgs.Empty);
             }
         }

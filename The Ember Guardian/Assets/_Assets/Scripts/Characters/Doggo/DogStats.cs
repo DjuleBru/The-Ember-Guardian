@@ -127,7 +127,7 @@ public class DogStats : MonoBehaviour {
         // Dog type par défaut
         Dog.DogType loadedDogType = Dog.DogType.GermanShepherd;
 
-        if (!ES3.KeyExists("DogStats")) {
+        if (!ES3.KeyExists("DogStats") && Dog.Instance != null) {
             Dog.Instance.SetDogType(loadedDogType);
             return;
         }
@@ -173,7 +173,10 @@ public class DogStats : MonoBehaviour {
         // Dog type (enum direct)
         loadedDogType = GetValue(dogData, "dogType", Dog.DogType.GermanShepherd);
 
-        Dog.Instance.SetDogType(loadedDogType);
+        if(Dog.Instance != null) {
+            Dog.Instance.SetDogType(loadedDogType);
+        }
+
     }
 
 

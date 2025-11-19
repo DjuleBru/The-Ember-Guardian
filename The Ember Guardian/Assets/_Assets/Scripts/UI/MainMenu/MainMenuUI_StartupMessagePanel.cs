@@ -17,6 +17,7 @@ public class MainMenuUI_StartupMessagePanel : MonoBehaviour
 
     [SerializeField] protected Animator panelNameImageAnimator;
 
+    private bool panelOpen;
 
     private void Awake() {
         Instance = this;
@@ -28,15 +29,18 @@ public class MainMenuUI_StartupMessagePanel : MonoBehaviour
     }
 
     private void Gameinput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        if (!panelOpen) return;
         ClosePanel();
     }
 
     public void OpenPanel() {
+        panelOpen = true;
         EventSystem.current.SetSelectedGameObject(backButton.gameObject);
         startupMessagePanel.gameObject.SetActive(true);
     }
 
     public void ClosePanel() {
+        panelOpen = false;
         startupMessagePanel.gameObject.SetActive(false);
         MainMenuUI.Instance.HandleMenuStartup();
     }

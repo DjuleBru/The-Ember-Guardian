@@ -9,6 +9,7 @@ public class PlayerSave : MonoBehaviour
     public static PlayerSave Instance;
 
     [SerializeField] private GunSO initialActiveGun;
+    [SerializeField] private List<GunSO> allGunsList;
     [SerializeField] private List<SkillSO> allSkillsList;
     [SerializeField] private List<SkillSO> initialSkillsUnlockedList;
     private List<SkillSO> newSkillsUnlockedList = new List<SkillSO>();
@@ -105,6 +106,22 @@ public class PlayerSave : MonoBehaviour
 
     public bool GetPlayerUnlockedFlagCarry() {
         return playerUnlockedFlagCarry;
+    }
+
+    public List<GunSO> GetUnlockedGunSOList() {
+        List<GunSO> unlockedGunSOList = new List<GunSO>();
+
+        foreach (GunSO gunSO in allGunsList) {
+            if(MetaProgressionManager.Instance.GetGunUnlocked(gunSO)) {
+                unlockedGunSOList.Add(gunSO);
+            }
+        }
+
+        return unlockedGunSOList;
+    }
+
+    public List<GunSO> GetAllGunSOs() {
+        return allGunsList;
     }
 
     #region SKILLS

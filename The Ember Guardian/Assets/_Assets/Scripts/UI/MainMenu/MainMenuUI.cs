@@ -232,6 +232,7 @@ public class MainMenuUI : MonoBehaviour {
             SetFirstSelectedButton();
         }
     }
+
     public void StartNewGame() {
         StartCoroutine(StartNewGameCoroutine());
     }
@@ -395,14 +396,18 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public void ShowMainMenuButtons() {
+        Debug.Log("ShowMainMenuButtons");
         swapCharacter_WorldCanvas.gameObject.SetActive(false);
 
         StartCoroutine(FadeInMainMenu(0f));
+        mainMenuPanelAnimator.ResetTrigger("FadeOut");
         mainMenuPanelOpen = true;
     }
 
     public void HideMainMenuButtons() {
+        Debug.Log("HideMainMenuButtons");
         mainMenuPanelAnimator.SetTrigger("FadeOut");
+        mainMenuPanelAnimator.ResetTrigger("FadeIn");
         mainMenuPanelOpen = false;
     }
 

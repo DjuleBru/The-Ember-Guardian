@@ -33,22 +33,31 @@ public class WeaponReplaceButton : ButtonUI {
     private void SwapWeapon() {
         bool primaryWeaponSwap = ChangeWeaponPanel.Instance.GetPrimaryWeaponSwap();
         bool levelReplace = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level;
+        bool mainMenuReplace = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
 
+       
         if (levelReplace) {
             PlayerShoot.Instance.ReplaceWeaponSO(linkedGunSO, primaryWeaponSwap);
 
         } else {
-
-            if (primaryWeaponSwap) {
-                PlayerShoot.Instance.SetPrimaryWeaponSO(linkedGunSO);
+           
+            if(mainMenuReplace) {
+                HordeModeUI.Instance.SetSelectedWeapon(linkedGunSO);
+            } else {
+                if (primaryWeaponSwap) {
+                    PlayerShoot.Instance.SetPrimaryWeaponSO(linkedGunSO);
+                }
+                else {
+                    PlayerShoot.Instance.SetSecondaryWeaponSO(linkedGunSO);
+                }
             }
-            else {
-                PlayerShoot.Instance.SetSecondaryWeaponSO(linkedGunSO);
-            }
-
+         
         }
 
-        ChangeWeaponPanel.Instance.ClosePanel();
+        if(!mainMenuReplace) {
+            ChangeWeaponPanel.Instance.ClosePanel();
+        }
+
         OnWeaponReplaceButtonPressed?.Invoke(this, EventArgs.Empty);
     }
 
