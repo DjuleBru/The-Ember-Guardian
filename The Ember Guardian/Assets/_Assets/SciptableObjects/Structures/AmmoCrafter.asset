@@ -34,12 +34,13 @@ MonoBehaviour:
   engineerWorkingPriority: 4
   maxEngineersAssignedWorking: 1
   maxEngineersAssignedRefilling: 1
+  refillCurrencyTypeNeeded: 0
   upgradeable: 0
-  tentLevelRequiredForLevel2: 2
-  tentLevelRequiredForLevel3: 3
-  tentLevelRequiredForLevel4: 4
+  maxLevel: 0
   buildingUpgradeSpriteList:
   - {fileID: 769547836, guid: 78c74fc20ec74d948ba3760e297d4990, type: 3}
+  hordeModeGemBudget: 5
+  maxStructureBlueprintAmount_HordeMode: 99
   buildAudioClip: {fileID: 8300000, guid: 7966cde6e9dc51c449d19bb1005ce6d8, type: 3}
   buildVolumeMultiplier: 1
   useFunctionAudioClip: {fileID: 0}

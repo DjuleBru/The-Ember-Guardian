@@ -47,6 +47,7 @@ public class CampEditManager : MonoBehaviour {
     private bool cancellingMovement;
     private bool dragging;
     private bool blueprintHasMoved;
+    private bool hordeMode;
 
     private bool playerJustPressedSelect;
     private float draggingTimer;
@@ -80,6 +81,7 @@ public class CampEditManager : MonoBehaviour {
         scrollRectEvents.OnDragEnded += ScrollRectEvents_OnDragEnded;
         scrollRectEvents.OnDragStarted += ScrollRectEvents_OnDragStarted;
 
+        hordeMode = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
         // Check if no structure was saved
         if (savedLayout.Count == 0) return;
 
@@ -237,6 +239,12 @@ public class CampEditManager : MonoBehaviour {
                 unit.SetOccupyingStructure(structure);
             }
         }
+
+
+        if (hordeMode) {
+            ArchitectTable.Instance.RemoveFromBudget(structure.GetLinkedStructureSO().hordeModeGemBudget);
+        }
+
     }
 
     public void RemoveStructure(StructureBlueprint structureBlueprint, bool removeAllStructures = false) {
@@ -261,15 +269,20 @@ public class CampEditManager : MonoBehaviour {
         } else {
             Destroy(structureBlueprint.gameObject);
         }
+
+
+        if (hordeMode) {
+            ArchitectTable.Instance.AddToBudget(structureBlueprint.GetLinkedStructureSO().hordeModeGemBudget);
+        }
+
     }
 
     public void AddStructure(StructureSO structureSO) {
         SetMode(CampEditMode.AddingStructure);
 
-        if(blueprintBeingAdded != null) {
+        if (blueprintBeingAdded != null) {
             blueprintBeingAdded.SetHovered(false);
             campGrid.SetHoveredCells(blueprintBeingAdded.currentCell.x, blueprintBeingAdded.widthInCells, false);
-
         }
 
         StructureBlueprint structureBlueprint = Instantiate(structureBlueprintPrefab, structureBlueprintsParent).GetComponent<StructureBlueprint>();
@@ -462,13 +475,23 @@ public class CampEditManager : MonoBehaviour {
             layoutToSave.Add(new StructurePlacementData(pair.Key, type));
         }
 
-        ES3.Save("campLayout", layoutToSave);
+        if(hordeMode) {
+            ES3.Save("campLayout_HordeMode", layoutToSave);
+        } else {
+            ES3.Save("campLayout", layoutToSave);
+        }
+
 
         OnLayoutSaved?.Invoke(this, EventArgs.Empty);
     }
 
     public void LoadCampLayout() {
-        savedLayout = ES3.Load("campLayout", new List<StructurePlacementData>());
+        if(hordeMode) {
+            savedLayout = ES3.Load("campLayout_HordeMode", new List<StructurePlacementData>());
+        } else {
+            savedLayout = ES3.Load("campLayout", new List<StructurePlacementData>());
+        }
+
         //Debug.Log("LoadCampLayout " + savedLayout.Count);
     }
 

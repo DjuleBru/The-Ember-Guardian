@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,12 +16,19 @@ public class HordeModeUI : MonoBehaviour
     [SerializeField] private GameObject customizeCampButtonWorlUI;
     [SerializeField] private GameObject swapWeaponButtonWorlUI;
     [SerializeField] private GameObject SwapDogButtonWorlUI;
+
     [SerializeField] private ChangeWeaponPanel_HordeMode changeWeaponPanel;
     [SerializeField] private ChangeDogPanel_HordeMode changeDogPanel;
     [SerializeField] private ArchitectTable_MainMenu architectTable;
+    [SerializeField] private CustomizeHordeModeEquipmentButton changeWeaponCustomizable;
+    [SerializeField] private CustomizeHordeModeEquipmentButton changeDogCustomizable;
+    [SerializeField] private CustomizeHordeModeEquipmentButton architectTableCustomizable;
+
     [SerializeField] private Transform hordeModeMenuCameraTarget;
     [SerializeField] private TextMeshProUGUI levelEnvironmentText;
     [SerializeField] private List<CanvasGroup> allUICanvasGroups;
+
+    [SerializeField] protected TextMeshProUGUI maxNightsSurvivedText;
 
     private LevelSO.LevelEnvironment currentSelectedEnvironment;
     private List<LevelSO.LevelEnvironment> unlockedEnvironmentList;
@@ -28,6 +36,8 @@ public class HordeModeUI : MonoBehaviour
     private bool changeWeaponPanelOpen;
     private bool changeDogPanelOpen;
     private bool customizeCampPanelOpen;
+    private bool dogCustomizationUnlocked;
+    private bool campCustomizationUnlocked;
     private Animator panelAnimator;
 
     private GunSO.GunType selectedGunType;
@@ -49,24 +59,20 @@ public class HordeModeUI : MonoBehaviour
         GameInput.Instance.OnEscapePerformed += GameInput_OnEscapePerformed;
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
 
+        maxNightsSurvivedText.font = LocalizationManager.Instance.GetCurrentFont();
+        maxNightsSurvivedText.text = LocalizationManager.Instance.GetLocalizedText("menu_maxNightsSurvived");
+
         InitializeUnlockedEnvironments();
-    }
-
-    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
-        if (!GameInput.Instance.IsUsingGamepad()) return;
-
-        if(panelOpen) {
-            EventSystem.current.SetSelectedGameObject(swapWeaponButtonWorlUI);
-        }
+        LoadUnlockedCustomizationOptions();
     }
 
     private void Update() {
         if (!panelOpen) return;
 
-        if(Input.GetMouseButtonDown(0) ||  Input.GetMouseButtonDown(1)) {
+        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) {
             if (!EventSystem.current.IsPointerOverGameObject()) {
 
-                if(changeWeaponPanelOpen) {
+                if (changeWeaponPanelOpen) {
                     CloseChangeWeaponPanel();
                 }
                 if (changeDogPanelOpen) {
@@ -75,7 +81,32 @@ public class HordeModeUI : MonoBehaviour
 
             }
         }
-        
+    }
+
+    private void LoadUnlockedCustomizationOptions() {
+        dogCustomizationUnlocked = DogStats.Instance.GetRetreiverUnlocked();
+        campCustomizationUnlocked = MetaProgressionManager.Instance.GetMerchantUnlocked(HubMerchant.HubMerchantType.ArchitectTable);
+
+        changeWeaponCustomizable.SetCustomizable(true);
+        changeDogCustomizable.SetCustomizable(dogCustomizationUnlocked);
+        architectTableCustomizable.SetCustomizable(campCustomizationUnlocked);
+
+        Navigation nav = changeWeaponCustomizable.GetComponent<Button>().navigation;
+        if (!changeDogCustomizable) {
+            nav.selectOnRight = null;
+        }
+        if (!architectTableCustomizable) {
+            nav.selectOnLeft = null;
+        }
+        changeWeaponCustomizable.GetComponent<Button>().navigation = nav;
+    }
+
+    private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
+        if (!GameInput.Instance.IsUsingGamepad()) return;
+
+        if(panelOpen) {
+            EventSystem.current.SetSelectedGameObject(swapWeaponButtonWorlUI);
+        }
     }
 
     private void InitializeUnlockedEnvironments() {
@@ -133,15 +164,7 @@ public class HordeModeUI : MonoBehaviour
         }
     }
 
-    public void OpenCloseChangeWeaponPanel() {
-        if (changeDogPanelOpen) {
-            CloseChangeDogPanel();
-        }
-
-        changeWeaponPanel.OpenClosePanel(true);
-        changeWeaponPanelOpen = !changeWeaponPanelOpen;
-    }
-
+    #region CUSTOMIZATION BUTTONS
     public void SetSelectedWeapon(GunSO gunSO) {
         selectedGunType = gunSO.gunType;
         OnWeaponSelected?.Invoke(this, EventArgs.Empty);
@@ -157,6 +180,22 @@ public class HordeModeUI : MonoBehaviour
         return selectedGunType;
     }
 
+    public void OpenCloseChangeWeaponPanel() {
+        if (changeDogPanelOpen) {
+            CloseChangeDogPanel();
+        }
+
+        changeWeaponPanel.OpenClosePanel(true);
+        changeWeaponPanelOpen = !changeWeaponPanelOpen;
+
+
+        if (changeWeaponPanelOpen) {
+            changeWeaponCustomizable.SetSelected(true);
+        } else {
+            changeWeaponCustomizable.SetSelected(false);
+        }
+    }
+
     public void OpenCloseChangeDogPanel() {
         if(changeWeaponPanelOpen) {
             CloseChangeWeaponPanel();
@@ -164,6 +203,12 @@ public class HordeModeUI : MonoBehaviour
 
         changeDogPanel.OpenClosePanel();
         changeDogPanelOpen = !changeDogPanelOpen;
+
+        if(changeDogPanelOpen) {
+            changeDogCustomizable.SetSelected(true);
+        } else {
+            changeDogCustomizable.SetSelected(false);
+        }
     }
 
     public void OpenCloseCustomizeCampPanel() {
@@ -179,34 +224,38 @@ public class HordeModeUI : MonoBehaviour
         architectTable.OpenCloseCustomizeCampPanel();
         customizeCampPanelOpen = !customizeCampPanelOpen;
 
-        foreach(CanvasGroup canvasGroup in allUICanvasGroups) {
+        foreach (CanvasGroup canvasGroup in allUICanvasGroups) {
             if(customizeCampPanelOpen) {
                 canvasGroup.alpha = 0f;
+                //architectTableCustomizable.SetSelected(true);
             } else {
                 canvasGroup.alpha = 1.0f;
+                architectTableCustomizable.SetSelected(false);
             }
-
         }
     }
 
     private void CloseChangeDogPanel() {
         changeDogPanel.OpenClosePanel();
         changeDogPanelOpen = false;
+        changeDogCustomizable.SetSelected(false);
     }
 
     private void CloseChangeWeaponPanel() {
         changeWeaponPanel.OpenClosePanel(true);
         changeWeaponPanelOpen = false;
+        changeWeaponCustomizable.SetSelected(false);
     }
+
     private void CloseCustomizeCampPanel() {
         architectTable.OpenCloseCustomizeCampPanel();
-        customizeCampPanelOpen = !customizeCampPanelOpen;
+        customizeCampPanelOpen = false;
+        architectTableCustomizable.SetSelected(false);
 
         foreach (CanvasGroup canvasGroup in allUICanvasGroups) {
             canvasGroup.alpha = 1.0f;
         }
     }
-
 
     public void SetSelectedDog(Dog.DogType dogType) {
         selectedDogType = dogType;
@@ -226,6 +275,7 @@ public class HordeModeUI : MonoBehaviour
     public bool GetCustomizeCampPanelOpen() {
         return customizeCampPanelOpen;
     }
+    #endregion
 
     #region BUTTONS
     public void SetNextEnvironment() {
@@ -257,7 +307,16 @@ public class HordeModeUI : MonoBehaviour
 
         levelEnvironmentText.text = LocalizationManager.Instance.GetLocalizedText(env.ToString());
 
+        string key = "hordeMode_maxNightsSurvived_" + env.ToString();
+        int maxNightsSurvivedInEnvironment = ES3.Load(key, 0);
+        maxNightsSurvivedText.text = LocalizationManager.Instance.GetLocalizedText("menu_maxNightsSurvived") + " " + maxNightsSurvivedInEnvironment;
+
         MainMenuVisual.Instance.SetEnvironment(env);
+    }
+
+    public void StartNewHordeMode() {
+        SaveHordeModeParameters();
+        MainMenuUI.Instance.StartHordeMode();
     }
 
     #endregion
@@ -271,17 +330,26 @@ public class HordeModeUI : MonoBehaviour
     private IEnumerator OpenHordeModePanelCoroutine() {
         CameraManager.Instance.ChangeCameraTarget(hordeModeMenuCameraTarget);
         CameraManager.Instance.ZoomIn(false, 1.3f);
+        SetEnvironment(MainMenuVisual.Instance.GetLevelEnvironment());
+
         yield return new WaitForSeconds(1f);
 
         panelAnimator.SetTrigger("Show");
-        customizeCampButtonWorlUI.gameObject.SetActive(true);
-        SwapDogButtonWorlUI.gameObject.SetActive(true);
+
+        if(campCustomizationUnlocked) {
+            customizeCampButtonWorlUI.gameObject.SetActive(true);
+        }
+        if(dogCustomizationUnlocked) {
+            SwapDogButtonWorlUI.gameObject.SetActive(true);
+        }
+
         swapWeaponButtonWorlUI.gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(.5f);
-
-        panelOpen = true;
+        architectTableCustomizable.SetCustomizing(true);
+        changeWeaponCustomizable.SetCustomizing(true);
+        changeDogCustomizable.SetCustomizing(true);
         EventSystem.current.SetSelectedGameObject(firstSelectedButton);
+        panelOpen = true;
     }
 
     private IEnumerator CloseHordeModePanelCoroutine() {
@@ -291,6 +359,9 @@ public class HordeModeUI : MonoBehaviour
         customizeCampButtonWorlUI.gameObject.SetActive(false);
         SwapDogButtonWorlUI.gameObject.SetActive(false);
         swapWeaponButtonWorlUI.gameObject.SetActive(false);
+        architectTableCustomizable.SetCustomizing(false);
+        changeWeaponCustomizable.SetCustomizing(false);
+        changeDogCustomizable.SetCustomizing(false);
 
         yield return new WaitForSeconds(1f);
 
@@ -303,4 +374,13 @@ public class HordeModeUI : MonoBehaviour
     }
 
     #endregion
+
+
+    public void SaveHordeModeParameters() {
+        ES3.Save("currentHordeModeLevelEnvironment", currentSelectedEnvironment);
+        ES3.Save("currentHordeModeWeaponSelected", selectedGunType);
+        ES3.Save("currentHordeModeDogSelected", selectedDogType);
+
+        CampEditManager.Instance.SaveCampLayout();
+    }
 }

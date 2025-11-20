@@ -104,7 +104,7 @@
    "English": "Exit Game",
    "Japanese": "ゲーム終了",
    "Spanish": "Salir",
-   "Chinese": "退出游戏",
+   "Chinese": "设置",
    "French": "Quitter",
    "German": "Spiel Verlassen"
  },
@@ -4595,7 +4595,7 @@
    "English": "To drop gems",
    "Japanese": "宝石を落とす",
    "Spanish": "Para soltar gemas",
-   "Chinese": "丢弃宝石",
+   "Chinese": "丢出宝石",
    "French": "Déposer les gemmes",
    "German": "Um Edelsteine abzulegen"
  },
@@ -4883,7 +4883,7 @@
    "English": "Finally got my shipment. <wiggle a=.05 f=2>That thing you call a weapon?</wiggle> We can do better.",
    "Japanese": "ようやく荷物が届いた。<wiggle a=.05 f=2>お前が武器と呼んでいる代物はこれか？</wiggle>俺たちならもっとマシなものが作れる。",
    "Spanish": "Finalmente recibí mi envío. <wiggle a=.05 f=2>¿Esa cosa es a la que llamas arma?</wiggle> Podemos hacerlo mejor.",
-   "Chinese": "终于拿到补给了。<wiggle a=.05 f=2>你管那破玩意儿叫武器？</wiggle> 我们的货好多了。",
+   "Chinese": "终于拿到补给了。<wiggle a=.05 f=2>你管那破玩意儿叫武器？</wiggle> 我的货好多了。",
    "French": "J’ai enfin reçu ma cargaison. <wiggle a=.05 f=2>Ce truc que tu appelles une arme ?</wiggle> On peut faire mieux.",
    "German": "Ich hab endlich meine Lieferung bekommen. <wiggle a=.05 f=2>Das Ding, das du eine Waffe nennst?</wiggle> Das können wir endlich wegwerfen."
  },
@@ -5549,7 +5549,7 @@
    "English": "Master",
    "Japanese": "メイン音量",
    "Spanish": "Master",
-   "Chinese": "精通",
+   "Chinese": "主音量",
    "French": "Master",
    "German": "Master"
  },
@@ -5660,6 +5660,15 @@
    "Chinese": "收集",
    "French": "Récolter",
    "German": "Einsammeln"
+ },
+ {
+   "key": "menu_viewDefaultGamepadBindings",
+   "English": "View default bindings",
+   "Japanese": "",
+   "Spanish": "",
+   "Chinese": "",
+   "French": "Contrôles par défaut",
+   "German": ""
  },
  {
    "key": "DEMO - FULL GAME",
@@ -15616,8 +15625,8 @@
    "German": ""
  },
  {
-   "key": "FIRST_NEST_DESTROYED",
-   "English": "First Purge",
+   "key": "menu_hordeMode",
+   "English": "Horde Mode",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
@@ -15625,8 +15634,8 @@
    "German": ""
  },
  {
-   "key": "FIRST_NEST_DESTROYED",
-   "English": "Destroy your first emberling nest.",
+   "key": "menu_customizeCamp",
+   "English": "Customize Camp",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
@@ -15634,8 +15643,8 @@
    "German": ""
  },
  {
-   "key": "FIRST_PRIMORDIAL_FIRE_LIT",
-   "English": "Kindled Dawn",
+   "key": "menu_startHordeMode",
+   "English": "New Horde",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
@@ -15643,8 +15652,8 @@
    "German": ""
  },
  {
-   "key": "FIRST_PRIMORDIAL_FIRE_LIT",
-   "English": "Light your first primordial fire.",
+   "key": "menu_continueHordeMode",
+   "English": "Continue Horde",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
@@ -15652,8 +15661,8 @@
    "German": ""
  },
  {
-   "key": "CORRUPTED_CITY",
-   "English": "Rust and Echoes",
+   "key": "menu_resetHordeMode",
+   "English": "Start New Horde",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
@@ -15661,8 +15670,8 @@
    "German": ""
  },
  {
-   "key": "CORRUPTED_CITY",
-   "English": "Enter the Corrupted City.",
+   "key": "menu_selectWeapon",
+   "English": "Select Weapon",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
@@ -15670,8 +15679,8 @@
    "German": ""
  },
  {
-   "key": "LUMEN_HOLLOW",
-   "English": "Sporesong",
+   "key": "menu_selectDog",
+   "English": "Select Dog",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
@@ -15679,8 +15688,8 @@
    "German": ""
  },
  {
-   "key": "LUMEN_HOLLOW",
-   "English": "Enter the Lumen Hollow.",
+   "key": "menu_MAX",
+   "English": "MAX",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
@@ -15688,8 +15697,8 @@
    "German": ""
  },
  {
-   "key": "VICTORIAN_CITY",
-   "English": "Ash and Iron",
+   "key": "menu_notEnoughBudget",
+   "English": "NOT ENOUGH BUDGET",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
@@ -15697,8 +15706,8 @@
    "German": ""
  },
  {
-   "key": "VICTORIAN_CITY",
-   "English": "Enter the Victorian City.",
+   "key": "menu_remainingBudget",
+   "English": "Remaining Budget",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
@@ -15706,608 +15715,13 @@
    "German": ""
  },
  {
-   "key": "ALL_NPC_UNLOCKED",
-   "English": "All Who Remain",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "ALL_NPC_UNLOCKED",
-   "English": "Unlock every merchant at the hub.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "FINAL_BOSS",
-   "English": "The Ember’s End",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "FINAL_BOSS",
-   "English": "Slay the Bone Reaper.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "FIRST_DOG_ABILITY",
-   "English": "Bond Forged",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "FIRST_DOG_ABILITY",
-   "English": "Unlock your first dog ability.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "FIRST_KILL_DOG",
-   "English": "Who's the Hunter Now?",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "FIRST_KILL_DOG",
-   "English": "Have your dog kill his first creature.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "DOG_RESOURCES",
-   "English": "Gold Digger",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "DOG_RESOURCES",
-   "English": "Have your dog dig out 50 orbs.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "PET_DOG",
-   "English": "Best Friend Protocol",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "PET_DOG",
-   "English": "Pet your dog for 5s straight.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "ALL_FIRE_UPGRADES",
-   "English": "Heart of the Fire",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "ALL_FIRE_UPGRADES",
-   "English": "Buy each upgrade for the Main Fire.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "CUSTOMIZE_CAMP",
-   "English": "Architect of Embers",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "CUSTOMIZE_CAMP",
-   "English": "Customize your camp layout.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "ORB_ALCHEMIST",
-   "English": "Crimson Trade",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "ORB_ALCHEMIST",
-   "English": "Unlock the Orb Alchemist.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "TRAPS_MERCHANT",
-   "English": "The Masked Duo",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "TRAPS_MERCHANT",
-   "English": "Unlock the Traps Merchant.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "KILL_ENEMIES_IN_FIRE",
-   "English": "Sanctified Ground",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "KILL_ENEMIES_IN_FIRE",
-   "English": "Slay 100 creatures in the fire's AOE.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "KILL_ENEMIES",
-   "English": "Cleansing Through Fire",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "KILL_ENEMIES",
-   "English": "Slay 1000 creatures.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "SPECIAL_WAVE",
-   "English": "Edge of Extinction",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "SPECIAL_WAVE",
-   "English": "Survive a special night wave.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "NO_SHOT_FIRED",
-   "English": "Pacifire",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "NO_SHOT_FIRED",
-   "English": "Survive a night without firing a single shot.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "SURGE_RELOAD",
-   "English": "Gunslinger",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "SURGE_RELOAD",
-   "English": "Successfully surge reload your weapon 3 times in a row.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "KILL_CREATURES_WITHOUT_MOVING",
-   "English": "Stand Your Ground",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "KILL_CREATURES_WITHOUT_MOVING",
-   "English": "Slay 30 enemies without moving.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "EMBERLING_AMOUNT",
-   "English": "Tiny Army",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "EMBERLING_AMOUNT",
-   "English": "Have 15 active emberlings.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "EMBERLING_CLASSES",
-   "English": "The Ember Corps",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "EMBERLING_CLASSES",
-   "English": "Have 1 active emberling assigned to each role simultaneously.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "EMBERLING_DROP",
-   "English": "Employee of the month",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "EMBERLING_DROP",
-   "English": "Have an emberling drop 20 orbs.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "EMBERLING_LATE",
-   "English": "Too Far, Little Ones",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "EMBERLING_LATE",
-   "English": "Have an emberling die because he didn't make it to camp at night.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "BUILD_ALL_STRUCTURES",
-   "English": "Blueprint Manifest",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "BUILD_ALL_STRUCTURES",
-   "English": "Build all the structure types.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "SECONDARY_FIRES",
-   "English": "Pyromancer",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "SECONDARY_FIRES",
-   "English": "Light 10 secondary fires",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "SPECIAL_TOWERS",
-   "English": "Locked And Loaded",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "SPECIAL_TOWERS",
-   "English": "Build all 3 special tower types in your camp.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "FUEL_FIRE_ALMOST_EMPTY",
-   "English": "Last Spark",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "FUEL_FIRE_ALMOST_EMPTY",
-   "English": "Feed the fire when it has less than 1% fuel.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "RICOCHET",
-   "English": "Ricochet Ritual",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "RICOCHET",
-   "English": "Eliminate a creature with a bullet bounce.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "DOG_PLAYER_KILL",
-   "English": "Bondfire",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "DOG_PLAYER_KILL",
-   "English": "You and your dog slayed a creature within 2s interval.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "LOOSE_RESPAWNING",
-   "English": "Burnt for Nothing",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "LOOSE_RESPAWNING",
-   "English": "Extinguish a fire while respawning.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "TOTAL_NIGHTS_SURVIVED",
-   "English": "Hundred Nights",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "TOTAL_NIGHTS_SURVIVED",
-   "English": "Survive a total of 100 nights.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "VERDANT_GRAVEYARD",
-   "English": "Verdant Graveyard",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "VERDANT_GRAVEYARD",
-   "English": "Enter the Verdant Graveyard",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "GOLDEN_RETREIVER",
-   "English": "Faithful to the End",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "GOLDEN_RETREIVER",
-   "English": "Unlock the Golden Retreiver.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "DARK_COMPANION",
-   "English": "An unlikely Friend",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "DARK_COMPANION",
-   "English": "Unlock the Dark Companion.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "DOG_KILL_CREATURES",
-   "English": "Bad Dog",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "DOG_KILL_CREATURES",
-   "English": "Have your dog kill 50 creatures.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "DOG_FETCH",
-   "English": "Good Boi",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "DOG_FETCH",
-   "English": "Have your dog fetch and bring back 50 resources.",
-   "Japanese": "",
-   "Spanish": "",
-   "Chinese": "",
-   "French": "",
-   "German": ""
- },
- {
-   "key": "menu_viewDefaultGamepadBindings",
-   "English": "View default bindings",
+   "key": "menu_maxNightsSurvived",
+   "English": "Max Nights Survived :",
    "Japanese": "",
    "Spanish": "",
    "Chinese": "",
    "French": "",
    "German": ""
  }
-
 ]
 }

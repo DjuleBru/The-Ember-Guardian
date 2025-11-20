@@ -41,6 +41,7 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private Image logoImage;
     [SerializeField] private Sprite demoLogo;
     [SerializeField] private Sprite fullGameLogo;
+    [SerializeField] private LevelSO hordeModeUnlockLevelSO;
 
     [SerializeField] protected TextMeshProUGUI ctaText;
 
@@ -81,17 +82,19 @@ public class MainMenuUI : MonoBehaviour {
         }
 
         RefreshFonts();
+        InitializeHordeModeButton();
+    }
 
+    private void InitializeHordeModeButton() {
 
         hordeModeMenuGO.SetActive(false);
-        if (!MetaProgressionManager.Instance.GetHordeModeUnlocked()) {
+        if (!MetaProgressionManager.Instance.GetLevelCompleted(hordeModeUnlockLevelSO)) {
             hordeModeButton.interactable = false;
         }
 
         if (!VersioningManager.Instance.GetHordeModeImplemented()) {
             hordeModeButton.gameObject.SetActive(false);
         }
-
     }
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
@@ -199,8 +202,8 @@ public class MainMenuUI : MonoBehaviour {
         HideMainMenuButtons();
     }
 
-    public void ContinueHordeModeGame() {
-
+    public void StartHordeMode() {
+        StartCoroutine(StartHordeModeCoroutine());
     }
 
     public void BackFromHordeModeMenu() {
@@ -256,8 +259,19 @@ public class MainMenuUI : MonoBehaviour {
         } else {
             SceneLoader.Instance.LoadTutorial(2f);
         }
-
     }
+
+    private IEnumerator StartHordeModeCoroutine() {
+        OnGameStart?.Invoke(this, EventArgs.Empty);
+
+        yield return new WaitForSeconds(1f);
+
+        MusicManager.Instance.FadeOutMusic(1f);
+        MetaProgressionManager.Instance.SetSavedOnce();
+
+        SceneLoader.Instance.LoadHordeMode(2f);
+    }
+
     private IEnumerator ResumeCurrentSaveCoroutine() {
         mainMenuPanelAnimator.SetTrigger("FadeOut");
         OnGameStart?.Invoke(this, EventArgs.Empty);
@@ -345,7 +359,7 @@ public class MainMenuUI : MonoBehaviour {
         }
 
 
-        if (!VersioningManager.Instance.GetHordeModeImplemented() || VersioningManager.Instance.GetIsDemo() || !MetaProgressionManager.Instance.GetHordeModeUnlocked()) {
+        if (!VersioningManager.Instance.GetHordeModeImplemented() || VersioningManager.Instance.GetIsDemo() || !MetaProgressionManager.Instance.GetLevelCompleted(hordeModeUnlockLevelSO)) {
             newGameButtonNav.selectOnDown = settingsButton;
             settingsButtonNav.selectOnUp = newGameButton;
 
@@ -396,7 +410,6 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public void ShowMainMenuButtons() {
-        Debug.Log("ShowMainMenuButtons");
         swapCharacter_WorldCanvas.gameObject.SetActive(false);
 
         StartCoroutine(FadeInMainMenu(0f));
@@ -405,7 +418,6 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public void HideMainMenuButtons() {
-        Debug.Log("HideMainMenuButtons");
         mainMenuPanelAnimator.SetTrigger("FadeOut");
         mainMenuPanelAnimator.ResetTrigger("FadeIn");
         mainMenuPanelOpen = false;

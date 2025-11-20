@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<int> maxCurrencyStorageList;
     [SerializeField] private List<float> difficultyReductionFactorsList;
 
+    private LevelSO.LevelEnvironment currentLevelEnvironment;
     private List<Obstacle> allObstacles = new List<Obstacle>();
     private List<Obstacle> blockingObstacles = new List<Obstacle>();
     private List<Chest> allChests = new List<Chest>();
@@ -46,11 +47,18 @@ public class LevelManager : MonoBehaviour
     private void Awake() {
         Instance = this;
         Obstacle.OnAnyObstacleInitialized += Obstacle_OnAnyObstacleInitialized;
+
+        if (isHordeMode) {
+            currentLevelEnvironment = ES3.Load("currentHordeModeLevelEnvironment", LevelSO.LevelEnvironment.TheVerdantGraveyard);
+        } else {
+            currentLevelEnvironment = levelSO.environmentType;
+        }
+
+        ES3.Save("lastLevelEnvironment", currentLevelEnvironment);
     }
 
 
     private void Start() {
-      
         if(!isHordeMode) {
             if (conditionalLockedStructureLocation != null && !conditionalLockedStructureLocationUnlocked) {
                 conditionalLockedStructureLocation.gameObject.SetActive(false);
@@ -88,9 +96,8 @@ public class LevelManager : MonoBehaviour
 
             }
         }
-        
+
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
-        ES3.Save("lastLevelEnvironment", levelSO.environmentType);
 
         RefreshLevelLimits();
     }
@@ -278,6 +285,11 @@ public class LevelManager : MonoBehaviour
 
         MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber(defeatGemsProportionsRewarded);
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
+
+        if(isHordeMode) {
+            string key = "hordeMode_maxNightsSurvived_" + currentLevelEnvironment.ToString();
+            ES3.Save(key, DayNightManager.Instance.GetCurrentDay());
+        }
     }
 
     private IEnumerator LooseLevelCoroutine() {

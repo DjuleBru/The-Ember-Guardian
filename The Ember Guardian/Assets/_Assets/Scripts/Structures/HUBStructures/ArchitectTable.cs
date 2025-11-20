@@ -25,6 +25,7 @@ public class ArchitectTable : MonoBehaviour
     protected int initialMaxMachineGunTowerAmount = 1;
     protected int initialMaxMortarPositionsAmount = 1;
     protected int initialMaxFastTravelTP = 1;
+    protected int remainingBudget;
 
     [SerializeField] protected GameObject activeHubMerchantGameObject;
     [SerializeField] protected GameObject inActiveHubMerchantGameObject;
@@ -107,6 +108,15 @@ public class ArchitectTable : MonoBehaviour
         activeHubMerchantGameObject.SetActive(true);
         inActiveHubMerchantGameObject.SetActive(false);
 
+    }
+    public virtual bool GetHasEnoughBudget(int price) {
+        return remainingBudget - price >= 0;
+    }
+    public virtual void AddToBudget(int addition) {
+        remainingBudget += addition;
+    }
+    public virtual void RemoveFromBudget(int removal) {
+        remainingBudget -= removal;
     }
 
     #region SET MAX STRUCTURE AMOUNTS

@@ -132,7 +132,7 @@ public class LocalizationManager : MonoBehaviour
 
         if (string.IsNullOrEmpty(translatedText)) {
             if (localizationEntry == null) {
-                Debug.LogError("No localization entry for key " + key);
+                Debug.LogWarning("No localization entry for key " + key);
                 translatedText = key;
             }
             else {

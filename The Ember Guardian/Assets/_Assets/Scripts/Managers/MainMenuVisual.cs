@@ -200,6 +200,9 @@ public class MainMenuVisual : MonoBehaviour
         }
     }
 
+    public LevelSO.LevelEnvironment GetLevelEnvironment() {
+        return levelEnvironment;
+    }
 
     private void DisableAllVisuals() {
         cityWaterGO.SetActive(false);

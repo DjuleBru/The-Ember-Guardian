@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: EndLevelFire
   m_EditorClassIdentifier: 
   structureType: 1
+  structureCategory: 0
   structureLocationPrefab: {fileID: 1775290175529205635, guid: c38d47740292f14429c5ce1d48a61fcf, type: 3}
   structurePrefab: {fileID: 2149269462565431065, guid: 9f4258603c6a67f4d840e2ebff0dd216, type: 3}
   structureSprite: {fileID: 0}
@@ -26,11 +27,19 @@ MonoBehaviour:
   upgradeableAtNight: 0
   functionUsableAtNight: 1
   playerCanAlwaysInteract: 0
+  engineerCanWorkByDay: 0
+  engineerCanWorkByNight: 0
+  workingEngineerHideTool: 0
+  workingEngineerHideVisual: 0
+  engineerWorkingPriority: 0
+  maxEngineersAssignedWorking: 0
+  maxEngineersAssignedRefilling: 0
+  refillCurrencyTypeNeeded: 0
   upgradeable: 0
-  tentLevelRequiredForLevel2: 2
-  tentLevelRequiredForLevel3: 3
-  tentLevelRequiredForLevel4: 4
+  maxLevel: 0
   buildingUpgradeSpriteList: []
+  hordeModeGemBudget: 0
+  maxStructureBlueprintAmount_HordeMode: 99
   buildAudioClip: {fileID: 8300000, guid: 063f9aa3f22bb22419be6d9088f9c45a, type: 3}
   buildVolumeMultiplier: 1
   useFunctionAudioClip: {fileID: 0}

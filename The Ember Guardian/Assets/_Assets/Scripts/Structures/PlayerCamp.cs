@@ -86,6 +86,10 @@ public class PlayerCamp : MonoBehaviour
     private void LoadCustomCampLayout() {
         List<CampEditManager.StructurePlacementData> structurePlacementData = ES3.Load("campLayout", new List<CampEditManager.StructurePlacementData>());
 
+        if (LevelManager.Instance.IsHordeMode()) {
+            structurePlacementData = ES3.Load("campLayout_HordeMode", new List<CampEditManager.StructurePlacementData>());
+        }
+
         customLayout = structurePlacementData.Count > 0;
 
         // Camp has never been customized

@@ -26,8 +26,15 @@ public class AddStructureBlueprint : ButtonUI
 
     [SerializeField] private int currentBlueprintAmount;
     [SerializeField] private int maxBlueprintAmount;
+    [SerializeField] private int maxBlueprintAmount_HordeMode;
+
+    [SerializeField] private TextMeshProUGUI gemBudgetText;
+    [SerializeField] private GameObject gemBudgetGO;
+    [SerializeField] private GameObject structureAmountGameObject;
+
     private bool locked = true;
     private bool newItem;
+    private bool hordeMode;
     private Button button;
 
     public static event EventHandler OnAnyStructureBlueprintFailedAddedMaxAmount;
@@ -50,7 +57,22 @@ public class AddStructureBlueprint : ButtonUI
     protected override void Start() {
         base.Start();
 
-        if(locked) {
+        hordeMode = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
+        maxedOutStructureBlueprintText.fontMaterial = LocalizationManager.Instance.GetRedGlowMaterial();
+        maxBlueprintAmount_HordeMode = linkedStructureSO.maxStructureBlueprintAmount_HordeMode;
+
+        maxedOutStructureBlueprintText.text = LocalizationManager.Instance.GetLocalizedText("menu_MAX");
+
+        if (!hordeMode) {
+            structureAmountGameObject.SetActive(true);
+            gemBudgetGO.SetActive(false);
+        } else {
+            structureAmountGameObject.SetActive(false);
+            gemBudgetGO.SetActive(true);
+            gemBudgetText.text = linkedStructureSO.hordeModeGemBudget.ToString();
+        }
+
+        if (locked) {
             LoadStructureUnlocked();
         }
 
@@ -128,7 +150,12 @@ public class AddStructureBlueprint : ButtonUI
         string saveString = linkedStructureSO.structureType.ToString() + (1);
         bool itemIsLocked = !linkedStructureSO.level1StructureInitiallyUnlocked && !MetaProgressionManager.Instance.GetMerchantItemBought(saveString);
 
+
         if(CampEditManager.Instance.GetStructureTypeUnlockedThisSession(linkedStructureSO.structureType)) {
+            itemIsLocked = false;
+        }
+
+        if (DebugManager.Instance.GetAllStructuresUnlocked() || MetaProgressionManager.Instance.GetFinalLevelCompleted()) {
             itemIsLocked = false;
         }
 
@@ -138,6 +165,8 @@ public class AddStructureBlueprint : ButtonUI
             plusIcon.GetComponent<Image>().enabled = false;
             maxStructureAmountGameObject.SetActive(false);
             structureNameText.gameObject.SetActive(false);
+            gemBudgetGO.SetActive(false);
+
         } else {
             locked = false;
         }
@@ -145,8 +174,8 @@ public class AddStructureBlueprint : ButtonUI
 
     private void SetStructureUnlocked() {
         if (this == null) return;
-        Debug.Log(this + " SetStructureUnlocked " + linkedStructureSO);
-        Debug.Log(this + " plusIcon " + plusIcon);
+        //Debug.Log(this + " SetStructureUnlocked " + linkedStructureSO);
+        //Debug.Log(this + " plusIcon " + plusIcon);
 
         locked = false;
         structureIconImage.sprite = linkedStructureSO.structureSprite;
@@ -162,16 +191,34 @@ public class AddStructureBlueprint : ButtonUI
 
     private void TryAddStructureBlueprint() {
         if (locked) return;
-        if (currentBlueprintAmount >= maxBlueprintAmount) {
-            OnAnyStructureBlueprintFailedAddedMaxAmount?.Invoke(this, EventArgs.Empty);
-            return;
+
+        if(hordeMode) {
+            if (!ArchitectTable_MainMenu.Instance.GetHasEnoughBudget(linkedStructureSO.hordeModeGemBudget)) {
+                maxedOutStructureBlueprintText.text = LocalizationManager.Instance.GetLocalizedText("menu_notEnoughBudget");
+                OnAnyStructureBlueprintFailedAddedMaxAmount?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+            if (currentBlueprintAmount >= maxBlueprintAmount_HordeMode) {
+                maxedOutStructureBlueprintText.text = LocalizationManager.Instance.GetLocalizedText("menu_MAX");
+                OnAnyStructureBlueprintFailedAddedMaxAmount?.Invoke(this, EventArgs.Empty);
+                return;
+            }
         }
+        else {
+            if (currentBlueprintAmount >= maxBlueprintAmount) {
+                maxedOutStructureBlueprintText.text = LocalizationManager.Instance.GetLocalizedText("menu_MAX");
+                OnAnyStructureBlueprintFailedAddedMaxAmount?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+        }
+
 
         CampEditManager.Instance.AddStructure(linkedStructureSO);
     }
 
     private void CampEditManager_OnStructureRemovedAnySituation(object sender, System.EventArgs e) {
         RefreshStructureAmounts();
+
     }
 
     private void CampEditManager_OnStructureAdded(object sender, System.EventArgs e) {
@@ -184,52 +231,67 @@ public class AddStructureBlueprint : ButtonUI
 
     private void RefreshStructureAmounts() {
         currentBlueprintAmount = CampEditManager.Instance.GetPlacedStructureBlueprintAmountOfType(linkedStructureSO);
-        maxBlueprintAmount = linkedStructureSO.maxStructureBlueprintAmount;
 
-        if(currentBlueprintAmount < maxBlueprintAmount) {
-            plusIcon.gameObject.SetActive(true);
-            maxedOutStructureBlueprintText.gameObject.SetActive(false);
+        if (hordeMode) {
+
+            if (ArchitectTable.Instance.GetHasEnoughBudget(linkedStructureSO.hordeModeGemBudget) && currentBlueprintAmount < maxBlueprintAmount_HordeMode) {
+                plusIcon.gameObject.SetActive(true);
+                maxedOutStructureBlueprintText.gameObject.SetActive(false);
+            } else {
+                plusIcon.gameObject.SetActive(false);
+                maxedOutStructureBlueprintText.gameObject.SetActive(true);
+            }
+
         } else {
-            plusIcon.gameObject.SetActive(false);
-            maxedOutStructureBlueprintText.gameObject.SetActive(true);
+            maxBlueprintAmount = linkedStructureSO.maxStructureBlueprintAmount;
+
+            if (currentBlueprintAmount < maxBlueprintAmount) {
+                plusIcon.gameObject.SetActive(true);
+                maxedOutStructureBlueprintText.gameObject.SetActive(false);
+            }
+            else {
+                plusIcon.gameObject.SetActive(false);
+                maxedOutStructureBlueprintText.gameObject.SetActive(true);
+            }
+
+            switch (linkedStructureSO.structureType) {
+
+                case StructureSO.StructureType.ammoCrafter:
+                    maxBlueprintAmount = ArchitectTable.Instance.GetMaxAmmoCrafterAmount();
+                    break;
+
+                case StructureSO.StructureType.bearTrap:
+                    maxBlueprintAmount = ArchitectTable.Instance.GetMaxTrapSlotsAmount();
+                    break;
+
+                case StructureSO.StructureType.secondaryFire:
+                    maxBlueprintAmount = ArchitectTable.Instance.GetMaxSecondaryFireAmount();
+                    break;
+
+                case StructureSO.StructureType.tower:
+                    maxBlueprintAmount = ArchitectTable.Instance.GetMaxTowerAmount();
+                    break;
+
+                case StructureSO.StructureType.fastTravelTeleporter:
+                    maxBlueprintAmount = ArchitectTable.Instance.GetMaxFastTravelTPAmount();
+                    break;
+
+                case StructureSO.StructureType.sniperTower:
+                    maxBlueprintAmount = ArchitectTable.Instance.GetMaxSniperTowerAmount();
+                    break;
+
+                case StructureSO.StructureType.mortarTower:
+                    maxBlueprintAmount = ArchitectTable.Instance.GetMortarPositionsAmount();
+                    break;
+
+                case StructureSO.StructureType.machineGunTower:
+                    maxBlueprintAmount = ArchitectTable.Instance.GetMachineGunTowerAmount();
+                    break;
+            }
+            RefreshStructureAmountTexts();
         }
+        
 
-         switch (linkedStructureSO.structureType) {
-
-            case StructureSO.StructureType.ammoCrafter:
-                maxBlueprintAmount = ArchitectTable.Instance.GetMaxAmmoCrafterAmount();
-            break;
-
-            case StructureSO.StructureType.bearTrap:
-                maxBlueprintAmount = ArchitectTable.Instance.GetMaxTrapSlotsAmount();
-            break;
-
-            case StructureSO.StructureType.secondaryFire:
-                maxBlueprintAmount = ArchitectTable.Instance.GetMaxSecondaryFireAmount();
-            break;
-
-            case StructureSO.StructureType.tower:
-                maxBlueprintAmount = ArchitectTable.Instance.GetMaxTowerAmount();
-            break;
-
-            case StructureSO.StructureType.fastTravelTeleporter:
-                maxBlueprintAmount = ArchitectTable.Instance.GetMaxFastTravelTPAmount();
-                break;
-
-            case StructureSO.StructureType.sniperTower:
-                maxBlueprintAmount = ArchitectTable.Instance.GetMaxSniperTowerAmount();
-            break;
-
-            case StructureSO.StructureType.mortarTower:
-                maxBlueprintAmount = ArchitectTable.Instance.GetMortarPositionsAmount();
-            break;
-
-            case StructureSO.StructureType.machineGunTower:
-                maxBlueprintAmount = ArchitectTable.Instance.GetMachineGunTowerAmount();
-            break;
-        }
-
-        RefreshStructureAmountTexts();
     }
 
     private void RefreshStructureAmountTexts() {

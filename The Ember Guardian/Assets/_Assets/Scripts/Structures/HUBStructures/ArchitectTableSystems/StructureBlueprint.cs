@@ -68,6 +68,11 @@ public class StructureBlueprint : MonoBehaviour {
             locked = false;
             gameObject.SetActive(true);
         }
+
+        if(DebugManager.Instance.GetAllStructuresUnlocked() || MetaProgressionManager.Instance.GetFinalLevelCompleted()) {
+            locked = false;
+            gameObject.SetActive(true);
+        }
     }
 
     private void InitializeBlueprint() {

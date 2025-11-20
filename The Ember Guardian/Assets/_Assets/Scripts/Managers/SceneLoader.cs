@@ -81,6 +81,10 @@ public class SceneLoader : MonoBehaviour
         Debug.Log("LoadTutorial ");
         StartCoroutine(LoadSceneAfterCrossfade("Level0_Tutorial", crossfadeDuration));
     }
+    public void LoadHordeMode(float crossfadeDuration) {
+        Debug.Log("LoadHordeMode ");
+        StartCoroutine(LoadSceneAfterCrossfade("HordeModeLevel", crossfadeDuration));
+    }
 
     public void LoadDemoIntro(float crossfadeDuration) {
         StartCoroutine(LoadSceneAfterCrossfade("DemoLevel_Intro", crossfadeDuration));

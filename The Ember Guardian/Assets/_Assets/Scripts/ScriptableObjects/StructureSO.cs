@@ -86,6 +86,9 @@ public class StructureSO : ScriptableObject
     [ShowIf("upgradeable")]
     public List<Sprite> buildingUpgradeSpriteList;
 
+    public int hordeModeGemBudget;
+    public int maxStructureBlueprintAmount_HordeMode;
+
     public AudioClip buildAudioClip;
     public float buildVolumeMultiplier = 1f;
     public AudioClip useFunctionAudioClip;
