@@ -148,5 +148,8 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip retreiverSelected;
     public AudioClip darkCompanionSelected;
 
+    public AudioClip hordeModeXPNewUnlock;
+    public AudioClip hordeModeProgressionBar;
+
     public AudioClip[] creditsWoosh;
 }

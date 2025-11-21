@@ -16,6 +16,7 @@ public class MainMenuUI : MonoBehaviour {
     protected bool hasResetHordeMode;
     protected bool confirmHordeModeResetProgression;
     protected bool selectingHordeModeContinueOrNewGame;
+    protected bool backFromHordeModeAfterDefeat;
 
     [SerializeField] protected GameObject mainMenuPanel;
     [SerializeField] protected GameObject fullGameDescriptionPanel;
@@ -73,6 +74,8 @@ public class MainMenuUI : MonoBehaviour {
             fullGameDescriptionPanel.SetActive(false);
         }
 
+        CheckBackFromHordeMode();
+
         if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
 
             HandleMenuStartup();
@@ -88,12 +91,22 @@ public class MainMenuUI : MonoBehaviour {
     private void InitializeHordeModeButton() {
 
         hordeModeMenuGO.SetActive(false);
-        if (!MetaProgressionManager.Instance.GetLevelCompleted(hordeModeUnlockLevelSO)) {
-            hordeModeButton.interactable = false;
-        }
+
+        // CHECK HORDE MODE UNLOCKED
+        //if (!MetaProgressionManager.Instance.GetLevelCompleted(hordeModeUnlockLevelSO)) {
+        //    hordeModeButton.interactable = false;
+        //}
 
         if (!VersioningManager.Instance.GetHordeModeImplemented()) {
             hordeModeButton.gameObject.SetActive(false);
+        }
+    }
+
+    private void CheckBackFromHordeMode() {
+        backFromHordeModeAfterDefeat = ES3.Load("backFromHordeModeAfterDefeat", false);
+        if (backFromHordeModeAfterDefeat) {
+            ES3.DeleteFile("HordeMode.es3");
+            HordeModeButton(true);
         }
     }
 
@@ -109,6 +122,11 @@ public class MainMenuUI : MonoBehaviour {
             CharacterSelectUI.Instance.OpenPanel();
         }
         else {
+            if (backFromHordeModeAfterDefeat) {
+
+                return;
+            };
+
             StartCoroutine(FadeInMainMenu(1.5f));
         }
     }
@@ -174,12 +192,16 @@ public class MainMenuUI : MonoBehaviour {
         HideMainMenuButtons();
     }
 
-    public virtual void HordeModeButton() {
+    public void MainMenuHordeModeButton() {
+        HordeModeButton();
+    }
+
+    public virtual void HordeModeButton(bool changeCameraTarget = true) {
         if (!ES3.FileExists("HordeMode.es3")) {
-            NewHordeModeGame();
+            NewHordeModeGame(changeCameraTarget);
         } else {
             if (!ES3.KeyExists("GameInProgress", "HordeMode.es3") || hasResetHordeMode) {
-                NewHordeModeGame();
+                NewHordeModeGame(changeCameraTarget);
             } else {
                 OpenCloseHordeModeSelectButtons(true);
             }
@@ -197,8 +219,8 @@ public class MainMenuUI : MonoBehaviour {
         }
     }
 
-    public void NewHordeModeGame() {
-        HordeModeUI.Instance.OpenHordeModePanel();
+    public void NewHordeModeGame(bool changeCameraTarget = true) {
+        HordeModeUI.Instance.OpenHordeModePanel(changeCameraTarget);
         HideMainMenuButtons();
     }
 

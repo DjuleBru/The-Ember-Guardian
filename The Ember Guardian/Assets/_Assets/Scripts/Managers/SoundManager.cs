@@ -132,6 +132,12 @@ public class SoundManager : MonoBehaviour
             CreditsManager.Instance.OnCreditsNameShown += CreditsManager_OnCreditsNameShown;
         }
 
+        if(HordeModeRewardsMenu.Instance != null) {
+            HordeModeRewardsMenu.Instance.OnNewItemUnlocked += HordeModeRewardsMenu_OnNewItemUnlocked;
+            HordeModeRewardsMenu.Instance.OnProgressionBarStartFill += HordeModeRewardsMenu_OnProgressionBarStartFill;
+            HordeModeRewardsMenu.Instance.OnProgressionBarEndFill += HordeModeRewardsMenu_OnProgressionBarEndFill;
+        }
+
         StructureBlueprint.OnAnyBlueprintWithStructureHovered += StructureBlueprint_OnAnyBlueprintWithStructureHovered;
         GridVisualUnit.OnAnyGridWithoutStructureHovered += GridVisualUnit_OnAnyGidWithoutStructureHovered;
         GridVisualUnit.OnAnyGridHoveredWhileMovingBlueprint += GridVisualUnit_OnAnyGridHoveredWhileMovingBlueprint;
@@ -257,6 +263,20 @@ public class SoundManager : MonoBehaviour
 
 
     #region UI
+
+    private void HordeModeRewardsMenu_OnProgressionBarStartFill(object sender, System.EventArgs e) {
+        gunPoweringUpAudioSource.clip = soundRefsSO.hordeModeProgressionBar;
+        gunPoweringUpAudioSource.volume = sfxVolume;
+        gunPoweringUpAudioSource.Play();
+    }
+
+    private void HordeModeRewardsMenu_OnProgressionBarEndFill(object sender, System.EventArgs e) {
+        gunPoweringUpAudioSource.Stop();
+    }
+
+    private void HordeModeRewardsMenu_OnNewItemUnlocked(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.hordeModeXPNewUnlock, .5f);
+    }
 
     private void ButtonUI_OnAnyButtonPressed(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.pressMenuButton, .3f);
@@ -1149,7 +1169,11 @@ public class SoundManager : MonoBehaviour
         if (CreditsManager.Instance != null) {
             CreditsManager.Instance.OnCreditsNameShown -= CreditsManager_OnCreditsNameShown;
         }
-
+        if (HordeModeRewardsMenu.Instance != null) {
+            HordeModeRewardsMenu.Instance.OnNewItemUnlocked -= HordeModeRewardsMenu_OnNewItemUnlocked;
+            HordeModeRewardsMenu.Instance.OnProgressionBarStartFill -= HordeModeRewardsMenu_OnProgressionBarStartFill;
+            HordeModeRewardsMenu.Instance.OnProgressionBarEndFill -= HordeModeRewardsMenu_OnProgressionBarEndFill;
+        }
         StructureUI_Fire.OnMainFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
         StructureUI_Fire.OnMainCricitalFireTickRemoved -= StructureUI_Fire_OnCricitalFireTickRemoved;
         PlayerWorldUITooltip.OnTooltipHidden -= PlayerWorldUITooltip_OnTooltipHidden;

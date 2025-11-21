@@ -289,11 +289,39 @@ public class LevelManager : MonoBehaviour
         if(isHordeMode) {
             string key = "hordeMode_maxNightsSurvived_" + currentLevelEnvironment.ToString();
             ES3.Save(key, DayNightManager.Instance.GetCurrentDay());
+
+            int currentDay = DayNightManager.Instance.GetCurrentDay();
+            int xpReward = CalculateHordeModeXPReward(currentDay - 1);
+            HordeModeProgressionManager.Instance.AddRunXP(xpReward);
+
+            ES3.Save("backFromHordeModeAfterDefeat", true);
+            ES3.Save("lastHordeModeNightsSurvived", currentDay-1);
         }
+    }
+
+    public int CalculateHordeModeXPReward(int nightCount) {
+        int baseXP = 30;        // XP pour la première nuit
+        int extraXP = 10;       // XP ajouté par nuit supplémentaire
+
+        if (nightCount <= 0)
+            return 0;
+
+        // Nuit 1 donne baseXP
+        // Nuit 2 donne baseXP + extraXP
+        // Nuit 3 donne baseXP + (extraXP * 2)
+        // etc.
+
+        int reward = baseXP + (extraXP * (nightCount - 1));
+        return reward;
     }
 
     private IEnumerator LooseLevelCoroutine() {
         yield return new WaitForSeconds(3f);
+
+        if(isHordeMode) {
+            SceneLoader.Instance.LoadMainMenu(3f);
+            yield break;
+        }
         SceneLoader.Instance.LoadHub(3f);
     }
 
