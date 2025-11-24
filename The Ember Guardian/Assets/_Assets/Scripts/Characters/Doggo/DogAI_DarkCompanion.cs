@@ -132,12 +132,17 @@ public class DogAI_DarkCompanion : DogAI
 
     protected override void HeadToAttackClosestCreature() {
         targetCreature = closestCreature;
-        //Debug.Log("targetCreature " + targetCreature);
-        if (targetCreature == null) return;
 
-        if(currentAttackAbility == AttackAbility.stomp || currentAttackAbility == AttackAbility.laserContinuous) {
+        if (currentAttackAbility == AttackAbility.stomp || currentAttackAbility == AttackAbility.laserContinuous) {
             targetCreature = creatureDetectionCollider.GetCreatureWithHighestLocalDensity();
         }
+
+        //Debug.Log("targetCreature " + targetCreature);
+        if (targetCreature == null) {
+            ChangeState(State.runWithPlayer);
+            return;
+        };
+
         float distanceToCreature = Mathf.Abs(transform.position.x - targetCreature.transform.position.x);
 
         //Debug.Log("distanceToCreature " + distanceToCreature);

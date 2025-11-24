@@ -125,44 +125,78 @@ public class Tower : Structure
 
     protected void SetWorkerGarrisonPosition(Worker worker) {
         int workerIndex = assignedWorkersList.IndexOf(worker);
-        Vector3 garrisonPosition = new Vector3(0, 0, 0);
+        if (workerIndex < 0) {
+            Debug.LogWarning($"Worker {worker.name} non trouvé dans assignedWorkersList.");
+            return;
+        }
+
+        // --- Récupération de la liste de positions selon le niveau ---
+        List<Transform> positions = null;
         float rangeBuff = 1f;
         float damageBuff = 1f;
 
-        if (structureLevel == 1) {
-            garrisonPosition = level1GarrisonPositions[workerIndex].position;
-            rangeBuff = level1RangeMultiplier;
-            damageBuff = level1DamageMultiplier;
-        }
+        switch (structureLevel) {
+            case 1:
+                positions = level1GarrisonPositions;
+                rangeBuff = level1RangeMultiplier;
+                damageBuff = level1DamageMultiplier;
+                break;
 
-        if (structureLevel == 2) {
-            garrisonPosition = level2GarrisonPositions[workerIndex].position;
-            rangeBuff = level2RangeMultiplier;
-            damageBuff = level2DamageMultiplier;
-        }
+            case 2:
+                positions = level2GarrisonPositions;
+                rangeBuff = level2RangeMultiplier;
+                damageBuff = level2DamageMultiplier;
+                break;
 
-        if (structureLevel == 3) {
-            garrisonPosition = level3GarrisonPositions[workerIndex].position;
-            rangeBuff = level3RangeMultiplier;
-            damageBuff = level3DamageMultiplier;
-        }
-
-        if (structureLevel == 4) {
-            garrisonPosition = level4GarrisonPositions[workerIndex].position;
-            if(workerIndex == 1) {
-                rangeBuff = level4RangeMultiplier;
-                damageBuff = level4DamageMultiplier;
-            } else {
+            case 3:
+                positions = level3GarrisonPositions;
                 rangeBuff = level3RangeMultiplier;
                 damageBuff = level3DamageMultiplier;
-            }
+                break;
+
+            case 4:
+                positions = level4GarrisonPositions;
+
+                // Special rule level 4
+                if (workerIndex == 1) {
+                    rangeBuff = level4RangeMultiplier;
+                    damageBuff = level4DamageMultiplier;
+                }
+                else {
+                    rangeBuff = level3RangeMultiplier;
+                    damageBuff = level3DamageMultiplier;
+                }
+                break;
         }
 
+        // --- Sécurisation de la liste ---
+        if (positions == null || positions.Count == 0) {
+            Debug.LogError($"Aucune position de garrison définie pour le niveau {structureLevel}.");
+            return;
+        }
+
+        // --- Sécurisation de l’index ---
+        if (workerIndex >= positions.Count) {
+            Debug.LogWarning(
+                $"Worker index ({workerIndex}) hors limites ({positions.Count}) pour la tour de niveau {structureLevel}. " +
+                $"Retrait du worker de la tour."
+            );
+
+            assignedWorkersList.Remove(worker);
+            worker.AssignDefensiveStructure(null);
+            return;
+        }
+
+        // --- Placement ---
+        Vector3 garrisonPosition = positions[workerIndex].position;
         worker.transform.position = garrisonPosition;
-        worker.GetComponent<HunterJob>().SetGarrisoned(garrisonPosition, this);
-        worker.GetComponent<HunterJob>().BuffDamage(damageBuff);
-        worker.GetComponent<HunterJob>().BuffRange(rangeBuff);
+
+        var job = worker.GetComponent<HunterJob>();
+        job.SetGarrisoned(garrisonPosition, this);
+        job.BuffDamage(damageBuff);
+        job.BuffRange(rangeBuff);
     }
+
 
     public bool GetTowerFull() {
         return assignedWorkersList.Count >= maxWorkersAssigned;

@@ -10,6 +10,9 @@ public class Animal : Mob
     private int maxHuntersAssigned;
     private List<Worker> workersAssigned = new List<Worker>();
 
+    private float checkWorkerListTimer;
+    private float checkWorkerListTime = 5f;
+
     private void Start() {
         health = animalSO.maxHP;
         maxHuntersAssigned = animalSO.maxHuntersAssigned;
@@ -28,7 +31,6 @@ public class Animal : Mob
         StartCoroutine(DestroyGameObjectAfterDelay(animalSO.dieAnimationTime));
     }
 
-   
     public AnimalSO GetAnimalSO() {
         return animalSO;
     }
@@ -45,7 +47,17 @@ public class Animal : Mob
     }
 
     public bool GetMaxHuntersAssigned() {
-        return workersAssigned.Count == maxHuntersAssigned;
+
+        foreach (Worker worker in workersAssigned) {
+            if (worker == null) {
+                workersAssigned.Clear();
+                break;
+            }
+        }
+
+        if (workersAssigned.Count == maxHuntersAssigned) return true;
+
+        return false;
     }
 
     public Worker GetFurthestWorkerAssigned() {

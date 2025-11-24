@@ -42,7 +42,6 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] private Image logoImage;
     [SerializeField] private Sprite demoLogo;
     [SerializeField] private Sprite fullGameLogo;
-    [SerializeField] private LevelSO hordeModeUnlockLevelSO;
 
     [SerializeField] protected TextMeshProUGUI ctaText;
 
@@ -93,9 +92,9 @@ public class MainMenuUI : MonoBehaviour {
         hordeModeMenuGO.SetActive(false);
 
         // CHECK HORDE MODE UNLOCKED
-        //if (!MetaProgressionManager.Instance.GetLevelCompleted(hordeModeUnlockLevelSO)) {
-        //    hordeModeButton.interactable = false;
-        //}
+        if (!MetaProgressionManager.Instance.GetTutorialCompletedOrSkipped()) {
+            hordeModeButton.interactable = false;
+        }
 
         if (!VersioningManager.Instance.GetHordeModeImplemented()) {
             hordeModeButton.gameObject.SetActive(false);
@@ -381,7 +380,7 @@ public class MainMenuUI : MonoBehaviour {
         }
 
 
-        if (!VersioningManager.Instance.GetHordeModeImplemented() || VersioningManager.Instance.GetIsDemo() || !MetaProgressionManager.Instance.GetLevelCompleted(hordeModeUnlockLevelSO)) {
+        if (!VersioningManager.Instance.GetHordeModeImplemented() || VersioningManager.Instance.GetIsDemo()) {
             newGameButtonNav.selectOnDown = settingsButton;
             settingsButtonNav.selectOnUp = newGameButton;
 

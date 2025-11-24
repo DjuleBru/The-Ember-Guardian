@@ -15,6 +15,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
         public HordeModeProgressionManager.HordeModeUnlockables unlockable;
         public Sprite sprite;
         public string localizationKey;
+        public string descriptionLocalizationKey;
     }
 
     [SerializeField]
@@ -25,6 +26,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
     [SerializeField] private Image nextUnlockImage;
     [SerializeField] private TextMeshProUGUI nightsSurvivedAmountText;
     [SerializeField] private TextMeshProUGUI nextUnlockText;
+    [SerializeField] private TextMeshProUGUI nextUnlockDescriptionText;
     [SerializeField] private Material silhouetteMaterial;
     [SerializeField] private Material newUnlockMaterial;
     [SerializeField] private Animator newUnlockAnimator;
@@ -33,6 +35,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
     [SerializeField] private float barFillSpeed;
 
     private string nextUnlockNameLocalizationKey;
+    private string nextUnlockNameDescriptionLocalizationKey;
     private bool panelOpen;
     private bool skipFill = false;
     private bool unlockSequenceCoroutineRunning;
@@ -52,6 +55,9 @@ public class HordeModeRewardsMenu : MonoBehaviour
     private void Start() {
         nextUnlockText.font = LocalizationManager.Instance.GetCurrentFont();
         nextUnlockText.text = LocalizationManager.Instance.GetLocalizedText("Next Unlock");
+        nextUnlockDescriptionText.font = LocalizationManager.Instance.GetCurrentFont();
+        nextUnlockDescriptionText.text ="";
+
         nightsSurvivedAmountText.font = LocalizationManager.Instance.GetCurrentFont();
         nightsSurvivedAmountText.text = LocalizationManager.Instance.GetLocalizedText("menu_nightsSurvived") + " " + ES3.Load("lastHordeModeNightsSurvived", 0);
 
@@ -101,6 +107,12 @@ public class HordeModeRewardsMenu : MonoBehaviour
 
         // Séquence pour chaque unlock
         foreach (var unlock in pendingUnlocks) {
+            if(unlock == HordeModeProgressionManager.HordeModeUnlockables.None) {
+                HordeModeProgressionManager.Instance.SetHasNoXPToCommit();
+                unlockSequenceCoroutineRunning = false;
+                yield break;
+            }
+  
             pressAnyKeyToContinueGO.SetActive(false);
             SetNextUnlockParameters(unlock);
             SetNextUnlockMaterialAndText();
@@ -196,8 +208,10 @@ public class HordeModeRewardsMenu : MonoBehaviour
         // FIN : REMPLISSAGE FINAL
         // -------------------------
         pressAnyKeyToContinueGO.SetActive(false);
+
         SetNextUnlockParameters(HordeModeProgressionManager.Instance.GetNextUnlockable());
         SetNextUnlockMaterialAndText();
+        
 
         float finalTarget = Mathf.Clamp01(GetXPProgressNormalized());
         float endSpeed = 1f;
@@ -239,16 +253,19 @@ public class HordeModeRewardsMenu : MonoBehaviour
     public void SetNextUnlockMaterialAndText() {
         nextUnlockImage.material = silhouetteMaterial;
         nextUnlockText.text = LocalizationManager.Instance.GetLocalizedText("Next Unlock");
+        nextUnlockDescriptionText.text = "";
     }
 
     public void SetNewUnlockMaterialAndText() {
         nextUnlockImage.material = newUnlockMaterial;
         nextUnlockText.text = LocalizationManager.Instance.GetLocalizedText(nextUnlockNameLocalizationKey) + " " + LocalizationManager.Instance.GetLocalizedText("Unlocked") + "!";
+        nextUnlockDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(nextUnlockNameDescriptionLocalizationKey);
     }
 
     public void SetNextUnlockParameters(HordeModeProgressionManager.HordeModeUnlockables unlockable) {
         nextUnlockImage.sprite = GetUnlockableSprite(unlockable);
         nextUnlockNameLocalizationKey = GetUnlockableNameLocalizationKey(unlockable);
+        nextUnlockNameDescriptionLocalizationKey = GetUnlockableDescriptionLocalizationKey(unlockable);
         newUnlockAnimator.ResetTrigger("Unlock");
         newUnlockAnimator.SetTrigger("Next");
     }
@@ -265,6 +282,14 @@ public class HordeModeRewardsMenu : MonoBehaviour
         for (int i = 0; i < unlockableDataList.Count; i++) {
             if (unlockableDataList[i].unlockable == unlockable)
                 return unlockableDataList[i].localizationKey;
+        }
+
+        return null;
+    }
+    public string GetUnlockableDescriptionLocalizationKey(HordeModeProgressionManager.HordeModeUnlockables unlockable) {
+        for (int i = 0; i < unlockableDataList.Count; i++) {
+            if (unlockableDataList[i].unlockable == unlockable)
+                return unlockableDataList[i].descriptionLocalizationKey;
         }
 
         return null;

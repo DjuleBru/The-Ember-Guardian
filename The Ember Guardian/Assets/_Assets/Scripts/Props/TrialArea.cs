@@ -50,6 +50,9 @@ public class TrialArea : MonoBehaviour
 
     private List<Creature> creatureSpawnedList = new List<Creature>();
 
+    private Coroutine startingTrialCoroutine;
+    private Coroutine spawningWaveCoroutine;
+
     protected void Awake() {
         payCurrencyUI = GetComponent<PayCurrencyUI>();
         InitializeOrbTemplateList();
@@ -72,7 +75,7 @@ public class TrialArea : MonoBehaviour
     }
 
     private void Player_OnPlayerDied(object sender, EventArgs e) {
-        if (!trialStarted) return;
+        if (!trialStarted || trialCompleted) return;
         FailTrial();
     }
 
@@ -92,7 +95,7 @@ public class TrialArea : MonoBehaviour
             if (currentWave == waveAmount) {
                 CompleteTrial();
             } else {
-                StartCoroutine(NextWave());
+                spawningWaveCoroutine = StartCoroutine(NextWave());
             }
         }
 
@@ -100,7 +103,7 @@ public class TrialArea : MonoBehaviour
 
     protected void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
         Player.Instance.SetInPayCurrencyArea(false);
-        StartCoroutine(StartTrialCoroutine());
+        startingTrialCoroutine = StartCoroutine(StartTrialCoroutine());
         trialChest.SetChestPaid(true);
     }
 
@@ -119,7 +122,8 @@ public class TrialArea : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        StartCoroutine(NextWave());
+        startingTrialCoroutine = null;
+        spawningWaveCoroutine = StartCoroutine(NextWave());
     }
 
     private IEnumerator NextWave() {
@@ -130,6 +134,7 @@ public class TrialArea : MonoBehaviour
             currentSpawner++;
         }
 
+        spawningWaveCoroutine = null;
     }
 
     private void CompleteTrial() {
@@ -151,6 +156,19 @@ public class TrialArea : MonoBehaviour
         trialStarted = false;
         OnTrialFailed?.Invoke(this, EventArgs.Empty);
         DayNightManager.Instance.SetCyclePaused(false, true);
+
+        Player.Instance.SetInPayCurrencyArea(false);
+        OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
+        payCurrencyUI.SetPlayerInteracting(false);
+        playerInTriggerArea = false;
+
+        if(startingTrialCoroutine != null) {
+            StopCoroutine(startingTrialCoroutine);
+        }
+        if (spawningWaveCoroutine != null) {
+            StopCoroutine(spawningWaveCoroutine);
+        }
+
         StartCoroutine(KillAllCreaturesRemaining());
     }
 

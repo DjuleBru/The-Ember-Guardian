@@ -614,6 +614,7 @@ public class VideoTipManager : MonoBehaviour
         StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyPlayerTriggeredIn -= Structure_OnAnyPlayerTriggeredIn_Tutorial;
         Chest_Special.OnAnyNewWeaponFound -= Chest_Special_OnAnyNewWeaponFound;
+        TrialArea.OnAnyTrialPaid -= TrialArea_OnAnyTrialPaid;
 
         if (isLevelScene || isTutorialScene || isDemoTutorial) {
             DayNightManager.Instance.OnDawnStart -= DayNightManager_OnDawnStart;

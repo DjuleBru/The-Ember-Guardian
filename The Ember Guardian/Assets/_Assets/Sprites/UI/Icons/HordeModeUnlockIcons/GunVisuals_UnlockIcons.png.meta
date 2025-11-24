@@ -1,0 +1,391 @@
+fileFormatVersion: 2
+guid: 66eff331b9824c343a4c653ab98ab25c
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 3
+        width: 27
+        height: 10
+      alignment: 9
+      pivot: {x: 0.04300073, y: 0.4907878}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 77502f3925aff3d4e9adc9be43b60e7d
+      internalID: -2036262421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_1
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 1
+        width: 18
+        height: 13
+      alignment: 9
+      pivot: {x: 0.27501398, y: 0.50649923}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b6b9685ab6506740815ead3a90618a6
+      internalID: -106576448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_2
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 1
+        width: 20
+        height: 13
+      alignment: 9
+      pivot: {x: 0.07894223, y: 0.5038508}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90cad6b9d1f42a94bacf68a296a0c3e8
+      internalID: 1381778670
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_3
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 3
+        width: 25
+        height: 8
+      alignment: 9
+      pivot: {x: 0.07162526, y: 0.50396174}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6679858575acacd4b8398d18c5c43eb4
+      internalID: -1180415990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_4
+      rect:
+        serializedVersion: 2
+        x: 121
+        y: 4
+        width: 24
+        height: 8
+      alignment: 9
+      pivot: {x: 0.044708762, y: 0.5356947}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b71c494b48dbfb441a7fc810ffc3997b
+      internalID: 810668729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_5
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 3
+        width: 21
+        height: 8
+      alignment: 9
+      pivot: {x: 0.1729126, y: 0.4950001}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3738facc6522f8f4b811ca574c5bca1b
+      internalID: -248573046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_6
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 4
+        width: 20
+        height: 8
+      alignment: 9
+      pivot: {x: 0.167541, y: 0.555551}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dab10fb4f56eece4a9123a3bfcf6bd30
+      internalID: -151043717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_7
+      rect:
+        serializedVersion: 2
+        x: 215
+        y: 4
+        width: 22
+        height: 8
+      alignment: 9
+      pivot: {x: 0.17198995, y: 0.57387316}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2675d38961011ee48b35020e21c5986f
+      internalID: -1072414362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_8
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 2
+        width: 21
+        height: 13
+      alignment: 9
+      pivot: {x: 0.13004354, y: 0.57435924}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c419b2f25e540ab47903ceb488656749
+      internalID: 1713297602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_9
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 0
+        width: 32
+        height: 16
+      alignment: 9
+      pivot: {x: 0.12469196, y: 0.9314755}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e6d901772df572469cccc4ec974a98e
+      internalID: 727651428
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_10
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 1
+        width: 36
+        height: 12
+      alignment: 9
+      pivot: {x: 0.31416574, y: 0.49500012}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a65239a08f357bf4fb2e6647706f8e93
+      internalID: -1838118642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: GunVisuals_MainMenu_11
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 0
+        width: 38
+        height: 15
+      alignment: 9
+      pivot: {x: 0.16301551, y: 0.835999}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7bf494a45f1a5a446b2fc3a583b0d14a
+      internalID: 1534969704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      GunVisuals_MainMenu_0: -2036262421
+      GunVisuals_MainMenu_1: -106576448
+      GunVisuals_MainMenu_10: -1838118642
+      GunVisuals_MainMenu_11: 1534969704
+      GunVisuals_MainMenu_2: 1381778670
+      GunVisuals_MainMenu_3: -1180415990
+      GunVisuals_MainMenu_4: 810668729
+      GunVisuals_MainMenu_5: -248573046
+      GunVisuals_MainMenu_6: -151043717
+      GunVisuals_MainMenu_7: -1072414362
+      GunVisuals_MainMenu_8: 1713297602
+      GunVisuals_MainMenu_9: 727651428
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
