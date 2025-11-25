@@ -1,4 +1,5 @@
 using Sirenix.OdinInspector;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,12 +62,17 @@ public class HordeModeProgressionManager : MonoBehaviour
     }
     public Dictionary<HordeModeUnlockables, int> unlockThresholds;
 
+    [Title("Unlock Order")]
+    [InfoBox("This list defines the EXACT unlock order. The enum order is ignored.")]
+    public List<HordeModeUnlockables> unlockOrder = new List<HordeModeUnlockables>();
+
     private int totalHordeModeXP;
     private int pendingXP; // XP gained during this run but not saved yet
     private bool hasXPToCommit = false;
+    public event EventHandler OnHordeModeUnlockableUnlocked;
 
     // Unlock data
-    public HashSet<HordeModeUnlockables> unlockedSet = new HashSet<HordeModeUnlockables>();
+    public List<HordeModeUnlockables> unlockedSet = new List<HordeModeUnlockables>();
 
     private void Awake() {
         Instance = this;
@@ -76,20 +82,22 @@ public class HordeModeProgressionManager : MonoBehaviour
         hasXPToCommit = ES3.Load("hasXPToCommit", false);
 
         unlockThresholds = GenerateUnlockThresholds();
-        unlockedSet = ES3.Load("HordeModeUnlocks", new HashSet<HordeModeUnlockables>());
+        unlockedSet = ES3.Load("HordeModeUnlocks", new List<HordeModeUnlockables>());
     }
 
     private Dictionary<HordeModeUnlockables, int> GenerateUnlockThresholds() {
         Dictionary<HordeModeUnlockables, int> dict = new Dictionary<HordeModeUnlockables, int>();
 
-        int baseXP = 100;         // premier seuil
-        int incremental = 10;     // augmentation progressive supplémentaire
-        int currentIncrease = 0;  // augmente de 0, puis 10, puis 20, etc.
-
+        int baseXP = 100;
+        int incremental = 5;
+        int currentIncrease = 0;
         int currentXP = baseXP;
 
-        foreach (HordeModeUnlockables unlock in System.Enum.GetValues(typeof(HordeModeUnlockables))) {
-            dict.Add(unlock, currentXP);
+        foreach (var unlock in unlockOrder) {
+            if (unlock == HordeModeUnlockables.None)
+                continue;
+
+            dict[unlock] = currentXP;
 
             currentIncrease += incremental;
             currentXP += baseXP + currentIncrease;
@@ -126,20 +134,12 @@ public class HordeModeProgressionManager : MonoBehaviour
     public void AddUnlocked(HordeModeUnlockables unlock) {
         unlockedSet.Add(unlock);
         ES3.Save("HordeModeUnlocks", new List<HordeModeProgressionManager.HordeModeUnlockables>(HordeModeProgressionManager.Instance.unlockedSet));
-    }
-
-    private void OnUnlockEarned(HordeModeUnlockables unlock) {
-        Debug.Log("Unlocked: " + unlock);
-    }
-
-    public bool IsUnlocked(HordeModeUnlockables unlock) {
-        return unlockedSet.Contains(unlock);
+        OnHordeModeUnlockableUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetTotalXP() => totalHordeModeXP;
 
     public int GetPendingXP() => pendingXP;
-
 
     public bool GetUnlocked(HordeModeUnlockables unlockable) {
         if (unlockedSet == null)
@@ -148,16 +148,150 @@ public class HordeModeProgressionManager : MonoBehaviour
         return unlockedSet.Contains(unlockable);
     }
 
+    public bool GetStructureUnlocked(StructureSO.StructureType structureType) {
+        HordeModeUnlockables unlockable = HordeModeUnlockables.ObservationTower;
+
+        switch (structureType) {
+
+            case StructureSO.StructureType.engineerShrine:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.EngineerShrine;
+                break;
+            case StructureSO.StructureType.minerShrine:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.MinerShrine;
+                break;
+            case StructureSO.StructureType.guardShrine:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.GuardShrine;
+                break;
+            case StructureSO.StructureType.sniperTower:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.SniperTower;
+                break;
+            case StructureSO.StructureType.mortarTower:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.MortarTower;
+                break;
+            case StructureSO.StructureType.machineGunTower:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.MGTower;
+                break;
+            case StructureSO.StructureType.currencyStorage_BigOrb:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.OrbContainers;
+                break;
+            case StructureSO.StructureType.currencyStorage_SmallOrb:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.OrbContainers;
+                break;
+            case StructureSO.StructureType.currencyStorage_Ammo:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.OrbContainers;
+                break;
+            case StructureSO.StructureType.currencyStorage_SpecialAmmo:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.OrbContainers;
+                break;
+            case StructureSO.StructureType.fastTravelTeleporter:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.FastTravelTP_WithinBase;
+                break;
+            case StructureSO.StructureType.orbExtractor:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.OrbExtractor;
+                break;
+            case StructureSO.StructureType.merchant_traps:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.TrapsMerchant;
+                break;
+            case StructureSO.StructureType.merchant_skills:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.OrbAlchemist;
+                break;
+            case StructureSO.StructureType.observationTower:
+                unlockable = HordeModeProgressionManager.HordeModeUnlockables.ObservationTower;
+                break;
+        }
+
+        return GetUnlocked(unlockable);
+    }
+    public bool GetWeaponUnlocked(GunSO.GunType gunType) {
+        HordeModeUnlockables gunUnlockable = HordeModeUnlockables.SMG;
+
+        if (gunType == GunSO.GunType.Shotgun) {
+            gunUnlockable = HordeModeProgressionManager.HordeModeUnlockables.Shotgun;
+        }
+        if (gunType == GunSO.GunType.Revolver) {
+            gunUnlockable = HordeModeProgressionManager.HordeModeUnlockables.Revolver;
+        }
+        if (gunType == GunSO.GunType.AssaultRifle) {
+            gunUnlockable = HordeModeProgressionManager.HordeModeUnlockables.AR;
+        }
+        if (gunType == GunSO.GunType.GrenadeLauncher) {
+            gunUnlockable = HordeModeProgressionManager.HordeModeUnlockables.GL;
+        }
+        if (gunType == GunSO.GunType.AAGun) {
+            gunUnlockable = HordeModeProgressionManager.HordeModeUnlockables.AAGun;
+        }
+        if (gunType == GunSO.GunType.Pistol) {
+            gunUnlockable = HordeModeProgressionManager.HordeModeUnlockables.Pistol;
+        }
+        if (gunType == GunSO.GunType.MiniGun) {
+            gunUnlockable = HordeModeProgressionManager.HordeModeUnlockables.Minigun;
+        }
+        if (gunType == GunSO.GunType.RocketLauncher) {
+            gunUnlockable = HordeModeProgressionManager.HordeModeUnlockables.RL;
+        }
+        if (gunType == GunSO.GunType.Sniper) {
+            gunUnlockable = HordeModeProgressionManager.HordeModeUnlockables.Sniper;
+        }
+        if (gunType == GunSO.GunType.LMG) {
+            gunUnlockable = HordeModeProgressionManager.HordeModeUnlockables.LMG;
+        }
+
+        return GetUnlocked(gunUnlockable);
+    }
+
+    public bool GetSkillUnlocked(SkillSO skillSO) {
+        if(skillSO.skillType == SkillItem.SkillType.activeMagmaShotBullet || skillSO.skillType == SkillItem.SkillType.activeHealOnKills || skillSO.skillType == SkillItem.SkillType.passiveShieldGenerator || skillSO.skillType == SkillItem.SkillType.passiveDmgIncreaseInLight) {
+            return GetUnlocked(HordeModeUnlockables.NewSkills1);
+        }
+        if (skillSO.skillType == SkillItem.SkillType.activeDarkFlame || skillSO.skillType == SkillItem.SkillType.activeWorkerAttackSpeedBuff || skillSO.skillType == SkillItem.SkillType.passiveAmmoGenerator || skillSO.skillType == SkillItem.SkillType.passiveShootOnReload) {
+            return GetUnlocked(HordeModeUnlockables.NewSkills2);
+        }
+        if (skillSO.skillType == SkillItem.SkillType.activeDarkSword || skillSO.skillType == SkillItem.SkillType.activeFeedFireOnKills || skillSO.skillType == SkillItem.SkillType.passiveMeleeAttackMagmaShot || skillSO.skillType == SkillItem.SkillType.passiveChanceToDoubleXPDrop) {
+            return GetUnlocked(HordeModeUnlockables.NewSkills3);
+        }
+        if (skillSO.skillType == SkillItem.SkillType.activeReaper || skillSO.skillType == SkillItem.SkillType.activePlantMine || skillSO.skillType == SkillItem.SkillType.passiveDmgIncreaseNotInLight || skillSO.skillType == SkillItem.SkillType.passiveLastBulletDealsTwiceDamage) {
+            return GetUnlocked(HordeModeUnlockables.NewSkills4);
+        }
+
+        return true;
+    }
+    public bool GetTrapUnlocked(TrapSO trapSO) {
+        if(trapSO.trapType == TrapItem.TrapType.bladeTrap || trapSO.trapType == TrapItem.TrapType.smokeEjector || trapSO.trapType == TrapItem.TrapType.shockerEjector) {
+            return GetUnlocked(HordeModeUnlockables.NewTraps1);
+        }
+        if (trapSO.trapType == TrapItem.TrapType.bearTrap || trapSO.trapType == TrapItem.TrapType.fireEjector) {
+            return GetUnlocked(HordeModeUnlockables.NewTraps2);
+        }
+
+        return true;
+    }
+
     public HordeModeUnlockables GetNextUnlockable() {
-        foreach (var kvp in unlockThresholds) {
-            var unlock = kvp.Key;
-            var requiredXP = kvp.Value;
+        foreach (var unlock in unlockOrder) {
+            if (unlock == HordeModeUnlockables.None)
+                continue;
 
             if (!unlockedSet.Contains(unlock))
                 return unlock;
         }
 
-        // Plus rien à débloquer => renvoie un faux élément ou gère le cas différemment
-        return (HordeModeUnlockables)(-1);
+        return HordeModeUnlockables.None;
     }
+    public HordeModeUnlockables GetPreviousUnlockable() {
+        HordeModeUnlockables previous = HordeModeUnlockables.None;
+
+        foreach (var unlock in unlockOrder) {
+            if (unlock == HordeModeUnlockables.None)
+                continue;
+
+            if (!unlockedSet.Contains(unlock))
+                return previous;
+
+            previous = unlock;
+        }
+
+        // Tout débloqué = dernier de la liste
+        return previous;
+    }
+
 }

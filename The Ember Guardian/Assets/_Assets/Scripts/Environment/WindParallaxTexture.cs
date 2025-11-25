@@ -44,8 +44,6 @@ public class WindParallaxTexture : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
 
-        Debug.Log("currentWindStrength " + currentWindStrength);
-        Debug.Log("windStrength " + windStrength);
         windTextureMaterial.SetFloat("_TextureScrollXSpeed", windStrength);
 
     }

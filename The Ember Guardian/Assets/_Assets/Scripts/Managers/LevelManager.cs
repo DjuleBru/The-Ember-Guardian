@@ -48,15 +48,7 @@ public class LevelManager : MonoBehaviour
         Instance = this;
         Obstacle.OnAnyObstacleInitialized += Obstacle_OnAnyObstacleInitialized;
 
-        if (isHordeMode) {
-            currentLevelEnvironment = ES3.Load("currentHordeModeLevelEnvironment", LevelSO.LevelEnvironment.TheVerdantGraveyard);
-        } else {
-            currentLevelEnvironment = levelSO.environmentType;
-        }
-
-        ES3.Save("lastLevelEnvironment", currentLevelEnvironment);
     }
-
 
     private void Start() {
         if(!isHordeMode) {
@@ -98,8 +90,25 @@ public class LevelManager : MonoBehaviour
         }
 
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
-
+        LoadEnvironmentType();
         RefreshLevelLimits();
+    }
+
+    private void LoadEnvironmentType() {
+
+        if (isHordeMode) {
+            currentLevelEnvironment = HordeModeCustomizationManager.Instance.GetSelectedEnvironment();
+        }
+        else {
+            currentLevelEnvironment = levelSO.environmentType;
+        }
+
+        ES3.Save("lastLevelEnvironment", currentLevelEnvironment);
+
+    }
+
+    public LevelSO.LevelEnvironment GetCurrentLevelEnvironment() {
+        return currentLevelEnvironment;
     }
 
     private void ConditionalLockedStructureLocation_OnStructureBuilt(object sender, EventArgs e) {

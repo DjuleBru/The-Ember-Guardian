@@ -69,10 +69,39 @@ public class StructureStats : MonoBehaviour
 
 
     private void LoadStructureStats() {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            // Feu principal et secondaire
+            orbFuelValue = initialOrbFuelValue;
+            mainFireMaxFuelTreshold = initialMaxFuelTreshold;
+            mainFireFuelDepletionRate = initialFuelDepletionRate;
+            secondaryFireMaxFuelTreshold = initialSecondaryFireMaxFuelTreshold;
+            secondaryFireFuelDepletionRate = initialSecondaryFireFuelDepletionRate;
+
+            // Crafter munitions
+            ammoCrafterBatchCapacity = initialAmmoCrafterBatchCapacity;
+            singleAmmoCraftDuration = initialSingleAmmoCraftDuration;
+            ammoCrafterMaxAmmoPerBatch = initialAmmoCrafterMaxAmmoPerBatch;
+
+            // Crafter orbes
+            orbProcessorBatchCapacity = initialOrbProcessorBatchCapacity;
+            singleOrbCraftDuration = initialSingleOrbCraftDuration;
+            orbProcessorMaxOrbsPerBatch = initialOrbProcessorMaxOrbsPerBatch;
+
+            // Autres structures
+            tentHealAmountPerSmallOrb = initialTentHealAmountPerSmallOrb;
+            barricadeHealthPerCrate = initialBarricadeHealthPerCrate;
+
+            skillMerchantMaxActiveSkillsDisplayed = 2;
+            skillMerchantMaxPassiveSkillsDisplayed = 3;
+            trapMerchantMaxTrapsDisplayed = 2;
+            trapMerchantMaxTrapUpgradesDisplayed = 3;
+            startWithRandomTrapAmount = 0;
+
+            return;
+        }
+
         if (!ES3.KeyExists("StructureStats"))
             return;
-
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) return;
 
         var structureData = ES3.Load<Dictionary<string, object>>("StructureStats");
 
@@ -164,7 +193,6 @@ public class StructureStats : MonoBehaviour
 
         ES3.Save("StructureStats", structureData);
     }
-
 
     private T GetValue<T>(Dictionary<string, object> dict, string key, T defaultValue) {
         if (dict.ContainsKey(key)) {

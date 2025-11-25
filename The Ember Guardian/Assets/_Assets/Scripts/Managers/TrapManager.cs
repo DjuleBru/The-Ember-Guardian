@@ -146,16 +146,30 @@ public class TrapManager : MonoBehaviour
             allTrapsAndUpgradesList.Add(trapSO);
         }
 
-        foreach (TrapSO trapSO in trapSOList) {
-            string key = trapSO.name + "_unlocked";
-            bool unlocked = ES3.Load(key, false);
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            // HORDE MODE
 
-            allTrapsAndUpgradesList.Add(trapSO);
-            if (unlocked) {
-                trapsUnlockedList.Add(trapSO);
-                trapsAndUpgradesUnlockedList.Add(trapSO);
+            foreach (TrapSO trapSO in trapSOList) {
+                allTrapsAndUpgradesList.Add(trapSO);
+                if (HordeModeProgressionManager.Instance.GetTrapUnlocked(trapSO)) {
+                    trapsUnlockedList.Add(trapSO);
+                    trapsAndUpgradesUnlockedList.Add(trapSO);
+                }
+            }
+
+        } else {
+            foreach (TrapSO trapSO in trapSOList) {
+                string key = trapSO.name + "_unlocked";
+                bool unlocked = ES3.Load(key, false);
+
+                allTrapsAndUpgradesList.Add(trapSO);
+                if (unlocked) {
+                    trapsUnlockedList.Add(trapSO);
+                    trapsAndUpgradesUnlockedList.Add(trapSO);
+                }
             }
         }
+       
 
 
         // Add Trap Upgrades linked to unlocked traps

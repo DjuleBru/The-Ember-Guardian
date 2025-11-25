@@ -82,6 +82,47 @@ public class DayNightVisualsManager : MonoBehaviour
     private bool nightStarted;
     private bool duskStarted;
 
+    #region SET PARAMETERS
+
+    public void SetDawnSkyColor(Color color) {
+        dawnSkyColor = color;
+    }
+    public void SetDaySkyColor(Color color) {
+        daySkytColor = color;
+    }
+    public void SetDuskSkyColor(Color color) {
+        duskSkyColor = color;
+    }
+    public void SetNightSkyColor(Color color) {
+        nightSkyColor = color;
+    }
+    public void SetDawnLightColor(Color color) {
+        dawnLightColor = color;
+    }
+    public void SetDayLightColor(Color color) {
+        dayLightColor = color;
+    }
+    public void SetDuskLightColor(Color color) {
+        duskLightColor = color;
+    }
+    public void SetNightLightColor(Color color) {
+        nightLightColor = color;
+    }
+    public void SetDawnLightIntensity(float intensity) {
+        dawnLightIntensity = intensity;
+    }
+    public void SetDayLightIntensity(float intensity) {
+        dayLightIntensity = intensity;
+    }
+    public void SetDuskLightIntensity(float intensity) {
+        duskLightIntensity = intensity;
+    }
+    public void SetNightLightIntensity(float intensity) {
+        nightLightIntensity = intensity;
+    }
+
+    #endregion
+
     private void Awake() {
         Instance = this;
     }

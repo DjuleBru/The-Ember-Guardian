@@ -73,7 +73,14 @@ public class AddStructureBlueprint : ButtonUI
         }
 
         if (locked) {
-            LoadStructureUnlocked();
+
+            if(hordeMode) {
+                RefreshStructureUnlocked_HordeMode();
+                HordeModeProgressionManager.Instance.OnHordeModeUnlockableUnlocked += HordeModePrMa_OnHordeModeUnlockableUnlocked;
+            } else {
+                LoadStructureUnlocked();
+            }
+
         }
 
         var localizedResult = LocalizationManager.Instance.GetLocalized(linkedStructureSO.structureNameLocalizationKey);
@@ -87,6 +94,10 @@ public class AddStructureBlueprint : ButtonUI
         CampEditManager.Instance.OnLayoutResetToDefault += CampEditManager_OnLayoutResetToDefault;
         GameInput.Instance.OnEditCampDeselect += GameInput_OnEditCampDeselect;
         RefreshStructureAmounts();
+    }
+
+    private void HordeModePrMa_OnHordeModeUnlockableUnlocked(object sender, EventArgs e) {
+        RefreshStructureUnlocked_HordeMode();
     }
 
     public void SubscribeToNewItemsEvents() {
@@ -149,13 +160,12 @@ public class AddStructureBlueprint : ButtonUI
     private void LoadStructureUnlocked() {
         string saveString = linkedStructureSO.structureType.ToString() + (1);
         bool itemIsLocked = !linkedStructureSO.level1StructureInitiallyUnlocked && !MetaProgressionManager.Instance.GetMerchantItemBought(saveString);
-
-
+        
         if(CampEditManager.Instance.GetStructureTypeUnlockedThisSession(linkedStructureSO.structureType)) {
             itemIsLocked = false;
         }
 
-        if (DebugManager.Instance.GetAllStructuresUnlocked() || MetaProgressionManager.Instance.GetFinalLevelCompleted()) {
+        if (DebugManager.Instance.GetAllStructuresUnlocked()) {
             itemIsLocked = false;
         }
 
@@ -171,6 +181,28 @@ public class AddStructureBlueprint : ButtonUI
             locked = false;
         }
     }
+    private void RefreshStructureUnlocked_HordeMode() {
+        bool hordeModeUnlocked = HordeModeProgressionManager.Instance.GetStructureUnlocked(linkedStructureSO.structureType);
+        bool itemIsLocked = !linkedStructureSO.level1StructureInitiallyUnlocked && !hordeModeUnlocked;
+
+        if (itemIsLocked) {
+            locked = true;
+            structureIconImage.sprite = lockedStructureSprite;
+            plusIcon.GetComponent<Image>().enabled = false;
+            maxStructureAmountGameObject.SetActive(false);
+            structureNameText.gameObject.SetActive(false);
+            gemBudgetGO.SetActive(false);
+        }
+        else {
+            locked = false;
+            structureIconImage.sprite = linkedStructureSO.structureSprite;
+            plusIcon.GetComponent<Image>().enabled = true;
+            maxStructureAmountGameObject.SetActive(true);
+            structureNameText.gameObject.SetActive(true);
+            gemBudgetGO.SetActive(true);
+        }
+    }
+
 
     private void SetStructureUnlocked() {
         if (this == null) return;

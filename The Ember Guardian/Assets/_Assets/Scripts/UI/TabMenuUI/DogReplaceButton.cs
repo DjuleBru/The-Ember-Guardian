@@ -20,6 +20,7 @@ public class DogReplaceButton : ButtonUI
         });
     }
 
+
     private void SwapDog() {
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
             HordeModeUI.Instance.SetSelectedDog(linkedDogType);

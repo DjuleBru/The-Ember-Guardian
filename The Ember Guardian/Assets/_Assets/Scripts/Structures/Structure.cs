@@ -205,6 +205,8 @@ public class Structure : MonoBehaviour {
     protected void Tent_OnStructureUpgraded(object sender, EventArgs e) {
         RefreshStructureUpgradeInteraction();
     }
+
+
     protected virtual void RefreshStructureUpgradeInteraction() {
         if (!upgradable) return;
         bool upgradeUnlocked = false;
@@ -219,6 +221,11 @@ public class Structure : MonoBehaviour {
             upgradeUnlocked = true;
         }
 
+       
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            upgradeUnlocked = GetNextStructureUpgradeInteractionUnlocked_HordeMode();
+        }
+
         if (DebugManager.Instance.GetAllStructureUpgradesUnlocked() && structureLevel < structureSO.maxLevel) {
             upgradeUnlocked = true;
         }
@@ -227,8 +234,53 @@ public class Structure : MonoBehaviour {
             upgradeUnlocked = false;
         }
         
+
         SetStructureUpgradableUnlocked(upgradeUnlocked);
         OnStructureInteractionsUpdated?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected bool GetNextStructureUpgradeInteractionUnlocked_HordeMode() {
+        bool unlocked = false;
+
+        if(structureSO.structureType == StructureSO.StructureType.tent) {
+            if(structureLevel == 1) {
+                unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.Tent2);
+            }
+            if (structureLevel == 2) {
+                unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.Tent3);
+            }
+        }
+
+        if (structureSO.structureType == StructureSO.StructureType.barricade || structureSO.structureType == StructureSO.StructureType.tower) {
+            if (structureLevel == 1) {
+                unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.Barricade2_Tower2);
+            }
+            if (structureLevel == 2) {
+                unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.Barricade3_Tower3);
+            }
+            if (structureLevel == 3) {
+                unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.Tower4_Barricade4);
+            }
+        }
+
+        if (structureSO.structureType == StructureSO.StructureType.sniperTower) {
+            if (structureLevel == 1) {
+                unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.SniperTower2);
+            }
+        }
+        if (structureSO.structureType == StructureSO.StructureType.mortarTower) {
+            if (structureLevel == 1) {
+                unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.MortarTower);
+            }
+        }
+        if (structureSO.structureType == StructureSO.StructureType.machineGunTower) {
+            if (structureLevel == 1) {
+                unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.MGTower2);
+            }
+        }
+
+        Debug.Log(structureSO.structureType + " unlocked " + unlocked);
+        return unlocked;
     }
 
     public virtual void SetStructureBuiltOnLoad(bool setBuiltOnLoad = false) {

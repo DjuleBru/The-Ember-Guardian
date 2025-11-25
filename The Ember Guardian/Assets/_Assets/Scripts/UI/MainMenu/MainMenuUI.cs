@@ -92,6 +92,8 @@ public class MainMenuUI : MonoBehaviour {
         hordeModeMenuGO.SetActive(false);
 
         // CHECK HORDE MODE UNLOCKED
+        if (DebugManager.Instance.GetHordeModeActiveDebug()) return;
+
         if (!MetaProgressionManager.Instance.GetTutorialCompletedOrSkipped()) {
             hordeModeButton.interactable = false;
         }

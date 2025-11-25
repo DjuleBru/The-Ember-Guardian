@@ -43,10 +43,7 @@ public class Dog : MonoBehaviour
             dogAIList.Add(dogAI);
         }
 
-        dogType = ES3.Load("dogType", DogType.GermanShepherd);
-        if (useDebugDogType) {
-            dogType = debugDogType;
-        }
+        SetCurrentDogType();
         SetCurrentDogAI();
     }
 
@@ -62,6 +59,13 @@ public class Dog : MonoBehaviour
             if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
                 SetPosition(new Vector3(UnityEngine.Random.Range(-10, 10), 0, 0));
             }
+        }
+    }
+
+    private void SetCurrentDogType() {
+        dogType = ES3.Load("dogType", DogType.GermanShepherd);
+        if (useDebugDogType) {
+            dogType = debugDogType;
         }
     }
 

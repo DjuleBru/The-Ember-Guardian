@@ -55,8 +55,12 @@ public class Merchant_Skills : Merchant
         minorSkillList = new List<SkillItem>();
         allItemsForSale = new List<MerchantItem>();
 
-
         merchantSkillSOList = PlayerSave.Instance.GetAllSkillsUnlocked();
+
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            merchantSkillSOList = PlayerSave.Instance.GetAllSkillsUnlocked_HordeMode();
+        }
+
         foreach (SkillSO skillSO in merchantSkillSOList) {
             var skillItem = new SkillItem();
             skillItem.Initialize(skillSO);

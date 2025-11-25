@@ -175,14 +175,24 @@ public class PlayerShoot : MonoBehaviour
             }
 
         } else {
-            canHold2Guns = PlayerStats.Instance.GetCanHold2WeaponsUnlocked();
 
-            SetActiveGun(PlayerSave.Instance.GetPrimaryActiveGunType(), true, false);
-            if (canHold2Guns) {
-                if (PlayerSave.Instance.GetSecondaryGunIsEquipped()) {
-                    secondayGunSO = GetGunSO(PlayerSave.Instance.GetSecondaryActiveGunType());
+            if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+                // HORDE MODE
+                canHold2Guns = true;
+                SetActiveGun(HordeModeCustomizationManager.Instance.GetSelectedWeaponType(), true, false);
+
+            } else {
+
+                canHold2Guns = PlayerStats.Instance.GetCanHold2WeaponsUnlocked();
+
+                SetActiveGun(PlayerSave.Instance.GetPrimaryActiveGunType(), true, false);
+                if (canHold2Guns) {
+                    if (PlayerSave.Instance.GetSecondaryGunIsEquipped()) {
+                        secondayGunSO = GetGunSO(PlayerSave.Instance.GetSecondaryActiveGunType());
+                    }
                 }
             }
+
         }
 
         SettingsManager.Instance.OnAutoReloadChanged += SettingsManager_OnAutoReloadChanged;

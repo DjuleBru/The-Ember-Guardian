@@ -72,6 +72,11 @@ public class Tent : Structure
             upgradeUnlocked = true;
         }
 
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            upgradeUnlocked = GetNextStructureUpgradeInteractionUnlocked_HordeMode();
+        }
+
         if (!upgradeUnlocked) {
             SetStructureUpgradableUnlocked(false);
         }

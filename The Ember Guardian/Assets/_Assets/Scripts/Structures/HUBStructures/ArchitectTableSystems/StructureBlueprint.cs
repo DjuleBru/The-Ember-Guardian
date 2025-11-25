@@ -55,10 +55,26 @@ public class StructureBlueprint : MonoBehaviour {
             if (locked) return;
         }
 
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+            HordeModeProgressionManager.Instance.OnHordeModeUnlockableUnlocked += HordeModePrMa_OnHordeModeUnlockableUnlocked;
+        }
+
         InitializeBlueprint();
     }
 
+    private void HordeModePrMa_OnHordeModeUnlockableUnlocked(object sender, EventArgs e) {
+        LoadStructureUnlocked();
+    }
+
     private void LoadStructureUnlocked() {
+
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+            // HORDE MODE
+            locked = GetStructureUnlocked_HordeMode();
+            gameObject.SetActive(!locked);
+            return;
+        }
+
         string saveString = linkedStructureSO.structureType.ToString() + (1);
 
         if (!linkedStructureSO.level1StructureInitiallyUnlocked && !MetaProgressionManager.Instance.GetMerchantItemBought(saveString) && !CampEditManager.Instance.GetStructureTypeUnlockedThisSession(linkedStructureSO.structureType)) {
@@ -69,10 +85,17 @@ public class StructureBlueprint : MonoBehaviour {
             gameObject.SetActive(true);
         }
 
-        if(DebugManager.Instance.GetAllStructuresUnlocked() || MetaProgressionManager.Instance.GetFinalLevelCompleted()) {
+        if(DebugManager.Instance.GetAllStructuresUnlocked()) {
             locked = false;
             gameObject.SetActive(true);
         }
+    }
+
+    private bool GetStructureUnlocked_HordeMode() {
+        bool hordeModeUnlocked = HordeModeProgressionManager.Instance.GetStructureUnlocked(linkedStructureSO.structureType);
+
+        bool itemIsLocked = !linkedStructureSO.level1StructureInitiallyUnlocked && !hordeModeUnlocked;
+        return itemIsLocked;
     }
 
     private void InitializeBlueprint() {

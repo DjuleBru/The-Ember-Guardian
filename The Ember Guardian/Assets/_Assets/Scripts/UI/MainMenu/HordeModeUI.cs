@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -61,9 +62,11 @@ public class HordeModeUI : MonoBehaviour
         maxNightsSurvivedText.font = LocalizationManager.Instance.GetCurrentFont();
         maxNightsSurvivedText.text = LocalizationManager.Instance.GetLocalizedText("menu_maxNightsSurvived");
 
-        InitializeUnlockedEnvironments();
-        LoadUnlockedCustomizationOptions();
+        HordeModeProgressionManager.Instance.OnHordeModeUnlockableUnlocked += HordeModePrMa_OnHordeModeUnlockableUnlocked;
+        RefreshUnlockedEnvironments();
+        RefreshUnlockedCustomizationOptions();
     }
+
 
     private void Update() {
         if (!panelOpen) return;
@@ -82,7 +85,12 @@ public class HordeModeUI : MonoBehaviour
         }
     }
 
-    private void LoadUnlockedCustomizationOptions() {
+    private void HordeModePrMa_OnHordeModeUnlockableUnlocked(object sender, EventArgs e) {
+        RefreshUnlockedEnvironments();
+        RefreshUnlockedCustomizationOptions();
+    }
+
+    private void RefreshUnlockedCustomizationOptions() {
         dogCustomizationUnlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.GoldenRetreiver);
         campCustomizationUnlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.ArchitectTable);
 
@@ -108,19 +116,20 @@ public class HordeModeUI : MonoBehaviour
         }
     }
 
-    private void InitializeUnlockedEnvironments() {
+    private void RefreshUnlockedEnvironments() {
 
         LevelSO.LevelEnvironment defaultEnvironment = LevelSO.LevelEnvironment.TheVerdantGraveyard;
         currentSelectedEnvironment = ES3.Load("lastLevelEnvironment", defaultEnvironment);
 
-        unlockedEnvironmentList = new List<LevelSO.LevelEnvironment> { LevelSO.LevelEnvironment.TheVerdantGraveyard, LevelSO.LevelEnvironment.TheLostGreens };
-        if (MetaProgressionManager.Instance.GetLevelRegionUnlocked(LevelSO.LevelEnvironment.CorruptedCity)) {
+        unlockedEnvironmentList = new List<LevelSO.LevelEnvironment> { LevelSO.LevelEnvironment.TheVerdantGraveyard};
+
+        if (HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.CorruptedCity)) {
             unlockedEnvironmentList.Add(LevelSO.LevelEnvironment.CorruptedCity);
         }
-        if (MetaProgressionManager.Instance.GetLevelRegionUnlocked(LevelSO.LevelEnvironment.TheLumenHollow)) {
+        if (HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.LumenHollow)) {
             unlockedEnvironmentList.Add(LevelSO.LevelEnvironment.TheLumenHollow);
         }
-        if (MetaProgressionManager.Instance.GetLevelRegionUnlocked(LevelSO.LevelEnvironment.TheFracturedDistrict)) {
+        if (HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.FracturedDistrict)) {
             unlockedEnvironmentList.Add(LevelSO.LevelEnvironment.TheFracturedDistrict);
         }
     }
@@ -168,7 +177,7 @@ public class HordeModeUI : MonoBehaviour
         selectedGunType = gunSO.gunType;
         OnWeaponSelected?.Invoke(this, EventArgs.Empty);
 
-        if(GameInput.Instance.IsUsingGamepad()) {
+        if (GameInput.Instance.IsUsingGamepad()) {
             EventSystem.current.SetSelectedGameObject(swapWeaponButtonWorlUI);
         }
 
@@ -274,6 +283,7 @@ public class HordeModeUI : MonoBehaviour
     public bool GetCustomizeCampPanelOpen() {
         return customizeCampPanelOpen;
     }
+
     #endregion
 
     #region BUTTONS
@@ -323,7 +333,6 @@ public class HordeModeUI : MonoBehaviour
     #region OpenClosePanel
 
     public void OpenHordeModePanel(bool changeCameraTarget = true) {
-        Debug.Log("OpenHordeModePanel");
         StartCoroutine(OpenHordeModePanelCoroutine(changeCameraTarget));
     }
 
@@ -334,6 +343,10 @@ public class HordeModeUI : MonoBehaviour
         }
 
         SetEnvironment(MainMenuVisual.Instance.GetLevelEnvironment());
+
+        if(MainMenuVisual.Instance.GetLevelEnvironment() == LevelSO.LevelEnvironment.City) {
+            SetEnvironment(LevelSO.LevelEnvironment.TheVerdantGraveyard);
+        }
 
         yield return new WaitForSeconds(1f);
 
@@ -389,11 +402,11 @@ public class HordeModeUI : MonoBehaviour
 
     #endregion
 
-
+    [Button]
     public void SaveHordeModeParameters() {
-        ES3.Save("currentHordeModeLevelEnvironment", currentSelectedEnvironment);
-        ES3.Save("currentHordeModeWeaponSelected", selectedGunType);
-        ES3.Save("currentHordeModeDogSelected", selectedDogType);
+        HordeModeCustomizationManager.Instance.SetSelectedWeapon(selectedGunType);
+        HordeModeCustomizationManager.Instance.SetSelectedDog(selectedDogType);
+        HordeModeCustomizationManager.Instance.SetSelectedEnvironment(currentSelectedEnvironment);
 
         CampEditManager.Instance.SaveCampLayout();
     }

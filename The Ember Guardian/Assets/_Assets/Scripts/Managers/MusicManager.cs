@@ -178,6 +178,8 @@ public class MusicManager : MonoBehaviour {
             } else {
                 audioSourceA.clip = mainMenuMusic;
             }
+
+            audioSourceA.loop = false;
             if(!VersioningManager.Instance.GetNewSaveFile()) {
                 PlayMusicDelayed(2f);
             }

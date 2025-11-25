@@ -69,7 +69,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
     private void Update() {
         if (!panelOpen) return;
         if(Input.anyKeyDown) {
-            if (!unlockSequenceCoroutineRunning) {
+            if (!unlockSequenceCoroutineRunning && panelOpen) {
                 ClosePanel();
             }
         } 
@@ -237,8 +237,6 @@ public class HordeModeRewardsMenu : MonoBehaviour
         HordeModeProgressionManager.Instance.SetHasNoXPToCommit();
         unlockSequenceCoroutineRunning = false;
 
-        Debug.Log("Unlock sequence completed.");
-
         yield return new WaitForSeconds(1f);
         pressAnyKeyToContinueGO.SetActive(true);
     }
@@ -248,6 +246,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
         MusicManager.Instance.SetAudioVolume(1f);
         panelAnimator.SetTrigger("Hide");
         HordeModeUI.Instance.OpenHordeModePanel(false);
+        panelOpen = false;
     }
 
     public void SetNextUnlockMaterialAndText() {
@@ -297,33 +296,22 @@ public class HordeModeRewardsMenu : MonoBehaviour
     private float GetXPProgressNormalized() {
         int totalXP = HordeModeProgressionManager.Instance.GetTotalXP();
         var nextUnlock = HordeModeProgressionManager.Instance.GetNextUnlockable();
+        var previousUnlock = HordeModeProgressionManager.Instance.GetPreviousUnlockable();
 
         if ((int)nextUnlock < 0)
             return 1f; // tout est unlock
 
         int requiredXP = HordeModeProgressionManager.Instance.unlockThresholds[nextUnlock];
+        int previousUnlockableXP = HordeModeProgressionManager.Instance.unlockThresholds[previousUnlock];
 
-        return Mathf.Clamp01((float)totalXP / requiredXP);
+        int diff = requiredXP - previousUnlockableXP;
+        float progress = (float)(requiredXP - totalXP) / (float)diff;
+
+        return 1-progress;
     }
 
     private bool AnyInputPressed() {
         return Input.anyKeyDown; // tu pourras raffiner si besoin
     }
 
-#if UNITY_EDITOR
-    [Sirenix.OdinInspector.Button]
-    public void AutoGenerateUnlockableList() {
-        unlockableDataList.Clear();
-
-        foreach (var unlock in System.Enum.GetValues(typeof(HordeModeProgressionManager.HordeModeUnlockables))) {
-            unlockableDataList.Add(new UnlockableData {
-                unlockable = (HordeModeProgressionManager.HordeModeUnlockables)unlock,
-                sprite = null,
-                localizationKey = ""
-            });
-        }
-
-        UnityEditor.EditorUtility.SetDirty(this);
-    }
-#endif
 }

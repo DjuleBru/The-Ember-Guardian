@@ -34,7 +34,7 @@ public class ChangeDogPanel : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    protected virtual void UpdateDogSlots(Dog.DogType activeDogType) {
+    public virtual void UpdateDogSlots(Dog.DogType activeDogType) {
         changeDogSlotTemplate.gameObject.SetActive(true);
         emptyDogSlotTemplate.gameObject.SetActive(true);
         changeDogButtons = new List<GameObject>();

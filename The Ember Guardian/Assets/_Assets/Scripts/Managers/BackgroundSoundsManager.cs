@@ -14,6 +14,13 @@ public class BackgroundSoundsManager : MonoBehaviour
     [SerializeField] private AudioClip dayAudioClip;
     [SerializeField] private AudioClip nightAudioClip;
 
+    [SerializeField] private AudioClip dayAudioClip_VG;
+    [SerializeField] private AudioClip nightAudioClip_VG;
+    [SerializeField] private AudioClip dayAudioClip_City;
+    [SerializeField] private AudioClip nightAudioClip_City;
+    [SerializeField] private AudioClip dayAudioClip_LH;
+    [SerializeField] private AudioClip nightAudioClip_LH;
+
     [SerializeField] private SoundRefsSO soundRefs;
 
     [SerializeField] private float audioClipVolume_Day;
@@ -45,6 +52,7 @@ public class BackgroundSoundsManager : MonoBehaviour
         DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
 
+        SetEnvironmentBackgroundClips();
         // Assure-toi que les deux sources sont au volume initial
         audioSource1.volume = audioClipVolume_Day * sfxVolume;
         audioSource2.volume = 0.0f;
@@ -52,6 +60,24 @@ public class BackgroundSoundsManager : MonoBehaviour
         audioSource1.clip = dayAudioClip;
         audioSource1.Play();
         currentAudioSourcePlaying = audioSource1;
+
+    }
+
+    private void SetEnvironmentBackgroundClips() {
+        LevelSO.LevelEnvironment currentEnvironment = LevelManager.Instance.GetCurrentLevelEnvironment();
+
+        if(currentEnvironment == LevelSO.LevelEnvironment.TheLostGreens || currentEnvironment == LevelSO.LevelEnvironment.TheLostGreens) {
+            dayAudioClip = dayAudioClip_VG;
+            nightAudioClip = nightAudioClip_VG;
+        }
+        if (currentEnvironment == LevelSO.LevelEnvironment.CorruptedCity || currentEnvironment == LevelSO.LevelEnvironment.City || currentEnvironment == LevelSO.LevelEnvironment.TheFracturedDistrict) {
+            dayAudioClip = dayAudioClip_City;
+            nightAudioClip = nightAudioClip_City;
+        }
+        if (currentEnvironment == LevelSO.LevelEnvironment.TheLumenHollow) {
+            dayAudioClip = dayAudioClip_LH;
+            nightAudioClip = nightAudioClip_LH;
+        }
     }
 
     private void SettingsManager_OnMasterVolumeChanged(object sender, System.EventArgs e) {

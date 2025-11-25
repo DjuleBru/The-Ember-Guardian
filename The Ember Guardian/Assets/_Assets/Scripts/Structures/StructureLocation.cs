@@ -197,20 +197,30 @@ public class StructureLocation : MonoBehaviour {
             return;
         }
 
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            bool structureUnlocked = HordeModeProgressionManager.Instance.GetStructureUnlocked(structureSOToBuild.structureType);
+            if (structureUnlocked) {
+                structureLocationBought = true;
+                gameObject.SetActive(true);
+            } else {
+                structureLocationBought = false;
+                OnStructureLocationLoaded_Locked?.Invoke(this, EventArgs.Empty);
+                gameObject.SetActive(false);
+            }
+            return;
+        }
+
         // Unlock upgrades if unlocked at gem merchant
         string saveString = structureSOToBuild.structureType.ToString() + (1);
 
-        //Debug.Log("saveString " + saveString);
         if (!MetaProgressionManager.Instance.GetMerchantItemBought(saveString)) {
             structureLocationBought = false;
             OnStructureLocationLoaded_Locked?.Invoke(this, EventArgs.Empty);
             gameObject.SetActive(false);
-            //Debug.Log(saveString + " location has NOT been bought at merchant ");
         }
         else {
             structureLocationBought = true;
             gameObject.SetActive(true);
-            //Debug.Log(saveString + " location has been bought at merchant ");
         }
 
     }

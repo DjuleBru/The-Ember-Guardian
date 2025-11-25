@@ -12,7 +12,7 @@ public class ChangeDogPanel_HordeMode : ChangeDogPanel
         gameObject.SetActive(false);
     }
 
-    protected override void UpdateDogSlots(Dog.DogType activeDogType) {
+    public override void UpdateDogSlots(Dog.DogType activeDogType) {
         changeDogSlotTemplate.gameObject.SetActive(true);
         emptyDogSlotTemplate.gameObject.SetActive(true);
         changeDogButtons = new List<GameObject>();
@@ -23,8 +23,22 @@ public class ChangeDogPanel_HordeMode : ChangeDogPanel
         }
 
         foreach (Dog.DogType type in Enum.GetValues(typeof(Dog.DogType))) {
+            bool unlocked = false;
+            if (type == Dog.DogType.GermanShepherd) {
+                unlocked = true;
+            }
+            if (type == Dog.DogType.GoldenRetreiver) {
+                if(HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.GoldenRetreiver)) {
+                    unlocked = true;
+                }
+            }
+            if (type == Dog.DogType.DarkCompanion) {
+                if (HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.DarkCompanion)) {
+                    unlocked = true;
+                }
+            }
 
-            if (DogStats.Instance.GetDogUnlocked(type)) {
+            if (unlocked) {
                 DogReplaceButton dogReplaceButton = Instantiate(changeDogSlotTemplate, changeDogSlotContainer).GetComponent<DogReplaceButton>();
 
                 dogReplaceButton.SetLinkedDog(type);

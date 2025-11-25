@@ -14,6 +14,7 @@ public class PlayerSave : MonoBehaviour
     [SerializeField] private List<SkillSO> initialSkillsUnlockedList;
     private List<SkillSO> newSkillsUnlockedList = new List<SkillSO>();
     private List<SkillSO> skillsUnlockedList = new List<SkillSO>();
+    private List<SkillSO> skillsUnlockedList_HordeMode = new List<SkillSO>();
 
     private bool playerUnlockedFlagCarry;
 
@@ -25,6 +26,10 @@ public class PlayerSave : MonoBehaviour
     private void Start() {
         playerUnlockedFlagCarry = MetaProgressionManager.Instance.GetPlayerUnlockedFlagCarry();
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            LoadUnlockedSkills_HordeMode();
+        }
     }
 
     public void SavePrimaryActiveGunSO(GunSO gunSO) {
@@ -120,6 +125,20 @@ public class PlayerSave : MonoBehaviour
         return unlockedGunSOList;
     }
 
+    public List<GunSO> GetHordeModeUnlockedGunSOList() {
+        List<GunSO> unlockedGunSOList = new List<GunSO>();
+
+        foreach (GunSO gunSO in allGunsList) {
+
+            if (HordeModeProgressionManager.Instance.GetWeaponUnlocked(gunSO.gunType)) {
+                unlockedGunSOList.Add(gunSO);
+            }
+
+        }
+
+        return unlockedGunSOList;
+    }
+
     public List<GunSO> GetAllGunSOs() {
         return allGunsList;
     }
@@ -143,6 +162,7 @@ public class PlayerSave : MonoBehaviour
         foreach (SkillSO skillSO in initialSkillsUnlockedList) {
             skillsUnlockedList.Add(skillSO);
         }
+
         foreach (SkillSO skillSO in allSkillsList) {
             string key = skillSO.name + "_unlocked";
             bool unlocked = ES3.Load(key, false);
@@ -152,12 +172,32 @@ public class PlayerSave : MonoBehaviour
             }
         }
     }
+    public void LoadUnlockedSkills_HordeMode() {
+        foreach (SkillSO skillSO in initialSkillsUnlockedList) {
+            skillsUnlockedList_HordeMode.Add(skillSO);
+        }
+
+        foreach (SkillSO skillSO in allSkillsList) {
+            if (HordeModeProgressionManager.Instance.GetSkillUnlocked(skillSO)) {
+                skillsUnlockedList_HordeMode.Add(skillSO);
+            }
+        }
+    }
 
     public List<SkillSO> GetAllSkillsUnlocked() {
         if(DebugManager.Instance.GetDebugMode_AllSkillsUnlocked()) {
             return allSkillsList;
         } else {
             return skillsUnlockedList;
+        }
+    }
+
+    public List<SkillSO> GetAllSkillsUnlocked_HordeMode() {
+        if (DebugManager.Instance.GetDebugMode_AllSkillsUnlocked()) {
+            return allSkillsList;
+        }
+        else {
+            return skillsUnlockedList_HordeMode;
         }
     }
 
