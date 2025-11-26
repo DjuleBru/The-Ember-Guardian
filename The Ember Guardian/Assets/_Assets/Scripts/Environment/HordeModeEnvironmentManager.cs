@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HordeModeEnvironmentManager : MonoBehaviour
 {
+    public static HordeModeEnvironmentManager Instance;
 
     [SerializeField] private GameObject verdantGraveyardParallax;
     [SerializeField] private GameObject corruptedCityParallax;
@@ -14,6 +15,12 @@ public class HordeModeEnvironmentManager : MonoBehaviour
     [SerializeField] private GameObject corruptedCityWaterGO;
     [SerializeField] private GameObject lumenHollowWaterGO;
     [SerializeField] private GameObject fracturedDistrictWaterGO;
+
+    [SerializeField] private Portal enterPortal_VG;
+    [SerializeField] private Portal enterPortal_CC;
+    [SerializeField] private Portal enterPortal_LH;
+    [SerializeField] private Portal enterPortal_FD;
+    private Portal environmentPortal;
 
 
     [SerializeField] private Color dawnLightColor_VG;
@@ -81,9 +88,30 @@ public class HordeModeEnvironmentManager : MonoBehaviour
     [SerializeField] private float nightLightIntensity_FD;
 
     private void Awake() {
+        Instance = this;
+
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             SetEnvironmentParallaxAndWater();
             SetEnvironmentLights();
+            SetEnvironmentPortals();
+        }
+    }
+
+    private void SetEnvironmentPortals() {
+
+        LevelSO.LevelEnvironment selectedEnv = HordeModeCustomizationManager.Instance.GetSelectedEnvironment();
+
+        if (selectedEnv == LevelSO.LevelEnvironment.TheVerdantGraveyard) {
+            environmentPortal = enterPortal_VG;
+        }
+        if (selectedEnv == LevelSO.LevelEnvironment.CorruptedCity) {
+            environmentPortal = enterPortal_CC;
+        }
+        if (selectedEnv == LevelSO.LevelEnvironment.TheLumenHollow) {
+            environmentPortal = enterPortal_LH;
+        }
+        if (selectedEnv == LevelSO.LevelEnvironment.TheFracturedDistrict) {
+            environmentPortal = enterPortal_FD;
         }
     }
 
@@ -137,7 +165,6 @@ public class HordeModeEnvironmentManager : MonoBehaviour
         float nightLightIntensity = nightLightIntensity_VG;
 
         LevelSO.LevelEnvironment selectedEnv = HordeModeCustomizationManager.Instance.GetSelectedEnvironment();
-
 
         if (selectedEnv == LevelSO.LevelEnvironment.CorruptedCity) {
             dawnSkyColor = dawnSkyColor_CC;
@@ -208,5 +235,11 @@ public class HordeModeEnvironmentManager : MonoBehaviour
         DayNightVisualsManager.Instance.SetNightLightColor(nightLightColor);
         DayNightVisualsManager.Instance.SetNightSkyColor(nightSkyColor);
         DayNightVisualsManager.Instance.SetNightLightIntensity(nightLightIntensity);
+    }
+
+    public bool GetIsEnvironmentPortal(Portal portal) {
+        Debug.Log("GetIsEnvironmentPortal " + portal);
+        Debug.Log("EnvironmentPortal " + environmentPortal);
+        return portal == environmentPortal;
     }
 }

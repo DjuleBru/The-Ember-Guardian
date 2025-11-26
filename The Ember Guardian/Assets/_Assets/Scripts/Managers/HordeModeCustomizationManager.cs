@@ -9,6 +9,8 @@ public class HordeModeCustomizationManager : MonoBehaviour
     private GunSO.GunType selectedGunType;
     private Dog.DogType selectedDogType;
     private LevelSO.LevelEnvironment selectedEnvironmentType;
+    [SerializeField] private LevelSO.LevelEnvironment debugEnvironmentType;
+    [SerializeField] private bool useDebugEnv;
 
     private void Awake() {
         Instance = this;
@@ -16,6 +18,10 @@ public class HordeModeCustomizationManager : MonoBehaviour
         selectedDogType = ES3.Load("hordeModeDogType", Dog.DogType.GermanShepherd);
         selectedGunType = ES3.Load("hordeModeGunType", GunSO.GunType.Rifle);
         selectedEnvironmentType = ES3.Load("hordeModeEnvironment", LevelSO.LevelEnvironment.TheVerdantGraveyard);
+
+        if(useDebugEnv) {
+            selectedEnvironmentType = debugEnvironmentType;
+        }
     }
 
 

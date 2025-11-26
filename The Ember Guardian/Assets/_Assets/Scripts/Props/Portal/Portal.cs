@@ -113,6 +113,13 @@ public class Portal : MonoBehaviour
                 gameObject.SetActive(false);
                 return;
             } 
+
+            if(LevelManager.Instance.IsHordeMode()) {
+                if(!HordeModeEnvironmentManager.Instance.GetIsEnvironmentPortal(this)) {
+                    gameObject.SetActive(false);
+                    return;
+                }
+            }
             StartCoroutine(TeleportPlayerOutInLevel());
         }
     }

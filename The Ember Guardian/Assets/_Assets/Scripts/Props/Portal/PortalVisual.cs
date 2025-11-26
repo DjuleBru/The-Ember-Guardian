@@ -81,6 +81,12 @@ public class PortalVisual : MonoBehaviour
     }
 
     private void Portal_OnPortalSetToTeleportPlayer(object sender, System.EventArgs e) {
+        if(portal.GetIsStartLevelTeleporter()) {
+            portalFloorBackGameObject.SetActive(false);
+            portalFloorFrontGameObject.SetActive(false);
+            portalMarkingsGameObject.SetActive(false);
+            portalBodyGameObject.SetActive(false);
+        }
         TurnOnBeamLight(false);
     }
 
