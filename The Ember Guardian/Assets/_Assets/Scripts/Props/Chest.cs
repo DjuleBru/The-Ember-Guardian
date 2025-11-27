@@ -61,6 +61,7 @@ public class Chest : MonoBehaviour
     public event EventHandler OnChestDisappear;
     public event EventHandler OnChestPricePaid;
     public event EventHandler OnChestPricePaidLoaded;
+    public event EventHandler OnChestTypeSet;
 
     public class OnChestUnlockedEventArgs:EventArgs {
         public bool triggerSFX;
@@ -73,7 +74,36 @@ public class Chest : MonoBehaviour
     }
 
     protected void Awake() {
-        if(chestType == ChestType.orbChest) {
+        SetChestAnimationTimes();
+    }
+
+    protected virtual void Start() {
+        if(payToOpenChest) {
+            payCurrencyUI.OnCurrencyPaymentSuccess += PayCurrencyUI_OnCurrencyPaymentSuccess;
+            payCurrencyUI.SetOrbTemplateUIList(payCurrencyTemplates);
+        }
+
+        GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
+        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
+
+        int totalGemAmount = 0;
+        int i = 0;
+
+        foreach(PlayerCurrencies.CurrencyType type in currencyTypeToRewardList) {
+
+            if(CurrenciesManager.Instance.GetCurrencyCategory(type) == PlayerCurrencies.CurrencyCategory.gem) {
+                totalGemAmount += rewardAmountList[i];
+            }
+            i++;
+        }
+
+        GemDropManager.Instance.RecordChestGems(totalGemAmount);
+        LevelManager.Instance.AddChest(this);
+    }
+
+    private void SetChestAnimationTimes() {
+        if (chestType == ChestType.orbChest) {
             delayToChestUnlockAnimation = 2.5f;
             delayToSpawnCollectibles = 3.4f;
         }
@@ -105,29 +135,6 @@ public class Chest : MonoBehaviour
             delayToChestUnlockAnimation = 2.5f;
             delayToSpawnCollectibles = 3.3f;
         }
-    }
-
-    protected virtual void Start() {
-        if(payToOpenChest) {
-            payCurrencyUI.OnCurrencyPaymentSuccess += PayCurrencyUI_OnCurrencyPaymentSuccess;
-            payCurrencyUI.SetOrbTemplateUIList(payCurrencyTemplates);
-        }
-
-        GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
-        GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
-        Player.Instance.OnPlayerDied += Player_OnPlayerDied;
-
-        int totalGemAmount = 0;
-        int i = 0;
-        foreach(PlayerCurrencies.CurrencyType type in currencyTypeToRewardList) {
-
-            if(CurrenciesManager.Instance.GetCurrencyCategory(type) == PlayerCurrencies.CurrencyCategory.gem) {
-                totalGemAmount += rewardAmountList[i];
-            }
-            i++;
-        }
-        GemDropManager.Instance.RecordChestGems(totalGemAmount);
-        LevelManager.Instance.AddChest(this);
     }
 
 
@@ -362,6 +369,15 @@ public class Chest : MonoBehaviour
 
     public bool GetChestLocked() {
         return chestLocked;
+    }
+
+    public void SetChestParameters(ChestType chestType, List<PlayerCurrencies.CurrencyType> currencyTypeToRewardList, List<int> rewardAmountList) {
+        this.chestType = chestType;
+        this.currencyTypeToRewardList = currencyTypeToRewardList;
+        this.rewardAmountList = rewardAmountList;
+
+        OnChestTypeSet?.Invoke(this, EventArgs.Empty);
+        SetChestAnimationTimes();
     }
 
     private void OnDestroy() {

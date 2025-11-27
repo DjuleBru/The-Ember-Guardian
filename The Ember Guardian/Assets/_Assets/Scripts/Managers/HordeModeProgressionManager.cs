@@ -58,6 +58,7 @@ public class HordeModeProgressionManager : MonoBehaviour
         MGTower2,
         MortarTower2,
         NewTraps2,
+        Armorer,
         None,
     }
     public Dictionary<HordeModeUnlockables, int> unlockThresholds;
@@ -145,6 +146,7 @@ public class HordeModeProgressionManager : MonoBehaviour
         if (unlockedSet == null)
             return false;
 
+        if (DebugManager.Instance.GetHordeModeAllUnlockedDebug()) return true;
         return unlockedSet.Contains(unlockable);
     }
 
@@ -202,6 +204,7 @@ public class HordeModeProgressionManager : MonoBehaviour
 
         return GetUnlocked(unlockable);
     }
+
     public bool GetWeaponUnlocked(GunSO.GunType gunType) {
         HordeModeUnlockables gunUnlockable = HordeModeUnlockables.SMG;
 
@@ -255,6 +258,7 @@ public class HordeModeProgressionManager : MonoBehaviour
 
         return true;
     }
+
     public bool GetTrapUnlocked(TrapSO trapSO) {
         if(trapSO.trapType == TrapItem.TrapType.bladeTrap || trapSO.trapType == TrapItem.TrapType.smokeEjector || trapSO.trapType == TrapItem.TrapType.shockerEjector) {
             return GetUnlocked(HordeModeUnlockables.NewTraps1);
@@ -264,6 +268,30 @@ public class HordeModeProgressionManager : MonoBehaviour
         }
 
         return true;
+    }
+
+    public int GetWeaponAmountUnlocked() {
+        List<HordeModeUnlockables> allWeaponUnlockables = new List<HordeModeUnlockables> {
+            HordeModeUnlockables.SMG,
+            HordeModeUnlockables.Shotgun,
+            HordeModeUnlockables.Revolver,
+            HordeModeUnlockables.AR,
+            HordeModeUnlockables.GL,
+            HordeModeUnlockables.AAGun,
+            HordeModeUnlockables.Pistol,
+            HordeModeUnlockables.Minigun,
+            HordeModeUnlockables.RL,
+            HordeModeUnlockables.Sniper,
+            HordeModeUnlockables.LMG,
+        };
+
+        int gunsUnlocked = 0;
+        foreach(HordeModeUnlockables unlockable in allWeaponUnlockables) {
+            if (GetUnlocked(unlockable)) {
+                gunsUnlocked++;
+            }
+        }
+        return gunsUnlocked;
     }
 
     public HordeModeUnlockables GetNextUnlockable() {
@@ -277,6 +305,7 @@ public class HordeModeProgressionManager : MonoBehaviour
 
         return HordeModeUnlockables.None;
     }
+
     public HordeModeUnlockables GetPreviousUnlockable() {
         HordeModeUnlockables previous = HordeModeUnlockables.None;
 

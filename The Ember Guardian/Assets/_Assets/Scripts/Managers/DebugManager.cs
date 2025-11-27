@@ -37,6 +37,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool debugSurgeReload;
     [SerializeField] private bool logNightWaveData;
     [SerializeField] private bool hordeModeActiveDebug;
+    [SerializeField] private bool hordeModeAllUnlockedDebug;
     [SerializeField] private bool debugMode_Credits;
 
     int i = 0;
@@ -183,5 +184,8 @@ public class DebugManager : MonoBehaviour
 
     public bool GetHordeModeActiveDebug() {
         return hordeModeActiveDebug;
+    }
+    public bool GetHordeModeAllUnlockedDebug() {
+        return hordeModeAllUnlockedDebug;
     }
 }

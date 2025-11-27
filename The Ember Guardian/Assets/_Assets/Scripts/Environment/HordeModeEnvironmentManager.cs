@@ -238,8 +238,6 @@ public class HordeModeEnvironmentManager : MonoBehaviour
     }
 
     public bool GetIsEnvironmentPortal(Portal portal) {
-        Debug.Log("GetIsEnvironmentPortal " + portal);
-        Debug.Log("EnvironmentPortal " + environmentPortal);
         return portal == environmentPortal;
     }
 }

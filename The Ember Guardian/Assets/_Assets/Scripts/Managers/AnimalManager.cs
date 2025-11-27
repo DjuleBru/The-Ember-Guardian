@@ -5,6 +5,7 @@ using UnityEngine;
 public class AnimalManager : MonoBehaviour
 {
     public static AnimalManager Instance;
+    [SerializeField] private List<AnimalSO> animalSOList;
     private List<Animal> spawnedAnimalList = new List<Animal>();
     private float distanceToMaxHuntingLimitToAllowHunting = 8f;
     private float distanceToAnimalToAllowReassigning = 15f;
@@ -84,5 +85,13 @@ public class AnimalManager : MonoBehaviour
 
     public void RemoveAnimalSpawned(Animal animal) {
         spawnedAnimalList.Remove(animal);
+    }
+
+    public Transform GetAnimalPrefab(AnimalSO.AnimalType animalType) {
+        foreach(AnimalSO animalSO in animalSOList) {
+            if (animalSO.animalType == animalType) return animalSO.animalPrefab;
+        }
+
+        return null;
     }
 }

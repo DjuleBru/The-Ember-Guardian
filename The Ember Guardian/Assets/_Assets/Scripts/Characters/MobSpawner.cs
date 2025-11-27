@@ -362,6 +362,13 @@ public class MobSpawner : MonoBehaviour
     public bool GetAmbushSpawned() {
         return ambushSpawned;
     }
+
+    public void SetSpawnerParameters(Transform mobPrefab, int mobAmountToSpawn, float radiusToRoamAround) {
+        this.mobPrefab = mobPrefab;
+        this.mobAmountToSpawn = mobAmountToSpawn;
+        this.radiusToRoamAround = radiusToRoamAround;
+    }
+
     public void ForceNewID() {
         spawnerID = Guid.NewGuid().ToString();
     }

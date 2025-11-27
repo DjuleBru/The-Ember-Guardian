@@ -39,9 +39,11 @@ public class AnimalAI : MonoBehaviour
         fleeMoveSpeed = animal.GetAnimalSO().fleeMoveSpeed;
         fleeDistance = animal.GetAnimalSO().fleeDistance;
         roamChangeDestinationRate = animal.GetAnimalSO().roamChangeDestinationRate;
+        roamTimer = 1f;
         roamRadius = animal.GetAnimalSO().roamRadius;
 
         positionToRoamAmound = animal.GetMobSpawner().transform.position;
+        animalMovement.SetMoveTarget(transform.position);
 
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
     }
@@ -87,7 +89,7 @@ public class AnimalAI : MonoBehaviour
         roamTimer -= Time.deltaTime;
 
         if (roamTimer < 0) {
-            roamTimer = roamChangeDestinationRate;
+            roamTimer = UnityEngine.Random.Range(roamChangeDestinationRate / 2, roamChangeDestinationRate * 2);
             RoamBehavior.RoamAroundPoint(animal.GetComponent<MobMovement>(), roamRadius, positionToRoamAmound, false);
         }
     }

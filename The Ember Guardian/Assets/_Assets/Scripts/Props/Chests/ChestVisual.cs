@@ -38,7 +38,15 @@ public class ChestVisual : MonoBehaviour
     protected virtual void Start() {
         chest.OnChestOpened += Chest_OnChestOpened;
         chest.OnChestDisappear += Chest_OnChestDisappear;
+        chest.OnChestTypeSet += Chest_OnChestTypeSet;
+        SetAnimator();
+    }
 
+    private void Chest_OnChestTypeSet(object sender, System.EventArgs e) {
+        SetAnimator();
+    }
+
+    private void SetAnimator() {
         if (chest.GetChestType() == Chest.ChestType.orbChest) {
             animator.runtimeAnimatorController = orbChestAnimator;
         }
@@ -64,7 +72,6 @@ public class ChestVisual : MonoBehaviour
             animator.runtimeAnimatorController = trapChestAnimator;
         }
     }
-
     private void Chest_OnChestOpenable(object sender, System.EventArgs e) {
         inputIconAnimator.ResetTrigger("Hide");
         inputIconAnimator.SetTrigger("Show");

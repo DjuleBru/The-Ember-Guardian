@@ -176,11 +176,18 @@ public class KeyRebindingUI : MonoBehaviour
 
     protected virtual void RebindBinding(GameInput.Binding binding, bool gamepad) {
         ShowWaitingToRebind();
-        PauseMenuUI.Instance.SetRebindingKey(true);
+
+        if(PauseMenuUI.Instance != null) {
+            PauseMenuUI.Instance.SetRebindingKey(true);
+        }
+
         GameInput.Instance.RebindBinding(binding, () => {
             HideWaitingToRebind();
             UpdateVisual();
-            PauseMenuUI.Instance.SetRebindingKeyAfterFrames(false);
+
+            if (PauseMenuUI.Instance != null) {
+                PauseMenuUI.Instance.SetRebindingKeyAfterFrames(false);
+            }
         }, gamepad);
         
     }

@@ -5,6 +5,15 @@ using UnityEngine;
 [CreateAssetMenu()]
 public class AnimalSO : ScriptableObject
 {
+    public enum AnimalType {
+        Rat,
+        Fox,
+        Elk,
+        Deer,
+    }
+
+    public Transform animalPrefab;
+    public AnimalType animalType;
     public List<PlayerCurrencies.CurrencyType> currencyTypeDroppedList;
     public List<int> currencyDropAmountList;
 

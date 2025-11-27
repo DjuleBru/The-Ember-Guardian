@@ -154,4 +154,8 @@ public class ScavengableManager : MonoBehaviour
             return closestMine;
         }
     }
+
+    public void AddScavengable(Scavengable scav) {
+        scavengablesInLevelList.Add(scav);
+    }
 }

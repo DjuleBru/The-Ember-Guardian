@@ -48,6 +48,7 @@ public class HordeModeBlockVisuals : MonoBehaviour
     }
 
     private void ApplyDecor(LevelSO.LevelEnvironment env) {
+        return;
         List<GameObject> propsList = new List<GameObject>();
 
         if (env == LevelSO.LevelEnvironment.TheVerdantGraveyard) {

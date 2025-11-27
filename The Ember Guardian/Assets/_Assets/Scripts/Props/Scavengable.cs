@@ -421,7 +421,13 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     }
 
     public void SetScavengableUnlocked(bool unlocked) {
+        if (LevelManager.Instance.IsHordeMode()) return;
         this.scavengedUnlocked = unlocked;
+    }
+
+    public void SetParameters(int amountToCollect, int hitsToCollectOne) {
+        currencyAmountCollected = amountToCollect;
+        hitsToCollectOneCurrency = hitsToCollectOne;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
