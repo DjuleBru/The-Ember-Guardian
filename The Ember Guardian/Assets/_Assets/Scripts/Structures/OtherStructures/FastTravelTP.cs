@@ -34,6 +34,7 @@ public class FastTravelTP : Structure
     private int currentTPIndex = 0;
     private int fastTravelTPIndexIdentifier = 0;
     private static int fastTravelTPIndex = 0;
+    private int maxFastTravelTPIndex = 11;
     private Coroutine workerTPCoroutine;
 
     protected override void Awake() {
@@ -45,6 +46,10 @@ public class FastTravelTP : Structure
 
         fastTravelTPIndexIdentifier = fastTravelTPIndex;
         fastTravelTPIndex++;
+
+        if(fastTravelTPIndex == maxFastTravelTPIndex) {
+            fastTravelTPIndex = 0;
+        }
     }
 
     protected override void Start() {

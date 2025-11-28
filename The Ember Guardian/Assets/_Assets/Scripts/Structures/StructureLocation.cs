@@ -35,6 +35,7 @@ public class StructureLocation : MonoBehaviour {
     protected bool isBeingDestroyed;
     protected bool isWorldLocation;
     protected bool structureLocationBought;
+    protected bool skipLoadingStructureLocationBought;
 
     protected virtual void Awake() {
         payCurrencyUI = GetComponent<PayCurrencyUI>();
@@ -191,6 +192,12 @@ public class StructureLocation : MonoBehaviour {
     }
 
     protected void LoadStructureLocationBought() {
+        if (skipLoadingStructureLocationBought) {
+            gameObject.SetActive(true);
+            OnStructureLocationUnlocked?.Invoke(this, EventArgs.Empty);
+            return;
+        };
+
         if (DebugManager.Instance.GetAllStructuresUnlocked() || debugStructureTypeBought || structureSOToBuild.level1StructureInitiallyUnlocked) {
             structureLocationBought = true;
             gameObject.SetActive(true);
@@ -250,12 +257,18 @@ public class StructureLocation : MonoBehaviour {
     public void SetAsWorldStructureLocation() {
         isWorldLocation = true;
     }
+
     public bool GetIsWorldStructureLocation() {
         return isWorldLocation;
     }
 
     public bool GetStructureLocationBought() {
         return structureLocationBought;
+    }
+
+    public void SetBought() {
+        structureLocationBought = true;
+        skipLoadingStructureLocationBought = true;
     }
 
     public bool GetPlayerInTriggerArea() { return playerInTriggerArea; }

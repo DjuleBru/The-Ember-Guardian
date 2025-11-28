@@ -144,8 +144,14 @@ public class CreatureAI : MonoBehaviour {
 
         if (creature.IsDayCreature()) {
 
-            positionToRoamAmound = creature.GetMobSpawner().transform.position;
-            roamRadius = creature.GetMobSpawner().GetRadiusToRoamAround();
+            if(creature.GetMobSpawner() != null) {
+                positionToRoamAmound = creature.GetMobSpawner().transform.position;
+                roamRadius = creature.GetMobSpawner().GetRadiusToRoamAround();
+            } else {
+                positionToRoamAmound = transform.position;
+                roamRadius = 2f;
+            }
+
 
             if(creature.IsAgressiveDayCreature()) {
                 ChangeState(State.walkingToPlayer);

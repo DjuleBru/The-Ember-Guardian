@@ -35,14 +35,27 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
     private List<HordeModeBlock> leftBlocks = new List<HordeModeBlock>();
     private List<HordeModeBlock> rightBlocks = new List<HordeModeBlock>();
 
-    private int distanceToForceSmallBlocks = 2;
-    private int rightDistanceIndex = 0;
-    private int leftDistanceIndex = 0;
+    private int distanceToForceSmallBlocks = 3;
 
-    private int gunChestBlocksSpawned;
+    int distSinceLastWeaponChest = 0;
+    int distSinceLastTrapChest = 0;
+    int minDistBetweenSpecialChests = 6;
+    int maxDistBetweenSpecialChests = 9;
+
+    int nextWeaponChestThreshold;
+    int nextTrapChestThreshold;
+
+    private float lastFastTravelRightX = 0f;
+    private float lastFastTravelLeftX = 0f;
+    [SerializeField] private float fastTravelThreshold = 175f;
 
     private void Awake() {
         Instance = this;
+
+        nextWeaponChestThreshold = Random.Range(minDistBetweenSpecialChests, maxDistBetweenSpecialChests);
+        nextTrapChestThreshold = Random.Range(minDistBetweenSpecialChests, maxDistBetweenSpecialChests);
+
+        distSinceLastWeaponChest = nextWeaponChestThreshold/2;
     }
 
     void Start() {
@@ -161,7 +174,7 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
                 otherBlock = left;
             }
             shopBlock.SetShopType(shop);
-            shopBlock.SetBlockType(BlockType.Shop);
+            shopBlock.AddBlockType(BlockType.Shop);
         }
 
         // --- DISTANCE 1 ---
@@ -209,14 +222,21 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
                     BlockType.Animals,
                     BlockType.Scavengables,
                     BlockType.ResourceChest,
-                    BlockType.WeaponChest,
-                    BlockType.TrapChest,
                     BlockType.Mine,
                     BlockType.CombatOnly,
                     BlockType.None
                 };
-                single.SetBlockType(farAll[Random.Range(0, farAll.Length)]);
+                single.AddBlockType(farAll[Random.Range(0, farAll.Length)]);
             }
+        }
+
+        if(left != null) {
+            TryAddChests(left);
+            TryAssignFastTravel(left);
+        }
+        if (right != null) {
+            TryAddChests(right);
+            TryAssignFastTravel(right);
         }
     }
 
@@ -258,34 +278,30 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
         }
 
         SetRandomBlockType(block, simpleResources);
+        TryAddChests(block);
+        TryAssignFastTravel(block);
     }
 
     void AssignMidRangeBlockType(HordeModeBlock block, bool shopIsOnThisDistance) {
-        List<BlockType> midRangeBlocs = new List<BlockType> { BlockType.Animals, BlockType.ResourceChest, BlockType.TrapChest };
+        List<BlockType> midRangeBlocs = new List<BlockType> { BlockType.Animals, BlockType.ResourceChest};
 
         if (HordeModeProgressionManager.Instance.GetStructureUnlocked(StructureSO.StructureType.minerShrine)) {
             midRangeBlocs.Add(BlockType.Scavengables);
         }
 
-        if (HordeModeProgressionManager.Instance.GetWeaponAmountUnlocked() > gunChestBlocksSpawned) {
-            midRangeBlocs.Add(BlockType.WeaponChest);
-        }
-
         SetRandomBlockType(block, midRangeBlocs);
+        TryAddChests(block);
+        TryAssignFastTravel(block);
     }
 
     void AssignFarDistanceTypes(HordeModeBlock left, HordeModeBlock right) {
         List<BlockType> farRangeSafeBlocs = new List<BlockType> { BlockType.Animals, BlockType.ResourceChest};
-        List<BlockType> farRangeAllBlocs = new List<BlockType> { BlockType.Animals, BlockType.ResourceChest, BlockType.TrapChest, BlockType.CombatOnly, BlockType.None };
+        List<BlockType> farRangeAllBlocs = new List<BlockType> { BlockType.Animals, BlockType.ResourceChest,BlockType.CombatOnly, BlockType.None };
 
         if (HordeModeProgressionManager.Instance.GetStructureUnlocked(StructureSO.StructureType.minerShrine)) {
             farRangeAllBlocs.Add(BlockType.Mine);
             farRangeAllBlocs.Add(BlockType.Scavengables);
             farRangeSafeBlocs.Add(BlockType.Scavengables);
-        }
-
-        if (HordeModeProgressionManager.Instance.GetWeaponAmountUnlocked() > gunChestBlocksSpawned) {
-            farRangeAllBlocs.Add(BlockType.WeaponChest);
         }
 
 
@@ -300,16 +316,73 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
 
         // 3) Assigner l’autre
         SetRandomBlockType(otherBlock, farRangeAllBlocs);
+        TryAddChests(left);
+        TryAddChests(right);
+        TryAssignFastTravel(left);
+        TryAssignFastTravel(right);
     }
 
 
     private void SetRandomBlockType(HordeModeBlock block, List<BlockType> list) {
         BlockType selectedType = list[Random.Range(0, list.Count)];
-        if (selectedType == BlockType.WeaponChest) {
-            gunChestBlocksSpawned++;
+
+        block.AddBlockType(selectedType);
+    }
+
+    void TryAddChests(HordeModeBlock block) {
+        BlockSize size = block.GetBlockSize();
+        int sizeValue = size switch {
+            BlockSize.Tiny => 1,
+            BlockSize.Small => 2,
+            BlockSize.Medium => 3,
+            BlockSize.Big => 4,
+            _ => 2
+        };
+
+        // --- WEAPON CHEST ---
+        distSinceLastWeaponChest += sizeValue;
+
+        if (distSinceLastWeaponChest >= nextWeaponChestThreshold &&
+            !block.HasBlockType(BlockType.TrapChest)) {
+            block.AddBlockType(BlockType.WeaponChest);
+            distSinceLastWeaponChest = 0;
+            nextWeaponChestThreshold = Random.Range(minDistBetweenSpecialChests, maxDistBetweenSpecialChests);
         }
 
-        block.SetBlockType(selectedType);
+        // --- TRAP CHEST ---
+        distSinceLastTrapChest += sizeValue;
+
+        if (distSinceLastTrapChest >= nextTrapChestThreshold &&
+            !block.HasBlockType(BlockType.WeaponChest)) {
+            block.AddBlockType(BlockType.TrapChest);
+            distSinceLastTrapChest = 0;
+            nextTrapChestThreshold = Random.Range(minDistBetweenSpecialChests, maxDistBetweenSpecialChests);
+        }
+    }
+
+    private void TryAssignFastTravel(HordeModeBlock block) {
+        float currentX = block.transform.position.x;
+        bool isRightDirection = currentX > 0;
+
+        // --- DIRECTION RIGHT ---
+        if (isRightDirection) {
+            float dist = Mathf.Abs(currentX - lastFastTravelRightX);
+
+            if (dist >= fastTravelThreshold) {
+                block.AddBlockType(BlockType.FastTravelTP);
+                lastFastTravelRightX = currentX;
+            }
+        }
+
+        // --- DIRECTION LEFT ---
+        else {
+            float dist = Mathf.Abs(currentX - lastFastTravelLeftX);
+
+            if (dist >= fastTravelThreshold) {
+                block.AddBlockType(BlockType.FastTravelTP);
+                lastFastTravelLeftX = currentX;
+            }
+        }
     }
 
     BlockDefinition PickNextSize(int dist) {

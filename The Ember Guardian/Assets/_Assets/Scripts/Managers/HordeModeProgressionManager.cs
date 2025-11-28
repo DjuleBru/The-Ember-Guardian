@@ -270,6 +270,19 @@ public class HordeModeProgressionManager : MonoBehaviour
         return true;
     }
 
+    public List<TrapSO> GetTrapUnlockedList() {
+        List<TrapSO> allTrapsList = TrapManager.Instance.GetAllTrapSOList();
+        List<TrapSO> allTrapsUnlockedList = new List<TrapSO>();
+
+        foreach(TrapSO trapSO in allTrapsList) {
+            if(GetTrapUnlocked(trapSO)) {
+                allTrapsUnlockedList.Add(trapSO);
+            }
+        }
+
+        return allTrapsUnlockedList;
+    }
+
     public int GetWeaponAmountUnlocked() {
         List<HordeModeUnlockables> allWeaponUnlockables = new List<HordeModeUnlockables> {
             HordeModeUnlockables.SMG,
@@ -293,6 +306,7 @@ public class HordeModeProgressionManager : MonoBehaviour
         }
         return gunsUnlocked;
     }
+
 
     public HordeModeUnlockables GetNextUnlockable() {
         foreach (var unlock in unlockOrder) {

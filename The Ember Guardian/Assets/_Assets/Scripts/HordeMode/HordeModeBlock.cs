@@ -12,6 +12,7 @@ public enum BlockType {
     WeaponChest,
     TrapChest,
     Shop,
+    FastTravelTP,
     None,
 }
 
@@ -33,18 +34,13 @@ public class HordeModeBlock : MonoBehaviour
 
     [SerializeField] private MobSpawner animalSpawner;
     [SerializeField] private Chest resourceChest;
-    [SerializeField] private Transform mobSpawnerPrefab;
-    [SerializeField] private Transform weaponChestPrefab;
-    [SerializeField] private Transform trapChestPrefab;
-    [SerializeField] private Transform minePrefab;
+    [SerializeField] private Chest_Special weaponChest;
+    [SerializeField] private Chest trapChest;
+    [SerializeField] private StructureLocation fastTravelTPLocation;
 
-    [SerializeField] private Transform weaponShopPrefab;
-    [SerializeField] private Transform structuresShopPrefab;
-    [SerializeField] private Transform heroShopPrefab;
-    [SerializeField] private Transform dogShopPrefab;
-    [SerializeField] private Transform workerShopPrefab;
+    public static List<GunSO> gunSOAssignedToWeaponChests = new List<GunSO>();
 
-    private BlockType blockType;
+    private List<BlockType> blockTypeList = new List<BlockType>();
     private ShopType shopType;
     private float direction;
 
@@ -67,21 +63,25 @@ public class HordeModeBlock : MonoBehaviour
         SetSpawnersToCenterPosition();
     }
 
-    public void SetBlockType(BlockType blockType) {
-        Debug.Log("SetBlockType " + blockType);
+    public void AddBlockType(BlockType blockType) {
+        Debug.Log(this + " AddBlockType " + blockType);
 
-        this.blockType = blockType;
+        blockTypeList.Add(blockType);
 
         if (blockType == BlockType.Animals) {
             HandleAnimalBlock();
         } else {
-            animalSpawner.gameObject.SetActive(false);
+            if (!HasBlockType(BlockType.Animals)) {
+                animalSpawner.gameObject.SetActive(false);
+            }
         }
 
         if (blockType == BlockType.ResourceChest) {
             HandleResourceChestBlock();
         } else {
-            resourceChest.gameObject.SetActive(false);
+            if (!HasBlockType(BlockType.ResourceChest)) {
+                resourceChest.gameObject.SetActive(false);
+            }
         }
 
         if(blockType == BlockType.Scavengables) {
@@ -91,6 +91,36 @@ public class HordeModeBlock : MonoBehaviour
         if (blockType == BlockType.Mine) {
             GetComponent<HordeModeBlockScavengables>().SetBlockAsMine(blockSize);
         }
+
+        if (blockType == BlockType.WeaponChest) {
+            StartCoroutine(HandleWeaponChestBlockAfterFrames());
+        } else {
+            if(!HasBlockType(BlockType.WeaponChest)) {
+                weaponChest.gameObject.SetActive(false);
+            }
+        }
+
+        if (blockType == BlockType.TrapChest) {
+            StartCoroutine(HandleTrapChestBlockAfterFrames());
+        }
+        else {
+            if (!HasBlockType(BlockType.TrapChest)) {
+                trapChest.gameObject.SetActive(false);
+            }
+        }
+
+        if (blockType == BlockType.FastTravelTP) {
+            StartCoroutine(HandleFastTravelTPAfterFrames());
+        }
+        else {
+            if (!HasBlockType(BlockType.FastTravelTP)) {
+                fastTravelTPLocation.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    public bool HasBlockType(BlockType blockType) {
+        return blockTypeList.Contains(blockType);
     }
 
     private void HandleAnimalBlock() {
@@ -116,6 +146,7 @@ public class HordeModeBlock : MonoBehaviour
         float radiusToRoamAround = (blockWidth / 2f);
 
         animalAmountToSpawn = Mathf.RoundToInt(animalAmountToSpawn * GetSizeRewardMultiplier());
+
         animalSpawner.SetSpawnerParameters(AnimalManager.Instance.GetAnimalPrefab(randomAnimal), animalAmountToSpawn, radiusToRoamAround);
 
     }
@@ -185,6 +216,73 @@ public class HordeModeBlock : MonoBehaviour
 
     }
 
+    private void HandleWeaponChestBlock() {
+        List<GunSO> gunTypesUnlocked = GetWeaponSOUnlockedAndNotCarriedByPlayerAndNotAssigned();
+
+        if (gunTypesUnlocked.Count > 0) {
+            weaponChest.gameObject.SetActive(true);
+            GunSO gunSO = gunTypesUnlocked[UnityEngine.Random.Range(0, gunTypesUnlocked.Count)];
+            weaponChest.SetGunSOInChest(gunSO);
+            gunSOAssignedToWeaponChests.Add(gunSO);
+        } else {
+            weaponChest.gameObject.SetActive(false);
+        }
+
+    }
+
+    private void HandleFastTravelTP() {
+        fastTravelTPLocation.gameObject.SetActive(true);
+        fastTravelTPLocation.UnlockStructureLocation();
+        fastTravelTPLocation.SetAsWorldStructureLocation();
+        fastTravelTPLocation.SetBought();
+    }
+
+    private IEnumerator HandleFastTravelTPAfterFrames() {
+        yield return new WaitForSeconds(.1f);
+        HandleFastTravelTP();
+    }
+
+    public List<GunSO> GetWeaponSOUnlockedAndNotCarriedByPlayerAndNotAssigned() {
+        List<GunSO> gunsSOUnlockedList = new List<GunSO>();
+
+        foreach (GunSO gunSO in PlayerShoot.Instance.GetAllGunSOList()) {
+            if (HordeModeProgressionManager.Instance.GetWeaponUnlocked(gunSO.gunType) && !PlayerShoot.Instance.GetIsCarryingGun(gunSO) && !gunSOAssignedToWeaponChests.Contains(gunSO)) {
+                gunsSOUnlockedList.Add(gunSO);
+            }
+
+        }
+
+        return gunsSOUnlockedList;
+    }
+
+    private void HandleTrapChestBlock() {
+        List<TrapSO> trapTypesUnlocked = HordeModeProgressionManager.Instance.GetTrapUnlockedList();
+
+        List<PlayerCurrencies.CurrencyType> rewardsList = new List<PlayerCurrencies.CurrencyType>();
+
+        PlayerCurrencies.CurrencyType reward = CurrenciesManager.Instance.GetTrapCurrencyType(trapTypesUnlocked[UnityEngine.Random.Range(0, trapTypesUnlocked.Count)].trapType);
+        rewardsList.Add(reward);
+
+        int amount = UnityEngine.Random.Range(2, 5);
+        if (reward == PlayerCurrencies.CurrencyType.spikeEjector) {
+            amount = UnityEngine.Random.Range(3, 7);
+        }
+        List<int> rewardsListAmount = new List<int> { amount };
+        trapChest.SetChestParameters(Chest.ChestType.trapChest, rewardsList, rewardsListAmount);
+    }
+
+    private IEnumerator HandleWeaponChestBlockAfterFrames() {
+        yield return new WaitForSeconds(.1f);
+
+        HandleWeaponChestBlock();
+    }
+
+    private IEnumerator HandleTrapChestBlockAfterFrames() {
+        yield return new WaitForSeconds(.1f);
+
+        HandleTrapChestBlock();
+    }
+
     private void SetSpawnersToCenterPosition() {
         Vector3 localCenterPosition = new Vector3(blockWidth / 2 * direction, 0, 0);
         animalSpawner.transform.localPosition = localCenterPosition;
@@ -211,6 +309,10 @@ public class HordeModeBlock : MonoBehaviour
 
     public void PlayerEnteredBlock() {
         HordeModeMapGenerationManager.Instance.PlayerEnteredBlock(this);
+    }
+
+    public BlockSize GetBlockSize() {
+        return blockSize;
     }
 
 }

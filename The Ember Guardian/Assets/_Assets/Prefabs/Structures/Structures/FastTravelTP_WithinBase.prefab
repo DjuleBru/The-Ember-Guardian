@@ -428,6 +428,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb98048cd125ed4692f9570436f6737, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   fastTravelTP: {fileID: 6218804238007672931}
   positionOnTPAudioClip: {fileID: 8300000, guid: 766c50d236bcae44f83ab033a321ee57, type: 3}
   warpAudioClip: {fileID: 8300000, guid: 68f6e4ba5bd4e3844a83d332aad6cf74, type: 3}
@@ -14038,6 +14040,12 @@ MonoBehaviour:
   - {fileID: 1600757280, guid: a0f5fc235e869b54c821d1dcc11cff16, type: 3}
   - {fileID: 570498537, guid: a0f5fc235e869b54c821d1dcc11cff16, type: 3}
   - {fileID: -557497397, guid: a0f5fc235e869b54c821d1dcc11cff16, type: 3}
+  - {fileID: 97760924, guid: a0f5fc235e869b54c821d1dcc11cff16, type: 3}
+  - {fileID: -1606873512, guid: a0f5fc235e869b54c821d1dcc11cff16, type: 3}
+  - {fileID: 510898342, guid: a0f5fc235e869b54c821d1dcc11cff16, type: 3}
+  - {fileID: -216491577, guid: a0f5fc235e869b54c821d1dcc11cff16, type: 3}
+  - {fileID: 1921167087, guid: a0f5fc235e869b54c821d1dcc11cff16, type: 3}
+  - {fileID: 415866310, guid: a0f5fc235e869b54c821d1dcc11cff16, type: 3}
   tentTravelTPIdentifier: {fileID: -917515519, guid: a0f5fc235e869b54c821d1dcc11cff16, type: 3}
   changeDestinationTPUIGO: {fileID: 6926948598273244509}
   instructionsGO: {fileID: 7962429768732252163}

@@ -1339,6 +1339,11 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public List<GunSO> GetAllGunSOList() {
+        List<GunSO> allGunSOList = new List<GunSO>();
+
+        foreach (Gun gun in allGunsList) {
+            allGunSOList.Add(gun.GetGunSO());
+        }
         return allGunSOList;
     }
 
@@ -1404,6 +1409,15 @@ public class PlayerShoot : MonoBehaviour
 
     public bool GetCanSurgeWindow() {
         return canStartSurgeWindow;
+    }
+
+    public bool GetIsCarryingGun(GunSO gunSO) {
+        bool carryingGun = false;
+        if(primaryGunSO == gunSO || secondayGunSO == gunSO || replacedGunSOList.Contains(gunSO)) {
+            carryingGun = true;
+        }
+
+        return carryingGun;
     }
 
     #endregion

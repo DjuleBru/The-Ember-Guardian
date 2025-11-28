@@ -184,6 +184,9 @@ public class Chest_Special : Chest
         TryOpenSpecialChest(false);
     }
 
+    public void SetGunSOInChest(GunSO gunSO) {
+        this.gunSOInChest = gunSO;
+    }
     protected override void OnTriggerEnter2D(Collider2D collision) {
         if (rewardOfferedToPlayerStarted) return;
 
