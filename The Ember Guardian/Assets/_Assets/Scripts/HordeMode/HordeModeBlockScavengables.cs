@@ -40,9 +40,18 @@ public class HordeModeBlockScavengables : MonoBehaviour
             transform.GetComponent<SpriteRenderer>().enabled = false;
         }
 
-        mineSpawnPosition.GetComponent<SpriteRenderer>().enabled = false;
-        scavengableSpawnPositionWithMine1.GetComponent<SpriteRenderer>().enabled = false;
-        scavengableSpawnPositionWithMine2.GetComponent<SpriteRenderer>().enabled = false;
+        if(mineSpawnPosition != null) {
+            mineSpawnPosition.GetComponent<SpriteRenderer>().enabled = false;
+        }
+
+        if(scavengableSpawnPositionWithMine1 != null) {
+            scavengableSpawnPositionWithMine1.GetComponent<SpriteRenderer>().enabled = false;
+
+        }
+        if (scavengableSpawnPositionWithMine2 != null) {
+            scavengableSpawnPositionWithMine2.GetComponent<SpriteRenderer>().enabled = false;
+
+        }
     }
 
     public void SetBlockAsScavengable(BlockSize blockSize) {
@@ -169,6 +178,15 @@ public class HordeModeBlockScavengables : MonoBehaviour
         if (blockSize == BlockSize.Medium) return 4;
         if (blockSize == BlockSize.Big) return 6;
         return 0;
+    }
+
+    public Scavengable SpawnSingleScav(Transform parent, int currencies, int hits) {
+        Scavengable scav = Instantiate(GetOrbScavengablePrefab(), parent.position, Quaternion.identity, parent)
+            .GetComponent<Scavengable>();
+
+        scav.SetParameters(currencies, hits);
+        StartCoroutine(AddScavengableToManagerAfterFrame(scav));
+        return scav;
     }
 
     private IEnumerator AddScavengableToManagerAfterFrame(Scavengable scav) {

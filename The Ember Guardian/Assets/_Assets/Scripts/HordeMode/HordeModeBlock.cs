@@ -27,27 +27,33 @@ public enum ShopType {
 public class HordeModeBlock : MonoBehaviour
 {
 
-    [SerializeField] private BlockSize blockSize;
-    [SerializeField] private Transform gridAndObstacleParent;
-    [SerializeField] private float blockWidth = 10f;
-    [SerializeField] private float bridgeWidth = 3f;
+    [SerializeField] protected BlockSize blockSize;
+    [SerializeField] protected Transform gridAndObstacleParent;
+    [SerializeField] protected GameObject dayCreatureSpawnerTemplate; // Template de spawner
+    [SerializeField] protected float blockWidth = 10f;
+    [SerializeField] protected float bridgeWidth = 3f;
+    [SerializeField] private float baseRadiusToRoam = 5f;           // Rayon de base pour les spawners
 
-    [SerializeField] private MobSpawner animalSpawner;
-    [SerializeField] private Chest resourceChest;
-    [SerializeField] private Chest_Special weaponChest;
-    [SerializeField] private Chest trapChest;
-    [SerializeField] private StructureLocation fastTravelTPLocation;
+    [SerializeField] protected MobSpawner animalSpawner;
+    [SerializeField] protected Chest resourceChest;
+    [SerializeField] protected Chest_Special weaponChest;
+    [SerializeField] protected Chest trapChest;
+    [SerializeField] protected StructureLocation fastTravelTPLocation;
 
     public static List<GunSO> gunSOAssignedToWeaponChests = new List<GunSO>();
 
-    private List<BlockType> blockTypeList = new List<BlockType>();
-    private ShopType shopType;
-    private float direction;
+    protected List<BlockType> blockTypeList = new List<BlockType>();
+    protected ShopType shopType;
+    protected float direction;
 
-    private float tinyBlockSizeRewardMultiplier = .75f;
-    private float smallBlockSizeRewardMultiplier = 1f;
-    private float mediumBlockSizeRewardMultiplier = 1.5f;
-    private float largeBlockSizeRewardMultiplier = 2f;
+    protected float tinyBlockSizeRewardMultiplier = .75f;
+    protected float smallBlockSizeRewardMultiplier = 1f;
+    protected float mediumBlockSizeRewardMultiplier = 1.5f;
+    protected float largeBlockSizeRewardMultiplier = 2f;
+
+    protected virtual void Start() {
+        DayCreatureSpawnerManager_HordeMode.Instance.GenerateSpawnersForBlock(this);
+    }
 
     public float GetTotalSpacing() {
         return blockWidth + bridgeWidth;
@@ -123,7 +129,7 @@ public class HordeModeBlock : MonoBehaviour
         return blockTypeList.Contains(blockType);
     }
 
-    private void HandleAnimalBlock() {
+    protected void HandleAnimalBlock() {
         // Récupère toutes les valeurs de l'énum
         Array values = Enum.GetValues(typeof(AnimalSO.AnimalType));
         // Sélectionne une valeur aléatoire
@@ -151,7 +157,7 @@ public class HordeModeBlock : MonoBehaviour
 
     }
 
-    private void HandleResourceChestBlock() {
+    protected void HandleResourceChestBlock() {
         int rewardType = UnityEngine.Random.Range(1, 4);
         Chest.ChestType chestType = Chest.ChestType.orbChest;
         List< PlayerCurrencies.CurrencyType > currencyTypeToRewardList = new List<PlayerCurrencies.CurrencyType>();
@@ -216,7 +222,7 @@ public class HordeModeBlock : MonoBehaviour
 
     }
 
-    private void HandleWeaponChestBlock() {
+    protected void HandleWeaponChestBlock() {
         List<GunSO> gunTypesUnlocked = GetWeaponSOUnlockedAndNotCarriedByPlayerAndNotAssigned();
 
         if (gunTypesUnlocked.Count > 0) {
@@ -230,14 +236,14 @@ public class HordeModeBlock : MonoBehaviour
 
     }
 
-    private void HandleFastTravelTP() {
+    protected void HandleFastTravelTP() {
         fastTravelTPLocation.gameObject.SetActive(true);
         fastTravelTPLocation.UnlockStructureLocation();
         fastTravelTPLocation.SetAsWorldStructureLocation();
         fastTravelTPLocation.SetBought();
     }
 
-    private IEnumerator HandleFastTravelTPAfterFrames() {
+    protected IEnumerator HandleFastTravelTPAfterFrames() {
         yield return new WaitForSeconds(.1f);
         HandleFastTravelTP();
     }
@@ -255,7 +261,7 @@ public class HordeModeBlock : MonoBehaviour
         return gunsSOUnlockedList;
     }
 
-    private void HandleTrapChestBlock() {
+    protected void HandleTrapChestBlock() {
         List<TrapSO> trapTypesUnlocked = HordeModeProgressionManager.Instance.GetTrapUnlockedList();
 
         List<PlayerCurrencies.CurrencyType> rewardsList = new List<PlayerCurrencies.CurrencyType>();
@@ -271,19 +277,19 @@ public class HordeModeBlock : MonoBehaviour
         trapChest.SetChestParameters(Chest.ChestType.trapChest, rewardsList, rewardsListAmount);
     }
 
-    private IEnumerator HandleWeaponChestBlockAfterFrames() {
+    protected IEnumerator HandleWeaponChestBlockAfterFrames() {
         yield return new WaitForSeconds(.1f);
 
         HandleWeaponChestBlock();
     }
 
-    private IEnumerator HandleTrapChestBlockAfterFrames() {
+    protected IEnumerator HandleTrapChestBlockAfterFrames() {
         yield return new WaitForSeconds(.1f);
 
         HandleTrapChestBlock();
     }
 
-    private void SetSpawnersToCenterPosition() {
+    protected void SetSpawnersToCenterPosition() {
         Vector3 localCenterPosition = new Vector3(blockWidth / 2 * direction, 0, 0);
         animalSpawner.transform.localPosition = localCenterPosition;
         resourceChest.transform.localPosition = localCenterPosition;
@@ -309,6 +315,47 @@ public class HordeModeBlock : MonoBehaviour
 
     public void PlayerEnteredBlock() {
         HordeModeMapGenerationManager.Instance.PlayerEnteredBlock(this);
+    }
+
+    public virtual void GenerateCreatureSpawners(List<CreatureSO> selectedCreatures, List<int> spawnAmounts, List<int> eliteAmounts) {
+        foreach (var creatureIndex in System.Linq.Enumerable.Range(0, selectedCreatures.Count)) {
+
+            Vector3 randomPosition = GetRandomSpawnerPosition();
+
+            Debug.Log(this + " randomPosition " + randomPosition);
+            GameObject spawnerObj = Instantiate(dayCreatureSpawnerTemplate, randomPosition, Quaternion.identity, transform);
+            spawnerObj.SetActive(true);
+
+            DayCreatureSpawner spawner = spawnerObj.GetComponent<DayCreatureSpawner>();
+            float radius = UnityEngine.Random.Range(baseRadiusToRoam * 0.25f, baseRadiusToRoam * 2f);
+
+            spawner.InitializeDayCreatureSpawner(selectedCreatures[creatureIndex], spawnAmounts[creatureIndex], eliteAmounts[creatureIndex], radius);
+        }
+    }
+
+    private Vector3 GetRandomSpawnerPosition() {
+        // On garde le centre comme position de base
+        float halfWidth = blockWidth / 2f;
+
+        // Décalage horizontal max : on laisse 60% de marge à gauche et à droite
+        float margin = blockWidth * 0.2f;
+        float minX = halfWidth + margin;
+        float maxX = halfWidth - margin;
+
+        float randomX = UnityEngine.Random.Range(minX, maxX);
+
+        // Appliquer le facteur direction pour que ce soit dans le bon sens
+        randomX *= direction;
+
+        Vector3 spawnerPos = new Vector3(transform.position.x + randomX, .5f, 0f);
+
+        Debug.Log(this + " minX " + minX);
+        Debug.Log(this + " maxX " + maxX);
+        Debug.Log(this + " randomX " + randomX);
+        Debug.Log(this + " GetRandomSpawnerPosition " + spawnerPos + " transfor position " + transform.position);
+
+        // Z reste à 0 (2D)
+        return spawnerPos;
     }
 
     public BlockSize GetBlockSize() {

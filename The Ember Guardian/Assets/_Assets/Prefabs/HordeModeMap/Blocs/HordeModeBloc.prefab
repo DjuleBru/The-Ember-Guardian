@@ -164,7 +164,7 @@ Transform:
   m_GameObject: {fileID: 252132481441834517}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 70, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29710,8 +29710,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockSize: 0
   gridAndObstacleParent: {fileID: 2476172657005866335}
+  dayCreatureSpawnerTemplate: {fileID: 4365829439058176821, guid: 7ca951941019d6e47835fd6ee7549b0f, type: 3}
   blockWidth: 140
   bridgeWidth: 8
+  baseRadiusToRoam: 5
   animalSpawner: {fileID: 6183175546369759270}
   resourceChest: {fileID: 5411419317021548390}
   weaponChest: {fileID: 2206674870296133136}

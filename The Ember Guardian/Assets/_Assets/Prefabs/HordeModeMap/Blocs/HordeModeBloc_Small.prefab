@@ -13695,10 +13695,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 32.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2476172657005866335, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
+    - target: {fileID: 2514629027269162574, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+      propertyPath: propsPrefab_VG.Array.size
+      value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2514629027269162574, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+      propertyPath: propsPrefab_VG.Array.data[0]
+      value: 
+      objectReference: {fileID: 1924166239068103373, guid: c63ae3fe02e9c3a45b49dbd287922023, type: 3}
+    - target: {fileID: 2514629027269162574, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+      propertyPath: propsPrefab_VG.Array.data[1]
+      value: 
+      objectReference: {fileID: 1880282225154593597, guid: 0f74e7f59dc45e94f878c54415ae2c80, type: 3}
+    - target: {fileID: 2514629027269162574, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+      propertyPath: propsPrefab_VG.Array.data[2]
+      value: 
+      objectReference: {fileID: 360217477536993819, guid: 176e49695bd31d64eb1a0d3eee155a9c, type: 3}
     - target: {fileID: 2924720040139127369, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
       propertyPath: blockSize
       value: 2

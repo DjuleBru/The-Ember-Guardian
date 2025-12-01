@@ -48,7 +48,6 @@ public class HordeModeBlockVisuals : MonoBehaviour
     }
 
     private void ApplyDecor(LevelSO.LevelEnvironment env) {
-        return;
         List<GameObject> propsList = new List<GameObject>();
 
         if (env == LevelSO.LevelEnvironment.TheVerdantGraveyard) {
@@ -68,9 +67,9 @@ public class HordeModeBlockVisuals : MonoBehaviour
 
         Instantiate(prop, propsParent.transform.position, Quaternion.identity, propsParent);
 
-        if(transform.position.x < 0) {
-            Vector3 scale = new Vector3(-1, 1, 1);
-            prop.transform.localScale = scale;
-        }
+        //if(transform.position.x <= 0) {
+        //    Vector3 scale = new Vector3(-1, 1, 1);
+        //    propsParent.transform.localScale = scale;
+        //}
     }
 }

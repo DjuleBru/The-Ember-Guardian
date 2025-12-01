@@ -218,15 +218,20 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
             }
             else {
                 // On utilise la logique far mais sur un seul bloc
-                BlockType[] farAll = {
+
+                List<BlockType> farAll = new List<BlockType>() {
                     BlockType.Animals,
-                    BlockType.Scavengables,
                     BlockType.ResourceChest,
-                    BlockType.Mine,
                     BlockType.CombatOnly,
                     BlockType.None
                 };
-                single.AddBlockType(farAll[Random.Range(0, farAll.Length)]);
+
+                if (HordeModeProgressionManager.Instance.GetStructureUnlocked(StructureSO.StructureType.minerShrine)) {
+                    farAll.Add(BlockType.Scavengables);
+                    farAll.Add(BlockType.Mine);
+                }
+
+                SetRandomBlockType(single, farAll);
             }
         }
 

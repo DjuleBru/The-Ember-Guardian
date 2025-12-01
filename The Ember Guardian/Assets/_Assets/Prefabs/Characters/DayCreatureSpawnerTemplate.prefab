@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 852f0f8b3e2f15f4eb0de8a1c1dcbd63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnerID: 3ea83fd8-fde9-4a12-a4b7-3f25deffa29b
   sceneViewSpawnerSpriteRenderer: {fileID: 0}
   mobPrefab: {fileID: 0}
   spawnPositionList:
@@ -58,4 +59,5 @@ MonoBehaviour:
   canSpawnEliteCreatures: 0
   eliteSpawnProbability: 0
   eliteSpawnAmount: 0
+  flying_SpawnAtSpawnPosition: 0
   linkedMobSpawner: {fileID: 0}
