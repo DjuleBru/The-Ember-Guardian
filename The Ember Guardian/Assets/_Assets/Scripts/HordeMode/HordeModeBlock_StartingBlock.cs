@@ -13,10 +13,19 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
     [SerializeField] private List<Transform> scavengablePositionsList_Right;
     [SerializeField] private List<Transform> creatureSpawnerPositions;
 
+    [SerializeField] private WorkerSpawner workerSpawnerLeft_VG;
+    [SerializeField] private WorkerSpawner workerSpawnerRight_VG;
+    [SerializeField] private WorkerSpawner workerSpawnerLeft_CC;
+    [SerializeField] private WorkerSpawner workerSpawnerRight_CC;
+    [SerializeField] private WorkerSpawner workerSpawnerLeft_LH;
+    [SerializeField] private WorkerSpawner workerSpawnerRight_LH;
+    [SerializeField] private WorkerSpawner workerSpawnerLeft_FD;
+    [SerializeField] private WorkerSpawner workerSpawnerRight_FD;
+
     protected override void Start() {
-        Debug.Log(" HordeModeBlock_StartingBlock Start");
         base.Start();
         HandleCentralBlockResources();
+        HandleCentralBlockWorkerSpawners();
     }
 
     protected void HandleCentralBlockResources() {
@@ -52,6 +61,47 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         if (randomValue <= .25) {
             // Only scavengables
             HandleScavengablesCentralBlock(3, true, randomDirValue);
+        }
+    }
+
+    private void HandleCentralBlockWorkerSpawners() {
+        LevelSO.LevelEnvironment env = HordeModeCustomizationManager.Instance.GetSelectedEnvironment();
+
+        workerSpawnerLeft_VG.gameObject.SetActive(false);
+        workerSpawnerRight_VG.gameObject.SetActive(false);
+
+        workerSpawnerLeft_CC.gameObject.SetActive(false);
+        workerSpawnerRight_CC.gameObject.SetActive(false);
+
+        workerSpawnerLeft_LH.gameObject.SetActive(false);
+        workerSpawnerRight_LH.gameObject.SetActive(false);
+
+        workerSpawnerLeft_FD.gameObject.SetActive(false);
+        workerSpawnerRight_FD.gameObject.SetActive(false);
+
+        if (env == LevelSO.LevelEnvironment.CorruptedCity) {
+            workerSpawnerLeft_CC.gameObject.SetActive(true);
+            workerSpawnerRight_CC.gameObject.SetActive(true);
+            workerSpawnerLeft_CC.SpawnMobs(2);
+            workerSpawnerRight_CC.SpawnMobs(2);
+        }
+        if (env == LevelSO.LevelEnvironment.TheVerdantGraveyard) {
+            workerSpawnerLeft_VG.gameObject.SetActive(true);
+            workerSpawnerRight_VG.gameObject.SetActive(true);
+            workerSpawnerLeft_VG.SpawnMobs(2);
+            workerSpawnerRight_VG.SpawnMobs(2);
+        }
+        if (env == LevelSO.LevelEnvironment.TheLumenHollow) {
+            workerSpawnerLeft_LH.gameObject.SetActive(true);
+            workerSpawnerRight_LH.gameObject.SetActive(true);
+            workerSpawnerLeft_LH.SpawnMobs(2);
+            workerSpawnerRight_LH.SpawnMobs(2);
+        }
+        if (env == LevelSO.LevelEnvironment.TheFracturedDistrict) {
+            workerSpawnerLeft_FD.gameObject.SetActive(true);
+            workerSpawnerRight_FD.gameObject.SetActive(true);
+            workerSpawnerLeft_FD.SpawnMobs(2);
+            workerSpawnerRight_FD.SpawnMobs(2);
         }
     }
 

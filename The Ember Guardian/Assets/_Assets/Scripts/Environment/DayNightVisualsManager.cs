@@ -44,6 +44,7 @@ public class DayNightVisualsManager : MonoBehaviour
     [SerializeField] private bool showIncomingWaveDifficultyOnSun;
     [SerializeField] private Color sunEasyIncomingWaveColor;
     [SerializeField] private Color sunHardIncomingWaveColor;
+    private Color sunNormalColor;
     [SerializeField] private AnimationCurve sunColorEasyToHardAnimationCurve;
 
     private float nightDawnTransitionAnimationCurveFraction = .05f;
@@ -81,6 +82,9 @@ public class DayNightVisualsManager : MonoBehaviour
     private bool dayStarted;
     private bool nightStarted;
     private bool duskStarted;
+
+    private bool peacefulWave;
+    private bool extremeWave;
 
     #region SET PARAMETERS
 
@@ -134,6 +138,15 @@ public class DayNightVisualsManager : MonoBehaviour
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
 
         CreaturesSpawnManager.Instance.OnRemainingNightCreaturesChanged += CreaturesSpawnManager_OnRemainingNightCreaturesChanged;
+
+        if(CreaturesSpawnManager.Instance != null ) {
+            if(CreaturesSpawnManager.Instance is CreaturesSpawnManager_HordeMode) {
+                CreaturesSpawnManager_HordeMode hordeModeCreaturesSpawnManager = CreaturesSpawnManager.Instance as CreaturesSpawnManager_HordeMode;
+                hordeModeCreaturesSpawnManager.OnExtremeWavePrepared += HodeModeCreaturesSpawnManager_OnExtremeWavePrepared;
+                hordeModeCreaturesSpawnManager.OnPeacefulWavePrepared += HordeModeCreaturesSpawnManager_OnPeacefulWavePrepared;
+            }
+        }
+        sunNormalColor = sunLight2D.color;
 
         globalLight2D.color = dawnLightColor;
         skySpriteRenderer.color = dawnSkyColor;
@@ -410,6 +423,17 @@ public class DayNightVisualsManager : MonoBehaviour
         if (showIncomingWaveDifficultyOnSun) {
             RefreshSunColorBasedOnDifficulty(.1f);
             RefreshMoonColorBasedOnDifficulty(3f);
+        } else {
+            if(!peacefulWave && !extremeWave) {
+                sunLight2D.color = sunNormalColor;
+                sunLight2D.intensity /= 2;
+            }
+            if(peacefulWave) {
+                peacefulWave = false;
+            }
+            if (extremeWave) {
+                extremeWave = false;
+            }
         }
     }
 
@@ -511,6 +535,23 @@ public class DayNightVisualsManager : MonoBehaviour
         Color sunColor = Color.Lerp(sunEasyIncomingWaveColor, sunHardIncomingWaveColor, curvedRatio);
 
         moonLight2D.color = sunColor;
+    }
+
+
+    private void HordeModeCreaturesSpawnManager_OnPeacefulWavePrepared(object sender, System.EventArgs e) {
+        Debug.Log("HordeModeCreaturesSpawnManager_OnPeacefulWavePrepared");
+        Color sunColor = sunEasyIncomingWaveColor;
+        sunLight2D.color = sunColor;
+        sunLight2D.intensity *= 2;
+        peacefulWave = true;
+    }
+
+    private void HodeModeCreaturesSpawnManager_OnExtremeWavePrepared(object sender, System.EventArgs e) {
+        Debug.Log("HodeModeCreaturesSpawnManager_OnExtremeWavePrepared");
+        Color sunColor = sunHardIncomingWaveColor;
+        sunLight2D.color = sunColor;
+        sunLight2D.intensity *= 2;
+        extremeWave = true;
     }
 
     public void SetInCave(bool inCave) {

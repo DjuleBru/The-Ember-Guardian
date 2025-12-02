@@ -13696,9 +13696,25 @@ PrefabInstance:
       value: 32.5
       objectReference: {fileID: 0}
     - target: {fileID: 2514629027269162574, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+      propertyPath: propsPrefab_LH.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2514629027269162574, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
       propertyPath: propsPrefab_VG.Array.size
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 2514629027269162574, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+      propertyPath: propsPrefab_LH.Array.data[0]
+      value: 
+      objectReference: {fileID: 7700018429203557299, guid: e0ad02d3371d5d942b3a2f681bca1faf, type: 3}
+    - target: {fileID: 2514629027269162574, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+      propertyPath: propsPrefab_LH.Array.data[1]
+      value: 
+      objectReference: {fileID: 6280161325623258876, guid: e2a50b42aca075640a4d6cc550fa0cbd, type: 3}
+    - target: {fileID: 2514629027269162574, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+      propertyPath: propsPrefab_LH.Array.data[2]
+      value: 
+      objectReference: {fileID: 9149762641383156016, guid: c78571c94d592f4489f55e9191ad0275, type: 3}
     - target: {fileID: 2514629027269162574, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
       propertyPath: propsPrefab_VG.Array.data[0]
       value: 
@@ -26470,6 +26486,10 @@ PrefabInstance:
     - target: {fileID: 5814848559513954675, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
       propertyPath: m_Tiles.Array.data[1109].second.m_TileSpriteIndex
       value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 6140484677851610238, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.5
       objectReference: {fileID: 0}
     - target: {fileID: 6605090990228119299, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
       propertyPath: m_LocalPosition.x

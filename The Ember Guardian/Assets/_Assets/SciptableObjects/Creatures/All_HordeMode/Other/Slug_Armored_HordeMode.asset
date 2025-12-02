@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
+  m_Name: Slug_Armored_HordeMode
+  m_EditorClassIdentifier: 
+  enemyName: Slug
+  isBoss: 0
+  appearTwiceOnSecondPhase: 0
+  description: Basic, slightly tanky, slow creature.
+  creatureIcon: {fileID: 21300000, guid: 2a50914d3dd6b944d8ac6ce6e8bf7172, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 82666032c522deb48810ea221fc7f442, type: 3}
+  creaturePrefab: {fileID: 2465624883499499618, guid: bfbf46dd56d7d5f45beaccb10b6690a2, type: 3}
+  mass: 10
+  detectionRange_Day: 12
+  detectionRange_Night: 10
+  primaryAttackSO: {fileID: 11400000, guid: 0cc98a40e4ccc2944865096505f21d40, type: 2}
+  hasRangedAndMeleeAttack: 0
+  secondaryAttackSO: {fileID: 0}
+  specialAttackSO: {fileID: 0}
+  flying: 0
+  canFlank: 0
+  flightMinAltitude: 0
+  flightMaxAltitude: 0
+  flightAltitudeRandomizer: 0
+  minRepositionDistanceToPlayer: 0
+  maxRepositionDistanceToPlayer: 8
+  dayMoveSpeed: 1.9
+  nightMoveSpeed: 2.5
+  aggroMoveSpeedBuff: 1.5
+  enteredLightMoveSpeedDebuff: 1.5
+  moveSpeedRandomizerDelta: 0.2
+  maxHealth: 25
+  enteredLightattackRateDebuff: 2.5
+  nightSpawnYPosition: 2
+  probabilityToAggroOnGunShot: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
+  immuneToFire: 0
+  hasCustomSpawnAnimation: 0
+  spawnAnimationDuration: 1
+  baseMovementAnimationSpeed: 0.5
+  workerTargetingPriority: 1
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 2
+  fireTargetingPriority: 2147483647
+  probabilityToDropOrb: 0.5
+  currencyTypeDroppedList: 03000000
+  currencyDropAmountList: 01000000
+  difficulty: 3
+  initialWaveSpawn: 1
+  spawnProbability: 0.8
+  maxCreaturesPerPacket: 8
+  maxCreaturesPerPacket_Day: 8
+  dieAudioClips:
+  - {fileID: 8300000, guid: 2a3446bc08c9f6a4595d9866b94523bb, type: 3}
+  - {fileID: 8300000, guid: cdd869efb1b2e0c42b7745dc889baf63, type: 3}
+  - {fileID: 8300000, guid: 8da1f384e8bb1d14bb892c5479f906e5, type: 3}
+  - {fileID: 8300000, guid: 19fd99e0681d27a45882321d1040c18e, type: 3}
+  - {fileID: 8300000, guid: 891be6df791ce064990b3cbb90a21447, type: 3}
+  dieVolumeMultiplier: 0.75
+  aggroAudioClips:
+  - {fileID: 8300000, guid: f9806935ce84d5448b45d1681abcfe70, type: 3}
+  - {fileID: 8300000, guid: 2f27418f225c51a43a3bf5c4f4366b11, type: 3}
+  - {fileID: 8300000, guid: b02d594d524fe8749b86809fee6fb13a, type: 3}
+  - {fileID: 8300000, guid: aa119a0d5d1e2024b986751eb83c5bcc, type: 3}
+  - {fileID: 8300000, guid: 809528988742ad64b8f99e042bd4b73c, type: 3}
+  aggroVolumeMultiplier: 0.8
+  idleAudioClips:
+  - {fileID: 8300000, guid: 73b7fa99320c9c44a969b00d9d3385e8, type: 3}
+  - {fileID: 8300000, guid: 3bf53ca8960505842a27c4a7c75070f7, type: 3}
+  - {fileID: 8300000, guid: 68cc028edf2ea834b9a192e9fe5b328a, type: 3}
+  - {fileID: 8300000, guid: 66e96778057466945b04644bb726dd8d, type: 3}
+  - {fileID: 8300000, guid: f3ef08d9e0796fd49855cb62721d1e1b, type: 3}
+  - {fileID: 8300000, guid: 7932b8053c7b4de4fbea3b6b636e5b8e, type: 3}
+  - {fileID: 8300000, guid: c28cc561c7bdfdd4f9002d6e1374179f, type: 3}
+  idleVolumeMultiplier: 0.5
+  footStepAudioClips:
+  - {fileID: 8300000, guid: f73d93a07c3e63e478608409b8d7ce79, type: 3}
+  - {fileID: 8300000, guid: 313d9cd0a9c2610409e9a780a27f3b42, type: 3}
+  - {fileID: 8300000, guid: aacbc32ef30595d4fa1236902a2233ee, type: 3}
+  - {fileID: 8300000, guid: 55cfe681cc8d3384ba6740d63bcd18c0, type: 3}
+  - {fileID: 8300000, guid: f9b6477d548797e4dbcbeb7681417a59, type: 3}
+  - {fileID: 8300000, guid: 983a729b9289cc24faa06871d3f9fff3, type: 3}
+  - {fileID: 8300000, guid: 3be3a8086892bfa478d06967bf72facb, type: 3}
+  - {fileID: 8300000, guid: 772c7b7acba30af4ca37799c6eb2355b, type: 3}
+  footstepVolumeMultiplier: 0.5
+  hasContinousAudioClip: 0
+  continuousAudioClip: []
+  hasContinousMovementAudioClip: 0
+  continuousMovementAudioClip: []
+  spawnAudioClips:
+  - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
+  - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
+  - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
+  spawnVolumeMultiplier: 0.75
+  bulletHitAudioClips:
+  - {fileID: 8300000, guid: e8255e52a3feba8469d4d680886ef8b4, type: 3}
+  - {fileID: 8300000, guid: 4c26275d855a282479dc097f844a2362, type: 3}
+  - {fileID: 8300000, guid: c4e78cc3486c66e41a044c0b0a2ae9d7, type: 3}
+  - {fileID: 8300000, guid: c7ead20edc468e24a86195f640218010, type: 3}
+  - {fileID: 8300000, guid: b08f5ac8a197e76408abf125f5ea7870, type: 3}
+  - {fileID: 8300000, guid: 6615caae1c691bd4e92666d2d32f4408, type: 3}
+  bulletHitVolumeMultiplier: 0.5

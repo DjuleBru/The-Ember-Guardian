@@ -13,6 +13,7 @@ public enum BlockType {
     TrapChest,
     Shop,
     FastTravelTP,
+    WorkerSpawner,
     None,
 }
 
@@ -52,7 +53,7 @@ public class HordeModeBlock : MonoBehaviour
     protected float largeBlockSizeRewardMultiplier = 2f;
 
     protected virtual void Start() {
-        DayCreatureSpawnerManager_HordeMode.Instance.GenerateSpawnersForBlock(this);
+        DayCreatureSpawnerManager_HordeMode.Instance.StartGeneratingSpawners(this);
     }
 
     public float GetTotalSpacing() {
@@ -122,6 +123,10 @@ public class HordeModeBlock : MonoBehaviour
             if (!HasBlockType(BlockType.FastTravelTP)) {
                 fastTravelTPLocation.gameObject.SetActive(false);
             }
+        }
+
+        if (blockType == BlockType.WorkerSpawner) {
+            GetComponent<HordeModeBlockWorkers>().SetBlockAsWorkerSpawner();
         }
     }
 
@@ -348,11 +353,6 @@ public class HordeModeBlock : MonoBehaviour
         randomX *= direction;
 
         Vector3 spawnerPos = new Vector3(transform.position.x + randomX, .5f, 0f);
-
-        Debug.Log(this + " minX " + minX);
-        Debug.Log(this + " maxX " + maxX);
-        Debug.Log(this + " randomX " + randomX);
-        Debug.Log(this + " GetRandomSpawnerPosition " + spawnerPos + " transfor position " + transform.position);
 
         // Z reste à 0 (2D)
         return spawnerPos;

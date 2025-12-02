@@ -195,6 +195,10 @@ public class CreatureSO : ScriptableObject
     [LabelWidth(200)]
     [Range(0, 15)]
     public int maxCreaturesPerPacket;
+    [BoxGroup("Wave Stats")]
+    [LabelWidth(200)]
+    [Range(0, 30)]
+    public int maxCreaturesPerPacket_Day;
 
 
     [BoxGroup("SFX")]

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,12 @@ public class DayCreatureSpawnerManager_HordeMode : MonoBehaviour {
     [SerializeField] private List<CreatureSO> creaturesSOList_LH;
     [SerializeField] private List<CreatureSO> creaturesSOList_FD;
 
+    [SerializeField] private List<CreatureSO> fallbackCreaturesSOList;
+    [SerializeField] private List<CreatureSO> fallbackCreaturesSOList_VG;
+    [SerializeField] private List<CreatureSO> fallbackCreaturesSOList_CC;
+    [SerializeField] private List<CreatureSO> fallbackCreaturesSOList_LH;
+    [SerializeField] private List<CreatureSO> fallbackCreaturesSOList_FD;
+
     private int baseDifficulty = 50;
 
     private List<CreatureSO> dayCreatures;
@@ -23,55 +30,77 @@ public class DayCreatureSpawnerManager_HordeMode : MonoBehaviour {
 
     private void Start() {
         dayCreatures = GetEnvironmentCreatureSOList(HordeModeCustomizationManager.Instance.GetSelectedEnvironment());
-
-        baseDifficulty *= Mathf.RoundToInt(GetEnvironmentDifficultyMultiplier(HordeModeCustomizationManager.Instance.GetSelectedEnvironment()));
+        fallbackCreaturesSOList = GetEnvironmentFallbackCreatureSOList(HordeModeCustomizationManager.Instance.GetSelectedEnvironment());
     }
 
-    public void GenerateSpawnersForBlock(HordeModeBlock block) {
+    private void GenerateSpawnersForBlock(HordeModeBlock block) {
         if (block == null) return;
 
-        // Déterminer la difficulté du bloc
         float difficultyMultiplier = GetDifficultyMultiplier(block);
-        int blockDifficulty = Mathf.CeilToInt(difficultyMultiplier * baseDifficulty); // Ajustable selon ton système
+        int blockDifficulty = Mathf.CeilToInt(difficultyMultiplier * baseDifficulty);
 
         BlockSize size = block.GetBlockSize();
-        // Déterminer combien de types de créatures sur ce bloc
-        int numCreatureTypes = Random.Range(GetMinCreatureAmountPerBlockSize(size), GetMaxCreatureAmountPerBlockSize(size)+1);
+        int numCreatureTypes = Random.Range(GetMinCreatureAmountPerBlockSize(size), GetMaxCreatureAmountPerBlockSize(size) + 1);
 
-        // Mélanger la liste des créatures
-        List<CreatureSO> availableCreatures = new List<CreatureSO>(dayCreatures);
-        Shuffle(availableCreatures);
+        // Sélection des types
+        List<CreatureSO> selected = new List<CreatureSO>(dayCreatures);
+        Shuffle(selected);
+        if (numCreatureTypes > selected.Count) numCreatureTypes = selected.Count;
+        selected = selected.GetRange(0, numCreatureTypes);
 
-        List<CreatureSO> selectedCreatures = availableCreatures.GetRange(0, numCreatureTypes);
+        List<CreatureSO> finalCreatureList = new List<CreatureSO>();
+        List<int> finalSpawnAmounts = new List<int>();
+        List<int> finalEliteAmounts = new List<int>();
 
-        // Répartir le nombre de créatures entre les types
         int remainingDifficulty = blockDifficulty;
-        List<int> spawnAmounts = new List<int>();
-        List<int> eliteAmounts = new List<int>();
 
-        for (int i = 0; i < selectedCreatures.Count; i++) {
-            int amount = Random.Range(1, remainingDifficulty + 1);
-            if (i == selectedCreatures.Count - 1)
-                amount = remainingDifficulty; // tout ce qui reste sur le dernier
+        foreach (CreatureSO type in selected) {
+            if (remainingDifficulty <= 0) break;
 
-            remainingDifficulty -= amount;
+            int maxPacket = Mathf.Max(1, type.maxCreaturesPerPacket_Day);
+            int spawnAmount = Mathf.FloorToInt(remainingDifficulty / type.difficulty);
 
-            int spawnAmount = Mathf.Max(1, Mathf.FloorToInt(amount / selectedCreatures[i].difficulty));
+            if (spawnAmount > maxPacket)
+                spawnAmount = maxPacket;
 
-            bool hasElite = UnityEngine.Random.value > .1f;
-            int eliteAmount = 0;
-            if (hasElite) {
-                eliteAmount = Mathf.FloorToInt(spawnAmount * 0.2f); // 10/20% élites si elite sélectionné (hasElite 10%)
+            if (spawnAmount > 0) {
+                finalCreatureList.Add(type);
+                finalSpawnAmounts.Add(spawnAmount);
+                finalEliteAmounts.Add(Mathf.FloorToInt(spawnAmount * 0.2f));
+                remainingDifficulty -= spawnAmount * type.difficulty;
             }
-
-            spawnAmounts.Add(spawnAmount);
-            eliteAmounts.Add(eliteAmount);
         }
 
-        Debug.Log(block + " baseDifficulty " + blockDifficulty);
+        // ---- COMPENSATION AVEC FALLBACK ----
+        if (remainingDifficulty > 0) {
+            Shuffle(fallbackCreaturesSOList);
 
-        // Générer les spawners dynamiquement
-        block.GenerateCreatureSpawners(selectedCreatures, spawnAmounts, eliteAmounts);
+            foreach (CreatureSO fb in fallbackCreaturesSOList) {
+                if (remainingDifficulty <= 0) break;
+
+                int spawnAmount = Mathf.FloorToInt(remainingDifficulty / fb.difficulty);
+
+                if (spawnAmount <= 0)
+                    continue;
+
+                finalCreatureList.Add(fb);
+                finalSpawnAmounts.Add(spawnAmount);
+                finalEliteAmounts.Add(Mathf.FloorToInt(spawnAmount * 0.2f));
+
+                remainingDifficulty -= spawnAmount * fb.difficulty;
+            }
+        }
+
+        block.GenerateCreatureSpawners(finalCreatureList, finalSpawnAmounts, finalEliteAmounts);
+    }
+
+    public void StartGeneratingSpawners(HordeModeBlock block) {
+        StartCoroutine(GenerateSpawnersForBlockAfterFrame(block));
+    }
+
+    private IEnumerator GenerateSpawnersForBlockAfterFrame(HordeModeBlock block) {
+        yield return new WaitForEndOfFrame();
+        GenerateSpawnersForBlock(block);
     }
 
     public float GetDifficultyMultiplier(HordeModeBlock block) {
@@ -123,19 +152,18 @@ public class DayCreatureSpawnerManager_HordeMode : MonoBehaviour {
         return creaturesSOList_VG;
     }
 
-    public float GetEnvironmentDifficultyMultiplier(LevelSO.LevelEnvironment env) {
+    public List<CreatureSO> GetEnvironmentFallbackCreatureSOList(LevelSO.LevelEnvironment env) {
         if (env == LevelSO.LevelEnvironment.CorruptedCity) {
-            return 1.33f;
+            return fallbackCreaturesSOList_CC;
         }
         if (env == LevelSO.LevelEnvironment.TheLumenHollow) {
-            return 1.66f;
+            return fallbackCreaturesSOList_LH;
         }
         if (env == LevelSO.LevelEnvironment.TheFracturedDistrict) {
-            return 2f;
+            return fallbackCreaturesSOList_FD;
         }
-        return 1;
+        return fallbackCreaturesSOList_VG;
     }
-
 
     public int GetMinCreatureAmountPerBlockSize(BlockSize size) {
         switch (size) {

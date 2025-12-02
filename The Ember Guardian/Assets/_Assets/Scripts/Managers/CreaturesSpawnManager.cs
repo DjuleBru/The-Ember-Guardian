@@ -20,21 +20,21 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
     }
 
-    private List<SpecialWaveType> specialWaveTypesInLevel;
-    private float specialWaveProbability;
-    private int maxSpecialWaveAmount;
-    private int currentSpecialWaveAmount;
-    private bool hasSpecialWaveTypes;
+    protected List<SpecialWaveType> specialWaveTypesInLevel;
+    protected float specialWaveProbability;
+    protected int maxSpecialWaveAmount;
+    protected int currentSpecialWaveAmount;
+    protected bool hasSpecialWaveTypes;
     public enum SpecialWaveType {
         none,
         crawlers,
         flying,
         ghouls,
     }
-    [SerializeField] private Transform nightCreaturesTransformParent;
-    [SerializeField] private CreatureSO crawlerCreature;
-    [SerializeField] private CreatureSO ghoulCreature;
-    private SpecialWaveType currentSpecialWaveType = SpecialWaveType.none;
+    [SerializeField] protected Transform nightCreaturesTransformParent;
+    [SerializeField] protected CreatureSO crawlerCreature;
+    [SerializeField] protected CreatureSO ghoulCreature;
+    protected SpecialWaveType currentSpecialWaveType = SpecialWaveType.none;
 
     public event EventHandler OnNightWaveDifficultyChanged;
     public event EventHandler<OnRemainingNightCreaturesChangedEventArgs> OnRemainingNightCreaturesChanged;
@@ -42,80 +42,80 @@ public class CreaturesSpawnManager : MonoBehaviour {
         public float remainingNightCreaturesNormalized;
     }
 
-    private Dictionary<int, List<SpawnedCreatureInfo>> waveCreaturesDictionary = new Dictionary<int, List<SpawnedCreatureInfo>>();
-    private Dictionary<CreatureSO, Queue<Creature>> creaturePools = new Dictionary<CreatureSO, Queue<Creature>>();
+    protected Dictionary<int, List<SpawnedCreatureInfo>> waveCreaturesDictionary = new Dictionary<int, List<SpawnedCreatureInfo>>();
+    protected Dictionary<CreatureSO, Queue<Creature>> creaturePools = new Dictionary<CreatureSO, Queue<Creature>>();
 
     public enum SpawnSide { Left, Right };
-    private float spawnDistanceToPlayerOrCamp = 40f;
+    protected float spawnDistanceToPlayerOrCamp = 40f;
 
-    private List<CreatureSO> creatureTypes;
+    protected List<CreatureSO> creatureTypes;
 
-    [SerializeField] private List<AnimationCurve> subWaveDifficultyCurveList;
+    [SerializeField] protected List<AnimationCurve> subWaveDifficultyCurveList;
 
-    [SerializeField] private AnimationCurve difficultyAnimationCurve;
-    private bool setDifficultyAnimationCurve;
-    private int difficultyAtMaxWave;
-    private int minDifficultyAtMaxWave;
-    private int maxDifficultyAtMaxWave;
-    private int maxWavesInAnimationCurve;
-    private float cumulativeDifficultyMultiplier = 1f;
+    [SerializeField] protected AnimationCurve difficultyAnimationCurve;
+    protected bool setDifficultyAnimationCurve;
+    protected int difficultyAtMaxWave;
+    protected int minDifficultyAtMaxWave;
+    protected int maxDifficultyAtMaxWave;
+    protected int maxWavesInAnimationCurve;
+    protected float cumulativeDifficultyMultiplier = 1f;
 
-    private bool hasBoss;
-    private bool bossSpawnsThisNight;
-    private CreatureSO bossCreatureType;
-    private List<int> bossNightsSpawns;
+    protected bool hasBoss;
+    protected bool bossSpawnsThisNight;
+    protected CreatureSO bossCreatureType;
+    protected List<int> bossNightsSpawns;
 
-    private int totalNightCreatures;
-    private int remainingNightCreatures;
-    private int totalNightCreatureHP;
-    private int remainingNightCreaturesHP;
-    private int remainingSubWaveCreatures;
-    private int maxRemainingSubWaveCreaturesForNextSubwave = 2;
+    protected int totalNightCreatures;
+    protected int remainingNightCreatures;
+    protected int totalNightCreatureHP;
+    protected int remainingNightCreaturesHP;
+    protected int remainingSubWaveCreatures;
+    protected int maxRemainingSubWaveCreaturesForNextSubwave = 2;
 
-    private int startWaveToSpawnFromBothSides;
-    private int baseDifficulty;
-    private float growthFactor;
-    private float minMaxSubwaveDifficultyGrowthFactor;
+    protected int startWaveToSpawnFromBothSides;
+    protected int baseDifficulty;
+    protected float growthFactor;
+    protected float minMaxSubwaveDifficultyGrowthFactor;
 
-    private bool spawnEquallyFromBothSides;
-    private bool canSpawnElite;
-    private float eliteSpawnProbability = .05f;
-    private float bossNightWaveDifficultyMultiplier;
+    protected bool spawnEquallyFromBothSides;
+    protected bool canSpawnElite;
+    protected float eliteSpawnProbability = .05f;
+    protected float bossNightWaveDifficultyMultiplier;
 
-    [SerializeField] private float referenceWaveInitialDifficulty;
-    [SerializeField] private float referenceWaveGrowthFactor;
+    [SerializeField] protected float referenceWaveInitialDifficulty;
+    [SerializeField] protected float referenceWaveGrowthFactor;
 
-    private float referenceWaveDifficulty;
-    private float waveDifficulty;
-    private float minSubwaveDifficulty_min;
-    private float minSubwaveDifficulty_max;
-    private float minSubwaveDifficulty;
-    private float maxSubwaveDifficulty_min;
-    private float maxSubwaveDifficulty_max;
-    private float maxSubwaveDifficulty;
-    private float waveDifficultyLeftProportion;
-    private float waveDifficultyRightProportion;
+    protected float referenceWaveDifficulty;
+    protected float waveDifficulty;
+    protected float minSubwaveDifficulty_min;
+    protected float minSubwaveDifficulty_max;
+    protected float minSubwaveDifficulty;
+    protected float maxSubwaveDifficulty_min;
+    protected float maxSubwaveDifficulty_max;
+    protected float maxSubwaveDifficulty;
+    protected float waveDifficultyLeftProportion;
+    protected float waveDifficultyRightProportion;
 
-    private int typicalLevelDaysToComplete;
-    private float maxWaveDifficulty;
-    private float maxReferenceWaveDifficulty;
+    protected int typicalLevelDaysToComplete;
+    protected float maxWaveDifficulty;
+    protected float maxReferenceWaveDifficulty;
 
-    private float minLevelXPosition;
-    private float maxLevelXPosition;
+    protected float minLevelXPosition;
+    protected float maxLevelXPosition;
 
-    [SerializeField] private int debugInitialWaveNumber;
-    private int currentWaveNumber;
-    private int subWaveNumber;
-    private int subWaveIndex;
+    [SerializeField] protected int debugInitialWaveNumber;
+    protected int currentWaveNumber;
+    protected int subWaveNumber;
+    protected int subWaveIndex;
 
-    private bool debugInputs;
-    private bool debugDontSpawnAtNight;
+    protected bool debugInputs;
+    protected bool debugDontSpawnAtNight;
 
-    private float easyDifficultyNightWaveMultiplier = 0.8f;
-    private float hardDifficultyNightWaveMultiplier = 1.1f;
-    private float currentNightWaveDifficultyMultiplier = 1f;
+    protected float easyDifficultyNightWaveMultiplier = 0.8f;
+    protected float hardDifficultyNightWaveMultiplier = 1.1f;
+    protected float currentNightWaveDifficultyMultiplier = 1f;
 
-    private void Awake() {
+    protected virtual void Awake() {
         Instance = this;
 
         if (debugInitialWaveNumber != 0) {
@@ -159,7 +159,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         canSpawnElite = levelSO.canSpawnElite;
     }
 
-    private void Start() {
+    protected virtual void Start() {
         minLevelXPosition = LevelManager.Instance.GetMinLevelLimit();
         maxLevelXPosition = LevelManager.Instance.GetMaxLevelLimit();
 
@@ -180,10 +180,10 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
     }
 
-    private void SettingsManager_OnDifficultyChanged(object sender, EventArgs e) {
+    protected void SettingsManager_OnDifficultyChanged(object sender, EventArgs e) {
         RefreshDifficultyMultiplier();
     }
-    private void RefreshDifficultyMultiplier() {
+    protected void RefreshDifficultyMultiplier() {
         if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
             currentNightWaveDifficultyMultiplier = easyDifficultyNightWaveMultiplier;
         }
@@ -192,12 +192,12 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
     }
 
-    private void LevelManager_OnLevelLimitsChanged(object sender, EventArgs e) {
+    protected void LevelManager_OnLevelLimitsChanged(object sender, EventArgs e) {
         minLevelXPosition = LevelManager.Instance.GetMinLevelLimit();
         maxLevelXPosition = LevelManager.Instance.GetMaxLevelLimit();
     }
 
-    private void CreaturesManager_OnAdditionalCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
+    protected void CreaturesManager_OnAdditionalCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
         // Coming from creature spawners like Summoner
         remainingNightCreatures++;
         totalNightCreatures++;
@@ -209,7 +209,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         });
     }
 
-    private void CreaturesManager_OnCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
+    protected void CreaturesManager_OnCreatureAtNightSpawned(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
         float remainingNightCreaturesHealthNormalized = (float)remainingNightCreaturesHP / (float)totalNightCreatureHP;
         float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
 
@@ -218,7 +218,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         });
     }
 
-    private void CreaturesManager_OnCreatureAtNightKilled(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
+    protected void CreaturesManager_OnCreatureAtNightKilled(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
         remainingNightCreaturesHP -= e.creature.GetCreatureSO().maxHealth;
         remainingNightCreatures--;
         //Debug.Log("creature killed : remainingNightCreatures " + remainingNightCreatures);
@@ -235,12 +235,12 @@ public class CreaturesSpawnManager : MonoBehaviour {
         });
     }
 
-    private void Update() {
+    protected void Update() {
         if (!debugInputs) return;
         HandleDebugInputs();
     }
 
-    private void HandleDebugInputs() {
+    protected void HandleDebugInputs() {
         if (Input.GetKeyDown(KeyCode.U)) {
             currentWaveNumber++;
             SetWaveParameters(currentWaveNumber, true, true);
@@ -252,7 +252,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
     }
 
-    private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
+    protected void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         currentWaveNumber = DayNightManager.Instance.GetCurrentDay() + 1;
         RefreshDifficultyMultiplier();
 
@@ -269,7 +269,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         SetReferenceWaveParameters(currentWaveNumber);
     }
 
-    private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
+    protected void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
         if (debugDontSpawnAtNight) return;
         StartCoroutine(SpawnWave(currentWaveNumber));
     }
@@ -288,7 +288,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         SetWaveParameters(currentWaveNumber, true, true);
     }
 
-    public void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
+    public virtual void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
         totalNightCreatures = 0;
         bossSpawnsThisNight = false;
         if (hasBoss) {
@@ -401,11 +401,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
         OnNightWaveDifficultyChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    private void SetReferenceWaveParameters(int waveNumber) {
+    protected void SetReferenceWaveParameters(int waveNumber) {
         referenceWaveDifficulty = referenceWaveInitialDifficulty * Mathf.Pow(waveNumber, referenceWaveGrowthFactor);
     }
 
-    private List<SpawnedCreatureInfo> PrepareSubWaveCreatures(float subWaveDifficulty, float leftProportion, int subWaveIndex, bool subWaveRandomSideProportion) {
+    protected List<SpawnedCreatureInfo> PrepareSubWaveCreatures(float subWaveDifficulty, float leftProportion, int subWaveIndex, bool subWaveRandomSideProportion) {
        
         if (DebugManager.Instance.GetLogNightWavesData()) {
             Debug.Log("Subwave " + subWaveIndex + " Difficulty " + subWaveDifficulty);
@@ -485,7 +485,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         return waveCreatures;
     }
 
-    private List<CreatureSO> GetSpecialWaveCreatures(SpecialWaveType waveType, float difficultyBudget) {
+    protected List<CreatureSO> GetSpecialWaveCreatures(SpecialWaveType waveType, float difficultyBudget) {
         List<CreatureSO> creaturesToSpawn = new List<CreatureSO>();
         CreatureSO forcedCreature = null;
 
@@ -545,7 +545,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         return creaturesToSpawn;
     }
 
-    private void SetWaveSidesProportion(int waveNumber) {
+    protected void SetWaveSidesProportion(int waveNumber) {
 
         waveDifficultyLeftProportion = UnityEngine.Random.Range(0f, 1f);
         float allFromOneSideTreshold = .1f;
@@ -574,7 +574,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
     }
 
-    private IEnumerator SpawnWave(int waveNumber) {
+    protected IEnumerator SpawnWave(int waveNumber) {
         if (DebugManager.Instance.GetLogNightWavesData()) {
             Debug.Log("Spawn wave " + waveNumber);
         }
@@ -648,7 +648,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
     }
 
-    private Creature SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
+    protected Creature SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
         //Creature creature = GetCreatureFromPool(
         //    creatureToSpawn,
         //    GetSpawnPosition(spawnSide, creatureToSpawn),
@@ -666,7 +666,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         return creature; // <— CHANGEMENT
     }
-    private List<CreatureSO> GetCreatureSOListToSpawn(float difficultyBudget, int subWaveIndex) {
+    protected List<CreatureSO> GetCreatureSOListToSpawn(float difficultyBudget, int subWaveIndex) {
         List<CreatureSO> creaturesToSpawn = new List<CreatureSO>();
         List<CreatureSO> creaturesTypesToSpawn = SelectCreatureSOTypes();
 
@@ -910,7 +910,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         return creaturesCount;
     }
 
-    private Creature GetCreatureFromPool(CreatureSO creatureSO, Vector3 position, Quaternion rotation) {
+    protected Creature GetCreatureFromPool(CreatureSO creatureSO, Vector3 position, Quaternion rotation) {
         if (!creaturePools.ContainsKey(creatureSO)) {
             creaturePools[creatureSO] = new Queue<Creature>();
         }
@@ -938,7 +938,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
         return currentSpecialWaveType;
     }
 
-    private IEnumerator HandleBossIntro(List<Creature> bosses) {
+    protected IEnumerator HandleBossIntro(List<Creature> bosses) {
         // petite latence si besoin (VFX, SFX pré-roll)
         yield return new WaitForSeconds(1f);
 
@@ -961,6 +961,10 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         // légère pause post-ciné
         CameraManager.Instance.ResetCameraTargetToPlayer();
+    }
+
+    public void InvokeOnNightWaveDifficultyChange() {
+        OnNightWaveDifficultyChanged?.Invoke(this, EventArgs.Empty);
     }
 
 }

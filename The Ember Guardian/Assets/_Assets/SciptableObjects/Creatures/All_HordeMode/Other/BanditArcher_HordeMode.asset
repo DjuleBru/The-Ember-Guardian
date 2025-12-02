@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
+  m_Name: BanditArcher_HordeMode
+  m_EditorClassIdentifier: 
+  enemyName: BanditArcher
+  isBoss: 0
+  appearTwiceOnSecondPhase: 0
+  description: Melee mob that can respawn after it's first death !
+  creatureIcon: {fileID: 21300000, guid: 017a0ddb6fa155247ad2b6cfff8bde83, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 82204900f8c15b344ae5cdd40bef7127, type: 3}
+  creaturePrefab: {fileID: 4997657120178985709, guid: abf730c6dc8029c4699d0cccb912fa15, type: 3}
+  mass: 20
+  detectionRange_Day: 16
+  detectionRange_Night: 10
+  primaryAttackSO: {fileID: 11400000, guid: 10e205cbba391db42815f55d6b6b0524, type: 2}
+  hasRangedAndMeleeAttack: 0
+  secondaryAttackSO: {fileID: 0}
+  specialAttackSO: {fileID: 0}
+  flying: 0
+  canFlank: 0
+  flightMinAltitude: 0
+  flightMaxAltitude: 0
+  flightAltitudeRandomizer: 0
+  minRepositionDistanceToPlayer: 0
+  maxRepositionDistanceToPlayer: 8
+  dayMoveSpeed: 2.5
+  nightMoveSpeed: 3
+  aggroMoveSpeedBuff: 1.5
+  enteredLightMoveSpeedDebuff: 1.3
+  moveSpeedRandomizerDelta: 0.25
+  maxHealth: 25
+  enteredLightattackRateDebuff: 2.5
+  nightSpawnYPosition: 2
+  probabilityToAggroOnGunShot: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
+  immuneToFire: 0
+  hasCustomSpawnAnimation: 1
+  spawnAnimationDuration: 1.5
+  baseMovementAnimationSpeed: 1
+  workerTargetingPriority: 1
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 2
+  fireTargetingPriority: 2147483647
+  probabilityToDropOrb: 0.5
+  currencyTypeDroppedList: 02000000
+  currencyDropAmountList: 01000000
+  difficulty: 5
+  initialWaveSpawn: 3
+  spawnProbability: 0.2
+  maxCreaturesPerPacket: 2
+  maxCreaturesPerPacket_Day: 5
+  dieAudioClips:
+  - {fileID: 8300000, guid: 60f2ec5444eaa224aaab2547686c0ed8, type: 3}
+  - {fileID: 8300000, guid: afbf978b3beb966449e306a07f400694, type: 3}
+  - {fileID: 8300000, guid: 3cfcbc583b88ee4408e0a0be62c6488d, type: 3}
+  dieVolumeMultiplier: 1
+  aggroAudioClips:
+  - {fileID: 8300000, guid: ad580b3ba8ea5ab4e8a0b12caa766984, type: 3}
+  - {fileID: 8300000, guid: 3cb628e7b39d4144280716fcf3d7100e, type: 3}
+  - {fileID: 8300000, guid: 164b575ed5669ab4e93986fbb582cec9, type: 3}
+  - {fileID: 8300000, guid: c79e47720f0fc2d44b1e4da02780899b, type: 3}
+  aggroVolumeMultiplier: 1
+  idleAudioClips:
+  - {fileID: 8300000, guid: 1108bf18be83c9546912466653c2f812, type: 3}
+  - {fileID: 8300000, guid: bae0df06c24b13b41b7fd2a8b8e627d1, type: 3}
+  - {fileID: 8300000, guid: e0fc4dce231dafe4c941ff787cded080, type: 3}
+  - {fileID: 8300000, guid: 495a7fecc700269438bf8e11cd645835, type: 3}
+  - {fileID: 8300000, guid: 949cd37212e44b04a94e9282d09b1cf1, type: 3}
+  idleVolumeMultiplier: 1
+  footStepAudioClips:
+  - {fileID: 8300000, guid: 6c21cb43be1fda34caf16432ebc427b6, type: 3}
+  - {fileID: 8300000, guid: b6ae59eff4f97e649a18297818a2d612, type: 3}
+  - {fileID: 8300000, guid: 2d2df73e407686a4c9bebf0daaf98546, type: 3}
+  - {fileID: 8300000, guid: aa4cec471e7fa144d83c456846cb0d09, type: 3}
+  - {fileID: 8300000, guid: 13279752d7b78b74f99be76b4eb9dc63, type: 3}
+  - {fileID: 8300000, guid: 8a0670dd76bd95a409386bccb5b4e1cf, type: 3}
+  - {fileID: 8300000, guid: a03adb3180b4dfb4c85cfd70775181ae, type: 3}
+  - {fileID: 8300000, guid: f3438d9b39d84bc46918bf4b99e5cb8e, type: 3}
+  - {fileID: 8300000, guid: 940abcd467c02084897a97f551b2da34, type: 3}
+  - {fileID: 8300000, guid: 5bb4ecea73345524aba294391c47b24a, type: 3}
+  footstepVolumeMultiplier: 0.7
+  hasContinousAudioClip: 0
+  continuousAudioClip: []
+  hasContinousMovementAudioClip: 0
+  continuousMovementAudioClip: []
+  spawnAudioClips:
+  - {fileID: 8300000, guid: 32f49736a24625644b68026e6d084043, type: 3}
+  - {fileID: 8300000, guid: df662f7f57a44cf46a11439d0edfd312, type: 3}
+  - {fileID: 8300000, guid: 7ab451d6685b1c04f81579c23955cce7, type: 3}
+  spawnVolumeMultiplier: 1
+  bulletHitAudioClips:
+  - {fileID: 8300000, guid: 5f188511e9287924ab0bc56282bb5bb1, type: 3}
+  - {fileID: 8300000, guid: 370af63962d422e42a9ddc6c19243081, type: 3}
+  - {fileID: 8300000, guid: 32433cb07860c854f8514231e93f3813, type: 3}
+  - {fileID: 8300000, guid: 7c4ef5419b0a7a24b9c549ea14b1e263, type: 3}
+  - {fileID: 8300000, guid: 3aa5ce64a65a5a2489835833a2a763a5, type: 3}
+  bulletHitVolumeMultiplier: 0.5

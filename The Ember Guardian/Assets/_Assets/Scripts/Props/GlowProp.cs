@@ -53,10 +53,12 @@ public class GlowProp : MonoBehaviour
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
+        if (!gameObject.activeInHierarchy) return;
         StartCoroutine(SwitchOnLightWithDelay());
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
+        if (!gameObject.activeInHierarchy) return;
         StartCoroutine(SwitchOffLightWithRandomDelay());
     }
 

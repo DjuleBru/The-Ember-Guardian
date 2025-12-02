@@ -67,9 +67,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 36802e739061e214e80d0ea19b7dad91, type: 2}
   - {fileID: 11400000, guid: 30c45ff74017778438c5c78eed18975c, type: 2}
   - {fileID: 11400000, guid: ab8dd169f91741b48848a62dab906029, type: 2}
-  hasBoss: 1
+  hasBoss: 0
   bossCreatureType: {fileID: 11400000, guid: a8489a867b556644aade49405764f086, type: 2}
-  bossNightSpawns: 05000000
+  bossNightSpawns: 050000000a0000000f00000014000000190000001e00000023000000280000002d00000032000000
   bossNightWaveDifficultyMultiplier: 0.5
   startWaveToSpawnFromBothSides: 1
   baseDifficulty: 25
@@ -92,13 +92,13 @@ MonoBehaviour:
   canSpawnElite: 1
   hasSpecialWaveTypes: 1
   specialWaveTypesInLevel: 010000000200000003000000
-  specialWaveProbability: 0.25
-  maxSpecialWaveAmount: 1
+  specialWaveProbability: 0.15
+  maxSpecialWaveAmount: 100
   environmentType: 0
   hasFog: 0
   fogFrontAlpha: 0
   fogBackAlpha: 0
-  hasWind: 1
+  hasWind: 0
   initialWindStrength: 0
   windStrengthsAllowedInLevel: 0000000001000000020000000300000004000000
   hasRain: 0

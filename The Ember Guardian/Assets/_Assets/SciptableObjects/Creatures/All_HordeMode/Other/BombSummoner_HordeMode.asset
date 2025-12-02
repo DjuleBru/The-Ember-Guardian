@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e57289136e0e1e6418ec81259b9649b2, type: 3}
+  m_Name: BombSummoner_HordeMode
+  m_EditorClassIdentifier: 
+  enemyName: BombSummoner
+  isBoss: 0
+  appearTwiceOnSecondPhase: 0
+  description: Melee mob that can respawn after it's first death !
+  creatureIcon: {fileID: 21300000, guid: 3cea1890d48a93a4d93724235c9efeb1, type: 3}
+  creatureIcon_Portrait: {fileID: 21300000, guid: 12c32cd04a30b4b4193a2be7f4708eac, type: 3}
+  creaturePrefab: {fileID: 4997657120178985709, guid: a121a61fd566ab44c87a00bab80da068, type: 3}
+  mass: 20
+  detectionRange_Day: 8
+  detectionRange_Night: 8
+  primaryAttackSO: {fileID: 0}
+  hasRangedAndMeleeAttack: 0
+  secondaryAttackSO: {fileID: 0}
+  specialAttackSO: {fileID: 0}
+  flying: 0
+  canFlank: 0
+  flightMinAltitude: 0
+  flightMaxAltitude: 0
+  flightAltitudeRandomizer: 0
+  minRepositionDistanceToPlayer: 0
+  maxRepositionDistanceToPlayer: 8
+  dayMoveSpeed: 3
+  nightMoveSpeed: 3
+  aggroMoveSpeedBuff: 1.5
+  enteredLightMoveSpeedDebuff: 1.3
+  moveSpeedRandomizerDelta: 0.25
+  maxHealth: 60
+  enteredLightattackRateDebuff: 2.5
+  nightSpawnYPosition: 2
+  probabilityToAggroOnGunShot: 1
+  immuneToPoison: 0
+  immuneToShock: 0
+  immuneToImmobilize: 0
+  immuneToFire: 0
+  hasCustomSpawnAnimation: 0
+  spawnAnimationDuration: 1
+  baseMovementAnimationSpeed: 0.85
+  workerTargetingPriority: 1
+  playerTargetingPriority: 3
+  barricadeTargetingPriority: 2
+  fireTargetingPriority: 2147483647
+  probabilityToDropOrb: 1
+  currencyTypeDroppedList: 02000000
+  currencyDropAmountList: 01000000
+  difficulty: 10
+  initialWaveSpawn: 3
+  spawnProbability: 0.2
+  maxCreaturesPerPacket: 1
+  maxCreaturesPerPacket_Day: 2
+  dieAudioClips:
+  - {fileID: 8300000, guid: b60a05c9744ec564eba980eeb53f0f1a, type: 3}
+  - {fileID: 8300000, guid: ade2bb9f36c09e749835cda0378af7b7, type: 3}
+  dieVolumeMultiplier: 1
+  aggroAudioClips:
+  - {fileID: 8300000, guid: 41d644afb8969be48ba5756b84aa7732, type: 3}
+  - {fileID: 8300000, guid: f1a11c8c10675534392fb73dad30440b, type: 3}
+  aggroVolumeMultiplier: 1
+  idleAudioClips:
+  - {fileID: 8300000, guid: 5d1950b0672afe4458bd3cda86d93207, type: 3}
+  - {fileID: 8300000, guid: aaee8e58bdc948945b1a56b5d0a437d9, type: 3}
+  - {fileID: 8300000, guid: f888be81fe806814f8716e4055c8191f, type: 3}
+  - {fileID: 8300000, guid: c6b77738c10d4b643b4e8795cde225bc, type: 3}
+  idleVolumeMultiplier: 1
+  footStepAudioClips:
+  - {fileID: 8300000, guid: b30fb6bd3f1616c4c9a10a0544025522, type: 3}
+  - {fileID: 8300000, guid: 1340ea93619f7ce42b763fbcce586d0b, type: 3}
+  - {fileID: 8300000, guid: 0db772a3cf685dc43bc36543a0e763e8, type: 3}
+  - {fileID: 8300000, guid: bf894c13423b3344da230a2adf94b94e, type: 3}
+  - {fileID: 8300000, guid: 015cd9722e49f334fbd38994b6f1f1f7, type: 3}
+  - {fileID: 8300000, guid: 6c1c970ad22179446b0e409e8afc57f1, type: 3}
+  - {fileID: 8300000, guid: 249a1487bf8cfa447b185086afbd76a9, type: 3}
+  - {fileID: 8300000, guid: 1ebbddf4bca78994dbb6f4df3ef42402, type: 3}
+  - {fileID: 8300000, guid: 5bf366c85322a2042b22e7ba4073a6f1, type: 3}
+  - {fileID: 8300000, guid: b2d225da6f19c5e46802352420d86e43, type: 3}
+  - {fileID: 8300000, guid: 3275cfe9c27b2e94ea3c4fb7e31a6a3a, type: 3}
+  - {fileID: 8300000, guid: f9486f641620faa4aa7d979d40bbdc80, type: 3}
+  footstepVolumeMultiplier: 0.5
+  hasContinousAudioClip: 0
+  continuousAudioClip: []
+  hasContinousMovementAudioClip: 0
+  continuousMovementAudioClip: []
+  spawnAudioClips:
+  - {fileID: 8300000, guid: a93bdafcfce40c5499be1c3ff5b6f32c, type: 3}
+  - {fileID: 8300000, guid: 9199567dc6495924dbc4a23cc2b63e0e, type: 3}
+  - {fileID: 8300000, guid: b6d953aeaa52e58499a331b756752ad1, type: 3}
+  spawnVolumeMultiplier: 0.75
+  bulletHitAudioClips:
+  - {fileID: 8300000, guid: 5f188511e9287924ab0bc56282bb5bb1, type: 3}
+  - {fileID: 8300000, guid: 370af63962d422e42a9ddc6c19243081, type: 3}
+  - {fileID: 8300000, guid: 32433cb07860c854f8514231e93f3813, type: 3}
+  - {fileID: 8300000, guid: 7c4ef5419b0a7a24b9c549ea14b1e263, type: 3}
+  - {fileID: 8300000, guid: 3aa5ce64a65a5a2489835833a2a763a5, type: 3}
+  bulletHitVolumeMultiplier: 0.5

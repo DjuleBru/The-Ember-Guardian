@@ -45,6 +45,9 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
     int nextWeaponChestThreshold;
     int nextTrapChestThreshold;
 
+    int distSinceLastWorkerSpawner = 0;
+    int nextWorkerSpawnerThreshold = 4;
+
     private float lastFastTravelRightX = 0f;
     private float lastFastTravelLeftX = 0f;
     [SerializeField] private float fastTravelThreshold = 175f;
@@ -177,11 +180,13 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
             shopBlock.AddBlockType(BlockType.Shop);
         }
 
+
         // --- DISTANCE 1 ---
         if (dist == 1) {
             // si un bloc est manquant : assigner ce bloc comme aléatoire simple
             if (left != null && left != shopBlock) AssignSimpleResource(left);
             if (right != null && right != shopBlock) AssignSimpleResource(right);
+            TryAssignWorkerSpawner(dist, left, right);
             return;
         }
 
@@ -202,6 +207,7 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
                     else AssignMidRangeBlockType(single, placeShopHere);
                 }
             }
+            TryAssignWorkerSpawner(dist, left, right);
             return;
         }
 
@@ -243,8 +249,69 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
             TryAddChests(right);
             TryAssignFastTravel(right);
         }
+        TryAssignWorkerSpawner(dist, left, right);
     }
+    private void TryAssignWorkerSpawner(int dist, HordeModeBlock left, HordeModeBlock right) {
 
+        // Pas de blocs = rien à faire
+        if (left == null && right == null)
+            return;
+
+        // --- Distance 1 : WorkerSpawner à gauche OU droite (50/50)
+        if (dist == 1) {
+            if (left != null && right != null) {
+                HordeModeBlock chosen = (Random.value < 0.5f) ? left : right;
+                chosen.AddBlockType(BlockType.WorkerSpawner);
+            }
+            else {
+                // Un seul bloc dans des générations dynamiques
+                (left ?? right)?.AddBlockType(BlockType.WorkerSpawner);
+            }
+            return;
+        }
+
+        // --- Distance 2 : WorkerSpawner sur l'autre côté par rapport à dist=1
+        if (dist == 2) {
+            if (left != null && right != null) {
+                // Inversion du côté du dist=1
+                HordeModeBlock chosen = (Random.value < 0.5f) ? right : left;
+                chosen.AddBlockType(BlockType.WorkerSpawner);
+            }
+            else {
+                (left ?? right)?.AddBlockType(BlockType.WorkerSpawner);
+            }
+            return;
+        }
+
+        // --- Distance > 2 : WorkerSpawner tous les 4 "de distance cumulée"
+        // On utilise la sizeValue du bloc choisi
+        // Et on place sur un côté aléatoire
+        HordeModeBlock candidate = null;
+        if (left != null && right != null) {
+            candidate = (Random.value < 0.5f) ? left : right;
+        }
+        else {
+            candidate = left ?? right;
+        }
+
+        if (candidate.HasBlockType(BlockType.FastTravelTP))
+            return;
+
+        int sizeValue = candidate.GetBlockSize() switch {
+            BlockSize.Tiny => 1,
+            BlockSize.Small => 2,
+            BlockSize.Medium => 3,
+            BlockSize.Big => 4,
+            _ => 2
+        };
+
+        distSinceLastWorkerSpawner += sizeValue;
+
+        if (distSinceLastWorkerSpawner >= nextWorkerSpawnerThreshold) {
+            candidate.AddBlockType(BlockType.WorkerSpawner);
+            distSinceLastWorkerSpawner = 0;
+        }
+    }
     public List<ShopType> ComputeUnlockedShops() {
         // --- Récupération des états de déblocage ---
         bool isWeaponUnlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.Armorer);
