@@ -25,6 +25,7 @@ public class DayNightVisualsManager : MonoBehaviour
     [SerializeField] private float nightLightIntensity;
 
     [SerializeField] private float sunLightIntensity;
+    private float initialSunLightIntensity;
     [SerializeField] private float moonLightIntensity;
 
     [SerializeField] private float transitionDuration;
@@ -129,6 +130,8 @@ public class DayNightVisualsManager : MonoBehaviour
 
     private void Awake() {
         Instance = this;
+
+        initialSunLightIntensity = sunLightIntensity;
     }
 
     private void Start() {
@@ -144,6 +147,7 @@ public class DayNightVisualsManager : MonoBehaviour
                 CreaturesSpawnManager_HordeMode hordeModeCreaturesSpawnManager = CreaturesSpawnManager.Instance as CreaturesSpawnManager_HordeMode;
                 hordeModeCreaturesSpawnManager.OnExtremeWavePrepared += HodeModeCreaturesSpawnManager_OnExtremeWavePrepared;
                 hordeModeCreaturesSpawnManager.OnPeacefulWavePrepared += HordeModeCreaturesSpawnManager_OnPeacefulWavePrepared;
+                hordeModeCreaturesSpawnManager.OnBossWavePrepared += HordeModeCreaturesSpawnManager_OnBossWavePrepared;
             }
         }
         sunNormalColor = sunLight2D.color;
@@ -160,6 +164,7 @@ public class DayNightVisualsManager : MonoBehaviour
         globalLight2D.intensity = dawnLightIntensity;
         moonLight2D.intensity = 0;
     }
+
 
     private void Update() {
         HandleCycleTransitions();
@@ -426,7 +431,8 @@ public class DayNightVisualsManager : MonoBehaviour
         } else {
             if(!peacefulWave && !extremeWave) {
                 sunLight2D.color = sunNormalColor;
-                sunLight2D.intensity /= 2;
+                sunLightIntensity = initialSunLightIntensity;
+
             }
             if(peacefulWave) {
                 peacefulWave = false;
@@ -539,18 +545,22 @@ public class DayNightVisualsManager : MonoBehaviour
 
 
     private void HordeModeCreaturesSpawnManager_OnPeacefulWavePrepared(object sender, System.EventArgs e) {
-        Debug.Log("HordeModeCreaturesSpawnManager_OnPeacefulWavePrepared");
         Color sunColor = sunEasyIncomingWaveColor;
         sunLight2D.color = sunColor;
-        sunLight2D.intensity *= 2;
+        sunLightIntensity = initialSunLightIntensity * 2.5f;
         peacefulWave = true;
     }
 
     private void HodeModeCreaturesSpawnManager_OnExtremeWavePrepared(object sender, System.EventArgs e) {
-        Debug.Log("HodeModeCreaturesSpawnManager_OnExtremeWavePrepared");
         Color sunColor = sunHardIncomingWaveColor;
         sunLight2D.color = sunColor;
-        sunLight2D.intensity *= 2;
+        sunLightIntensity = initialSunLightIntensity * 2.5f;
+        extremeWave = true;
+    }
+    private void HordeModeCreaturesSpawnManager_OnBossWavePrepared(object sender, System.EventArgs e) {
+        Color sunColor = sunHardIncomingWaveColor;
+        sunLight2D.color = sunColor;
+        sunLightIntensity = initialSunLightIntensity * 2.5f;
         extremeWave = true;
     }
 

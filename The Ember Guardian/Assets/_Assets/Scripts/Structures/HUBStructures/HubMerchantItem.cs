@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HubMerchantItem : MonoBehaviour
@@ -67,7 +68,13 @@ public class HubMerchantItem : MonoBehaviour
 
     protected virtual void Start() {
         StartCoroutine(RefreshDescriptionCardAfterFrame());
-        UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+
+        if(parentHubMerchant.GetIsHordeModeNPC()) {
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+        } else {
+            UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+        }
+
     }
 
     private IEnumerator RefreshDescriptionCardAfterFrame() {
@@ -105,17 +112,62 @@ public class HubMerchantItem : MonoBehaviour
             cyanGemCostList = linkedStatModifierSO.cyanGemCostList;
         }
 
+        if(parentHubMerchant.GetIsHordeModeNPC()) {
+            // Trouver la liste avec le plus grand Count
+            var allLists = new List<List<int>> {
+            redGemCostList,
+            greenGemCostList,
+            yellowGemCostList,
+            blueGemCostList,
+            purpleGemCostList,
+            cyanGemCostList
+            };
+
+            // Filtrer les listes nulles
+            var validLists = allLists.Where(l => l != null).ToList();
+
+            var biggestList = validLists
+                .OrderByDescending(l => l.Count)
+                .FirstOrDefault();
+
+            redGemCostList = biggestList ?? new List<int>();
+
+            greenGemCostList = new List<int>();
+            yellowGemCostList = new List<int>();
+            blueGemCostList = new List<int>();
+            purpleGemCostList = new List<int>();
+            cyanGemCostList = new List<int>();
+
+        }
+
         initializedCostList = true;
     }
 
 
     public bool CanBuyItem() {
-        int playerGreenGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
-        int playerRedGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
-        int playerCyanGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.cyanGem).Count;
-        int playerBlueGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count;
-        int playerYellowGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count;
-        int playerPurpleGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
+        int playerGreenGems = 0;
+        int playerRedGems = 0;
+        int playerCyanGems = 0; 
+        int playerBlueGems = 0;
+        int playerYellowGems = 0;
+        int playerPurpleGems = 0;
+
+        if (parentHubMerchant.GetIsHordeModeNPC()) {
+            playerGreenGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
+            playerRedGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
+            playerCyanGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.cyanGem).Count;
+            playerBlueGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count;
+            playerYellowGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count;
+            playerPurpleGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
+        } else {
+            playerGreenGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
+            playerRedGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
+            playerCyanGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.cyanGem).Count;
+            playerBlueGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count;
+            playerYellowGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count;
+            playerPurpleGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
+        }
+
 
         if (playerGreenGems >= greenGemCost && playerRedGems >= redGemCost && playerBlueGems >= blueGemCost && playerYellowGems >= yellowGemCost && playerPurpleGems >= purpleGemCost && playerCyanGems >= cyanGemCost) {
             return true;
@@ -163,15 +215,23 @@ public class HubMerchantItem : MonoBehaviour
 
     protected void PayGemPrice() {
 
-        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
-        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.redGem, redGemCost);
-        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.blueGem, blueGemCost);
-        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.yellowGem, yellowGemCost);
-        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.purpleGem, purpleGemCost);
-        UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.cyanGem, cyanGemCost);
+        if(parentHubMerchant.GetIsHordeModeNPC()) {
+            UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
+            UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.redGem, redGemCost);
+            UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.blueGem, blueGemCost);
+            UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.yellowGem, yellowGemCost);
+            UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.purpleGem, purpleGemCost);
+            UICurrencyManager.PlayerInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.cyanGem, cyanGemCost);
+        } else {
+            UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.greenGem, greenGemCost);
+            UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.redGem, redGemCost);
+            UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.blueGem, blueGemCost);
+            UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.yellowGem, yellowGemCost);
+            UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.purpleGem, purpleGemCost);
+            UICurrencyManager.HubInventoryUI.RemoveCurrencyFromBag(PlayerCurrencies.CurrencyType.cyanGem, cyanGemCost);
+        }
 
         OnAnyHubMerchantItemBought?.Invoke(this, EventArgs.Empty);
-
     }
 
     protected void UpdateItemCost() {
@@ -404,8 +464,12 @@ public class HubMerchantItem : MonoBehaviour
         return maxItemLevel;
     }
 
-    public void LoadItemStatus_Batch() {
+    public void LoadItemStatus_Batch(bool hordeModeMerchant = false) {
         var key = GetItemType() + "_Data";
+
+        if(hordeModeMerchant) {
+            key = GetItemType() + "_HordeModeData";
+        }
 
         if(isBoughtAtStart) {
             itemBought = true;
@@ -479,7 +543,12 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     private void OnDestroy() {
-        UICurrencyManager.HubInventoryUI.OnCurrencyCollected -= HubInventoryUI_OnCurrencyCollected;
+        if(HUBManager.Instance != null) {
+            UICurrencyManager.HubInventoryUI.OnCurrencyCollected -= HubInventoryUI_OnCurrencyCollected;
+        } else {
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected -= HubInventoryUI_OnCurrencyCollected;
+        }
+ 
     }
 
     public virtual void ResetGunItemStatus() {

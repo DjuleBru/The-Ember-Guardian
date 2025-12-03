@@ -66,6 +66,7 @@ public class ItemButtonUI : ButtonUI {
     public static event EventHandler OnAnyHubMerchantItemTryBuyMaxedItem;
 
     public void InitializeItemButtonUI() {
+        Debug.Log("InitializeItemButtonUI");
         button = GetComponent<Button>();
         hubMerchantItem = GetComponent<HubMerchantItem>();
 
@@ -105,8 +106,15 @@ public class ItemButtonUI : ButtonUI {
 
     protected override void Start() {
         base.Start();
-        UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
-        UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+
+        if(parentHubMerchant.GetIsHordeModeNPC()) {
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
+            UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+        } else {
+            UICurrencyManager.HubInventoryUI.OnCurrencyRemovedFromBag += HubInventoryUI_OnCurrencyRemovedFromBag;
+            UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
+        }
+
 
         if(DebugManager.Instance.GetAllItemsUnlockedInDemo()) {
             itemLockedInDemo = false;
@@ -300,7 +308,7 @@ public class ItemButtonUI : ButtonUI {
         descriptionCard.SetDescriptionCardCost(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
         descriptionCard.ChestDescriptionCardFree(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
 
-        if(itemLockedInDemo && HUBManager.Instance.GetIsDemo()) {
+        if(itemLockedInDemo && HUBManager.Instance != null && HUBManager.Instance.GetIsDemo()) {
             descriptionCard.SetDescriptionCardItemLockedInDemo();
             return;
         }
@@ -350,7 +358,7 @@ public class ItemButtonUI : ButtonUI {
     }
 
     public void BuyItem() {
-        if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo()) || (!hubMerchantItem.GetItemBought() && itemUnlockableOnlyInLevel)) {
+        if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance != null && HUBManager.Instance.GetIsDemo()) || (!hubMerchantItem.GetItemBought() && itemUnlockableOnlyInLevel)) {
             OnAnyLockedButtonTryPress?.Invoke(this, EventArgs.Empty);
             CheckItemLockedFromOtherMerchantItem();
             return;
@@ -589,7 +597,10 @@ public class ItemButtonUI : ButtonUI {
     }
 
     public void SetItemUnlocked() {
-        if (itemLockedInDemo && HUBManager.Instance.GetIsDemo()) return;
+        if(HUBManager.Instance != null) {
+            if (itemLockedInDemo && HUBManager.Instance.GetIsDemo()) return;
+        }
+
         if (hubMerchantItem.GetItemBought()) return;
 
         hubMerchantItem.UnlockItem();
@@ -597,7 +608,10 @@ public class ItemButtonUI : ButtonUI {
     }
 
     public void SetItemBought() {
-        if (itemLockedInDemo && HUBManager.Instance.GetIsDemo()) return;
+        if(HUBManager.Instance != null) {
+            if (itemLockedInDemo && HUBManager.Instance.GetIsDemo()) return;
+        }
+
         if (hubMerchantItem.GetItemBought()) return;
 
         hubMerchantItem.SetItemBought();
@@ -627,9 +641,10 @@ public class ItemButtonUI : ButtonUI {
 
                 iconImage.gameObject.SetActive(true);
 
-                if(!HUBManager.Instance.GetIsDemo()) {
+                if(HUBManager.Instance != null && !HUBManager.Instance.GetIsDemo()) {
                     lockHoverInteractions = false;
                 }
+               
             }
 
         }
@@ -642,7 +657,7 @@ public class ItemButtonUI : ButtonUI {
             lockHoverInteractions = false;
         }
 
-        if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance.GetIsDemo())) {
+        if (!hubMerchantItem.GetItemUnlocked() || (itemLockedInDemo && HUBManager.Instance != null && HUBManager.Instance.GetIsDemo())) {
             outlineImage.color = Color.grey;
             return;
         }

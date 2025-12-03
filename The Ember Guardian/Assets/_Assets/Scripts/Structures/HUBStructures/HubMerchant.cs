@@ -57,6 +57,7 @@ public class HubMerchant : MonoBehaviour
 
     [SerializeField] protected bool isHubMerchant;
     [SerializeField] protected bool isLevelNPC;
+    [SerializeField] protected bool isHordeModeMerchant;
     [SerializeField] protected bool fadeOutAfterTalk;
     [SerializeField] protected float delayToFadeOutAfterTalk;
     protected float fadeOutDuration = 1.5f;
@@ -80,7 +81,7 @@ public class HubMerchant : MonoBehaviour
             merchantHasTalkLinesToShow = true;
         }
 
-        if(isHubMerchant) {
+        if(isHubMerchant || isHordeModeMerchant) {
             InitializeHubMerchantItems();
             InitializeItemButtonUIs();
         }
@@ -105,6 +106,9 @@ public class HubMerchant : MonoBehaviour
             }
         }
 
+        if(isHordeModeMerchant) {
+            InitializeHordeModeMerchant();
+        }
 
         SetHubMerchantParentInItems();
     }
@@ -150,6 +154,27 @@ public class HubMerchant : MonoBehaviour
 
         if(!merchantHasNewItems) {
             merchantHasNewItems = MetaProgressionManager.Instance.GetHubMerchantNewItemsToSale(hubMerchantType);
+        }
+
+        foreach (HubMerchantItem merchantItem in hubMerchantItems) {
+            merchantItem.LoadItemStatus_Batch();
+        }
+
+        hubMerchantLoaded = true;
+    }
+
+    protected void InitializeHordeModeMerchant() {
+
+        merchantUnlocked = HordeModeProgressionManager.Instance.GetMerchantUnlocked(hubMerchantType);
+
+        if (!merchantUnlocked) {
+            activeGameObject.SetActive(false);
+            inactiveGameObject.SetActive(true);
+            return;
+        }
+        else {
+            activeGameObject.SetActive(true);
+            inactiveGameObject.SetActive(false);
         }
 
         foreach (HubMerchantItem merchantItem in hubMerchantItems) {
@@ -216,7 +241,7 @@ public class HubMerchant : MonoBehaviour
         if (Player.Instance.GetCameraHasOtherTarget()) return;
         if (!Player.Instance.GetAllMenusClosed()) return;
 
-        if (isHubMerchant) {
+        if (isHubMerchant || isHordeModeMerchant) {
             StartInteractingWithMerchant();
         }
 
@@ -457,6 +482,10 @@ public class HubMerchant : MonoBehaviour
     }
     public bool GetMerchantIsDecorationalDemoMerchant() {
         return isDecorationalDemoHubMerchant;
+    }
+
+    public bool GetIsHordeModeNPC() {
+        return isHordeModeMerchant;
     }
 
     #endregion

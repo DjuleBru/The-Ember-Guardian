@@ -327,7 +327,6 @@ public class HordeModeBlock : MonoBehaviour
 
             Vector3 randomPosition = GetRandomSpawnerPosition();
 
-            Debug.Log(this + " randomPosition " + randomPosition);
             GameObject spawnerObj = Instantiate(dayCreatureSpawnerTemplate, randomPosition, Quaternion.identity, transform);
             spawnerObj.SetActive(true);
 

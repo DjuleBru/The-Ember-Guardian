@@ -38,7 +38,7 @@ MonoBehaviour:
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.5
   moveSpeedRandomizerDelta: 0
-  maxHealth: 1750
+  maxHealth: 1500
   enteredLightattackRateDebuff: 2.5
   nightSpawnYPosition: 0
   probabilityToAggroOnGunShot: 1
@@ -60,6 +60,7 @@ MonoBehaviour:
   initialWaveSpawn: 1
   spawnProbability: 0.4
   maxCreaturesPerPacket: 1
+  maxCreaturesPerPacket_Day: 0
   dieAudioClips:
   - {fileID: 8300000, guid: 743e83230ab0b6b41a44ee47a1961717, type: 3}
   dieVolumeMultiplier: 1.2

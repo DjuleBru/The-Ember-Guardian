@@ -40,6 +40,7 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
 
     public event EventHandler OnExtremeWavePrepared;
     public event EventHandler OnPeacefulWavePrepared;
+    public event EventHandler OnBossWavePrepared;
 
     protected float extremeWaveDifficultyMultiplier = 2f;
     protected float extremeSubWaveDifficultyMultiplier = 1.5f;
@@ -231,6 +232,8 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
         // Boss night : override
         if (hasBoss && bossNightsSpawns.Contains(currentWaveNumber)) {
             currentHordeWaveType = HordeWaveType.Normal;
+            nightsSinceLastExtreme--;
+            OnBossWavePrepared?.Invoke(this, EventArgs.Empty);
             return;
         }
 

@@ -270,6 +270,25 @@ public class HordeModeProgressionManager : MonoBehaviour
         return true;
     }
 
+    public bool GetMerchantUnlocked(HubMerchant.HubMerchantType merchantType) {
+        if(merchantType == HubMerchant.HubMerchantType.HeroMerchant) {
+            return GetUnlocked(HordeModeUnlockables.Trainer);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.GunMerchant) {
+            return GetUnlocked(HordeModeUnlockables.Armorer);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.DogTamer) {
+            return GetUnlocked(HordeModeUnlockables.Tamer);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.StructuresMerchant) {
+            return GetUnlocked(HordeModeUnlockables.Architect);
+        }
+        if (merchantType == HubMerchant.HubMerchantType.WorkerMerchant) {
+            return GetUnlocked(HordeModeUnlockables.Watcher);
+        }
+        return false;
+    }
+
     public List<TrapSO> GetTrapUnlockedList() {
         List<TrapSO> allTrapsList = TrapManager.Instance.GetAllTrapSOList();
         List<TrapSO> allTrapsUnlockedList = new List<TrapSO>();
