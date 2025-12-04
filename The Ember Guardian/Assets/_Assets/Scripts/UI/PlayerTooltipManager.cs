@@ -78,33 +78,30 @@ public class PlayerTooltipManager : MonoBehaviour
         selectOtherDogTooltipShown = ES3.Load("selectOtherDogTooltipShown", false);
         prepareSwapDogTooltip = ES3.Load("prepareSwapDogTooltip", false);
 
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
-
-            rifleText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
-            rifleText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_rifleText2");
-            shotgunText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
-            shotgunText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_shotgunText2");
-            smgText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
-            smgText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_smgText2");
-            sniperText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
-            sniperText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_sniperText2");
-            AAGunText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
-            AAGunText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_AAGunText2");
-            AssaultRifleText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
-            AssaultRifleText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_AssaultRifleText2");
-            GrenadeLauncherText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
-            GrenadeLauncherText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_GrenadeLauncherText2");
-            LMGText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
-            LMGText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_LMGText2");
-            MinigunText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
-            MinigunText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_MinigunText2");
-            PistolText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
-            PistolText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_PistolText2");
-            RevolverText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
-            RevolverText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_RevolverText2");
-            RocketLauncherText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
-            RocketLauncherText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_RocketLauncherText2");
-        }
+        rifleText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+        rifleText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_rifleText2");
+        shotgunText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+        shotgunText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_shotgunText2");
+        smgText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+        smgText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_smgText2");
+        sniperText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+        sniperText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_sniperText2");
+        AAGunText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+        AAGunText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_AAGunText2");
+        AssaultRifleText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+        AssaultRifleText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_AssaultRifleText2");
+        GrenadeLauncherText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+        GrenadeLauncherText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_GrenadeLauncherText2");
+        LMGText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+        LMGText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_LMGText2");
+        MinigunText1 = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+        MinigunText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_MinigunText2");
+        PistolText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+        PistolText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_PistolText2");
+        RevolverText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+        RevolverText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_RevolverText2");
+        RocketLauncherText1 = LocalizationManager.Instance.GetLocalizedText("menu_press");
+        RocketLauncherText2 = LocalizationManager.Instance.GetLocalizedText("tooltip_RocketLauncherText2");
     }
 
     private void ParticleCollision_OnAnyParticleHitBarricade(object sender, System.EventArgs e) {

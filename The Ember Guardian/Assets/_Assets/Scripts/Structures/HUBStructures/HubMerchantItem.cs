@@ -235,6 +235,18 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     protected void UpdateItemCost() {
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            if(greenGemCostList.Count == 0 && redGemCostList.Count == 0 && yellowGemCostList.Count == 0 && blueGemCostList.Count == 0 && purpleGemCostList.Count == 0 && cyanGemCostList.Count == 0) {
+                redGemCost = Mathf.Max(greenGemCost, redGemCost, yellowGemCost, blueGemCost, purpleGemCost, cyanGemCost);
+                greenGemCost = 0;
+                yellowGemCost = 0;
+                blueGemCost = 0;
+                purpleGemCost = 0;
+                cyanGemCost = 0;
+                canBuyItem = CanBuyItem();
+                return;
+            }
+        }
 
         if (greenGemCostList != null && greenGemCostList.Count > itemLevel) {
             greenGemCost = greenGemCostList[itemLevel];

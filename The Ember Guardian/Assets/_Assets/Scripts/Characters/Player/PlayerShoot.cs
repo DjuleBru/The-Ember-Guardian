@@ -472,7 +472,15 @@ public class PlayerShoot : MonoBehaviour
         OnSecondaryWeaponChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public void ReplaceHeldWeaponSO(GunSO gunSO) {
+    public void PickUpWeapon(GunSO gunSO) {
+        if(canHold2Guns && secondayGunSO == null) {
+            SetSecondaryWeaponSO(gunSO);
+        } else {
+            ReplaceHeldWeaponSO(gunSO);
+        }
+    }
+
+    private void ReplaceHeldWeaponSO(GunSO gunSO) {
         if (replacedGunSOList.Contains(gunSO)) {
             replacedGunSOList.Remove(gunSO);
         }

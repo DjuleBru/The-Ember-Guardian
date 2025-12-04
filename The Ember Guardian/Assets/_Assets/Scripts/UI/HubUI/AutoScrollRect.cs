@@ -6,18 +6,18 @@ using UnityEngine.UI;
 
 public class AutoScrollRect : MonoBehaviour {
 
-    [SerializeField] private bool autoScrollWithMouse = false;
-    [SerializeField] private bool doNotLerp = false;
+    [SerializeField] protected bool autoScrollWithMouse = false;
+    [SerializeField] protected bool doNotLerp = false;
 
-    private ScrollRect scrollRect;
-    private RectTransform hoveredButtonUI;
-    private RectTransform previousSelectedButtonUI;
-    private float smoothSpeed = 2f;
+    protected ScrollRect scrollRect;
+    protected RectTransform hoveredButtonUI;
+    protected RectTransform previousSelectedButtonUI;
+    protected float smoothSpeed = 2f;
 
-    private EventSystem eventSystem;
+    protected EventSystem eventSystem;
 
-    private RectTransform manualTarget;
-    private bool manualScrollRequest = false;
+    protected RectTransform manualTarget;
+    protected bool manualScrollRequest = false;
 
     void Start() {
         eventSystem = EventSystem.current;
@@ -58,7 +58,7 @@ public class AutoScrollRect : MonoBehaviour {
         }
     }
 
-    private void AdjustScrollPosition() {
+    protected virtual void AdjustScrollPosition() {
         float contentWidth = scrollRect.content.rect.width;
         float contentHeight = scrollRect.content.rect.height;
         float viewportWidth = scrollRect.viewport.rect.width;
@@ -75,7 +75,6 @@ public class AutoScrollRect : MonoBehaviour {
 
         float normalizedPositionX = Mathf.Clamp01((centeredPositionX + contentWidth / 2f) / (contentWidth - viewportWidth));
         float normalizedPositionY = Mathf.Clamp01((centeredPositionY + contentHeight / 2f) / (contentHeight - viewportHeight));
-
         if(doNotLerp) {
             scrollRect.verticalNormalizedPosition = normalizedPositionY;
         } else {
@@ -92,7 +91,7 @@ public class AutoScrollRect : MonoBehaviour {
 
     }
 
-    private float CalculateNormalizedX(RectTransform target) {
+    protected float CalculateNormalizedX(RectTransform target) {
         float contentWidth = scrollRect.content.rect.width;
         float viewportWidth = scrollRect.viewport.rect.width;
 
@@ -106,7 +105,7 @@ public class AutoScrollRect : MonoBehaviour {
         return Mathf.Clamp01((centeredX + contentWidth / 2f) / (contentWidth - viewportWidth));
     }
 
-    private bool ReachedTargetPosition() {
+    protected bool ReachedTargetPosition() {
         float targetX = CalculateNormalizedX(previousSelectedButtonUI);
         float delta = Mathf.Abs(scrollRect.horizontalNormalizedPosition - targetX);
         return delta < 0.01f;
@@ -116,7 +115,7 @@ public class AutoScrollRect : MonoBehaviour {
         manualTarget = target;
         manualScrollRequest = true;
     }
-    private bool IsChildOfScrollContent(GameObject obj) {
+    protected bool IsChildOfScrollContent(GameObject obj) {
         return obj.transform.IsChildOf(transform);
     }
 }

@@ -93,6 +93,9 @@ public class DogStats : MonoBehaviour {
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
             Dog.Instance.SetDogType(HordeModeCustomizationManager.Instance.GetSelectedDogType());
+            germanShepherdBiteAbilityUnlocked = true;
+            retreiverBiteAbilityUnlocked = true;
+            darkCompanionBiteAbilityUnlocked = true;
             return;
         } ;
 

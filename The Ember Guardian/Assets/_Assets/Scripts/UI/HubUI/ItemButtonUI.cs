@@ -66,7 +66,6 @@ public class ItemButtonUI : ButtonUI {
     public static event EventHandler OnAnyHubMerchantItemTryBuyMaxedItem;
 
     public void InitializeItemButtonUI() {
-        Debug.Log("InitializeItemButtonUI");
         button = GetComponent<Button>();
         hubMerchantItem = GetComponent<HubMerchantItem>();
 
@@ -766,7 +765,6 @@ public class ItemButtonUI : ButtonUI {
         if (lockHoverInteractions) return;
         if (!GameInput.Instance.IsUsingGamepad()) return;
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
-
         if (this == itemButtonUI) {
             itemSelected = true;
             descriptionCard.gameObject.SetActive(true);
@@ -838,11 +836,16 @@ public class ItemButtonUI : ButtonUI {
 
     public Vector2 GetLocalPosition() {
         if(isTreeChild) {
-            return treeShowHide.GetComponent<RectTransform>().localPosition;
+            return transform.parent.GetComponent<RectTransform>().localPosition;
         } else {
             return GetComponent<RectTransform>().localPosition;
         }
     }
+
+    public void ShowTree() {
+        treeShowHide.ShowTree();
+    }
+
     protected override void OnDestroy() {
         base.OnDestroy();
 

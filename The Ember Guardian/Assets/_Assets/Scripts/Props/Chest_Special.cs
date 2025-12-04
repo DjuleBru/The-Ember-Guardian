@@ -78,7 +78,7 @@ public class Chest_Special : Chest
 
         if (chestType == ChestType.weaponChest) {
 
-            PlayerShoot.Instance.ReplaceHeldWeaponSO(gunSOInChest);
+            PlayerShoot.Instance.PickUpWeapon(gunSOInChest);
             CheckUnlockNewWeapon();
             OnAnyNewWeaponFound?.Invoke(this, EventArgs.Empty);
 

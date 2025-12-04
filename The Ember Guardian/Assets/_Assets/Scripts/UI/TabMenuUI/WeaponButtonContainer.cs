@@ -35,6 +35,8 @@ public class WeaponButtonContainer : MonoBehaviour
 
         bool secondaryWeaponUnlocked = PlayerStats.Instance.GetCanHold2WeaponsUnlocked();
 
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) secondaryWeaponUnlocked = true;
+
         if (secondaryWeaponUnlocked) {
             ActivateSecondaryWeaponSlot();
         }
