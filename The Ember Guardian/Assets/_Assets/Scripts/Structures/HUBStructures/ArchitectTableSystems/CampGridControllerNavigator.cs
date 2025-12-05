@@ -127,6 +127,9 @@ public class CampGridControllerNavigator : MonoBehaviour
     }
 
     private void GameInput_OnPlayerNavigateUIPerformed(object sender, System.EventArgs e) {
+        if (EventSystem.current == null)
+            return;
+
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
             if (!HordeModeUI.Instance.GetCustomizeCampPanelOpen()) return;
         }
@@ -157,6 +160,9 @@ public class CampGridControllerNavigator : MonoBehaviour
             }
             else {
                 GameObject selected = EventSystem.current.currentSelectedGameObject;
+                if (EventSystem.current.currentSelectedGameObject == null)
+                    return;
+
                 if (selected == null) {
                     StopNavigation();
                     return;
@@ -225,4 +231,9 @@ public class CampGridControllerNavigator : MonoBehaviour
         }
     }
 
+    private void OnDestroy() {
+
+        GameInput.Instance.OnPlayerNavigateUIPerformed -= GameInput_OnPlayerNavigateUIPerformed;
+        GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
+    }
 }

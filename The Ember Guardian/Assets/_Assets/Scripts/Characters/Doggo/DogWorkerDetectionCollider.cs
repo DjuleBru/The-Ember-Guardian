@@ -10,18 +10,13 @@ public class DogWorkerDetectionCollider : MonoBehaviour
 
     private bool retreiverSelected;
     private bool buffWorkersUnlocked;
-    private float buffWorkersAmount;
-    private float buffWorkersRadius;
 
     private void Start() {
         circleCollider = GetComponent<CircleCollider2D>();
 
         retreiverSelected = Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver;
         buffWorkersUnlocked = DogStats.Instance.GetRetreiverBuffWorkersAbilityUnlocked();
-        buffWorkersAmount = DogStats.Instance.GetRetreiverBuffWorkersAmount()/100f;
-        buffWorkersRadius = DogStats.Instance.GetRetreiverBuffWorkersRadius();
-
-        circleCollider.radius = buffWorkersRadius;
+        circleCollider.radius = DogStats.Instance.GetRetreiverBuffWorkersRadius();
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -32,13 +27,14 @@ public class DogWorkerDetectionCollider : MonoBehaviour
         if (worker != null && !workersInTriggerArea.Contains(worker)) {
 
             workersInTriggerArea.Add(worker);
-            worker.GetComponent<WorkerAttack>().BuffAttackSpeed(buffWorkersAmount);
+            worker.GetComponent<WorkerAttack>().BuffAttackSpeed(DogStats.Instance.GetRetreiverBuffWorkersAmount() / 100f);
+            circleCollider.radius = DogStats.Instance.GetRetreiverBuffWorkersRadius();
         }
 
 
         SpecialTower_Manner manner = collision.GetComponent<SpecialTower_Manner>();
         if (manner != null && !mannersBuffed.Contains(manner)) {
-            manner.BuffCooldownTime(buffWorkersAmount);
+            manner.BuffCooldownTime(DogStats.Instance.GetRetreiverBuffWorkersAmount() / 100f);
             mannersBuffed.Add(manner);
         }
     }
@@ -50,14 +46,14 @@ public class DogWorkerDetectionCollider : MonoBehaviour
         if (worker != null && workersInTriggerArea.Contains(worker)) {
 
             workersInTriggerArea.Remove(worker);
-            worker.GetComponent<WorkerAttack>().DebuffAttackSpeed(buffWorkersAmount);
+            worker.GetComponent<WorkerAttack>().DebuffAttackSpeed(DogStats.Instance.GetRetreiverBuffWorkersAmount() / 100f);
 
         }
 
 
         SpecialTower_Manner manner = collision.GetComponent<SpecialTower_Manner>();
         if (manner != null && mannersBuffed.Contains(manner)) {
-            manner.DebuffCooldownTime(buffWorkersAmount);
+            manner.DebuffCooldownTime(DogStats.Instance.GetRetreiverBuffWorkersAmount() / 100f);
             mannersBuffed.Remove(manner);
         }
     }

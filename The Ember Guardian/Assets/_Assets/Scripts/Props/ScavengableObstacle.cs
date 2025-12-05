@@ -43,6 +43,7 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
     private int health;
     private int hitsTaken;
     private bool depleted;
+    private bool dead;
     private bool markedToScavenge;
     private bool scavengingActive = true;
 
@@ -171,6 +172,10 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
     }
 
     public void Die(Transform damageSource = null) {
+        Debug.Log("dead " + dead);
+        if (dead) return;
+
+        dead = true;
         OnScavengableDepleted?.Invoke(this, EventArgs.Empty);
         BuildObstacle();
         UnassignAllMiners();

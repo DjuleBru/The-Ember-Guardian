@@ -17,6 +17,7 @@ public class WorkerJob : MonoBehaviour
     protected Creature closestCreature;
     protected Creature targetCreature;
     protected Creature aggroedCreature;
+    protected Vector3 safePosition;
 
     protected WorkerDetectionCollider workerDetectionCollider;
 
@@ -124,6 +125,9 @@ public class WorkerJob : MonoBehaviour
 
     protected bool CheckBlockedByCreature() {
         if (closestCreature != null) {
+
+            if (Mathf.Abs(closestCreature.transform.position.x - transform.position.x) > distanceToFleeFromCreature - .5f) return false;
+
             return true;
         }
         else {
@@ -144,7 +148,7 @@ public class WorkerJob : MonoBehaviour
                 direction = 1;
             }
 
-            Vector3 safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToFleeFromCreature, 0, 0);
+            safePosition = new Vector3(closestCreature.transform.position.x + direction * distanceToFleeFromCreature, 0, 0);
             mobMovement.SetMoveTarget(safePosition);
             workerAttack.RemoveAttackTarget();
             return;

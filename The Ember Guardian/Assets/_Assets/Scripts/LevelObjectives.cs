@@ -86,7 +86,6 @@ public class LevelObjectives : MonoBehaviour
 
         if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindWatcherArtifact) {
             UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += UICurrencyManager_OnCurrencyCollected;
-            PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
 
             if (EndLevelArea.Instance != null) {
                 EndLevelArea.Instance.OnEndLevelFireLit += EndLevelArea_OnEndLevelFireLit;

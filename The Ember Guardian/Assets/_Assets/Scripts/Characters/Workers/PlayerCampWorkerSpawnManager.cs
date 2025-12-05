@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerCampWorkerSpawnManager : MonoBehaviour
 {
     private int initialWorkersSpawned;
-    private int emberlingsArrivals;
 
     private int dayIndex = 0;
 
@@ -16,7 +15,6 @@ public class PlayerCampWorkerSpawnManager : MonoBehaviour
         DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
 
         initialWorkersSpawned = WorkerStats.Instance.GetInitialEmberlings();
-        emberlingsArrivals = (int)WorkerStats.Instance.GetEmberlingsArrivalsNumber();
 
         if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
         for(int i = 0; i < initialWorkersSpawned; i++) {
@@ -35,7 +33,8 @@ public class PlayerCampWorkerSpawnManager : MonoBehaviour
         }
     }
     private IEnumerator SpawnArrivalEmberlings() {
-        for(int i = 0; i < emberlingsArrivals; i++) {
+        int emberlingsArrivals = (int)WorkerStats.Instance.GetEmberlingsArrivalsNumber();
+        for (int i = 0; i < emberlingsArrivals; i++) {
             float randomizer = Random.Range(-1f, 1f);
             Vector3 positionRandomized = Vector3.zero;
 

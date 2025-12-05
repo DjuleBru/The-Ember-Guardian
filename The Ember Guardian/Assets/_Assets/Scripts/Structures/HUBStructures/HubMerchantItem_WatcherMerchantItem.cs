@@ -525,6 +525,31 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
         }
     }
 
+    public override void LoadItemStatus_HodeMode() {
+
+        if(watcherItemType == WatcherItemType.MinerShrine) {
+            if(HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.MinerShrine)) {
+                itemBought = true;
+                itemUnlocked = true;
+            }
+        }
+
+        if (watcherItemType == WatcherItemType.EngineerShrine) {
+            if (HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.EngineerShrine)) {
+                itemBought = true;
+                itemUnlocked = true;
+            }
+        }
+
+        if (watcherItemType == WatcherItemType.GuardShrine) {
+            if (HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.GuardShrine)) {
+                itemBought = true;
+                itemUnlocked = true;
+            }
+        }
+
+        base.LoadItemStatus_HodeMode();
+    }
 
     public WatcherItemCategory GetWatcherItemCategory() {
         return watcherItemCategory;

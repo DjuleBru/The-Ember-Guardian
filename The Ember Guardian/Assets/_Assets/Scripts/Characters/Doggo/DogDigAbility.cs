@@ -14,9 +14,6 @@ public class DogDigAbility : MonoBehaviour
     private bool sniffing;
 
     private float digTimer;
-    private float digCooldown;
-    private float digProbability;
-    private float digDoubleProbability;
 
     public event EventHandler OnSniffStart;
     public static event EventHandler OnAnyResourceDug;
@@ -30,11 +27,7 @@ public class DogDigAbility : MonoBehaviour
 
         digAbilityUnlocked = DogStats.Instance.GetGermanShepherdDigResourceAbilityUnlocked();
 
-        digCooldown = DogStats.Instance.GetGermanShepherdDigResourceCooldown();
-        digProbability = DogStats.Instance.GetGermanShepherdDigResourceProbility()/100f;
-        digDoubleProbability = DogStats.Instance.GetGermanShepherdDigResourceDoubleProbability()/100f;
-
-        digTimer = digCooldown;
+        digTimer = DogStats.Instance.GetGermanShepherdDigResourceCooldown();
     }
 
     private void DogAnimator_OnDogSniffedEnd(object sender, EventArgs e) {
@@ -62,7 +55,7 @@ public class DogDigAbility : MonoBehaviour
         if (digTimer < 0) {
             sniffing = true;
             OnSniffStart?.Invoke(this, EventArgs.Empty);
-            digTimer = digCooldown;
+            digTimer = DogStats.Instance.GetGermanShepherdDigResourceCooldown();
             return;
         }
 
@@ -76,12 +69,12 @@ public class DogDigAbility : MonoBehaviour
 
         int bigBlueOrbDiggedOut = UnityEngine.Random.Range(0, 2);
         int smallBlueOrbDiggedOut = UnityEngine.Random.Range(0, 2);
-        if (randomNumber < digProbability) {
+        if (randomNumber < DogStats.Instance.GetGermanShepherdDigResourceProbility() / 100f) {
             // Dig successful ! 
 
             float randomNumber2 = UnityEngine.Random.Range(0f, 1f);
 
-            if (randomNumber2 < digDoubleProbability) {
+            if (randomNumber2 < DogStats.Instance.GetGermanShepherdDigResourceDoubleProbability() / 100f) {
                 // Double dig successful ! 
 
                 bigBlueOrbDiggedOut *= 2;

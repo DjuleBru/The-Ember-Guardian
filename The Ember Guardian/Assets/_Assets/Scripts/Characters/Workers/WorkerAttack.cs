@@ -19,6 +19,7 @@ public class WorkerAttack : MobAttack
 
     private float initialProbabilityToHaveHomingProjectileOnCreature;
     private float probabilityToHaveHomingProjectileOnCreature = .6f;
+    private bool homingArrows;
 
 
     protected override void Awake() {
@@ -27,19 +28,19 @@ public class WorkerAttack : MobAttack
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
     }
 
-    protected void Start() {
-        hunterAnimalAttackPointRandomizer = WorkerStats.Instance.GetHunterAccuracy();
-        float hunterAccuracyBuff = WorkerStats.Instance.GetHunterAccuracyBuff();
+    private void Start() {
+        WorkerStats.Instance.OnAttackParameterChanged += WorkerStats_OnAttackParameterChanged;
+    }
 
-        probabilityToHaveHomingProjectileOnCreature *= (1 + hunterAccuracyBuff / 200);
-        if(probabilityToHaveHomingProjectileOnCreature > .9f) {
-            probabilityToHaveHomingProjectileOnCreature = .9f;
-        }
-
-        initialProbabilityToHaveHomingProjectileOnCreature = probabilityToHaveHomingProjectileOnCreature;
+    private void WorkerStats_OnAttackParameterChanged(object sender, EventArgs e) {
+        RefreshAttackParameters();
     }
 
     private void WorkerAI_OnJobChanged(object sender, System.EventArgs e) {
+        RefreshAttackParameters();
+    }
+
+    private void RefreshAttackParameters() {
         if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
             isProjectileAttack = true;
 
@@ -72,6 +73,17 @@ public class WorkerAttack : MobAttack
 
     public override void Attack() {
         if (attackTargetIDamageable is Creature) {
+
+            float hunterAccuracyBuff = WorkerStats.Instance.GetHunterAccuracyBuff();
+            probabilityToHaveHomingProjectileOnCreature *= (1 + hunterAccuracyBuff / 200);
+            if (probabilityToHaveHomingProjectileOnCreature > .9f) {
+                probabilityToHaveHomingProjectileOnCreature = .9f;
+            }
+
+            if(homingArrows) {
+                probabilityToHaveHomingProjectileOnCreature = 1f;
+            }
+
             homingProjectile = UnityEngine.Random.value < probabilityToHaveHomingProjectileOnCreature;
         }
         else {
@@ -83,7 +95,7 @@ public class WorkerAttack : MobAttack
 
     protected override Vector3 GetEndPointRandomOffstetValue() {
 
-        
+        hunterAnimalAttackPointRandomizer = WorkerStats.Instance.GetHunterAccuracy();
         float randomized = UnityEngine.Random.Range(-hunterAnimalAttackPointRandomizer, hunterAnimalAttackPointRandomizer);
 
         if (homingProjectile) {
@@ -94,11 +106,12 @@ public class WorkerAttack : MobAttack
     }
 
     public void SetHomingArrows() {
-        probabilityToHaveHomingProjectileOnCreature = 1f;
+        homingArrows = true;
     }
 
     public void ResetHomingArrowsProbability() {
-        probabilityToHaveHomingProjectileOnCreature = 1f;
+        homingArrows = false;
+
     }
 
 }

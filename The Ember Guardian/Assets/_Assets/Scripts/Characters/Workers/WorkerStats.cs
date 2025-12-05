@@ -50,6 +50,8 @@ public class WorkerStats : MonoBehaviour
     private float minerPickaxeLuckyProb;
     private float minerMoveSpeedBuff;
 
+    public event EventHandler OnMaxHealthChanged;
+    public event EventHandler OnAttackParameterChanged;
     public event EventHandler OnInteractionsWithWorkersUnlocked;
     
     private void Awake() {
@@ -251,31 +253,41 @@ public class WorkerStats : MonoBehaviour
 
     public void SetHunterHealthBuff(int hunterHealthBuff) {
         this.hunterHealthBuff = hunterHealthBuff;
+        OnMaxHealthChanged?.Invoke(this, EventArgs.Empty);
     }
     public void SetGuardHealthBuff(int guardHealthBuff) {
         this.guardHealthBuff = guardHealthBuff;
+        OnMaxHealthChanged?.Invoke(this, EventArgs.Empty);
     }
     public void SetMinerHealthBuff(int minerHealthBuff) {
         this.minerHealthBuff = minerHealthBuff;
+        OnMaxHealthChanged?.Invoke(this, EventArgs.Empty);
     }
+
     public void SetHunterDamageBuff(int hunterDamageBuff) {
         this.hunterDamageBuff = hunterDamageBuff;
+        OnAttackParameterChanged?.Invoke(this, EventArgs.Empty);
     }
     public void SetGuardDamageBuff(int guardDamageBuff) {
         this.guardDamageBuff = guardDamageBuff;
+        OnAttackParameterChanged?.Invoke(this, EventArgs.Empty);
     }
     public void SetMinerDamageBuff(int minerDamageBuff) {
         this.minerDamageBuff = minerDamageBuff;
+        OnAttackParameterChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetHunterAttackCooldownBuff(float hunterAttackCooldownBuff) {
         this.hunterAttackCooldownBuff = hunterAttackCooldownBuff;
+        OnAttackParameterChanged?.Invoke(this, EventArgs.Empty);
     }
     public void SetGuardAttackCooldownBuff(float guardAttackCooldownBuff) {
         this.guardAttackCooldownBuff = guardAttackCooldownBuff;
+        OnAttackParameterChanged?.Invoke(this, EventArgs.Empty);
     }
     public void SetMinerAttackCooldownBuff(float minerAttackCooldownBuff) {
         this.minerAttackCooldownBuff = minerAttackCooldownBuff;
+        OnAttackParameterChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetHunterMoveSpeedBuff(float hunterMoveSpeedBuff) {

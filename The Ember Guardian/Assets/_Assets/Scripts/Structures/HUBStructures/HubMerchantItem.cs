@@ -476,12 +476,8 @@ public class HubMerchantItem : MonoBehaviour
         return maxItemLevel;
     }
 
-    public void LoadItemStatus_Batch(bool hordeModeMerchant = false) {
+    public void LoadItemStatus_Batch() {
         var key = GetItemType() + "_Data";
-
-        if(hordeModeMerchant) {
-            key = GetItemType() + "_HordeModeData";
-        }
 
         if(isBoughtAtStart) {
             itemBought = true;
@@ -517,6 +513,18 @@ public class HubMerchantItem : MonoBehaviour
                 int maxItemLevel = Mathf.Max(linkedStatModifierSO.blueGemCostList.Count, linkedStatModifierSO.redGemCostList.Count, linkedStatModifierSO.yellowGemCostList.Count, linkedStatModifierSO.purleGemCostList.Count, linkedStatModifierSO.cyanGemCostList.Count, linkedStatModifierSO.greenGemCostList.Count);
                 if(itemLevel > maxItemLevel) { itemLevel = maxItemLevel; }
             }
+        }
+
+        OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
+    }
+
+    public virtual void LoadItemStatus_HodeMode() {
+        if (isBoughtAtStart) {
+            itemBought = true;
+        }
+
+        if (isUnlockedAtStart) {
+            itemUnlocked = true;
         }
 
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);

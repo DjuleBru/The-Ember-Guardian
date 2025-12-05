@@ -22,17 +22,11 @@ public class DogAI_DarkCompanion : DogAI
     private bool stompAbilityUnlocked;
     private bool laserAbilityReady;
     private bool stompAbilityReady;
-    private float laserAbilityCooldown;
-    private float stompAbilityCooldown;
     private float laserAbilityTimer;
     private float stompAbilityTimer;
     private float biteLaserShotRange = 15f;
-    private int laserAbilityTickDamage;
-    private int stompAbilityDamage;
-    private float laserAbilityTickCooldown;
     private float laserAbilityRange = 6f;
     private float stompAbilityRange = 1f;
-    private float stompStunDuration;
 
     private float minAttackDistance;
 
@@ -51,15 +45,6 @@ public class DogAI_DarkCompanion : DogAI
         stompAbilityUnlocked = DogStats.Instance.GetDarkCompanionStompAbilityUnlocked();
         hasBiteUnlocked = hasBiteUnlocked || laserAbilityUnlocked || stompAbilityUnlocked;
 
-        laserAbilityCooldown = DogStats.Instance.GetDarkCompanionLaserCooldown();
-        stompAbilityCooldown = DogStats.Instance.GetDarkCompanionStompCooldown();
-
-        laserAbilityTickDamage = DogStats.Instance.GetDarkCompanionLaserDamage();
-        stompAbilityDamage = DogStats.Instance.GetDarkCompanionStompDamage();
-        stompStunDuration = DogStats.Instance.GetDarkCompanionStompStunDuration();
-
-        laserAbilityTickCooldown = DogStats.Instance.GetDarkCompanionLaserTickCooldown();
-
         currentAttackAbility = AttackAbility.none;
     }
 
@@ -70,7 +55,7 @@ public class DogAI_DarkCompanion : DogAI
                 stompAbilityTimer -= Time.deltaTime;
                 if (stompAbilityTimer < 0 && currentAttackAbility == AttackAbility.none) {
                     stompAbilityReady = true;
-                    stompAbilityTimer = stompAbilityCooldown;
+                    stompAbilityTimer = DogStats.Instance.GetDarkCompanionStompCooldown();
                     biteRange = stompAbilityRange;
                     minAttackDistance = 0f;
                     currentAttackAbility = AttackAbility.stomp;
@@ -84,7 +69,7 @@ public class DogAI_DarkCompanion : DogAI
 
                 if (laserAbilityTimer < 0 && currentAttackAbility == AttackAbility.none) {
                     laserAbilityReady = true;
-                    laserAbilityTimer = laserAbilityCooldown;
+                    laserAbilityTimer = DogStats.Instance.GetDarkCompanionLaserCooldown();
                     biteRange = laserAbilityRange;
                     minAttackDistance = 3f;
                     currentAttackAbility = AttackAbility.laserContinuous;
@@ -98,7 +83,7 @@ public class DogAI_DarkCompanion : DogAI
             if (!biteReady) {
                 biteTimer -= Time.deltaTime;
                 if (biteTimer < 0 && currentAttackAbility == AttackAbility.none) {
-                    biteTimer = biteCooldown;
+                    biteTimer = DogStats.Instance.GetDarkCompanionBiteCooldown();
                     biteReady = true;
                     minAttackDistance = 5f;
                     currentAttackAbility = AttackAbility.laserShot;
@@ -200,7 +185,7 @@ public class DogAI_DarkCompanion : DogAI
 
         if(currentAttackAbility == AttackAbility.laserShot) {
             Projectile projectile = Instantiate(laserProjectileSO.projectilePrefab, laserProjectileSpawnPosition.position, Quaternion.identity).GetComponent<Projectile>();
-            projectile.ActivateAndInitialize(creature.GetProjectileTarget(), laserProjectileSO, Dog.Instance.transform, biteDamage, Vector3.zero, true);
+            projectile.ActivateAndInitialize(creature.GetProjectileTarget(), laserProjectileSO, Dog.Instance.transform, DogStats.Instance.GetDarkCompanionBiteDamage(), Vector3.zero, true);
         }
 
         if(currentAttackAbility == AttackAbility.laserContinuous) {
@@ -208,7 +193,7 @@ public class DogAI_DarkCompanion : DogAI
             yield return new WaitForEndOfFrame();
             StaticProjectile_ContinuousDamage projectile = Instantiate(laserContinuousStaticProjectilePrefab, transform.position, Quaternion.identity).GetComponent<StaticProjectile_ContinuousDamage>();
             float watchDir = creature.transform.position.x - transform.position.x;
-            projectile.InitializeContinuous(watchDir, null, laserAbilityTickDamage, laserAbilityTickCooldown, true, true);
+            projectile.InitializeContinuous(watchDir, null, DogStats.Instance.GetDarkCompanionLaserDamage(), DogStats.Instance.GetDarkCompanionLaserTickCooldown(), true, true);
         }
 
         if (currentAttackAbility == AttackAbility.stomp) {
@@ -216,8 +201,8 @@ public class DogAI_DarkCompanion : DogAI
             yield return new WaitForEndOfFrame();
             StaticProjectile projectile = Instantiate(shockWaveStaticProjectile, transform.position, Quaternion.identity).GetComponent<StaticProjectile>();
             float watchDir = creature.transform.position.x - transform.position.x;
-            projectile.Initialize(watchDir, null, stompAbilityDamage, true, false);
-            projectile.InitializeStun(stompStunDuration);
+            projectile.Initialize(watchDir, null, DogStats.Instance.GetDarkCompanionStompDamage(), true, false);
+            projectile.InitializeStun(DogStats.Instance.GetDarkCompanionStompStunDuration());
         }
 
         yield return new WaitForSeconds(endAnimationDelay);

@@ -47,6 +47,11 @@ public class ItemButtonUI : ButtonUI {
     [SerializeField] private bool hideItemIconUntilUnlocked;
     [SerializeField] private bool itemUnlockableOnlyInLevel;
 
+    [SerializeField] private bool lockedItem_LockNavigationRight;
+    [SerializeField] private bool lockedItem_LockNavigationLeft;
+    [SerializeField] private bool lockedItem_LockNavigationTop;
+    [SerializeField] private bool lockedItem_LockNavigationBottom;
+
     [SerializeField] private List<ItemButtonUI> itemsToForceUnlockWhenBought = new List<ItemButtonUI>();
     [SerializeField] private ItemButtonUI_ChildTreeShowHide treeShowHide;
     [SerializeField] private bool isTreeParent;
@@ -622,6 +627,7 @@ public class ItemButtonUI : ButtonUI {
         if (!hubMerchantItem.GetItemUnlocked()) {
 
             if (ItemLockedFromOtherMerchantItem() || hideItemIconUntilUnlocked) {
+                LockNavigationForLockedItem();
                 if (lockedFromOtherMerchantImage.gameObject != null) {
                     lockedFromOtherMerchantImage.gameObject.SetActive(true);
                 }
@@ -679,6 +685,24 @@ public class ItemButtonUI : ButtonUI {
             outlineImage.color = outlineUnlockedBuyableColor;
         }
 
+    }
+
+    private void LockNavigationForLockedItem() {
+        Navigation nav = button.navigation;
+
+        if(lockedItem_LockNavigationTop) {
+            nav.selectOnUp = null;
+        }
+        if (lockedItem_LockNavigationBottom) {
+            nav.selectOnDown = null;
+        }
+        if (lockedItem_LockNavigationLeft) {
+            nav.selectOnLeft = null;
+        }
+        if (lockedItem_LockNavigationRight) {
+            nav.selectOnRight = null;
+        }
+        button.navigation = nav;
     }
 
     public void ResetItemStatusVisuals() {

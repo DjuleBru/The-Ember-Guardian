@@ -53,6 +53,8 @@ public class Worker : Mob {
         workerAI.OnJobChanged += WorkerAI_OnJobChanged;
         health = 1;
         initialHealth = health;
+
+        WorkerStats.Instance.OnMaxHealthChanged += WorkerStats_OnMaxHealthChanged;
     }
 
     private void Update() {
@@ -67,6 +69,9 @@ public class Worker : Mob {
                 health = initialHealth;
             }
         }
+    }
+    private void WorkerStats_OnMaxHealthChanged(object sender, EventArgs e) {
+        RefreshHealth();
     }
 
     public void RecruitWorker(bool playSound = true, bool triggerUITextLines = true) {
@@ -243,7 +248,15 @@ public class Worker : Mob {
     }
 
     private void WorkerAI_OnJobChanged(object sender, EventArgs e) {
-        if(workerAI.GetJob() == WorkerAI.JobTypes.guard) {
+        RefreshHealth();
+
+        if (workerAI.GetJob() != WorkerAI.JobTypes.wild && workerAI.GetJob() != WorkerAI.JobTypes.jobless) {
+            WorkerManager.Instance.AutoAssignSideToWorker(this);
+        }
+    }
+
+    private void RefreshHealth() {
+        if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
             health = (int)WorkerStats.Instance.GetGuardHealth();
         }
         if (workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
@@ -260,10 +273,6 @@ public class Worker : Mob {
         }
 
         initialHealth = health;
-        //if (workerAI.GetDebugSpawn()) return;
-        if(workerAI.GetJob() != WorkerAI.JobTypes.wild && workerAI.GetJob() != WorkerAI.JobTypes.jobless) {
-            WorkerManager.Instance.AutoAssignSideToWorker(this);
-        }
     }
 
     public void SetPosition(Vector3 position) {

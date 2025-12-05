@@ -264,9 +264,10 @@ public class HunterJob : WorkerJob {
 
                     blockedByCreaturesTimer -= Time.deltaTime;
                     if(blockedByCreaturesTimer < 0) {
-                        if (!CheckBlockedByCreature()) {
+                        if (!CheckBlockedByCreature() && !CreatureIsTooClose(closestCreature, distanceToFleeFromCreature - .5f)) {
                             ChangeState(HunterState.idle);
                         }
+
                     }
 
                     break;
@@ -851,6 +852,7 @@ public class HunterJob : WorkerJob {
     private void ChangeState(HunterState newState) {
         if (newState == state) return;
 
+        //Debug.Log("ChangeState " + newState);
         previousState = state;
 
         Vector3 targetDestination = mobMovement.transform.position;

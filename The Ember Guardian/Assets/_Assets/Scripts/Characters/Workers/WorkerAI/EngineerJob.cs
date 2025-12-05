@@ -69,8 +69,6 @@ public class EngineerJob : WorkerJob {
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             isNightOrDusk = true;
         }
-
-        turnWrenchDelay = turnWrenchDelay - turnWrenchDelay*WorkerStats.Instance.GetEngineerWrenchSpeedBuff();
     }
 
 
@@ -458,7 +456,7 @@ public class EngineerJob : WorkerJob {
         turnWrenchTimer -= Time.deltaTime;
         if (turnWrenchTimer <= 0) {
             OnEngineerTurnsWrench?.Invoke(this, EventArgs.Empty);
-            turnWrenchTimer = turnWrenchDelay;
+            turnWrenchTimer = turnWrenchDelay - turnWrenchDelay * WorkerStats.Instance.GetEngineerWrenchSpeedBuff();
 
             if (currencyCrafterAssigned.GetCraftedCurrency()) {
                 // Pick up currency only if there is a storage

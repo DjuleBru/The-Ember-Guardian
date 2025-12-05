@@ -82,8 +82,6 @@ public class DogAI : MonoBehaviour
     protected bool running;
     protected float biteTimer;
     protected float biteAnimationDelay = .5f;
-    protected float biteCooldown;
-    protected int biteDamage;
     protected float maxBiteDistance_GermanShepherd = 2f;
 
     public event EventHandler OnStateChanged;
@@ -106,18 +104,7 @@ public class DogAI : MonoBehaviour
 
         hasBiteUnlocked = DogStats.Instance.GetGermanShepherdBiteAbilityUnlocked();
 
-        if(Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd) {
-            biteCooldown = DogStats.Instance.GetGermanShepherdBiteCooldown();
-            biteDamage = DogStats.Instance.GetGermanShepherdBiteDamage();
-        }
-        if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
-            biteCooldown = DogStats.Instance.GetRetreiverBiteCooldown();
-            biteDamage = DogStats.Instance.GetRetreiverBiteDamage();
-        }
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
-            biteCooldown = DogStats.Instance.GetDarkCompanionBiteCooldown();
-            biteDamage = DogStats.Instance.GetDarkCompanionBiteDamage();
-
             creatureBarkDistanceToDog = creatureBarkDistanceToDog_DarkCompanion;
             creatureBarkDistanceToPlayer = creatureBarkDistanceToPlayer_DarkCompanion;
         }
@@ -127,6 +114,34 @@ public class DogAI : MonoBehaviour
         if(DayNightManager.Instance != null) {
             DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         }
+    }
+
+    private int GetBiteDamage() {
+        int biteDamage = 0; 
+        if (Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd) {
+            biteDamage = DogStats.Instance.GetGermanShepherdBiteDamage();
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
+            biteDamage = DogStats.Instance.GetRetreiverBiteDamage();
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
+            biteDamage = DogStats.Instance.GetDarkCompanionBiteDamage();
+        }
+        return biteDamage;
+    }
+    private float GetBiteCooldown() {
+        float biteCooldown = 0;
+
+        if (Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd) {
+            biteCooldown = DogStats.Instance.GetGermanShepherdBiteCooldown();
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
+            biteCooldown = DogStats.Instance.GetRetreiverBiteCooldown();
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
+            biteCooldown = DogStats.Instance.GetDarkCompanionBiteCooldown();
+        }
+        return biteCooldown;
     }
 
     private void Dog_OnDogTypeChanged(object sender, EventArgs e) {
@@ -441,7 +456,7 @@ public class DogAI : MonoBehaviour
         if (!biteReady) {
             biteTimer -= Time.deltaTime;
             if(biteTimer < 0) {
-                biteTimer = biteCooldown;
+                biteTimer = GetBiteCooldown();
                 biteReady = true;
             }
         }
@@ -577,7 +592,7 @@ public class DogAI : MonoBehaviour
                 }
             }
 
-            closestCreature.TakeDamage(biteDamage, transform);
+            closestCreature.TakeDamage(GetBiteDamage(), transform);
         }
 
         dogMovement.SetMoveTarget(transform.position);
