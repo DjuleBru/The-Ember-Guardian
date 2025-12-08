@@ -33,9 +33,9 @@ public class CurrencyStorage : Structure
         base.Start();
         GameInput.Instance.OnCurrencyCollectedFromContainer += GameInput_OnCurrencyCollectedFromContainer;
 
-        Debug.Log("maxCurrencyAmountStored " + maxCurrencyAmountStored);
+        //Debug.Log("maxCurrencyAmountStored " + maxCurrencyAmountStored);
         maxCurrencyAmountStored = maxCurrencyAmountStored + Mathf.RoundToInt(StructureStats.Instance.GetEngineerContainerSizeBuff() * maxCurrencyAmountStored);
-        Debug.Log("NewMaxCurrencyAmountStored " + maxCurrencyAmountStored);
+        //Debug.Log("NewMaxCurrencyAmountStored " + maxCurrencyAmountStored);
     }
 
     protected virtual void GameInput_OnCurrencyCollectedFromContainer(object sender, EventArgs e) {

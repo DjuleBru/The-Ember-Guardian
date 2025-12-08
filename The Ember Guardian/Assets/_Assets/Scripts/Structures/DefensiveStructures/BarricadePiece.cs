@@ -24,9 +24,22 @@ public class BarricadePiece : MonoBehaviour {
     }
 
     private void Start() {
+        StructureStats.Instance.OnStructureStatsUpdated += StructureStats_OnStructureStatsUpdated;
+        RefreshSpikesVisible();
+    }
+
+    private void StructureStats_OnStructureStatsUpdated(object sender, System.EventArgs e) {
         spiked = StructureStats.Instance.GetBarricadesSpiked();
 
-        if(spiked) {
+        if (spiked) {
+            spriteRenderer.sprite = spikedSprite;
+        }
+    }
+
+    private void RefreshSpikesVisible() {
+        spiked = StructureStats.Instance.GetBarricadesSpiked();
+
+        if (spiked) {
             spriteRenderer.sprite = spikedSprite;
         }
     }

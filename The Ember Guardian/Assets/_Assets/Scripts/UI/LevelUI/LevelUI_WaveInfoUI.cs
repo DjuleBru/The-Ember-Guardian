@@ -22,6 +22,16 @@ public class LevelUI_WaveInfoUI : MonoBehaviour
     }
 
     private void Start() {
+        StructureStats.Instance.OnStructureStatsUpdated += StructureStats_OnStructureStatsUpdated;
+        RefreshObservationTowerUnlocks();
+    }
+
+    private void StructureStats_OnStructureStatsUpdated(object sender, System.EventArgs e) {
+        RefreshObservationTowerUnlocks();
+        RefreshWaveInfo();
+    }
+
+    private void RefreshObservationTowerUnlocks() {
         enemyTypesDetectionUnlocked = StructureStats.Instance.GetObservationTowerEnemyTypesDetectionUnlocked();
         enemyAmountDetectionUnlocked = StructureStats.Instance.GetObservationTowerEnemyAmountDetectionUnlocked();
     }

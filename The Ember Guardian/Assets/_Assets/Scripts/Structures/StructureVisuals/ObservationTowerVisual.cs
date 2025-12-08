@@ -31,6 +31,17 @@ public class ObservationTowerVisual : StructureVisual
         observationTower.OnObservationTowerActivated += ObservationTower_OnObservationTowerActivated;
         observationTower.OnObservationTowerDeActivated += ObservationTower_OnObservationTowerDeActivated;
 
+        StructureStats.Instance.OnStructureStatsUpdated += structureStat_OnStructureStatsUpdated;
+
+        RefreshUnlockedFunctionsAndVisuals();
+
+    }
+
+    private void structureStat_OnStructureStatsUpdated(object sender, System.EventArgs e) {
+        RefreshUnlockedFunctionsAndVisuals();
+    }
+
+    private void RefreshUnlockedFunctionsAndVisuals() {
         enemyTypesDetectionUnlocked = StructureStats.Instance.GetObservationTowerEnemyTypesDetectionUnlocked();
         enemyAmountDetectionUnlocked = StructureStats.Instance.GetObservationTowerEnemyAmountDetectionUnlocked();
 

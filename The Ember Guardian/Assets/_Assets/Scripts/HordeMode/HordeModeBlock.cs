@@ -30,6 +30,7 @@ public class HordeModeBlock : MonoBehaviour
 
     [SerializeField] protected BlockSize blockSize;
     [SerializeField] protected Transform gridAndObstacleParent;
+    [SerializeField] protected Transform shopPosition;
     [SerializeField] protected GameObject dayCreatureSpawnerTemplate; // Template de spawner
     [SerializeField] protected float blockWidth = 10f;
     [SerializeField] protected float bridgeWidth = 3f;
@@ -297,12 +298,16 @@ public class HordeModeBlock : MonoBehaviour
     protected void SetSpawnersToCenterPosition() {
         Vector3 localCenterPosition = new Vector3(blockWidth / 2 * direction, 0, 0);
         animalSpawner.transform.localPosition = localCenterPosition;
-        resourceChest.transform.localPosition = localCenterPosition;
+        //resourceChest.transform.localPosition = localCenterPosition;
     }
 
     public void SetShopType(ShopType shopType) {
         Debug.Log("SetShopType " + shopType);
         this.shopType = shopType;
+
+        GameObject shop = HordeModeMapGenerationManager.Instance.GetShopGO(shopType);
+        shop.transform.position = shopPosition.transform.position;
+        shop.SetActive(true);
     }
 
     public float GetSizeRewardMultiplier() {

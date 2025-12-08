@@ -26,8 +26,10 @@ public class DogAI_Retreiver : DogAI {
 
     protected override void Start() {
         base.Start();
+        DogStats.Instance.OnNewAbilityUnlocked += DogStats_OnNewAbilityUnlocked;
         pickUpItemsUnlocked = DogStats.Instance.GetRetreiverPickUpItemsAbilityUnlocked();
     }
+
 
     protected override void Update() {
 
@@ -83,6 +85,9 @@ public class DogAI_Retreiver : DogAI {
             OnDogStartedDroppingCurrency?.Invoke(this, EventArgs.Empty);
         }
 
+    }
+    private void DogStats_OnNewAbilityUnlocked(object sender, EventArgs e) {
+        pickUpItemsUnlocked = DogStats.Instance.GetRetreiverPickUpItemsAbilityUnlocked();
     }
 
     protected void HeadToClosestOrb() {

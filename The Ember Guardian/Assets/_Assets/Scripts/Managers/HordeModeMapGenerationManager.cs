@@ -21,6 +21,12 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
 
     public static HordeModeMapGenerationManager Instance;
 
+    [SerializeField] private GameObject weaponShopGO;
+    [SerializeField] private GameObject dogShopGO;
+    [SerializeField] private GameObject structuresShopGO;
+    [SerializeField] private GameObject workerShopGO;
+    [SerializeField] private GameObject herShopGO;
+
     [Header("Blocks")]
     public List<BlockDefinition> blockDefinitions;
 
@@ -34,6 +40,7 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
 
     private List<HordeModeBlock> leftBlocks = new List<HordeModeBlock>();
     private List<HordeModeBlock> rightBlocks = new List<HordeModeBlock>();
+    private Dictionary<int, ShopType> shopsPerDistanceCache = null;
 
     private int distanceToForceSmallBlocks = 3;
 
@@ -148,38 +155,81 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
 
         AssignDistanceBlockTypesDynamic(dist);
     }
+    private void ComputeShopsPerDistanceCache() {
+        var unlocked = ComputeUnlockedShops();
+        shopsPerDistanceCache = new Dictionary<int, ShopType>();
+
+
+        // Distance 1: Weapons
+        if (unlocked.Contains(ShopType.Weapons))
+            shopsPerDistanceCache[1] = ShopType.Weapons;
+
+
+        // Pool for distances 2..5
+        List<ShopType> pool = new List<ShopType>();
+        foreach (var s in unlocked) {
+            if (s == ShopType.Weapons) continue;
+            pool.Add(s);
+        }
+        pool = pool.OrderBy(_ => Random.value).ToList();
+
+
+        int d = 2;
+        foreach (var shop in pool) {
+            if (d > 5) break;
+            shopsPerDistanceCache[d] = shop;
+            d++;
+        }
+    }
 
     void AssignDistanceBlockTypesDynamic(int dist) {
         Debug.Log("AssignDistanceBlockTypesDynamic " + dist);
         HordeModeBlock left = (leftBlocks.Count >= dist) ? leftBlocks[dist - 1] : null;
         HordeModeBlock right = (rightBlocks.Count >= dist) ? rightBlocks[dist - 1] : null;
 
-        // shops déjà débloqués
-        var unlocked = ComputeUnlockedShops();
-        Dictionary<int, ShopType> shopsPerDistance = new();
-        for (int i = 0; i < unlocked.Count && i < 4; i++)
-            shopsPerDistance[i + 1] = unlocked[i];
+        // --- BUILD OR GET SHOPS PER DISTANCE (cache pour garder la cohérence) ---
+        if (shopsPerDistanceCache == null) {
+            ComputeShopsPerDistanceCache();
+        }
 
-        bool placeShopHere = shopsPerDistance.ContainsKey(dist);
-        ShopType shop = placeShopHere ? shopsPerDistance[dist] : default;
+        bool placeShopHere = shopsPerDistanceCache.ContainsKey(dist);
+        ShopType shop = placeShopHere ? shopsPerDistanceCache[dist] : default;
 
-        // --- assignation shop si les deux côtés existent ---
+        // --- assignation shop si les côtés existent (ou si un seul côté) ---
         HordeModeBlock shopBlock = null;
         HordeModeBlock otherBlock = null;
 
-        if (placeShopHere && left != null && right != null) {
-            if (Random.value < 0.5f) {
-                shopBlock = left;
-                otherBlock = right;
+        if (placeShopHere) {
+            // si les deux côtés existent -> random 50/50
+            if (left != null && right != null) {
+                if (Random.value < 0.5f) {
+                    shopBlock = left;
+                    otherBlock = right;
+                }
+                else {
+                    shopBlock = right;
+                    otherBlock = left;
+                }
             }
             else {
-                shopBlock = right;
-                otherBlock = left;
+                // un seul côté présent -> on prend ce côté
+                if (left != null) {
+                    shopBlock = left;
+                    otherBlock = right; // otherBlock peut être null
+                }
+                else if (right != null) {
+                    shopBlock = right;
+                    otherBlock = left;
+                }
             }
-            shopBlock.SetShopType(shop);
-            shopBlock.AddBlockType(BlockType.Shop);
-        }
 
+            // placer le shop sur shopBlock (si défini)
+            if (shopBlock != null) {
+                shopBlock.SetShopType(shop);
+                if (!shopBlock.HasBlockType(BlockType.Shop))
+                    shopBlock.AddBlockType(BlockType.Shop);
+            }
+        }
 
         // --- DISTANCE 1 ---
         if (dist == 1) {
@@ -211,7 +261,66 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
             return;
         }
 
-        // --- DISTANCE > 5 ---
+        // --- DISTANCE 5 (spécial pour shop <-> mine) ---
+        if (dist == 5) {
+            // Si les deux existent et aucun shopBlock défini (cas : pas de shop prévu), on applique la logique far comme pour >5 (sûr)
+            // Si shopBlock existe, on doit interdire la mine sur le même bloc (on ne fait pas de Remove; on évite d'ajouter une mine sur le même côté),
+            // et on ajoute une Mine automatiquement sur l'autre côté (si l'autre existe) — en vérifiant le débloque minerShrine.
+            // NOTE: on n'enlève jamais de BlockType, juste on ajoute si nécessaire.
+
+            // Si shop à distance 5 et l'autre côté existe -> ajouter Mine sur otherBlock (si autorisé)
+            if (shopBlock != null && otherBlock != null) {
+                // Respecter le fait que Mine n'est possible que si minerShrine débloqué (cohérence avec le reste du code)
+                if (HordeModeProgressionManager.Instance.GetStructureUnlocked(StructureSO.StructureType.minerShrine)) {
+                    if (!otherBlock.HasBlockType(BlockType.Mine)) {
+                        otherBlock.AddBlockType(BlockType.Mine);
+                    }
+                }
+                // NOTE: on évite d'ajouter Mine sur shopBlock (on ne fait pas Remove, simplement on n'ajoute rien)
+            }
+
+            // Si pas de shopBlock (pas de shop prévu à dist 5), on tombe sur la logique "distance >5" équivalente :
+            if (left != null && right != null && shopBlock == null) {
+                AssignFarDistanceTypes(left, right);
+            }
+            else if (left != null || right != null) {
+                HordeModeBlock single = left ?? right;
+
+                if (Random.value < 0.5f) {
+                    AssignSimpleResource(single);
+                }
+                else {
+                    List<BlockType> farAll = new List<BlockType>() {
+                    BlockType.Animals,
+                    BlockType.ResourceChest,
+                    BlockType.CombatOnly,
+                    BlockType.None
+                };
+
+                    if (HordeModeProgressionManager.Instance.GetStructureUnlocked(StructureSO.StructureType.minerShrine)) {
+                        farAll.Add(BlockType.Scavengables);
+                        farAll.Add(BlockType.Mine);
+                    }
+
+                    SetRandomBlockType(single, farAll);
+                }
+            }
+
+            // enfin, chests / fast travel / worker spawner habituels pour dist 5
+            if (left != null) {
+                TryAddChests(left);
+                TryAssignFastTravel(left);
+            }
+            if (right != null) {
+                TryAddChests(right);
+                TryAssignFastTravel(right);
+            }
+
+            TryAssignWorkerSpawner(dist, left, right);
+            return;
+        }
+
+        // --- DISTANCE > 5 (anciennement "distance > 5") ---
         if (left != null && right != null) {
             AssignFarDistanceTypes(left, right);
         }
@@ -226,11 +335,11 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
                 // On utilise la logique far mais sur un seul bloc
 
                 List<BlockType> farAll = new List<BlockType>() {
-                    BlockType.Animals,
-                    BlockType.ResourceChest,
-                    BlockType.CombatOnly,
-                    BlockType.None
-                };
+                BlockType.Animals,
+                BlockType.ResourceChest,
+                BlockType.CombatOnly,
+                BlockType.None
+            };
 
                 if (HordeModeProgressionManager.Instance.GetStructureUnlocked(StructureSO.StructureType.minerShrine)) {
                     farAll.Add(BlockType.Scavengables);
@@ -241,7 +350,7 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
             }
         }
 
-        if(left != null) {
+        if (left != null) {
             TryAddChests(left);
             TryAssignFastTravel(left);
         }
@@ -249,8 +358,11 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
             TryAddChests(right);
             TryAssignFastTravel(right);
         }
+
         TryAssignWorkerSpawner(dist, left, right);
     }
+
+
     private void TryAssignWorkerSpawner(int dist, HordeModeBlock left, HordeModeBlock right) {
 
         // Pas de blocs = rien à faire
@@ -512,5 +624,24 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
 
         // Stabilize medium
         sizeWeights[BlockSize.Medium] *= 1.1f;
+    }
+
+    public GameObject GetShopGO(ShopType shopType) {
+        if(shopType == ShopType.Weapons) {
+            return weaponShopGO;
+        }
+        if (shopType == ShopType.Structures) {
+            return structuresShopGO;
+        }
+        if (shopType == ShopType.Hero) {
+            return herShopGO;
+        }
+        if (shopType == ShopType.Dog) {
+            return dogShopGO;
+        }
+        if (shopType == ShopType.Worker) {
+            return workerShopGO;
+        }
+        return weaponShopGO;
     }
 }

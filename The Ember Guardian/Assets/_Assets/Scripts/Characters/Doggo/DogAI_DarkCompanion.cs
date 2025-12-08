@@ -41,11 +41,18 @@ public class DogAI_DarkCompanion : DogAI
         base.Start();
         biteRange = biteLaserShotRange;
 
+        DogStats.Instance.OnNewAbilityUnlocked += DogStats_OnNewAbilityUnlocked;
+
         laserAbilityUnlocked = DogStats.Instance.GetDarkCompanionLaserAbilityUnlocked();
         stompAbilityUnlocked = DogStats.Instance.GetDarkCompanionStompAbilityUnlocked();
         hasBiteUnlocked = hasBiteUnlocked || laserAbilityUnlocked || stompAbilityUnlocked;
 
         currentAttackAbility = AttackAbility.none;
+    }
+
+    private void DogStats_OnNewAbilityUnlocked(object sender, EventArgs e) {
+        laserAbilityUnlocked = DogStats.Instance.GetDarkCompanionLaserAbilityUnlocked();
+        stompAbilityUnlocked = DogStats.Instance.GetDarkCompanionStompAbilityUnlocked();
     }
 
     protected override void HandleBiteTimer() {

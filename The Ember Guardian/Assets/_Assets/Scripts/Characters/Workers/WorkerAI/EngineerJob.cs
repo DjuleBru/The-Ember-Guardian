@@ -306,7 +306,7 @@ public class EngineerJob : WorkerJob {
         }
 
         assignedStructure = structure;
-        Debug.Log("Assign structure " + structure + " working " + working + " refilling " + refilling);
+        //Debug.Log("Assign structure " + structure + " working " + working + " refilling " + refilling);
 
         if (working) {
             assignedStructure.AssignEngineerWorking(this);

@@ -517,8 +517,8 @@ public class DayNightVisualsManager : MonoBehaviour
         dangerRatio = Mathf.Clamp01((dangerRatio - 1f) / 0.5f);
 
         float animationCurveRatio = sunColorEasyToHardAnimationCurve.Evaluate(dangerRatio);
-        Debug.Log("dangerRatio " + dangerRatio);
-        Debug.Log("animationCurveRation " + animationCurveRatio);
+        //Debug.Log("dangerRatio " + dangerRatio);
+        //Debug.Log("animationCurveRation " + animationCurveRatio);
 
         Color sunColor =  Color.Lerp(sunEasyIncomingWaveColor, sunHardIncomingWaveColor, animationCurveRatio);
 

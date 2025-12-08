@@ -14,9 +14,15 @@ public class DogWorkerDetectionCollider : MonoBehaviour
     private void Start() {
         circleCollider = GetComponent<CircleCollider2D>();
 
+        DogStats.Instance.OnNewAbilityUnlocked += DogStats_OnNewAbilityUnlocked;
+
         retreiverSelected = Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver;
         buffWorkersUnlocked = DogStats.Instance.GetRetreiverBuffWorkersAbilityUnlocked();
         circleCollider.radius = DogStats.Instance.GetRetreiverBuffWorkersRadius();
+    }
+
+    private void DogStats_OnNewAbilityUnlocked(object sender, System.EventArgs e) {
+        buffWorkersUnlocked = DogStats.Instance.GetRetreiverBuffWorkersAbilityUnlocked();
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {

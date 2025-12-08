@@ -502,7 +502,7 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void ActivateStructureSecondaryFunctionInteraction(bool active) {
-        //Debug.Log("ActivateStructureSecondaryFunctionInteraction " + active);
+        Debug.Log(this + " ActivateStructureSecondaryFunctionInteraction " + active);
         if (active) {
             if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.secondaryFunction)) {
                 activeStructureInteractionsTypeList.Add(StructureInteractionType.secondaryFunction);
@@ -556,6 +556,7 @@ public class Structure : MonoBehaviour {
     }
 
     public void SetCurrentStructureInteractionType(StructureInteractionType interactionType, bool forceUpdateUI= false) {
+        Debug.Log(this + " SetCurrentStructureInteractionType " + interactionType);
         currentStructureInteractionType = interactionType;
 
         if(forceUpdateUI) {
@@ -589,7 +590,7 @@ public class Structure : MonoBehaviour {
         return payCurrencyUI;
     }
     public void SetAsWorldStructure(float scaleX) {
-        Debug.Log(this + " SetAsWorldStructure");
+        //Debug.Log(this + " SetAsWorldStructure");
         isWorldStructure = true;
         worldScaleX = scaleX;
     }

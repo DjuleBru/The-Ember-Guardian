@@ -35,6 +35,7 @@ public class CurrencyCrafter : Structure
     public event EventHandler OnCurrencyCraftingEnded;
     public static event EventHandler OnAnyCurrencyCraftingEnded;
     public event EventHandler OnPlayerCollectedCurrency;
+    public event EventHandler OnWorkerCollectedCurrency;
     public static event EventHandler OnPlayerCollectedAnyCurrency;
     public event EventHandler OnMaxCurrencyBatchCraftingStarted;
     public event EventHandler<OnCurrencyInstantiatedEventArgs> OnCurrencyInstantiated;
@@ -53,12 +54,33 @@ public class CurrencyCrafter : Structure
         SetStructurePrimaryFunctionUnlocked(true);
         ActivateStructurePrimaryFunctionInteraction(true);
 
+        StructureStats.Instance.OnStructureStatsUpdated += StructureStats_OnStructureStatsUpdated;
+
         if(!SavingManager_Level.Instance.GetLoadingSavedLevel()) {
             needsRefill = true;
             needsWorking = false;
         }
 
+        if (currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
+            PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+            specialAmmoUnlocked = MetaProgressionManager.Instance.GetSpecialAmmoUnlocked();
+            RefreshSpecialAmmoUnlocked();
+        }
 
+        RefreshStats();
+
+        primaryCurrencyCraftTime = currencyCraftTime;
+        if (useDebugBatchCapacity) {
+            batchCapacity = debugBatchCapacity;
+        }
+
+    }
+
+    private void StructureStats_OnStructureStatsUpdated(object sender, EventArgs e) {
+        RefreshStats();
+    }
+
+    private void RefreshStats() {
         if (currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
             currencyCraftAmount = StructureStats.Instance.GetAmmoCrafterMaxAmmoPerBatch();
             currencyCraftTime = StructureStats.Instance.GetAmmoCrafterSingleAmmoCraftDuration() * currencyCraftAmount;
@@ -78,10 +100,6 @@ public class CurrencyCrafter : Structure
         }
 
         primaryCurrencyCraftTime = currencyCraftTime;
-        if (useDebugBatchCapacity) {
-            batchCapacity = debugBatchCapacity;
-        }
-
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
@@ -263,6 +281,14 @@ public class CurrencyCrafter : Structure
         StartCoroutine(CollectCurrencyFromCrafter(.2f, true, currencyTypeBeingCrafted));
         SetStructurePrimaryFunctionUnlocked(true);
         SetStructureSecondaryFunctionUnlocked(specialAmmoUnlocked);
+
+        if(currencyTypeBeingCrafted == PlayerCurrencies.CurrencyType.ammo_special) {
+            SetCurrentStructureInteractionType(StructureInteractionType.secondaryFunction);
+        } else {
+            SetCurrentStructureInteractionType(StructureInteractionType.primaryFunction);
+        }
+
+        OnWorkerCollectedCurrency?.Invoke(this, EventArgs.Empty);
     }
 
     private IEnumerator CollectCurrencyFromCrafter(float delayBetweenAmmoInstantiation, bool collectedByWorker, PlayerCurrencies.CurrencyType currencyTypeCrafter) {
@@ -372,6 +398,8 @@ public class CurrencyCrafter : Structure
 
     public virtual void SetCurrencyTypeBeingCrafted(PlayerCurrencies.CurrencyType currencyTypeBeingCrafted) {
         this.currencyTypeBeingCrafted = currencyTypeBeingCrafted;
+
+        Debug.Log("SetCurrencyTypeBeingCrafted " + currencyTypeBeingCrafted);
 
         if(currencyTypeBeingCrafted == PlayerCurrencies.CurrencyType.ammo_special) {
             currencyCraftTime = secondaryCurrencyCraftTime;

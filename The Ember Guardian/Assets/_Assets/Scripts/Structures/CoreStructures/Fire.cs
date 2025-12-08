@@ -135,7 +135,7 @@ public class Fire : Structure, IDamageable {
     }
 
     protected override void Start() {
-        LoadStats();
+        RefreshStats();
 
         if(!isHubFire) {
             base.Start();
@@ -152,6 +152,7 @@ public class Fire : Structure, IDamageable {
 
         if (isMainFire) {
             fuelLevel = wildFuelTreshold - 1;
+            StructureStats.Instance.OnStructureStatsUpdated += StructureStats_OnStructureStatsUpdated;
             Player.Instance.OnPlayerBackToTentToRespawn += Player_OnPlayerBackToTentToRespawn;
             PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
             Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
@@ -181,6 +182,11 @@ public class Fire : Structure, IDamageable {
             LevelManager.Instance.OnLevelSuccess += LevelManager_OnLevelSuccess;
         }
     }
+
+    private void StructureStats_OnStructureStatsUpdated(object sender, EventArgs e) {
+        RefreshStats();
+    }
+
     protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
         base.DayNightManager_OnDawnStart(sender, e);
         if(isSecondaryFire && fuelLevel >= 0) {
@@ -221,7 +227,7 @@ public class Fire : Structure, IDamageable {
         SetStructurePrimaryFunctionUnlocked(false);
         OnAnySecondaryFireReset?.Invoke(this, EventArgs.Empty);
     }
-    private void LoadStats() {
+    private void RefreshStats() {
         orbFuelValue = StructureStats.Instance.GetOrbFuelValue();
 
         if(isSecondaryFire) {
@@ -231,6 +237,7 @@ public class Fire : Structure, IDamageable {
         } else {
             fuelDepletionRate = StructureStats.Instance.GetMainFireFuelDepletionRate();
             maxFuelTreshold = StructureStats.Instance.GetMainFireMaxFuelTreshold();
+            currentMaxFuelTreshold = maxFuelTreshold;
         }
     }
 

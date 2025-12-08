@@ -97,11 +97,14 @@ public class DogAnimatorManager : MonoBehaviour {
         DogDigAbility.Instance.OnSniffStart += DogDigAbility_OnSniffStart;
 
         digAbilityUnlocked = DogStats.Instance.GetGermanShepherdDigResourceAbilityUnlocked();
+        DogStats.Instance.OnNewAbilityUnlocked += DogStats_OnNewAbilityUnlocked;
 
         SetDogTypeAnimator();
     }
 
-
+    private void DogStats_OnNewAbilityUnlocked(object sender, EventArgs e) {
+        digAbilityUnlocked = DogStats.Instance.GetGermanShepherdDigResourceAbilityUnlocked();
+    }
 
     private void Update() {
         if (!stomping && !shootingContinuousLaser) {

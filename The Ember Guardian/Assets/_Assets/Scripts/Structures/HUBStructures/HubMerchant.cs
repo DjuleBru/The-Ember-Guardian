@@ -164,7 +164,6 @@ public class HubMerchant : MonoBehaviour
     }
 
     protected void InitializeHordeModeMerchant() {
-        Debug.Log("InitializeHordeModeMerchant");
         merchantUnlocked = HordeModeProgressionManager.Instance.GetMerchantUnlocked(hubMerchantType);
 
         if (!merchantUnlocked) {

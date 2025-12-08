@@ -532,7 +532,22 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
     public override bool GetConstantUnlockDescription() {
         return false;
     }
+    public override void LoadItemStatus_HodeMode() {
 
+        if (architectItemType == ArchitectItemType.SingleOrbCraftDuration) {
+            if (HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.OrbProcessor)) {
+                itemUnlocked = true;
+            }
+        }
+
+        if (architectItemType == ArchitectItemType.ObservationTowerEnemyTypes) {
+            if (HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.ObservationTower)) {
+                itemUnlocked = true;
+            }
+        }
+
+        base.LoadItemStatus_HodeMode();
+    }
     public override string GetItemType() {
         return architectItemType.ToString();
     }

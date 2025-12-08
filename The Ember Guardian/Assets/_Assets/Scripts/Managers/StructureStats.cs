@@ -62,6 +62,8 @@ public class StructureStats : MonoBehaviour
     private bool observationTowerEnemyTypesDetectionUnlocked;
     private bool observationTowerEnemyAmountDetectionUnlocked;
 
+    public event EventHandler OnStructureStatsUpdated;
+
     private void Awake() {
         Instance = this;
         LoadStructureStats();
@@ -235,12 +237,15 @@ public class StructureStats : MonoBehaviour
 
     public void SetMaxFuelTresholdBuff(int maxFuelTresholdBuff) {
         mainFireMaxFuelTreshold = initialMaxFuelTreshold + maxFuelTresholdBuff;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
     public void SetOrbFuelValueBuff(int orbFuelValueBuff) {
         orbFuelValue = initialOrbFuelValue + orbFuelValueBuff;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
     public void SetFuelDepletionRateBuff(float fuelDepletionRateBuff) {
         mainFireFuelDepletionRate = initialFuelDepletionRate + fuelDepletionRateBuff/60f;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
 
@@ -257,9 +262,6 @@ public class StructureStats : MonoBehaviour
         tentHealAmountPerSmallOrb = initialTentHealAmountPerSmallOrb + buffValue;
     }
 
-    public void SetBarricadesSpiked() {
-        barricadesSpiked = true;
-    }
     public void SetStartWithAmmoCrafter() {
         startWithAmmoCrafter = true;
     }
@@ -291,10 +293,15 @@ public class StructureStats : MonoBehaviour
 
     public void SetBarricadeHealthPerCrateBuff(int barricadeHealthPerCrateBuff) {
         barricadeHealthPerCrate = initialBarricadeHealthPerCrate + barricadeHealthPerCrateBuff;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     public bool GetBarricadesSpiked() {
         return barricadesSpiked;
+    }
+    public void SetBarricadesSpiked() {
+        barricadesSpiked = true;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion
@@ -309,6 +316,7 @@ public class StructureStats : MonoBehaviour
     }
     public void SetAmmoCrafterBatchCapacityBuff(int batchCapacityBuff) {
         ammoCrafterBatchCapacity = initialAmmoCrafterBatchCapacity + batchCapacityBuff;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetAmmoCrafterSingleAmmoCraftDuration() {
@@ -319,6 +327,7 @@ public class StructureStats : MonoBehaviour
     }
     public void SetSingleAmmoCraftDurationBuff(int craftingSpeedBuff) {
         singleAmmoCraftDuration = initialSingleAmmoCraftDuration + craftingSpeedBuff;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetAmmoCrafterMaxAmmoPerBatch() {
@@ -329,6 +338,7 @@ public class StructureStats : MonoBehaviour
     }
     public void SetAmmoCrafterMaxAmmoPerBatchBuff(int maxAmmoPerBatchBuff) {
         ammoCrafterMaxAmmoPerBatch = initialAmmoCrafterMaxAmmoPerBatch + maxAmmoPerBatchBuff;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion
@@ -342,6 +352,7 @@ public class StructureStats : MonoBehaviour
     }
     public void SetOrbProcessorBatchCapacityBuff(int batchCapacityBuff) {
         orbProcessorBatchCapacity = initialOrbProcessorBatchCapacity + batchCapacityBuff;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetOrbProcessorSingleOrbCraftDuration() {
@@ -352,6 +363,7 @@ public class StructureStats : MonoBehaviour
     }
     public void SetSingleOrbCraftDurationBuff(int craftingSpeedBuff) {
         singleOrbCraftDuration = initialSingleOrbCraftDuration + craftingSpeedBuff;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetOrbProcessorMaxOrbsPerBatch() {
@@ -362,6 +374,7 @@ public class StructureStats : MonoBehaviour
     }
     public void SetOrbProcessorMaxOrbsPerBatchBuff(int maxAmmoPerBatchBuff) {
         orbProcessorMaxOrbsPerBatch = initialOrbProcessorMaxOrbsPerBatch + maxAmmoPerBatchBuff;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion
@@ -376,9 +389,11 @@ public class StructureStats : MonoBehaviour
 
     public void SetObservationTowerEnemyTypesDetectionUnlocked() {
         observationTowerEnemyTypesDetectionUnlocked = true;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
     public void SetObservationTowerEnemyAmountDetectionUnlocked() {
         observationTowerEnemyAmountDetectionUnlocked = true;
+        OnStructureStatsUpdated?.Invoke(this, EventArgs.Empty);
     }
 
     public float GetEngineerContainerSizeBuff() {

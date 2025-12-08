@@ -40,7 +40,15 @@ public class Barricade : Structure, IDamageable {
         base.Start();
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
+        StructureStats.Instance.OnStructureStatsUpdated += StructureStats_OnStructureStatsUpdated;
+        RefreshBarricadeStats();
+    }
 
+    private void StructureStats_OnStructureStatsUpdated(object sender, EventArgs e) {
+        RefreshBarricadeStats();
+    }
+
+    private void RefreshBarricadeStats() {
         barricadeSpiked = StructureStats.Instance.GetBarricadesSpiked();
         healthPerCrate = StructureStats.Instance.GetBarricadeHealthPerCrate();
         barricadeMaxHealth = level1CrateAmount * healthPerCrate;

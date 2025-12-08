@@ -75,10 +75,13 @@ public class StructureUI_Fire : StructureUI
     protected override void Start() {
         base.Start();
 
+        StructureStats.Instance.OnStructureStatsUpdated += StructureStats_OnStructureStatsUpdated;
+
         RefreshRepairOrRebuildSecondaryFireUI();
         fire.OnPlayerTriggeredOut += Fire_OnPlayerTriggeredOut;
         fire.OnFuelLevelLoaded += Fire_OnFuelLevelLoaded;
     }
+
 
     private void Fire_OnFuelLevelLoaded(object sender, EventArgs e) {
 
@@ -142,6 +145,15 @@ public class StructureUI_Fire : StructureUI
 
             currentBarAmount = targetBarAmount;
         }
+    }
+
+    private void StructureStats_OnStructureStatsUpdated(object sender, EventArgs e) {
+        RefreshBarState();
+        if(refillProgressBarCoroutine != null) {
+            StopCoroutine(refillProgressBarCoroutine);
+            refillProgressBarCoroutine = null;
+        }
+        refillProgressBarCoroutine = StartCoroutine(RefillProgressBar(targetBarAmount));
     }
 
     private void RefreshRepairOrRebuildSecondaryFireUI() {
