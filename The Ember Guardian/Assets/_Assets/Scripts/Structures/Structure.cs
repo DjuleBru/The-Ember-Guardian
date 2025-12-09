@@ -131,7 +131,7 @@ public class Structure : MonoBehaviour {
         OnAnyStructureUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
-    public void SetStructureLevel(int structureLevel) {
+    public virtual void SetStructureLevel(int structureLevel) {
         if (structureLevel == 1) return;
 
         this.structureLevel = structureLevel;
@@ -556,7 +556,7 @@ public class Structure : MonoBehaviour {
     }
 
     public void SetCurrentStructureInteractionType(StructureInteractionType interactionType, bool forceUpdateUI= false) {
-        Debug.Log(this + " SetCurrentStructureInteractionType " + interactionType);
+        //Debug.Log(this + " SetCurrentStructureInteractionType " + interactionType);
         currentStructureInteractionType = interactionType;
 
         if(forceUpdateUI) {

@@ -146,6 +146,32 @@ public class WindManager : MonoBehaviour
         previousWindStrength = currentWindStrength;
     }
 
+    public void SetRandomWindStrength() {
+        RandomizeWindDir();
+        List<WindStrength> allStrengths = new List<WindStrength>() { WindStrength.soft, WindStrength.medium, WindStrength.strong, WindStrength.extreme };
+
+        WindStrength newWindStrength = allStrengths[UnityEngine.Random.Range(0, allStrengths.Count)];
+
+        if (previousWindStrength == WindStrength.strong || previousWindStrength == WindStrength.extreme) {
+            newWindStrength = WindStrength.soft;
+        }
+
+        SetWindStrength(newWindStrength);
+
+        windStrengthOutside = currentWindStrength;
+        previousWindStrength = currentWindStrength;
+    }
+
+    public void SetWindStrengthExternal(WindStrength strength) {
+        RandomizeWindDir();
+
+        SetWindStrength(strength);
+
+        windStrengthOutside = currentWindStrength;
+        previousWindStrength = currentWindStrength;
+    }
+
+
     private void RandomizeWindDir() {
         int windDir = UnityEngine.Random.Range(-1, 1);
         currentWindDir = windDir;
@@ -172,7 +198,6 @@ public class WindManager : MonoBehaviour
         OnWindStrengthChanged?.Invoke(this, EventArgs.Empty);
 
         SetWindPS(windStrength);
-
         SetWindPSForce();
     }
 

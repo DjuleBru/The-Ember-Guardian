@@ -42,7 +42,6 @@ public class Tower : Structure
         Worker.OnAnyWorkerDied += Worker_OnAnyWorkerDied;
     }
 
-
     protected void Worker_OnAnyWorkerDied(object sender, EventArgs e) {
         Worker worker = (Worker)sender;
 
@@ -110,6 +109,29 @@ public class Tower : Structure
         }
 
         foreach(Worker worker in assignedWorkersList) {
+            SetWorkerGarrisonPosition(worker);
+        }
+    }
+    public override void SetStructureLevel(int structureLevel) {
+        base.SetStructureLevel(structureLevel);
+        DisableAllGarrisonColliders();
+
+        if (structureLevel == 2) {
+            level2TowerCollider.SetActive(true);
+            maxWorkersAssigned = 2;
+        }
+
+        if (structureLevel == 3) {
+            level3TowerCollider.SetActive(true);
+            maxWorkersAssigned = 3;
+        }
+
+        if (structureLevel == 4) {
+            level4TowerCollider.SetActive(true);
+            maxWorkersAssigned = 4;
+        }
+
+        foreach (Worker worker in assignedWorkersList) {
             SetWorkerGarrisonPosition(worker);
         }
     }
@@ -196,7 +218,6 @@ public class Tower : Structure
         job.BuffDamage(damageBuff);
         job.BuffRange(rangeBuff);
     }
-
 
     public bool GetTowerFull() {
         return assignedWorkersList.Count >= maxWorkersAssigned;

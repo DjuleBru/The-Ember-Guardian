@@ -97,6 +97,7 @@ public class HordeModeEnvironmentManager : MonoBehaviour
         }
     }
 
+   
     private void SetEnvironmentPortals() {
 
         LevelSO.LevelEnvironment selectedEnv = HordeModeCustomizationManager.Instance.GetSelectedEnvironment();

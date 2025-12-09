@@ -61,8 +61,12 @@ public class HubMerchantItem : MonoBehaviour
         InitializeCostLists();
        
         if(itemLevel == 0) {
-            itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
+            if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+                // Not horde mode
+                itemLevel = MetaProgressionManager.Instance.GetHubMerchantItemLevel(GetItemType());
+            };
         }
+
         UpdateItemCost();
     }
 
@@ -142,7 +146,6 @@ public class HubMerchantItem : MonoBehaviour
 
         initializedCostList = true;
     }
-
 
     public bool CanBuyItem() {
         int playerGreenGems = 0;
@@ -477,6 +480,7 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public void LoadItemStatus_Batch() {
+        Debug.Log("LoadItemStatus_Batch ");
         var key = GetItemType() + "_Data";
 
         if(isBoughtAtStart) {

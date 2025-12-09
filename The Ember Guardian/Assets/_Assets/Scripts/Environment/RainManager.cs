@@ -167,6 +167,38 @@ public class RainManager : MonoBehaviour
         SetRainLevel(currentRainIntensity);
     }
 
+    public void SetRandomRainLevel() {
+        // Poids : plus l'intensité est forte, plus le poids est faible
+        Dictionary<RainIntensity, int> weights = new Dictionary<RainIntensity, int>()
+        {
+        { RainIntensity.sparse, 40 },
+        { RainIntensity.medium, 30 },
+        { RainIntensity.strong, 20 },
+        { RainIntensity.extreme, 10 },
+    };
+
+        int totalWeight = 0;
+        foreach (var w in weights.Values)
+            totalWeight += w;
+
+        int roll = UnityEngine.Random.Range(0, totalWeight);
+        int accum = 0;
+
+        RainIntensity selected = RainIntensity.sparse; // fallback sûr
+
+        foreach (var kvp in weights) {
+            accum += kvp.Value;
+            if (roll < accum) {
+                selected = kvp.Key;
+                break;
+            }
+        }
+
+        currentRainIntensity = selected;
+        RandomizeRainDir();
+        SetRainLevel(currentRainIntensity);
+    }
+
     private void DayNightManager_OnDuskStart(object sender, EventArgs e)
     {
         if (currentRainIntensity != RainIntensity.none)

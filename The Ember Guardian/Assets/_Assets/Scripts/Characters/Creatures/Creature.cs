@@ -236,6 +236,10 @@ public class Creature : Mob
             DemoDropGems();
         }
 
+        if (LevelManager.Instance != null && LevelManager.Instance.IsHordeMode()) {
+            HordeModeDropGems();
+        }
+
         if (eliteCreature) {
             if (DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetIsMainDemoLevel()) {
                 DemoDropGems();
@@ -275,6 +279,18 @@ public class Creature : Mob
 
 
         int gemAmountDropped = GetDroppedGems(.1f,5);
+        gemTypeAmountDrop.Add(gemAmountDropped);
+
+        SpawnDroppedCurrencies(gemTypeDrop, gemTypeAmountDrop);
+    }
+
+    protected void HordeModeDropGems() {
+        List<PlayerCurrencies.CurrencyType> gemTypeDrop = new List<PlayerCurrencies.CurrencyType>();
+        List<int> gemTypeAmountDrop = new List<int>();
+        gemTypeDrop.Add(PlayerCurrencies.CurrencyType.redGem);
+
+        int gemAmountDropped = GetDroppedGems(.1f, 3);
+        //Debug.Log("gemAmountDropped");
         gemTypeAmountDrop.Add(gemAmountDropped);
 
         SpawnDroppedCurrencies(gemTypeDrop, gemTypeAmountDrop);

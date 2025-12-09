@@ -21,6 +21,8 @@ public class SavingManager_Level : MonoBehaviour
     private void Awake() {
         Instance = this;
         if (VersioningManager.Instance.GetIsDemo()) return;
+        if (LevelManager.Instance.IsHordeMode()) return;
+
         if (ES3.FileExists("LevelSave_temp.es3")) {
             ES3.DeleteFile("LevelSave_temp.es3");
         }

@@ -22,8 +22,7 @@ public class Fog_Front : MonoBehaviour
 
 
     private void Start() {
-        if (!LevelManager.Instance.GetLevelSO().hasFog) {
-
+        if (!LevelManager.Instance.GetLevelSO().hasFog && !LevelManager.Instance.IsHordeMode()) {
             gameObject.SetActive(false);
             return;
         }
@@ -41,6 +40,24 @@ public class Fog_Front : MonoBehaviour
             AdjustFogAlphaBasedOnDistance();
         }
     }
+
+    public void SetAlpha(float alpha) {
+        fogRenderer.color = new Color(fogRenderer.color.r, fogRenderer.color.g, fogRenderer.color.b, alpha);
+    }
+
+    public void SetInitialAlpha(float alpha) {
+        initialAlpha = alpha;
+        Debug.Log("SetInitialAlpha " + initialAlpha);
+    }
+
+    public void SetFireLit(bool fireLit) {
+        this.fireLitAndOutsideFogDisappeared = fireLit;
+    }
+
+    public void FadeOutFog() {
+        StartCoroutine(FadeOutFogAlpha());
+    }
+
     private void AdjustFogAlphaBasedOnDistance() {
         float distanceToFireOutsideLimit = 0;
 
@@ -65,11 +82,13 @@ public class Fog_Front : MonoBehaviour
             }
             return;
         }
-       
-        StartCoroutine(FadeOutFog());
+
+        if (LevelManager.Instance.IsHordeMode()) return;
+
+        StartCoroutine(FadeOutFogCoroutine());
     }
 
-    private IEnumerator FadeOutFog() {
+    private IEnumerator FadeOutFogCoroutine() {
         float elapsed = 0f;
 
         // Obtenir l'alpha initial
@@ -96,6 +115,7 @@ public class Fog_Front : MonoBehaviour
         fogRenderer.color = new Color(fogRenderer.color.r, fogRenderer.color.g, fogRenderer.color.b, 0f);
         fogRenderer.material.SetFloat("_FadeAmount", 0);
     }
+
     private IEnumerator FadeOutFogAlpha() {
         float elapsed = 0f;
 

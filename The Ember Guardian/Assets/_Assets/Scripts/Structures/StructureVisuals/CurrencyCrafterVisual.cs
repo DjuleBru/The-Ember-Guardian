@@ -218,7 +218,7 @@ public class CurrencyCrafterVisual : StructureVisual
 
         if (currencyCrafter.GetCurrencyTypeCrafted() == PlayerCurrencies.CurrencyType.ammo || currencyCrafter.GetCurrencyTypeCrafted() == PlayerCurrencies.CurrencyType.ammo_special) {
 
-            Debug.Log(currencyCrafter.GetCurrentStructureInteractionType());
+            //Debug.Log(currencyCrafter.GetCurrentStructureInteractionType());
 
             if (currencyCrafter.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.primaryFunction) {
 

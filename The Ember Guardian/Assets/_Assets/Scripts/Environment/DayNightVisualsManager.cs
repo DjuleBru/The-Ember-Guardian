@@ -535,8 +535,8 @@ public class DayNightVisualsManager : MonoBehaviour
         dangerRatio = Mathf.Clamp01((dangerRatio - 1f) / 0.5f);
 
         float curvedRatio = Mathf.Pow(dangerRatio, 0.5f); // sqrt = tire plus vite vers le rouge
-        Debug.Log("dangerRatio " + dangerRatio);
-        Debug.Log("curvedRatio " + curvedRatio);
+        //Debug.Log("dangerRatio " + dangerRatio);
+        //Debug.Log("curvedRatio " + curvedRatio);
 
         Color sunColor = Color.Lerp(sunEasyIncomingWaveColor, sunHardIncomingWaveColor, curvedRatio);
 
