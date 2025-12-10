@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ public class Animal : Mob
         AnimalManager.Instance.AddAnimalSpawned(this);
     }
 
+    [Button]
     public override void Die(Transform damageSource = null) {
         base.Die();
 

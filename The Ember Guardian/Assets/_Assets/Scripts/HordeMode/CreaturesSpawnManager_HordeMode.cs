@@ -241,8 +241,8 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
         bool hitExtreme = nightsSinceLastExtreme >= nextExtremeAt;
         bool hitPeaceful = nightsSinceLastPeaceful >= nextPeacefulAt;
 
-        Debug.Log("hitExtreme " + hitExtreme);
-        Debug.Log("hitPeaceful " + hitPeaceful);
+        //Debug.Log("hitExtreme " + hitExtreme);
+        //Debug.Log("hitPeaceful " + hitPeaceful);
 
         if (hitExtreme) {
             currentHordeWaveType = HordeWaveType.Extreme;
@@ -267,6 +267,6 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
         // Sinon : Normal
         currentHordeWaveType = HordeWaveType.Normal;
 
-        Debug.Log("currentHordeWaveType " + currentHordeWaveType);
+        //Debug.Log("currentHordeWaveType " + currentHordeWaveType);
     }
 }

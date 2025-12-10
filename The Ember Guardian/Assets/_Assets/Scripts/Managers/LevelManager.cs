@@ -303,6 +303,7 @@ public class LevelManager : MonoBehaviour
             int xpReward = CalculateHordeModeXPReward(currentDay - 1);
             HordeModeProgressionManager.Instance.AddRunXP(xpReward);
 
+            ES3.Save("lastXPGainFromMainGame", false);
             ES3.Save("backFromHordeModeAfterDefeat", true);
             ES3.Save("lastHordeModeNightsSurvived", currentDay-1);
         }

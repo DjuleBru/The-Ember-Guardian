@@ -71,6 +71,8 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
     void Start() {
         InitializeWeights();
 
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
+
         GenerateSide(+1, rightBlocks);
         GenerateSide(-1, leftBlocks);
 
@@ -644,4 +646,113 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
         }
         return weaponShopGO;
     }
+
+
+    #region SAVE/LOAD
+
+    public int GetDistSinceLastWeaponChest() {
+        return distSinceLastTrapChest;
+    }
+    public int GetNextWeaponChestThreshold() {
+        return nextWeaponChestThreshold;
+    }
+    public int GetDistSinceLastTrapChest() {
+        return distSinceLastTrapChest;
+    }
+    public int GetNextTrapChestThreshold() {
+        return nextTrapChestThreshold;
+    }
+    public int GetDistSinceLastWorkerSpawner() {
+        return distSinceLastWorkerSpawner;
+    }
+    public int GetNextWorkerSpawnerThreshold() {
+        return nextWorkerSpawnerThreshold;
+    }
+
+    public float GetLastFastTravelRightX() {
+        return lastFastTravelRightX;
+    }
+    public float GetLastFastTravelLeftX() {
+        return lastFastTravelLeftX;
+    }
+
+    public List<BlockSize> GetSizeHistory() {
+        return sizeHistory;
+    }
+
+    public Dictionary<int, ShopType> GetShopsPerDistanceCache() {
+        return shopsPerDistanceCache;
+    }
+
+    public void SetDistSinceLastWeaponChest(int dist) {
+        distSinceLastTrapChest = dist;
+    }
+    public void SetNextWeaponChestThreshold(int tresh) {
+        nextWeaponChestThreshold = tresh;
+    }
+
+    public List<HordeModeBlock> GetLeftBlocks() {
+        return leftBlocks;
+    }
+    public List<HordeModeBlock> GetRightBlocks() {
+        return rightBlocks;
+    }
+
+    public void LoadHordeMap(HordeMapSaveData save) {
+        sizeHistory = new List<BlockSize>(save.sizeHistory);
+
+        distSinceLastWeaponChest = save.distSinceLastWeaponChest;
+        nextWeaponChestThreshold = save.nextWeaponChestThreshold;
+
+        distSinceLastTrapChest = save.distSinceLastTrapChest;
+        nextTrapChestThreshold = save.nextTrapChestThreshold;
+
+        distSinceLastWorkerSpawner = save.distSinceLastWorkerSpawner;
+        nextWorkerSpawnerThreshold = save.nextWorkerSpawnerThreshold;
+
+        lastFastTravelRightX = save.lastFastTravelRightX;
+        lastFastTravelLeftX = save.lastFastTravelLeftX;
+
+        shopsPerDistanceCache = new Dictionary<int, ShopType>(save.shopsPerDistanceCache);
+
+        // Re-création des blocs
+        Debug.Log("blockData " + save.leftBlocks.Count);
+
+        foreach (var blockData in save.leftBlocks)
+            RestoreBlock(blockData, leftBlocks);
+
+        foreach (var blockData in save.rightBlocks)
+            RestoreBlock(blockData, rightBlocks);
+    }
+
+    private void RestoreBlock(BlockSaveData data, List<HordeModeBlock> list) {
+        GameObject prefab = FindPrefabByName(data.prefabName);
+        GameObject obj = Instantiate(prefab, data.position, Quaternion.identity, transform);
+
+        HordeModeBlock block = obj.GetComponent<HordeModeBlock>();
+
+        block.SetDir(data.direction);
+        block.SetCreatureSpawners(data.creatureSpawnerListSaveData);
+
+        foreach (var bt in data.blockTypes)
+            block.AddBlockType(bt, data);
+
+        if (data.hasShop)
+            block.SetShopType(data.shopType);
+
+        list.Add(block);
+    }
+
+    public GameObject FindPrefabByName(string prefabName) {
+        if (string.IsNullOrEmpty(prefabName))
+            return null;
+
+        foreach (var blockDef in blockDefinitions) {
+            if (blockDef.prefab != null && blockDef.prefab.name == prefabName)
+                return blockDef.prefab;
+        }
+
+        return null; // Aucun prefab trouvé avec ce nom
+    }
+    #endregion
 }

@@ -21,8 +21,10 @@ public class LocalizedText : MonoBehaviour {
     public void UpdateText() {
         if (LocalizationManager.Instance != null) {
             var result = LocalizationManager.Instance.GetLocalized(localizationKey);
+            string text = result.text;
+            text = text.Replace("\\n", "\n");
 
-            textComponent.text = result.text;
+            textComponent.text = text;
 
             if (result.font != null) {
                 textComponent.font = result.font;

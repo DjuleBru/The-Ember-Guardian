@@ -44,6 +44,7 @@ public class VideoTipSO : ScriptableObject
         FindingWeapon,
         Saving,
         RefundGun,
+        HordeModeSunDifficulty,
     }
 
     public VideoTipType tipType;

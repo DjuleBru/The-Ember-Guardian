@@ -120,6 +120,21 @@ public class HordeModeProgressionManager : MonoBehaviour
         ES3.Save("hasXPToCommit", true);
     }
 
+    public void EnsureUnlockReached_MainGame(HordeModeUnlockables unlock) {
+        if (unlock == HordeModeUnlockables.None) return;
+        if (GetUnlocked(unlock)) return;
+
+        if (unlockThresholds == null) unlockThresholds = GenerateUnlockThresholds();
+
+        int threshold = unlockThresholds[unlock];
+        int needed = threshold - totalHordeModeXP;
+        AddRunXP(needed);
+
+        if(needed > 0) {
+            ES3.Save("lastXPGainFromMainGame", true);
+        }
+    }
+
     public bool GetHasXPToCommit() {
         return hasXPToCommit;
     }
@@ -326,6 +341,9 @@ public class HordeModeProgressionManager : MonoBehaviour
         return gunsUnlocked;
     }
 
+    public bool LastXPGainWasFromMainGame() {
+        return ES3.Load("lastXPGainFromMainGame", false);
+    }
 
     public HordeModeUnlockables GetNextUnlockable() {
         foreach (var unlock in unlockOrder) {

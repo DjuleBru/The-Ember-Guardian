@@ -42,6 +42,7 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO secondaryFireTip;
     [SerializeField] private VideoTipSO savingTip;
     [SerializeField] private VideoTipSO refundGunsTip;
+    [SerializeField] private VideoTipSO hordeModeSunDifficultyTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -83,6 +84,7 @@ public class VideoTipManager : MonoBehaviour
     private bool trialTipShown;
     private bool savingTipShown;
     private bool refundGunsTipShown;
+    private bool hordeMode_SunDifficultyTipShown;
 
     private bool showGunManagementTip;
     private bool showEngineersAdvancedTip;
@@ -103,6 +105,18 @@ public class VideoTipManager : MonoBehaviour
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             isLevelScene = true;
             SubscribeToLevelEvents();
+
+            if(LevelManager.Instance.IsHordeMode()) {
+                if (CreaturesSpawnManager.Instance != null) {
+                    if (CreaturesSpawnManager.Instance is CreaturesSpawnManager_HordeMode) {
+                        CreaturesSpawnManager_HordeMode hordeModeCreaturesSpawnManager = CreaturesSpawnManager.Instance as CreaturesSpawnManager_HordeMode;
+                        hordeModeCreaturesSpawnManager.OnExtremeWavePrepared += HordeModeCreaturesSpawnManager_OnExtremeWavePrepared;
+                        hordeModeCreaturesSpawnManager.OnPeacefulWavePrepared += HordeModeCreaturesSpawnManager_OnPeacefulWavePrepared;
+                        hordeModeCreaturesSpawnManager.OnBossWavePrepared += HordeModeCreaturesSpawnManager_OnBossWavePrepared;
+                    }
+                }
+                HuntingFlag_PlayerDefined.OnAnyPlayerTriggeredIn += HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn;
+            }
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
@@ -126,6 +140,14 @@ public class VideoTipManager : MonoBehaviour
             recruitEmberlingTipShown = true;
             healTentTipShown = true;
             emberExtractionTipShown = true;
+        }
+    }
+
+    private void HuntingFlag_PlayerDefined_OnAnyPlayerTriggeredIn(object sender, EventArgs e) {
+        if (!huntingFlagTipShown) {
+            VideoTipUI.Instance.PlayTipSO(huntingFlagTip, .2f);
+            ES3.Save("huntingFlagTipShown", true);
+            huntingFlagTipShown = true;
         }
     }
 
@@ -157,6 +179,27 @@ public class VideoTipManager : MonoBehaviour
         Chest_Special.OnAnyNewWeaponFound += Chest_Special_OnAnyNewWeaponFound;
         TrialArea.OnAnyTrialPaid += TrialArea_OnAnyTrialPaid;
         SavingManager_Level.Instance.OnSaveGameStarted += SavingManager_Level_OnSaveGameStarted;
+    }
+
+    private void HordeModeCreaturesSpawnManager_OnBossWavePrepared(object sender, EventArgs e) {
+        TryShowHordeModeSunTip();
+    }
+
+    private void HordeModeCreaturesSpawnManager_OnPeacefulWavePrepared(object sender, EventArgs e) {
+        TryShowHordeModeSunTip();
+    }
+
+    private void HordeModeCreaturesSpawnManager_OnExtremeWavePrepared(object sender, EventArgs e) {
+        TryShowHordeModeSunTip();
+    }
+
+    private void TryShowHordeModeSunTip() {
+        if (hordeMode_SunDifficultyTipShown) return;
+
+        VideoTipUI.Instance.PlayTipSO(hordeModeSunDifficultyTip, 5f);
+
+        hordeMode_SunDifficultyTipShown = true;
+        ES3.Save("hordeMode_SunDifficultyTipShown", true);
     }
 
     private void SavingManager_Level_OnSaveGameStarted(object sender, EventArgs e) {
@@ -573,6 +616,7 @@ public class VideoTipManager : MonoBehaviour
         trialTipShown = ES3.Load("trialTipShown", false);
         savingTipShown = ES3.Load("savingTipShown", false);
         refundGunsTipShown = ES3.Load("refundGunsTipShown", false);
+        hordeMode_SunDifficultyTipShown = ES3.Load("hordeMode_SunDifficultyTipShown", false);
     }
 
     public bool GetHuntingFlagTipShown() {

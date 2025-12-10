@@ -79,7 +79,7 @@ public class MobSpawner : MonoBehaviour
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         if (blockSpawningOnStart) return;
 
-        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel() && !LevelManager.Instance.IsHordeMode()) {
             firstDawnAfterLoad = true;
             return;
         }
@@ -363,7 +363,12 @@ public class MobSpawner : MonoBehaviour
         return ambushSpawned;
     }
 
+    public Transform GetMobPrefab() {
+        return mobPrefab;
+    }
+
     public void SetSpawnerParameters(Transform mobPrefab, int mobAmountToSpawn, float radiusToRoamAround) {
+        Debug.Log(this + " SetSpawnerParameters " + mobPrefab + " mobAmountToSpawn " + mobAmountToSpawn);
         this.mobPrefab = mobPrefab;
         this.mobAmountToSpawn = mobAmountToSpawn;
         this.radiusToRoamAround = radiusToRoamAround;
@@ -371,5 +376,9 @@ public class MobSpawner : MonoBehaviour
 
     public void ForceNewID() {
         spawnerID = Guid.NewGuid().ToString();
+    }
+
+    public static string GenerateSpawnerID(HordeModeBlock block, string spawnerType, Vector3 localPosition) {
+        return $"{spawnerType}_{localPosition.x}_{localPosition.y}";
     }
 }

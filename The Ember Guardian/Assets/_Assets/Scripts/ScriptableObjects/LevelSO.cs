@@ -136,6 +136,9 @@ public class LevelSO : ScriptableObject
     [BoxGroup("Progression")]
     [LabelWidth(300)]
     public int gemDropPool = 50;
+    [BoxGroup("Progression")]
+    [LabelWidth(300)]
+    public HordeModeProgressionManager.HordeModeUnlockables linkedHordeUnlock = HordeModeProgressionManager.HordeModeUnlockables.None;
 
     [BoxGroup("Creatures")]
     [LabelWidth(300)]

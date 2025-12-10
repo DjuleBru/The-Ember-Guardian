@@ -42,6 +42,7 @@ public class HordeModeBlock : MonoBehaviour
     [SerializeField] protected Chest trapChest;
     [SerializeField] protected StructureLocation fastTravelTPLocation;
 
+    public List<MobSpawner> dayCreatureSpawnerList;
     public static List<GunSO> gunSOAssignedToWeaponChests = new List<GunSO>();
 
     protected List<BlockType> blockTypeList = new List<BlockType>();
@@ -54,6 +55,8 @@ public class HordeModeBlock : MonoBehaviour
     protected float largeBlockSizeRewardMultiplier = 2f;
 
     protected virtual void Start() {
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
+
         DayCreatureSpawnerManager_HordeMode.Instance.StartGeneratingSpawners(this);
     }
 
@@ -71,13 +74,13 @@ public class HordeModeBlock : MonoBehaviour
         SetSpawnersToCenterPosition();
     }
 
-    public void AddBlockType(BlockType blockType) {
+    public void AddBlockType(BlockType blockType, BlockSaveData saveData = null) {
         Debug.Log(this + " AddBlockType " + blockType);
 
         blockTypeList.Add(blockType);
 
         if (blockType == BlockType.Animals) {
-            HandleAnimalBlock();
+            HandleAnimalBlock(saveData);
         } else {
             if (!HasBlockType(BlockType.Animals)) {
                 animalSpawner.gameObject.SetActive(false);
@@ -135,31 +138,37 @@ public class HordeModeBlock : MonoBehaviour
         return blockTypeList.Contains(blockType);
     }
 
-    protected void HandleAnimalBlock() {
-        // Récupère toutes les valeurs de l'énum
-        Array values = Enum.GetValues(typeof(AnimalSO.AnimalType));
-        // Sélectionne une valeur aléatoire
-        AnimalSO.AnimalType randomAnimal = (AnimalSO.AnimalType)values.GetValue(UnityEngine.Random.Range(0, values.Length));
-
-        int animalAmountToSpawn = 0;
-        if(randomAnimal == AnimalSO.AnimalType.Rat) {
-            animalAmountToSpawn = 12;
-        }
-        if (randomAnimal == AnimalSO.AnimalType.Fox) {
-            animalAmountToSpawn = 8;
-        }
-        if (randomAnimal == AnimalSO.AnimalType.Elk) {
-            animalAmountToSpawn = 5;
-        }
-        if (randomAnimal == AnimalSO.AnimalType.Deer) {
-            animalAmountToSpawn = 4;
-        }
-
+    protected void HandleAnimalBlock(BlockSaveData saveData = null) {
         float radiusToRoamAround = (blockWidth / 2f);
 
-        animalAmountToSpawn = Mathf.RoundToInt(animalAmountToSpawn * GetSizeRewardMultiplier());
+        if (saveData == null) {
+            // Récupère toutes les valeurs de l'énum
+            Array values = Enum.GetValues(typeof(AnimalSO.AnimalType));
+            // Sélectionne une valeur aléatoire
+            AnimalSO.AnimalType randomAnimal = (AnimalSO.AnimalType)values.GetValue(UnityEngine.Random.Range(0, values.Length));
 
-        animalSpawner.SetSpawnerParameters(AnimalManager.Instance.GetAnimalPrefab(randomAnimal), animalAmountToSpawn, radiusToRoamAround);
+            int animalAmountToSpawn = 0;
+            if (randomAnimal == AnimalSO.AnimalType.Rat) {
+                animalAmountToSpawn = 12;
+            }
+            if (randomAnimal == AnimalSO.AnimalType.Fox) {
+                animalAmountToSpawn = 8;
+            }
+            if (randomAnimal == AnimalSO.AnimalType.Elk) {
+                animalAmountToSpawn = 5;
+            }
+            if (randomAnimal == AnimalSO.AnimalType.Deer) {
+                animalAmountToSpawn = 4;
+            }
+
+            animalAmountToSpawn = Mathf.RoundToInt(animalAmountToSpawn * GetSizeRewardMultiplier());
+
+            animalSpawner.SetSpawnerParameters(AnimalManager.Instance.GetAnimalPrefab(randomAnimal), animalAmountToSpawn, radiusToRoamAround);
+
+        } else {
+            int animalAmountToSpawn = saveData.animalSpawnerData.currentMobsAlive;
+            animalSpawner.SetSpawnerParameters(saveData.animalSpawnerData.mobPrefab, animalAmountToSpawn, radiusToRoamAround);
+        }
 
     }
 
@@ -328,6 +337,8 @@ public class HordeModeBlock : MonoBehaviour
     }
 
     public virtual void GenerateCreatureSpawners(List<CreatureSO> selectedCreatures, List<int> spawnAmounts, List<int> eliteAmounts) {
+        dayCreatureSpawnerList = new List<MobSpawner>();
+
         foreach (var creatureIndex in System.Linq.Enumerable.Range(0, selectedCreatures.Count)) {
 
             Vector3 randomPosition = GetRandomSpawnerPosition();
@@ -339,6 +350,7 @@ public class HordeModeBlock : MonoBehaviour
             float radius = UnityEngine.Random.Range(baseRadiusToRoam * 0.25f, baseRadiusToRoam * 2f);
 
             spawner.InitializeDayCreatureSpawner(selectedCreatures[creatureIndex], spawnAmounts[creatureIndex], eliteAmounts[creatureIndex], radius);
+            dayCreatureSpawnerList.Add(spawner);
         }
     }
 
@@ -366,4 +378,60 @@ public class HordeModeBlock : MonoBehaviour
         return blockSize;
     }
 
+    public List<BlockType> GetBlockTypes() => blockTypeList;
+    public bool HasShop() => blockTypeList.Contains(BlockType.Shop);
+    public ShopType GetShopType() => shopType;
+
+    public void SetCreatureSpawners(List<SpawnerSaveData> creaturesSpawnerSaveData) {
+        List<CreatureSO> creatureSOList = new List<CreatureSO>();
+        List<int> spawnAmounts = new List<int>();
+        List<int> elitesAmounts = new List<int>();
+
+        foreach(SpawnerSaveData data in  creaturesSpawnerSaveData) {
+            creatureSOList.Add(data.creatureSO);
+            spawnAmounts.Add(data.currentMobsAlive);
+            elitesAmounts.Add(data.eliteMobsAlive);
+        }
+
+        GenerateCreatureSpawners(creatureSOList, spawnAmounts, elitesAmounts);
+    }
+
+    public BlockSaveData GetBlockSaveData() {
+        List<SpawnerSaveData> creaturesSpawnerSaveData = new List<SpawnerSaveData>();
+
+        foreach(MobSpawner spawner in dayCreatureSpawnerList) {
+            DayCreatureSpawner creatureSpawner = spawner as DayCreatureSpawner;
+
+            SpawnerSaveData spawnerData = new SpawnerSaveData {
+                mobPrefab = creatureSpawner.GetMobPrefab(),
+                currentMobsAlive = creatureSpawner.GetMobCount(),
+                mobsCanSpawnAtDawn = creatureSpawner.GetMobsCanSpawnAtDawn(),
+                ambushSpawned = creatureSpawner.GetAmbushSpawned(),
+                creatureSO = creatureSpawner.GetCreatureSO(),
+                eliteMobsAlive = creatureSpawner.GetEliteMobsAlive(),
+            };
+
+            creaturesSpawnerSaveData.Add(spawnerData);
+        }
+
+        return new BlockSaveData {
+            size = GetBlockSize(),
+            prefabName = gameObject.name.Replace("(Clone)", ""),
+            position = transform.position,
+            direction = direction,
+            blockTypes = new List<BlockType>(GetBlockTypes()),
+            hasShop = HasShop(),
+            shopType = GetShopType(),
+
+            animalSpawnerData = new SpawnerSaveData {
+                mobPrefab = animalSpawner.GetMobPrefab(),
+                currentMobsAlive = animalSpawner.GetMobCount(),
+                mobsCanSpawnAtDawn = animalSpawner.GetMobsCanSpawnAtDawn(),
+                ambushSpawned = animalSpawner.GetAmbushSpawned(),
+            },
+
+            creatureSpawnerListSaveData = creaturesSpawnerSaveData,
+
+        };
+    }
 }

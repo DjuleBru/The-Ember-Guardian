@@ -21,8 +21,35 @@ public class SavingManager_Level : MonoBehaviour
     private void Awake() {
         Instance = this;
         if (VersioningManager.Instance.GetIsDemo()) return;
-        if (LevelManager.Instance.IsHordeMode()) return;
 
+        if (LevelManager.Instance.IsHordeMode()) {
+            FindHordeLevelSave();
+        } else {
+            FindLevelSave();
+        }
+
+    }
+
+    private void FindHordeLevelSave() {
+        if (ES3.FileExists("HordeLevelSave_temp.es3")) {
+            ES3.DeleteFile("HordeLevelSave_temp.es3");
+        }
+
+        if (ES3.FileExists("HordeLevelSave.es3")) {
+
+            if (!ES3.KeyExists("LevelState", "HordeLevelSave.es3")) return;
+            LevelSaveData saveData = ES3.Load<LevelSaveData>("LevelState", "HordeLevelSave.es3");
+
+            if (saveData.sceneName != SceneManager.GetActiveScene().name) {
+                ES3.DeleteFile("HordeLevelSave.es3");
+                return;
+            }
+
+            loadingSavedLevel = true;
+        }
+    }
+
+    private void FindLevelSave() {
         if (ES3.FileExists("LevelSave_temp.es3")) {
             ES3.DeleteFile("LevelSave_temp.es3");
         }
@@ -32,7 +59,7 @@ public class SavingManager_Level : MonoBehaviour
             if (!ES3.KeyExists("LevelState", "LevelSave.es3")) return;
             LevelSaveData saveData = ES3.Load<LevelSaveData>("LevelState", "LevelSave.es3");
 
-            if(saveData.sceneName != SceneManager.GetActiveScene().name) {
+            if (saveData.sceneName != SceneManager.GetActiveScene().name) {
                 ES3.DeleteFile("LevelSave.es3");
                 return;
             }
@@ -57,9 +84,16 @@ public class SavingManager_Level : MonoBehaviour
     }
 
     public void DeleteLevelSave() {
-        if (ES3.FileExists("LevelSave.es3")) {
-            ES3.DeleteFile("LevelSave.es3");
+        if(LevelManager.Instance.IsHordeMode()) {
+            if (ES3.FileExists("HordeLevelSave.es3")) {
+                ES3.DeleteFile("HordeLevelSave.es3");
+            }
+        } else {
+            if (ES3.FileExists("LevelSave.es3")) {
+                ES3.DeleteFile("LevelSave.es3");
+            }
         }
+
     }
 
 
@@ -88,8 +122,19 @@ public class SavingManager_Level : MonoBehaviour
         string tempPath = "LevelSave_temp.es3";
         string backupPath = "LevelSave_backup.es3";
 
+        if (LevelManager.Instance.IsHordeMode()) {
+            mainPath = "HordeLevelSave.es3";
+            tempPath = "HordeLevelSave_temp.es3";
+            backupPath = "HordeLevelSave_backup.es3";
+        }
+
         if (ES3.FileExists(tempPath))
             ES3.DeleteFile(tempPath);
+
+        if (LevelManager.Instance.IsHordeMode()) {
+            SaveHordeMap(tempPath);
+            yield return new WaitForEndOfFrame();
+        }
 
         SaveLevelState(tempPath);
         yield return new WaitForEndOfFrame();
@@ -537,6 +582,37 @@ public class SavingManager_Level : MonoBehaviour
         ES3.Save("Scavengables", list, path);
     }
 
+    private void SaveHordeMap(string path) {
+        HordeMapSaveData data = new HordeMapSaveData();
+
+        data.sizeHistory = HordeModeMapGenerationManager.Instance.GetSizeHistory();
+        data.distSinceLastWeaponChest = HordeModeMapGenerationManager.Instance.GetDistSinceLastWeaponChest();
+        data.nextWeaponChestThreshold = HordeModeMapGenerationManager.Instance.GetNextWeaponChestThreshold();
+        data.distSinceLastTrapChest = HordeModeMapGenerationManager.Instance.GetDistSinceLastTrapChest();
+        data.nextTrapChestThreshold = HordeModeMapGenerationManager.Instance.GetNextTrapChestThreshold();
+        data.distSinceLastWorkerSpawner = HordeModeMapGenerationManager.Instance.GetDistSinceLastWorkerSpawner();
+        data.nextWorkerSpawnerThreshold = HordeModeMapGenerationManager.Instance.GetNextWorkerSpawnerThreshold();
+        data.lastFastTravelRightX = HordeModeMapGenerationManager.Instance.GetLastFastTravelRightX();
+        data.lastFastTravelLeftX = HordeModeMapGenerationManager.Instance.GetLastFastTravelLeftX();
+        data.shopsPerDistanceCache = HordeModeMapGenerationManager.Instance.GetShopsPerDistanceCache();
+
+        List<BlockSaveData> leftBlockSaveData = new List<BlockSaveData>();
+        List<BlockSaveData> rightBlockSaveData = new List<BlockSaveData>();
+
+        foreach(HordeModeBlock block in HordeModeMapGenerationManager.Instance.GetLeftBlocks()) {
+            leftBlockSaveData.Add(block.GetBlockSaveData());
+        }
+        foreach (HordeModeBlock block in HordeModeMapGenerationManager.Instance.GetRightBlocks()) {
+            rightBlockSaveData.Add(block.GetBlockSaveData());
+        }
+
+        data.leftBlocks = leftBlockSaveData;
+        data.rightBlocks = rightBlockSaveData;
+
+        ES3.Save("HordeMap", data, path);
+
+    }
+
     #endregion
 
     #region LOAD
@@ -545,23 +621,35 @@ public class SavingManager_Level : MonoBehaviour
     public void LoadGame() {
         AudioListener.pause = true;
         isLoading = true;
-        StartCoroutine(LoadGameCoroutine());
+        string fileName = "LevelSave.es3";
+
+        if(LevelManager.Instance.IsHordeMode()) {
+
+            fileName = "HordeLevelSave.es3";
+            StartCoroutine(LoadHordeGameCoroutine(fileName));
+
+        } else {
+
+            StartCoroutine(LoadGameCoroutine(fileName));
+
+        }
+
     }
 
-    private IEnumerator LoadGameCoroutine() {
-        yield return StartCoroutine(LoadPlayer());
-        yield return StartCoroutine(LoadLevelState());
-        yield return StartCoroutine(LoadCollectibles());
-        yield return StartCoroutine(LoadWorkers());
-        yield return StartCoroutine(LoadSpawners());
-        yield return StartCoroutine(LoadStructures());
-        yield return StartCoroutine(LoadTraps());
-        yield return StartCoroutine(LoadObstacles());
-        yield return StartCoroutine(LoadScavengableObstacles());
-        yield return StartCoroutine(LoadScavengables());
-        yield return StartCoroutine(LoadChests());
-        yield return StartCoroutine(LoadTrialAreas());
-        yield return StartCoroutine(LoadObjectives());
+    private IEnumerator LoadGameCoroutine(string fileName) {
+        yield return StartCoroutine(LoadPlayer(fileName));
+        yield return StartCoroutine(LoadLevelState(fileName));
+        yield return StartCoroutine(LoadCollectibles(fileName));
+        yield return StartCoroutine(LoadWorkers(fileName));
+        yield return StartCoroutine(LoadSpawners(fileName));
+        yield return StartCoroutine(LoadStructures(fileName));
+        yield return StartCoroutine(LoadTraps(fileName));
+        yield return StartCoroutine(LoadObstacles(fileName));
+        yield return StartCoroutine(LoadScavengableObstacles(fileName));
+        yield return StartCoroutine(LoadScavengables(fileName));
+        yield return StartCoroutine(LoadChests(fileName));
+        yield return StartCoroutine(LoadTrialAreas(fileName));
+        yield return StartCoroutine(LoadObjectives(fileName));
 
         // Quand tout est fini
         isLoading = false;
@@ -569,12 +657,46 @@ public class SavingManager_Level : MonoBehaviour
         AudioListener.pause = false;
         OnLoadGameEnded?.Invoke(this, EventArgs.Empty);
     }
-    private IEnumerator LoadLevelState() {
-        if (!ES3.KeyExists("LevelState", "LevelSave.es3")) yield break;
+
+    private IEnumerator LoadHordeGameCoroutine(string fileName) {
+        yield return StartCoroutine(LoadHordeMap(fileName));
+        yield return StartCoroutine(LoadPlayer(fileName));
+        yield return StartCoroutine(LoadLevelState(fileName));
+        yield return StartCoroutine(LoadCollectibles(fileName));
+        yield return StartCoroutine(LoadWorkers(fileName));
+        //yield return StartCoroutine(LoadSpawners(fileName));
+        yield return StartCoroutine(LoadStructures(fileName));
+        yield return StartCoroutine(LoadTraps(fileName));
+        //yield return StartCoroutine(LoadObstacles(fileName));
+        //yield return StartCoroutine(LoadScavengableObstacles(fileName));
+        //yield return StartCoroutine(LoadScavengables(fileName));
+        //yield return StartCoroutine(LoadChests(fileName));
+        //yield return StartCoroutine(LoadObjectives(fileName));
+
+        // Quand tout est fini
+        isLoading = false;
+        CameraManager.Instance.SetCameraPositionToPlayer();
+        AudioListener.pause = false;
+        OnLoadGameEnded?.Invoke(this, EventArgs.Empty);
+    }
+
+    private IEnumerator LoadHordeMap(string fileName) {
+        if (!ES3.KeyExists("HordeMap", fileName)) yield break;
 
         yield return new WaitForEndOfFrame();
 
-        LevelSaveData saveData = ES3.Load<LevelSaveData>("LevelState", "LevelSave.es3");
+        HordeMapSaveData saveData = ES3.Load<HordeMapSaveData>("HordeMap", fileName);
+
+        HordeModeMapGenerationManager.Instance.LoadHordeMap(saveData);
+
+    }
+
+    private IEnumerator LoadLevelState(string fileName) {
+        if (!ES3.KeyExists("LevelState", fileName)) yield break;
+
+        yield return new WaitForEndOfFrame();
+
+        LevelSaveData saveData = ES3.Load<LevelSaveData>("LevelState", fileName);
 
         DayNightManager.Instance.LoadCurrentDay(saveData.currentDay);
 
@@ -605,13 +727,12 @@ public class SavingManager_Level : MonoBehaviour
 
         LevelObjectives.Instance.SetObstaclesRemoved(saveData.obstaclesRemoved);
         LevelObjectives.Instance.SetWatcherArtifactFillAmount(saveData.watcherArtifactFillUpAmount);
-
     }
 
-    private IEnumerator LoadCollectibles() {
-        if (!ES3.KeyExists("Collectibles", "LevelSave.es3")) yield break;
+    private IEnumerator LoadCollectibles(string fileName) {
+        if (!ES3.KeyExists("Collectibles", fileName)) yield break;
 
-        List<CollectibleSaveData> collectibleData = ES3.Load<List<CollectibleSaveData>>("Collectibles", "LevelSave.es3 ");
+        List<CollectibleSaveData> collectibleData = ES3.Load<List<CollectibleSaveData>>("Collectibles", fileName);
 
         foreach (var data in collectibleData) {
             // Respawn du collectible
@@ -624,10 +745,10 @@ public class SavingManager_Level : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadWorkers() {
-        if (!ES3.KeyExists("Workers", "LevelSave.es3")) yield break;
+    private IEnumerator LoadWorkers(string fileName) {
+        if (!ES3.KeyExists("Workers", fileName)) yield break;
 
-        List<WorkerSaveData> workersData = ES3.Load<List<WorkerSaveData>>("Workers", "LevelSave.es3 ");
+        List<WorkerSaveData> workersData = ES3.Load<List<WorkerSaveData>>("Workers", fileName);
 
         foreach (var data in workersData) {
             // Respawn du worker
@@ -656,10 +777,10 @@ public class SavingManager_Level : MonoBehaviour
             }
         }
     }
-    private IEnumerator LoadSpawners() {
-        if (!ES3.KeyExists("Spawners", "LevelSave.es3")) yield break;
+    private IEnumerator LoadSpawners(string fileName) {
+        if (!ES3.KeyExists("Spawners", fileName)) yield break;
 
-        List<SpawnerSaveData> spawnersData = ES3.Load<List<SpawnerSaveData>>("Spawners", "LevelSave.es3");
+        List<SpawnerSaveData> spawnersData = ES3.Load<List<SpawnerSaveData>>("Spawners", fileName);
 
         foreach (SpawnerSaveData data in spawnersData) {
             foreach (var s in SpawnersManager.Instance.GetAllSpawners()) {
@@ -718,11 +839,11 @@ public class SavingManager_Level : MonoBehaviour
             spawner.LoadLinkedMobSpawner();
         }
     }
-    private IEnumerator LoadPlayer() {
-        if (!ES3.KeyExists("Player", "LevelSave.es3"))
+    private IEnumerator LoadPlayer(string fileName) {
+        if (!ES3.KeyExists("Player", fileName))
             yield break;
 
-        PlayerSaveData data = ES3.Load<PlayerSaveData>("Player", "LevelSave.es3");
+        PlayerSaveData data = ES3.Load<PlayerSaveData>("Player", fileName);
 
         // Position
         Player.Instance.transform.position = new Vector2(data.posX, data.posY);
@@ -808,8 +929,8 @@ public class SavingManager_Level : MonoBehaviour
 
         yield return null;
     }
-    private IEnumerator LoadStructures() {
-        if (!ES3.KeyExists("Structures", "LevelSave.es3"))
+    private IEnumerator LoadStructures(string fileName) {
+        if (!ES3.KeyExists("Structures", fileName))
             yield break;
 
         yield return new WaitForEndOfFrame();
@@ -822,13 +943,13 @@ public class SavingManager_Level : MonoBehaviour
         Tent.Instance.SetStructureBuiltOnLoad(true);
         Tent.Instance.BuildInitialCampStructure();
 
-        List<StructureSaveData> structuresData = ES3.Load<List<StructureSaveData>>("Structures", "LevelSave.es3 ");
-        List<TrapSaveData> trapsData = ES3.Load<List<TrapSaveData>>("Structures_Traps", "LevelSave.es3 ");
-        List<FireSaveData> fireData = ES3.Load<List<FireSaveData>>("Structures_Fire", "LevelSave.es3 ");
-        List<CurrencyCrafterSaveData> crafterData = ES3.Load<List<CurrencyCrafterSaveData>>("Structures_CurrencyCrafters", "LevelSave.es3 ");
-        List<SpecialTowerSaveData> towerData = ES3.Load<List<SpecialTowerSaveData>>("Structures_SpecialTowers", "LevelSave.es3 ");
-        List<BarricadeSaveData> barricadeData = ES3.Load<List<BarricadeSaveData>>("Structures_Barricades", "LevelSave.es3 ");
-        List<CurrencyStorageSaveData> storagesData = ES3.Load<List<CurrencyStorageSaveData>>("Structures_CurrencyStorages", "LevelSave.es3 ");
+        List<StructureSaveData> structuresData = ES3.Load<List<StructureSaveData>>("Structures", fileName);
+        List<TrapSaveData> trapsData = ES3.Load<List<TrapSaveData>>("Structures_Traps", fileName);
+        List<FireSaveData> fireData = ES3.Load<List<FireSaveData>>("Structures_Fire", fileName);
+        List<CurrencyCrafterSaveData> crafterData = ES3.Load<List<CurrencyCrafterSaveData>>("Structures_CurrencyCrafters", fileName);
+        List<SpecialTowerSaveData> towerData = ES3.Load<List<SpecialTowerSaveData>>("Structures_SpecialTowers", fileName);
+        List<BarricadeSaveData> barricadeData = ES3.Load<List<BarricadeSaveData>>("Structures_Barricades", fileName);
+        List<CurrencyStorageSaveData> storagesData = ES3.Load<List<CurrencyStorageSaveData>>("Structures_CurrencyStorages", fileName);
 
         int trapSaveDataIndex = 0;
         int fireSaveDataIndex = 0;
@@ -983,31 +1104,31 @@ public class SavingManager_Level : MonoBehaviour
 
         yield return null;
     }
-    private IEnumerator LoadTraps() {
-        if (ES3.KeyExists("TrapTypes", "LevelSave.es3")) {
+    private IEnumerator LoadTraps(string fileName) {
+        if (ES3.KeyExists("TrapTypes", fileName)) {
             yield return new WaitForEndOfFrame();
 
-            List<TrapItem.TrapType> trapTypes = ES3.Load<List<TrapItem.TrapType>>("TrapTypes", "LevelSave.es3");
+            List<TrapItem.TrapType> trapTypes = ES3.Load<List<TrapItem.TrapType>>("TrapTypes", fileName);
             TrapManager.Instance.SetTrapTypesBoughtByPlayer(trapTypes);
 
         }
 
 
-        if (ES3.KeyExists("TrapUpgrades", "LevelSave.es3")) {
+        if (ES3.KeyExists("TrapUpgrades", fileName)) {
             yield return new WaitForEndOfFrame();
 
-            Dictionary<TrapItem.TrapType, Dictionary<TrapUpgradeSO.TrapUpgradeType, int>> trapUpgrades = ES3.Load<Dictionary<TrapItem.TrapType, Dictionary<TrapUpgradeSO.TrapUpgradeType, int>>>("TrapUpgrades", "LevelSave.es3");
+            Dictionary<TrapItem.TrapType, Dictionary<TrapUpgradeSO.TrapUpgradeType, int>> trapUpgrades = ES3.Load<Dictionary<TrapItem.TrapType, Dictionary<TrapUpgradeSO.TrapUpgradeType, int>>>("TrapUpgrades", fileName);
             TrapManager.Instance.SetTrapUpgradeLevels(trapUpgrades);
         }
 
 
     }
 
-    private IEnumerator LoadObstacles() {
-        if (!ES3.KeyExists("Obstacles", "LevelSave.es3"))
+    private IEnumerator LoadObstacles(string fileName) {
+        if (!ES3.KeyExists("Obstacles", fileName))
             yield break;
 
-        var list = ES3.Load<List<ObstacleSaveData>>("Obstacles", "LevelSave.es3");
+        var list = ES3.Load<List<ObstacleSaveData>>("Obstacles", fileName);
         if (list == null || list.Count == 0)
             yield break;
 
@@ -1032,11 +1153,11 @@ public class SavingManager_Level : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadScavengableObstacles() {
-        if (!ES3.KeyExists("ScavengableObstacles", "LevelSave.es3"))
+    private IEnumerator LoadScavengableObstacles(string fileName) {
+        if (!ES3.KeyExists("ScavengableObstacles", fileName))
             yield break;
 
-        var list = ES3.Load<List<ScavengableObstacleSaveData>>("ScavengableObstacles", "LevelSave.es3");
+        var list = ES3.Load<List<ScavengableObstacleSaveData>>("ScavengableObstacles", fileName);
         if (list == null || list.Count == 0)
             yield break;
 
@@ -1068,11 +1189,11 @@ public class SavingManager_Level : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadScavengables() {
-        if (!ES3.KeyExists("Scavengables", "LevelSave.es3"))
+    private IEnumerator LoadScavengables(string fileName) {
+        if (!ES3.KeyExists("Scavengables", fileName))
             yield break;
 
-        var list = ES3.Load<List<ScavengableSaveData>>("Scavengables", "LevelSave.es3");
+        var list = ES3.Load<List<ScavengableSaveData>>("Scavengables", fileName);
         if (list == null || list.Count == 0)
             yield break;
 
@@ -1103,11 +1224,11 @@ public class SavingManager_Level : MonoBehaviour
             scavengable.SetTimeToMineOneResource(data.timeToMineOneResource);
         }
     }
-    private IEnumerator LoadChests() {
-        if (!ES3.KeyExists("Chests", "LevelSave.es3"))
+    private IEnumerator LoadChests(string fileName) {
+        if (!ES3.KeyExists("Chests", fileName))
             yield break;
 
-        var list = ES3.Load<List<ChestSaveData>>("Chests", "LevelSave.es3");
+        var list = ES3.Load<List<ChestSaveData>>("Chests", fileName);
         if (list == null || list.Count == 0)
             yield break;
 
@@ -1136,11 +1257,11 @@ public class SavingManager_Level : MonoBehaviour
         }
     }
 
-    private IEnumerator LoadTrialAreas() {
-        if (!ES3.KeyExists("TrialAreas", "LevelSave.es3"))
+    private IEnumerator LoadTrialAreas(string fileName) {
+        if (!ES3.KeyExists("TrialAreas", fileName))
             yield break;
 
-        var list = ES3.Load<List<TrialAreaSaveData>>("TrialAreas", "LevelSave.es3");
+        var list = ES3.Load<List<TrialAreaSaveData>>("TrialAreas", fileName);
         if (list == null || list.Count == 0)
             yield break;
 
@@ -1165,12 +1286,12 @@ public class SavingManager_Level : MonoBehaviour
             trialArea.SetTrialAreaCompleted(data.trialCompleted);
         }
     }
-    private IEnumerator LoadObjectives() {
-        if (!ES3.KeyExists("LevelState", "LevelSave.es3")) yield break;
+    private IEnumerator LoadObjectives(string fileName) {
+        if (!ES3.KeyExists("LevelState", fileName)) yield break;
 
         yield return new WaitForEndOfFrame();
 
-        LevelSaveData saveData = ES3.Load<LevelSaveData>("LevelState", "LevelSave.es3");
+        LevelSaveData saveData = ES3.Load<LevelSaveData>("LevelState", fileName);
 
         LevelUI_ObjectiveUI.Instance.ShowObjectiveAfterDelay(saveData.currentObjectiveType, 2f);
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUIAfterDelay(saveData.currentSubObjectiveTypeList, 2f);

@@ -57,9 +57,13 @@ public class HordeModeRewardsMenu : MonoBehaviour
         nextUnlockText.text = LocalizationManager.Instance.GetLocalizedText("Next Unlock");
         nextUnlockDescriptionText.font = LocalizationManager.Instance.GetCurrentFont();
         nextUnlockDescriptionText.text ="";
-
         nightsSurvivedAmountText.font = LocalizationManager.Instance.GetCurrentFont();
-        nightsSurvivedAmountText.text = LocalizationManager.Instance.GetLocalizedText("menu_nightsSurvived") + " " + ES3.Load("lastHordeModeNightsSurvived", 0);
+
+        if (HordeModeProgressionManager.Instance.LastXPGainWasFromMainGame()) {
+            nightsSurvivedAmountText.text = LocalizationManager.Instance.GetLocalizedText("menu_hordeModeXPBackFromMainGame");
+        } else {
+            nightsSurvivedAmountText.text = LocalizationManager.Instance.GetLocalizedText("menu_nightsSurvived") + " " + ES3.Load("lastHordeModeNightsSurvived", 0);
+        }
 
         pressAnyKeyToContinueGO.SetActive(false);
         SetNextUnlockParameters(HordeModeProgressionManager.Instance.GetNextUnlockable());

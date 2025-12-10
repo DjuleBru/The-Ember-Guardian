@@ -115,6 +115,7 @@ public class PauseMenuUI_Level : PauseMenuUI {
 
         }
     }
+
     public void RestartLevelButton() {
 
         if (confirmRestartLevel) {
