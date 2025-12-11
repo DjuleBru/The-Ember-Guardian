@@ -55,7 +55,10 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
 
     protected override void Awake() {
         base.Awake();
-        InitHordeIntervals();
+
+        if (!SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+            InitHordeIntervals();
+        }
     }
 
     protected override void Start() {
@@ -228,12 +231,16 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
     }
 
     protected void DetermineHordeWaveType() {
+        bool bossWave = false;
 
         // Boss night : override
         if (hasBoss && bossNightsSpawns.Contains(currentWaveNumber)) {
             currentHordeWaveType = HordeWaveType.Normal;
             nightsSinceLastExtreme--;
             OnBossWavePrepared?.Invoke(this, EventArgs.Empty);
+
+            bossWave = true;
+            StartCoroutine(IncrementIndexesAfterDelay(bossWave, false, false));
             return;
         }
 
@@ -246,22 +253,16 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
 
         if (hitExtreme) {
             currentHordeWaveType = HordeWaveType.Extreme;
-            nightsSinceLastExtreme = 0;
-            nextExtremeAt = UnityEngine.Random.Range(minExtremeInterval, maxExtremeInterval + 1);
             OnExtremeWavePrepared?.Invoke(this, EventArgs.Empty);
+            StartCoroutine(IncrementIndexesAfterDelay(bossWave, hitExtreme, hitPeaceful));
             return;
-        } else {
-            nightsSinceLastExtreme++;
         }
 
         if (hitPeaceful) {
             currentHordeWaveType = HordeWaveType.Peaceful;
-            nightsSinceLastPeaceful = 0;
-            nextPeacefulAt = UnityEngine.Random.Range(minPeacefulInterval, maxPeacefulInterval + 1);
             OnPeacefulWavePrepared?.Invoke(this, EventArgs.Empty);
+            StartCoroutine(IncrementIndexesAfterDelay(bossWave, hitExtreme, hitPeaceful));
             return;
-        } else {
-            nightsSinceLastPeaceful++;
         }
 
         // Sinon : Normal
@@ -269,4 +270,51 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
 
         //Debug.Log("currentHordeWaveType " + currentHordeWaveType);
     }
+
+    private IEnumerator IncrementIndexesAfterDelay(bool bossWave, bool hitExtreme, bool hitPeaceful) {
+        yield return new WaitForSeconds(2f);
+
+        if (bossWave) {
+            nightsSinceLastExtreme--;
+            yield break;
+        }
+
+        if (hitExtreme) {
+            nightsSinceLastExtreme = 0;
+            nextExtremeAt = UnityEngine.Random.Range(minExtremeInterval, maxExtremeInterval + 1);
+
+        } else {
+            nightsSinceLastExtreme++;
+        }
+
+        if(hitPeaceful) {
+            nightsSinceLastPeaceful = 0;
+            nextPeacefulAt = UnityEngine.Random.Range(minPeacefulInterval, maxPeacefulInterval + 1);
+
+        } else {
+            nightsSinceLastPeaceful++;
+
+        }
+    }
+
+    public void LoadSaveData(HordeMapSaveData saveData) {
+        nightsSinceLastExtreme = saveData.nightsSinceLastExtreme;
+        nightsSinceLastPeaceful = saveData.nightsSinceLastPeaceful;
+        nextPeacefulAt = saveData.nextPeacefulAt;
+        nextExtremeAt = saveData.nextExtremeAt;
+    }
+
+    public int GetNightsSinceLastExtreme() {
+        return nightsSinceLastExtreme;
+    }
+    public int GetNightsSinceLastPeaceful() {
+        return nightsSinceLastPeaceful;
+    }
+    public int GetNextExtremeAt() {
+        return nextExtremeAt;
+    }
+    public int GetNextPeacefulAt() {
+        return nextPeacefulAt;
+    }
+
 }

@@ -733,6 +733,7 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
 
         block.SetDir(data.direction);
         block.SetCreatureSpawners(data.creatureSpawnerListSaveData);
+        block.SetObstacleBuilt(data.obstacleBuilt);
 
         foreach (var bt in data.blockTypes)
             block.AddBlockType(bt, data);

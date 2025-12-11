@@ -368,10 +368,14 @@ public class MobSpawner : MonoBehaviour
     }
 
     public void SetSpawnerParameters(Transform mobPrefab, int mobAmountToSpawn, float radiusToRoamAround) {
-        Debug.Log(this + " SetSpawnerParameters " + mobPrefab + " mobAmountToSpawn " + mobAmountToSpawn);
+        //Debug.Log(this + " SetSpawnerParameters " + mobPrefab + " mobAmountToSpawn " + mobAmountToSpawn);
         this.mobPrefab = mobPrefab;
         this.mobAmountToSpawn = mobAmountToSpawn;
         this.radiusToRoamAround = radiusToRoamAround;
+    }
+    public void SetMobAmountToSpawn(int mobAmountToSpawn) {
+        Debug.Log(this + " mobAmountToSpawn " + mobAmountToSpawn);
+        this.mobAmountToSpawn = mobAmountToSpawn;
     }
 
     public void ForceNewID() {

@@ -20,6 +20,11 @@ public class HordeMapSaveData {
     public float lastFastTravelRightX;
     public float lastFastTravelLeftX;
 
+    public int nightsSinceLastExtreme;
+    public int nightsSinceLastPeaceful;
+    public int nextExtremeAt;
+    public int nextPeacefulAt;
+
     public Dictionary<int, ShopType> shopsPerDistanceCache = new();
 }
 
@@ -30,11 +35,35 @@ public class BlockSaveData {
     public Vector3 position;
     public float direction;
 
+    public bool obstacleBuilt;
+
     public List<BlockType> blockTypes;
     public bool hasShop;
     public ShopType shopType;
 
+    public bool resourceChestOpened;
+    public bool weaponChestOpened;
+    public bool trapChestOpened;
+
     public SpawnerSaveData animalSpawnerData;
+    public SpawnerSaveData workerSpawnerData;
 
     public List<SpawnerSaveData> creatureSpawnerListSaveData;
+    public List<HordeScavengableSaveData> scavengableSaveDataList = new();
+    public HordeScavengableSaveData mineSaveData;
+
+    public int decorIndex;
+}
+
+public class HordeScavengableSaveData {
+    public string prefabName;
+    public int health;
+    public int hitsTaken;
+    public int currenciesToCollect;
+    public int hitsToCollect;
+    public float timeToMineOneResource;
+    public bool markedToScavenge;
+    public bool scavengingActive;
+    public PlayerCurrencies.CurrencyType currencyTypeCollected;
+    public int hordeModeBlockIndex;
 }

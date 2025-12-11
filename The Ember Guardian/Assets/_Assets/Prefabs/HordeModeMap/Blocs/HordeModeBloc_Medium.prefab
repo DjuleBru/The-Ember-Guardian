@@ -12192,6 +12192,10 @@ PrefabInstance:
       propertyPath: propsPrefab_VG.Array.data[2]
       value: 
       objectReference: {fileID: 4028824826991273679, guid: 61a6d9f5e0535ad428d5eaf1dbfcd9c8, type: 3}
+    - target: {fileID: 2637190237694810108, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+      propertyPath: scavengableSpawnPositionWithMine1
+      value: 
+      objectReference: {fileID: 8028851481579402743}
     - target: {fileID: 2924720040139127369, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
       propertyPath: blockSize
       value: 3
@@ -42377,3 +42381,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+--- !u!4 &8028851481579402743 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 861453078567738416, guid: 8cd0a3d2d071b3147b6fa439adc99961, type: 3}
+  m_PrefabInstance: {fileID: 7248625928389716423}
+  m_PrefabAsset: {fileID: 0}

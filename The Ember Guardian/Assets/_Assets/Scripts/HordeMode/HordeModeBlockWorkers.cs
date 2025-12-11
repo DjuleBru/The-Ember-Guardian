@@ -11,11 +11,13 @@ public class HordeModeBlockWorkers : MonoBehaviour
 
     [SerializeField] private Transform workerSpawnerSpawnPos;
 
+    private WorkerSpawner workerSpawner;
+
     private void Start() {
         workerSpawnerSpawnPos.GetComponent<SpriteRenderer>().enabled = false;
     }
 
-    public void SetBlockAsWorkerSpawner() {
+    public void SetBlockAsWorkerSpawner(BlockSaveData saveData = null) {
         LevelSO.LevelEnvironment env = HordeModeCustomizationManager.Instance.GetSelectedEnvironment();
 
         Transform workerSpawner = workerSpawner_VG;
@@ -29,6 +31,14 @@ public class HordeModeBlockWorkers : MonoBehaviour
             workerSpawner = workerSpawner_FD;
         }
 
-        WorkerSpawner spawner = Instantiate(workerSpawner, workerSpawnerSpawnPos.position, Quaternion.identity, workerSpawnerSpawnPos).GetComponent<WorkerSpawner>();
+        this.workerSpawner = Instantiate(workerSpawner, workerSpawnerSpawnPos.position, Quaternion.identity, workerSpawnerSpawnPos).GetComponent<WorkerSpawner>();
+
+        if(saveData != null) {
+            this.workerSpawner.SetMobAmountToSpawn(saveData.workerSpawnerData.currentMobsAlive);
+        }
+    }
+
+    public WorkerSpawner GetWorkerSpawner() {
+        return workerSpawner;
     }
 }

@@ -15,6 +15,7 @@ public class HordeModeBlockVisuals : MonoBehaviour
     [SerializeField] private List<GameObject> propsPrefab_LH;
     [SerializeField] private List<GameObject> propsPrefab_FD;
     [SerializeField] private List<GameObject> propsPrefab_CC;
+    private int decorIndex;
 
     private void Start() {
         DisableAll();
@@ -63,7 +64,15 @@ public class HordeModeBlockVisuals : MonoBehaviour
             propsList = propsPrefab_FD;
         }
 
-        GameObject prop = propsList[UnityEngine.Random.Range(0, propsList.Count)];
+        int index = UnityEngine.Random.Range(0, propsList.Count);
+
+        BlockSaveData saveData = GetComponent<HordeModeBlock>().GetLoadedData();
+        if (saveData != null) {
+            index = saveData.decorIndex;
+        }
+
+        decorIndex = index;
+        GameObject prop = propsList[index];
 
         Instantiate(prop, propsParent.transform.position, Quaternion.identity, propsParent);
 
@@ -71,5 +80,9 @@ public class HordeModeBlockVisuals : MonoBehaviour
         //    Vector3 scale = new Vector3(-1, 1, 1);
         //    propsParent.transform.localScale = scale;
         //}
+    }
+
+    public int GetDecorIndex() {
+        return decorIndex;
     }
 }

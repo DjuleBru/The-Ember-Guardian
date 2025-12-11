@@ -145,8 +145,10 @@ public class SavingManager_Level : MonoBehaviour
         SaveRecruitedWorkers(tempPath);
         yield return new WaitForEndOfFrame();
 
-        SaveSpawners(tempPath);
-        yield return new WaitForEndOfFrame();
+        if (!LevelManager.Instance.IsHordeMode()) {
+            SaveSpawners(tempPath);
+            yield return new WaitForEndOfFrame();
+        }
 
         SavePlayer(tempPath);
         yield return new WaitForEndOfFrame();
@@ -160,14 +162,16 @@ public class SavingManager_Level : MonoBehaviour
         SaveTrapTypes(tempPath);
         yield return new WaitForEndOfFrame();
 
-        SaveObstacles(tempPath);
-        SaveChests(tempPath);
+        if (!LevelManager.Instance.IsHordeMode()) {
+            SaveObstacles(tempPath);
+            SaveChests(tempPath);
 
-        yield return new WaitForEndOfFrame();
-        SaveScavengables(tempPath);
+            yield return new WaitForEndOfFrame();
+            SaveScavengables(tempPath);
 
-        yield return new WaitForEndOfFrame();
-        SaveTrialAreas(tempPath);
+            yield return new WaitForEndOfFrame();
+            SaveTrialAreas(tempPath);
+        }
 
         if (ES3.FileExists(mainPath)) {
             ES3.CopyFile(mainPath, backupPath); // sauvegarde de secours
@@ -596,6 +600,12 @@ public class SavingManager_Level : MonoBehaviour
         data.lastFastTravelLeftX = HordeModeMapGenerationManager.Instance.GetLastFastTravelLeftX();
         data.shopsPerDistanceCache = HordeModeMapGenerationManager.Instance.GetShopsPerDistanceCache();
 
+        CreaturesSpawnManager_HordeMode spawnManager = CreaturesSpawnManager.Instance as CreaturesSpawnManager_HordeMode;
+        data.nightsSinceLastExtreme = spawnManager.GetNightsSinceLastExtreme();
+        data.nightsSinceLastPeaceful = spawnManager.GetNightsSinceLastPeaceful();
+        data.nextExtremeAt = spawnManager.GetNextExtremeAt();
+        data.nextPeacefulAt = spawnManager.GetNextPeacefulAt();
+
         List<BlockSaveData> leftBlockSaveData = new List<BlockSaveData>();
         List<BlockSaveData> rightBlockSaveData = new List<BlockSaveData>();
 
@@ -612,6 +622,7 @@ public class SavingManager_Level : MonoBehaviour
         ES3.Save("HordeMap", data, path);
 
     }
+ 
 
     #endregion
 
@@ -664,14 +675,9 @@ public class SavingManager_Level : MonoBehaviour
         yield return StartCoroutine(LoadLevelState(fileName));
         yield return StartCoroutine(LoadCollectibles(fileName));
         yield return StartCoroutine(LoadWorkers(fileName));
-        //yield return StartCoroutine(LoadSpawners(fileName));
         yield return StartCoroutine(LoadStructures(fileName));
         yield return StartCoroutine(LoadTraps(fileName));
-        //yield return StartCoroutine(LoadObstacles(fileName));
-        //yield return StartCoroutine(LoadScavengableObstacles(fileName));
-        //yield return StartCoroutine(LoadScavengables(fileName));
-        //yield return StartCoroutine(LoadChests(fileName));
-        //yield return StartCoroutine(LoadObjectives(fileName));
+        yield return StartCoroutine(LoadObjectives(fileName));
 
         // Quand tout est fini
         isLoading = false;
@@ -688,7 +694,8 @@ public class SavingManager_Level : MonoBehaviour
         HordeMapSaveData saveData = ES3.Load<HordeMapSaveData>("HordeMap", fileName);
 
         HordeModeMapGenerationManager.Instance.LoadHordeMap(saveData);
-
+        CreaturesSpawnManager_HordeMode spawnManager = CreaturesSpawnManager.Instance as CreaturesSpawnManager_HordeMode;
+        spawnManager.LoadSaveData(saveData);
     }
 
     private IEnumerator LoadLevelState(string fileName) {

@@ -26,7 +26,7 @@ public class DayCreatureSpawner : MobSpawner
     }
 
     public CreatureSO GetCreatureSO() {
-        Debug.Log("GetCreatureSO " + creatureSO);
+        //Debug.Log("GetCreatureSO " + creatureSO);
         return creatureSO;
     }
 

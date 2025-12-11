@@ -41,6 +41,8 @@ public class HordeModeBlock : MonoBehaviour
     [SerializeField] protected Chest_Special weaponChest;
     [SerializeField] protected Chest trapChest;
     [SerializeField] protected StructureLocation fastTravelTPLocation;
+    [SerializeField] protected Obstacle obstacle;
+    private BlockSaveData loadedData;
 
     public List<MobSpawner> dayCreatureSpawnerList;
     public static List<GunSO> gunSOAssignedToWeaponChests = new List<GunSO>();
@@ -75,11 +77,12 @@ public class HordeModeBlock : MonoBehaviour
     }
 
     public void AddBlockType(BlockType blockType, BlockSaveData saveData = null) {
-        Debug.Log(this + " AddBlockType " + blockType);
-
         blockTypeList.Add(blockType);
 
+        loadedData = saveData;
+
         if (blockType == BlockType.Animals) {
+            animalSpawner.gameObject.SetActive(true);
             HandleAnimalBlock(saveData);
         } else {
             if (!HasBlockType(BlockType.Animals)) {
@@ -88,7 +91,8 @@ public class HordeModeBlock : MonoBehaviour
         }
 
         if (blockType == BlockType.ResourceChest) {
-            HandleResourceChestBlock();
+            resourceChest.gameObject.SetActive(true);
+            HandleResourceChestBlock(saveData);
         } else {
             if (!HasBlockType(BlockType.ResourceChest)) {
                 resourceChest.gameObject.SetActive(false);
@@ -96,15 +100,16 @@ public class HordeModeBlock : MonoBehaviour
         }
 
         if(blockType == BlockType.Scavengables) {
-            GetComponent<HordeModeBlockScavengables>().SetBlockAsScavengable(blockSize);
+            GetComponent<HordeModeBlockScavengables>().SetBlockAsScavengable(blockSize, saveData);
         }
 
         if (blockType == BlockType.Mine) {
-            GetComponent<HordeModeBlockScavengables>().SetBlockAsMine(blockSize);
+            GetComponent<HordeModeBlockScavengables>().SetBlockAsMine(blockSize, saveData);
         }
 
         if (blockType == BlockType.WeaponChest) {
-            StartCoroutine(HandleWeaponChestBlockAfterFrames());
+            weaponChest.gameObject.SetActive(true);
+            StartCoroutine(HandleWeaponChestBlockAfterFrames(saveData));
         } else {
             if(!HasBlockType(BlockType.WeaponChest)) {
                 weaponChest.gameObject.SetActive(false);
@@ -112,7 +117,8 @@ public class HordeModeBlock : MonoBehaviour
         }
 
         if (blockType == BlockType.TrapChest) {
-            StartCoroutine(HandleTrapChestBlockAfterFrames());
+            trapChest.gameObject.SetActive(true);
+            StartCoroutine(HandleTrapChestBlockAfterFrames(saveData));
         }
         else {
             if (!HasBlockType(BlockType.TrapChest)) {
@@ -120,7 +126,8 @@ public class HordeModeBlock : MonoBehaviour
             }
         }
 
-        if (blockType == BlockType.FastTravelTP) {
+        if (blockType == BlockType.FastTravelTP && saveData == null) {
+            fastTravelTPLocation.gameObject.SetActive(true);
             StartCoroutine(HandleFastTravelTPAfterFrames());
         }
         else {
@@ -130,7 +137,7 @@ public class HordeModeBlock : MonoBehaviour
         }
 
         if (blockType == BlockType.WorkerSpawner) {
-            GetComponent<HordeModeBlockWorkers>().SetBlockAsWorkerSpawner();
+            GetComponent<HordeModeBlockWorkers>().SetBlockAsWorkerSpawner(saveData);
         }
     }
 
@@ -172,7 +179,14 @@ public class HordeModeBlock : MonoBehaviour
 
     }
 
-    protected void HandleResourceChestBlock() {
+    protected void HandleResourceChestBlock(BlockSaveData saveData = null) {
+        if(saveData != null) {
+            if (saveData.resourceChestOpened) {
+                resourceChest.gameObject.SetActive(false);
+                return;
+            }
+        }
+
         int rewardType = UnityEngine.Random.Range(1, 4);
         Chest.ChestType chestType = Chest.ChestType.orbChest;
         List< PlayerCurrencies.CurrencyType > currencyTypeToRewardList = new List<PlayerCurrencies.CurrencyType>();
@@ -204,7 +218,7 @@ public class HordeModeBlock : MonoBehaviour
 
         if (rewardType == 3) {
             // Ammo, Big Orbs
-            chestType = Chest.ChestType.ammoChest;
+            chestType = Chest.ChestType.orbChest;
             currencyTypeToRewardList.Add(PlayerCurrencies.CurrencyType.ammo);
 
             int ammoReward = 8;
@@ -237,7 +251,14 @@ public class HordeModeBlock : MonoBehaviour
 
     }
 
-    protected void HandleWeaponChestBlock() {
+    protected void HandleWeaponChestBlock(BlockSaveData saveData = null) {
+        if (saveData != null) {
+            if (saveData.weaponChestOpened) {
+                weaponChest.gameObject.SetActive(false);
+                return;
+            }
+        }
+
         List<GunSO> gunTypesUnlocked = GetWeaponSOUnlockedAndNotCarriedByPlayerAndNotAssigned();
 
         if (gunTypesUnlocked.Count > 0) {
@@ -276,7 +297,14 @@ public class HordeModeBlock : MonoBehaviour
         return gunsSOUnlockedList;
     }
 
-    protected void HandleTrapChestBlock() {
+    protected void HandleTrapChestBlock(BlockSaveData saveData = null) {
+        if (saveData != null) {
+            if (saveData.trapChestOpened) {
+                trapChest.gameObject.SetActive(false);
+                return;
+            }
+        }
+
         List<TrapSO> trapTypesUnlocked = HordeModeProgressionManager.Instance.GetTrapUnlockedList();
 
         List<PlayerCurrencies.CurrencyType> rewardsList = new List<PlayerCurrencies.CurrencyType>();
@@ -292,16 +320,16 @@ public class HordeModeBlock : MonoBehaviour
         trapChest.SetChestParameters(Chest.ChestType.trapChest, rewardsList, rewardsListAmount);
     }
 
-    protected IEnumerator HandleWeaponChestBlockAfterFrames() {
+    protected IEnumerator HandleWeaponChestBlockAfterFrames(BlockSaveData saveData = null) {
         yield return new WaitForSeconds(.1f);
 
-        HandleWeaponChestBlock();
+        HandleWeaponChestBlock(saveData);
     }
 
-    protected IEnumerator HandleTrapChestBlockAfterFrames() {
+    protected IEnumerator HandleTrapChestBlockAfterFrames(BlockSaveData saveData = null) {
         yield return new WaitForSeconds(.1f);
 
-        HandleTrapChestBlock();
+        HandleTrapChestBlock(saveData);
     }
 
     protected void SetSpawnersToCenterPosition() {
@@ -396,6 +424,12 @@ public class HordeModeBlock : MonoBehaviour
         GenerateCreatureSpawners(creatureSOList, spawnAmounts, elitesAmounts);
     }
 
+    public void SetObstacleBuilt(bool built) {
+        if(built) {
+            obstacle.BuildObstacle(false);
+        }
+    }
+
     public BlockSaveData GetBlockSaveData() {
         List<SpawnerSaveData> creaturesSpawnerSaveData = new List<SpawnerSaveData>();
 
@@ -414,7 +448,7 @@ public class HordeModeBlock : MonoBehaviour
             creaturesSpawnerSaveData.Add(spawnerData);
         }
 
-        return new BlockSaveData {
+        BlockSaveData saveData = new BlockSaveData {
             size = GetBlockSize(),
             prefabName = gameObject.name.Replace("(Clone)", ""),
             position = transform.position,
@@ -422,16 +456,50 @@ public class HordeModeBlock : MonoBehaviour
             blockTypes = new List<BlockType>(GetBlockTypes()),
             hasShop = HasShop(),
             shopType = GetShopType(),
+            obstacleBuilt = obstacle.GetBuilt(),
+            decorIndex = GetComponent<HordeModeBlockVisuals>().GetDecorIndex(),
 
             animalSpawnerData = new SpawnerSaveData {
                 mobPrefab = animalSpawner.GetMobPrefab(),
                 currentMobsAlive = animalSpawner.GetMobCount(),
                 mobsCanSpawnAtDawn = animalSpawner.GetMobsCanSpawnAtDawn(),
-                ambushSpawned = animalSpawner.GetAmbushSpawned(),
             },
 
-            creatureSpawnerListSaveData = creaturesSpawnerSaveData,
 
+            creatureSpawnerListSaveData = creaturesSpawnerSaveData,
         };
+
+
+        HordeModeBlockWorkers hordeModeBlockWorkers = GetComponent<HordeModeBlockWorkers>();
+        if(blockTypeList.Contains(BlockType.WorkerSpawner) && hordeModeBlockWorkers != null) {
+            saveData.workerSpawnerData = new SpawnerSaveData {
+                currentMobsAlive = hordeModeBlockWorkers.GetWorkerSpawner().GetMobCount(),
+            };
+        }
+
+        if(blockTypeList.Contains(BlockType.ResourceChest)) {
+            saveData.resourceChestOpened = resourceChest.GetChestOpened();
+        }
+        if (blockTypeList.Contains(BlockType.TrapChest)) {
+            saveData.trapChestOpened = trapChest.GetChestOpened();
+        }
+        if (blockTypeList.Contains(BlockType.WeaponChest)) {
+            saveData.weaponChestOpened = weaponChest.GetChestOpened();
+        }
+
+        if (blockTypeList.Contains(BlockType.Scavengables)) {
+            saveData.scavengableSaveDataList = GetComponent<HordeModeBlockScavengables>().GetScavengableSaveData();
+        }
+
+        if (blockTypeList.Contains(BlockType.Mine)) {
+            saveData.mineSaveData = GetComponent<HordeModeBlockScavengables>().GetMineSaveData();
+            saveData.scavengableSaveDataList = GetComponent<HordeModeBlockScavengables>().GetScavengableSaveData();
+        }
+
+        return saveData;
+    }
+
+    public BlockSaveData GetLoadedData() {
+        return loadedData;
     }
 }

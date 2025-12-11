@@ -14,6 +14,7 @@ public class HordeModeBlockScavengables : MonoBehaviour
     [SerializeField] private Transform mine_CC;
     [SerializeField] private Transform mine_LH;
     [SerializeField] private Transform mine_FD;
+    private Scavengable mineSpawned;
 
     [SerializeField] private Transform orbScavengable_VG_CC;
     [SerializeField] private Transform orbScavengable_LH;
@@ -54,7 +55,12 @@ public class HordeModeBlockScavengables : MonoBehaviour
         }
     }
 
-    public void SetBlockAsScavengable(BlockSize blockSize) {
+    public void SetBlockAsScavengable(BlockSize blockSize, BlockSaveData saveData) {
+        if(saveData != null) {
+            LoadScavengables(saveData);
+            return;
+        }
+
         int randomType = UnityEngine.Random.Range(1, 3);
         int scavAmount = GetScavengableSpawnAmount(blockSize);
         int orbsToCollect = standardScavengableOrbsToCollect;
@@ -99,9 +105,22 @@ public class HordeModeBlockScavengables : MonoBehaviour
         }
 
     }
-    public void SetBlockAsMine(BlockSize blockSize) {
+
+    public void SetBlockAsMine(BlockSize blockSize, BlockSaveData saveData) {
+
         Scavengable scav = Instantiate(GetMinePrefab(), mineSpawnPosition.position, Quaternion.identity, mineSpawnPosition).GetComponent<Scavengable>();
+        mineSpawned = scav;
         ScavengableManager.Instance.AddScavengable(scav);
+
+        if(transform.position.x < 0) {
+            mineSpawned.transform.localScale = new Vector3(-1, 1, 1);
+        }
+
+        if (saveData != null) {
+            LoadScavengables(saveData);
+            StartCoroutine(LoadScavengableAfterFrame(mineSpawned, saveData.mineSaveData));
+            return;
+        }
 
         // If block is big, add 2 scavengables
         if (blockSize == BlockSize.Medium) {
@@ -112,6 +131,40 @@ public class HordeModeBlockScavengables : MonoBehaviour
             SpawnScavengable(GetOrbScavengablePrefab(), scavengableSpawnPositionWithMine1, standardScavengableOrbsToCollect, standardScavengableHitsToCollectOrb);
             SpawnScavengable(GetOrbScavengablePrefab(), scavengableSpawnPositionWithMine2, standardScavengableOrbsToCollect, standardScavengableHitsToCollectOrb);
         }
+    }
+
+    public void LoadScavengables(BlockSaveData saveData) {
+
+        foreach (HordeScavengableSaveData scavSaveData in saveData.scavengableSaveDataList) {
+
+            Transform prefab = FindPrefabByName(scavSaveData.prefabName);
+            if (prefab == null) continue;
+
+            var pos = spawnPositions[scavSaveData.hordeModeBlockIndex];
+
+            Scavengable scav = Instantiate(prefab, pos.position, Quaternion.identity, pos)
+                .GetComponent<Scavengable>();
+
+            StartCoroutine(LoadScavengableAfterFrame(scav, scavSaveData));
+
+        }
+    }
+
+    public IEnumerator LoadScavengableAfterFrame(Scavengable scav, HordeScavengableSaveData scavSaveData) {
+        yield return new WaitForEndOfFrame();
+
+        scav.SetParameters(scavSaveData.currenciesToCollect, scavSaveData.hitsToCollect);
+        scav.SetScavengingActive(scavSaveData.scavengingActive);
+        scav.SetHitsTaken(scavSaveData.hitsTaken);
+        scav.SetHealth(scavSaveData.health);
+        scav.SetTimeToMineOneResource(scavSaveData.timeToMineOneResource);
+
+        if (scavSaveData.markedToScavenge) {
+            scav.MarkToScavenge(true);
+        }
+
+        ScavengableManager.Instance.AddScavengable(scav);
+
     }
 
     private void SpawnScavengable(Transform prefab, Transform parent, int currenciesToCollect, int hitsToCollect) {
@@ -194,5 +247,84 @@ public class HordeModeBlockScavengables : MonoBehaviour
         yield return new WaitForEndOfFrame();
 
         ScavengableManager.Instance.AddScavengable(scav);
+    }
+
+    public List<HordeScavengableSaveData> GetScavengableSaveData() {
+        // Save scavengables
+        List<HordeScavengableSaveData> saveDataList = new List<HordeScavengableSaveData>();
+
+        for (int i = 0; i < spawnPositions.Count; i++) {
+            Transform pos = spawnPositions[i];
+
+            foreach (Transform child in pos) {
+                Scavengable scav = child.GetComponent<Scavengable>();
+                if (scav == null) continue;
+
+                HordeScavengableSaveData saveData = new HordeScavengableSaveData {
+                    markedToScavenge = scav.GetMarkedToScavenge(),
+                    health = scav.GetHealth(),
+                    hitsTaken = scav.GetHitsTaken(),
+                    timeToMineOneResource = scav.GetTimeToMineOneResource(),
+                    scavengingActive = scav.GetScavengingActive(),
+                    currencyTypeCollected = scav.GetCurrencyTypeCollected(),
+                    currenciesToCollect = scav.GetCurrencyAmountCollected(),
+                    hitsToCollect = scav.GetHitsToCollect(),
+                    hordeModeBlockIndex = i,
+                    prefabName = scav.transform.name,
+                };
+
+
+                Debug.Log(saveData.prefabName);
+                saveDataList.Add(saveData);
+            }
+        }
+
+        return saveDataList;
+    }
+
+    public HordeScavengableSaveData GetMineSaveData() {
+        // Save scavengables
+
+        HordeScavengableSaveData saveData = new HordeScavengableSaveData {
+            markedToScavenge = mineSpawned.GetMarkedToScavenge(),
+            health = mineSpawned.GetHealth(),
+            hitsTaken = mineSpawned.GetHitsTaken(),
+            timeToMineOneResource = mineSpawned.GetTimeToMineOneResource(),
+            scavengingActive = mineSpawned.GetScavengingActive(),
+            currencyTypeCollected = mineSpawned.GetCurrencyTypeCollected(),
+            currenciesToCollect = mineSpawned.GetCurrencyAmountCollected(),
+            hitsToCollect = mineSpawned.GetHitsToCollect(),
+            prefabName = mineSpawned.transform.name,
+        };
+
+        return saveData;
+    }
+    public Transform FindPrefabByName(string prefabName) {
+        if (string.IsNullOrEmpty(prefabName))
+            return null;
+
+        string cleanName = prefabName.Replace("(Clone)", "").Trim();
+        // Mines
+        if (mine_VG != null && mine_VG.name == cleanName) return mine_VG;
+        if (mine_CC != null && mine_CC.name == cleanName) return mine_CC;
+        if (mine_LH != null && mine_LH.name == cleanName) return mine_LH;
+        if (mine_FD != null && mine_FD.name == cleanName) return mine_FD;
+
+        // Big Orbs
+        if (orbScavengable_VG_CC != null && orbScavengable_VG_CC.name == cleanName) return orbScavengable_VG_CC;
+        if (orbScavengable_LH != null && orbScavengable_LH.name == cleanName) return orbScavengable_LH;
+        if (orbScavengable_FD != null && orbScavengable_FD.name == cleanName) return orbScavengable_FD;
+
+        // Small Orbs
+        if (smallOrbScavengable_VG_CC != null && smallOrbScavengable_VG_CC.name == cleanName) return smallOrbScavengable_VG_CC;
+        if (smallOrbScavengable_LH != null && smallOrbScavengable_LH.name == cleanName) return smallOrbScavengable_LH;
+        if (smallOrbScavengable_FD != null && smallOrbScavengable_FD.name == cleanName) return smallOrbScavengable_FD;
+
+        // Ammo
+        if (ammoScavengable_VG_CC != null && ammoScavengable_VG_CC.name == cleanName) return ammoScavengable_VG_CC;
+        if (ammoScavengable_LH != null && ammoScavengable_LH.name == cleanName) return ammoScavengable_LH;
+        if (ammoScavengable_FD != null && ammoScavengable_FD.name == cleanName) return ammoScavengable_FD;
+
+        return null;
     }
 }

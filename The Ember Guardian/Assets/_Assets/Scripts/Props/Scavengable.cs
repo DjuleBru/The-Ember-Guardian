@@ -162,6 +162,7 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     }
 
     public void MarkToScavenge(bool markedFromSave = false) {
+        Debug.Log("MarkToScavenge");
         markedToScavenge = true;
 
         OnScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
@@ -428,6 +429,17 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     public void SetParameters(int amountToCollect, int hitsToCollectOne) {
         currencyAmountCollected = amountToCollect;
         hitsToCollectOneCurrency = hitsToCollectOne;
+    }
+
+    public int GetCurrencyAmountCollected() {
+        return currencyAmountCollected;
+    }
+    public int GetHitsToCollect() {
+        return hitsToCollectOneCurrency;
+    }
+
+    public PlayerCurrencies.CurrencyType GetCurrencyTypeCollected() {
+        return currencyTypeCollected;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
