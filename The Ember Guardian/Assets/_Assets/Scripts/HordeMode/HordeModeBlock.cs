@@ -364,12 +364,16 @@ public class HordeModeBlock : MonoBehaviour
         HordeModeMapGenerationManager.Instance.PlayerEnteredBlock(this);
     }
 
-    public virtual void GenerateCreatureSpawners(List<CreatureSO> selectedCreatures, List<int> spawnAmounts, List<int> eliteAmounts) {
+    public virtual void GenerateCreatureSpawners(List<CreatureSO> selectedCreatures, List<int> spawnAmounts, List<int> eliteAmounts, List<Vector3> positions = null) {
         dayCreatureSpawnerList = new List<MobSpawner>();
 
         foreach (var creatureIndex in System.Linq.Enumerable.Range(0, selectedCreatures.Count)) {
-
             Vector3 randomPosition = GetRandomSpawnerPosition();
+
+            if (positions != null) {
+                randomPosition = positions[creatureIndex];
+            }
+
 
             GameObject spawnerObj = Instantiate(dayCreatureSpawnerTemplate, randomPosition, Quaternion.identity, transform);
             spawnerObj.SetActive(true);
@@ -414,14 +418,16 @@ public class HordeModeBlock : MonoBehaviour
         List<CreatureSO> creatureSOList = new List<CreatureSO>();
         List<int> spawnAmounts = new List<int>();
         List<int> elitesAmounts = new List<int>();
+        List<Vector3> positions = new List<Vector3>();
 
         foreach(SpawnerSaveData data in  creaturesSpawnerSaveData) {
             creatureSOList.Add(data.creatureSO);
             spawnAmounts.Add(data.currentMobsAlive);
             elitesAmounts.Add(data.eliteMobsAlive);
+            positions.Add(data.spawnerPosition);
         }
 
-        GenerateCreatureSpawners(creatureSOList, spawnAmounts, elitesAmounts);
+        GenerateCreatureSpawners(creatureSOList, spawnAmounts, elitesAmounts, positions);
     }
 
     public void SetObstacleBuilt(bool built) {
@@ -430,7 +436,7 @@ public class HordeModeBlock : MonoBehaviour
         }
     }
 
-    public BlockSaveData GetBlockSaveData() {
+    public virtual BlockSaveData GetBlockSaveData() {
         List<SpawnerSaveData> creaturesSpawnerSaveData = new List<SpawnerSaveData>();
 
         foreach(MobSpawner spawner in dayCreatureSpawnerList) {
@@ -443,6 +449,7 @@ public class HordeModeBlock : MonoBehaviour
                 ambushSpawned = creatureSpawner.GetAmbushSpawned(),
                 creatureSO = creatureSpawner.GetCreatureSO(),
                 eliteMobsAlive = creatureSpawner.GetEliteMobsAlive(),
+                spawnerPosition = creatureSpawner.transform.position,
             };
 
             creaturesSpawnerSaveData.Add(spawnerData);

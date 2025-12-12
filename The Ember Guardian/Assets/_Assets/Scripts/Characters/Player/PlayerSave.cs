@@ -46,7 +46,7 @@ public class PlayerSave : MonoBehaviour
 
     public void SavePlayerMetaStats() {
         PlayerStats.Instance.SaveMetaBuffValues();
-        PlayerShoot.Instance.SaveAllGunStats();
+        PlayerShoot.Instance.SaveAllGunStats(true);
     }
 
     public GunSO.GunType GetPrimaryActiveGunType() {

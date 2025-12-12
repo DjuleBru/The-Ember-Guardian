@@ -108,6 +108,7 @@ public class HubMerchant : MonoBehaviour
 
         if(isHordeModeMerchant) {
             InitializeHordeModeMerchant();
+            
         }
 
         SetHubMerchantParentInItems();
@@ -176,9 +177,17 @@ public class HubMerchant : MonoBehaviour
             inactiveGameObject.SetActive(false);
         }
 
-        foreach (HubMerchantItem merchantItem in hubMerchantItems) {
-            merchantItem.LoadItemStatus_HodeMode();
+        if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+            foreach (HubMerchantItem merchantItem in hubMerchantItems) {
+                merchantItem.LoadItemStatus_HodeMode();
+            }
+        } else {
+            foreach (HubMerchantItem merchantItem in hubMerchantItems) {
+                merchantItem.ResetHordeItemStatus_Batch();
+                merchantItem.LoadItemStatus_HodeMode();
+            }
         }
+
 
         hubMerchantLoaded = true;
     }
@@ -501,13 +510,12 @@ public class HubMerchant : MonoBehaviour
         }
     }
 
-    public void ResetAllItemStatuses() {
+    public void SaveHordeMerchant() {
         foreach (HubMerchantItem merchantItem in hubMerchantItems) {
-            if(merchantItem.GetItemBought()) {
-                merchantItem.ResetItemStatus_Batch();
-            }
+            merchantItem.SaveItemStatus_Batch();
         }
     }
+
 
     [Button]
     public int CountAllGemCosts(PlayerCurrencies.CurrencyType gemType) {

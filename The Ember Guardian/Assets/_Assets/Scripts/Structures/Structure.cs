@@ -279,7 +279,6 @@ public class Structure : MonoBehaviour {
             }
         }
 
-        Debug.Log(structureSO.structureType + " unlocked " + unlocked);
         return unlocked;
     }
 

@@ -60,12 +60,19 @@ public class WorkerStats : MonoBehaviour
     }
 
     private void LoadStatValues() {
-        if (!ES3.KeyExists("WorkerStats"))
+        string key = "WorkerStats";
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            key = "WorkerStats_Horde";
+            if (!SavingManager_Level.Instance.GetLoadingSavedLevel()) ES3.DeleteKey(key);
+        };
+
+
+        if (!ES3.KeyExists(key))
             return;
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) return;
 
-        var workerData = ES3.Load<Dictionary<string, object>>("WorkerStats");
-
+        var workerData = ES3.Load<Dictionary<string, object>>(key);
+            
         // Global
         maxFollowingWorkers = GetValue(workerData, "maxFollowingWorkers", initialMaxFollowingWorkers);
         initialEmberlings = GetValue(workerData, "initialEmberlings", 0);
@@ -356,5 +363,40 @@ public class WorkerStats : MonoBehaviour
         workerData["engineerWrenchSpeedBuff"] = engineerWrenchSpeedBuff;
 
         ES3.Save("WorkerStats", workerData);
+    }
+
+    public void SaveHordeWorkerValues() {
+        var workerData = new Dictionary<string, object>();
+
+        // Global
+        workerData["maxFollowingWorkers"] = maxFollowingWorkers;
+        workerData["initialEmberlings"] = initialEmberlings;
+        workerData["emberlingArrivalsNumber"] = emberlingArrivalsNumber;
+
+        // Hunter
+        workerData["hunterHealthBuff"] = hunterHealthBuff;
+        workerData["hunterDamageBuff"] = hunterDamageBuff;
+        workerData["hunterAttackCooldownBuff"] = hunterAttackCooldownBuff;
+        workerData["hunterMoveSpeedBuff"] = hunterMoveSpeedBuff;
+        workerData["hunterAccuracyBuff"] = hunterAccuracyBuff;
+
+        // Guard
+        workerData["guardHealthBuff"] = guardHealthBuff;
+        workerData["guardDamageBuff"] = guardDamageBuff;
+        workerData["guardAttackCooldownBuff"] = guardAttackCooldownBuff;
+        workerData["guardMoveSpeedBuff"] = guardMoveSpeedBuff;
+
+        // Miner
+        workerData["minerHealthBuff"] = minerHealthBuff;
+        workerData["minerDamageBuff"] = minerDamageBuff;
+        workerData["minerAttackCooldownBuff"] = minerAttackCooldownBuff;
+        workerData["minerMoveSpeedBuff"] = minerMoveSpeedBuff;
+        workerData["minerPickaxeLuckyProb"] = minerPickaxeLuckyProb;
+
+        // Engineer
+        workerData["engineerMoveSpeedBuff"] = engineerMoveSpeedBuff;
+        workerData["engineerWrenchSpeedBuff"] = engineerWrenchSpeedBuff;
+
+        ES3.Save("WorkerStats_Horde", workerData);
     }
 }

@@ -21,6 +21,7 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
 
     public static HordeModeMapGenerationManager Instance;
 
+    [SerializeField] private HordeModeBlock_StartingBlock startingBlock;
     [SerializeField] private GameObject weaponShopGO;
     [SerializeField] private GameObject dogShopGO;
     [SerializeField] private GameObject structuresShopGO;
@@ -698,6 +699,18 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
         return rightBlocks;
     }
 
+    public HordeModeBlock_StartingBlock GetStartingBlock() {
+        return startingBlock;
+    }
+
+    public void SaveHordeMerchantItems() {
+        weaponShopGO.GetComponent<HubMerchant>().SaveHordeMerchant();
+        dogShopGO.GetComponent<HubMerchant>().SaveHordeMerchant();
+        herShopGO.GetComponent<HubMerchant>().SaveHordeMerchant();
+        structuresShopGO.GetComponent<HubMerchant>().SaveHordeMerchant();
+        workerShopGO.GetComponent<HubMerchant>().SaveHordeMerchant();
+    }
+
     public void LoadHordeMap(HordeMapSaveData save) {
         sizeHistory = new List<BlockSize>(save.sizeHistory);
 
@@ -716,7 +729,8 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
         shopsPerDistanceCache = new Dictionary<int, ShopType>(save.shopsPerDistanceCache);
 
         // Re-création des blocs
-        Debug.Log("blockData " + save.leftBlocks.Count);
+        startingBlock.LoadStartingBlock(save.centralBlockSaveData);
+        startingBlock.SetCreatureSpawners(save.centralBlockSaveData.creatureSpawnerListSaveData);
 
         foreach (var blockData in save.leftBlocks)
             RestoreBlock(blockData, leftBlocks);

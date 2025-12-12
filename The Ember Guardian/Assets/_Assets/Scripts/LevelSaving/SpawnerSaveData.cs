@@ -13,4 +13,5 @@ public class SpawnerSaveData
     public bool mobsCanSpawnAtDawn;
     public CreatureSO creatureSO;
     public int eliteMobsAlive;
+    public Vector3 spawnerPosition;
 }

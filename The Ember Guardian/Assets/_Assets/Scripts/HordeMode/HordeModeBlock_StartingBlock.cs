@@ -24,6 +24,21 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
 
     protected override void Start() {
         base.Start();
+
+        workerSpawnerLeft_VG.gameObject.SetActive(false);
+        workerSpawnerRight_VG.gameObject.SetActive(false);
+
+        workerSpawnerLeft_CC.gameObject.SetActive(false);
+        workerSpawnerRight_CC.gameObject.SetActive(false);
+
+        workerSpawnerLeft_LH.gameObject.SetActive(false);
+        workerSpawnerRight_LH.gameObject.SetActive(false);
+
+        workerSpawnerLeft_FD.gameObject.SetActive(false);
+        workerSpawnerRight_FD.gameObject.SetActive(false);
+
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
+
         HandleCentralBlockResources();
         HandleCentralBlockWorkerSpawners();
     }
@@ -66,18 +81,6 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
 
     private void HandleCentralBlockWorkerSpawners() {
         LevelSO.LevelEnvironment env = HordeModeCustomizationManager.Instance.GetSelectedEnvironment();
-
-        workerSpawnerLeft_VG.gameObject.SetActive(false);
-        workerSpawnerRight_VG.gameObject.SetActive(false);
-
-        workerSpawnerLeft_CC.gameObject.SetActive(false);
-        workerSpawnerRight_CC.gameObject.SetActive(false);
-
-        workerSpawnerLeft_LH.gameObject.SetActive(false);
-        workerSpawnerRight_LH.gameObject.SetActive(false);
-
-        workerSpawnerLeft_FD.gameObject.SetActive(false);
-        workerSpawnerRight_FD.gameObject.SetActive(false);
 
         if (env == LevelSO.LevelEnvironment.CorruptedCity) {
             workerSpawnerLeft_CC.gameObject.SetActive(true);
@@ -202,14 +205,18 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         spawner.SetSpawnerParameters(AnimalManager.Instance.GetAnimalPrefab(randomAnimal), animalAmountToSpawn, radiusToRoamAround);
     }
 
-    public override void GenerateCreatureSpawners(List<CreatureSO> selectedCreatures, List<int> spawnAmounts, List<int> eliteAmounts) {
+    public override void GenerateCreatureSpawners(List<CreatureSO> selectedCreatures, List<int> spawnAmounts, List<int> eliteAmounts, List<Vector3> positions = null) {
         Debug.Log("Central Block GenerateCreatureSpawners " + spawnAmounts.Count);
 
         foreach (var creatureIndex in System.Linq.Enumerable.Range(0, selectedCreatures.Count)) {
 
-            Transform randomSpawnPos = creatureSpawnerPositions[UnityEngine.Random.Range(0, creatureSpawnerPositions.Count)];
+            Vector3 randomSpawnPos = creatureSpawnerPositions[UnityEngine.Random.Range(0, creatureSpawnerPositions.Count)].position;
 
-            GameObject spawnerObj = Instantiate(dayCreatureSpawnerTemplate, randomSpawnPos.position, Quaternion.identity, transform);
+            if (positions != null) {
+                randomSpawnPos = positions[creatureIndex];
+            }
+
+            GameObject spawnerObj = Instantiate(dayCreatureSpawnerTemplate, randomSpawnPos, Quaternion.identity, transform);
             spawnerObj.SetActive(true);
 
             DayCreatureSpawner spawner = spawnerObj.GetComponent<DayCreatureSpawner>();
@@ -217,6 +224,8 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
             float radius = UnityEngine.Random.Range(radiusToRoam * 0.25f, radiusToRoam * 2f);
 
             spawner.InitializeDayCreatureSpawner(selectedCreatures[creatureIndex], spawnAmounts[creatureIndex], eliteAmounts[creatureIndex], radius);
+
+            dayCreatureSpawnerList.Add(spawner);
         }
     }
 
@@ -237,4 +246,121 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         return result;
     }
 
+    private WorkerSpawner GetActiveLeftWorkerSpawner() {
+        if (workerSpawnerLeft_CC.GetMobCount() > 0) return workerSpawnerLeft_CC;
+        if (workerSpawnerLeft_VG.GetMobCount() > 0) return workerSpawnerLeft_VG;
+        if (workerSpawnerLeft_LH.GetMobCount() > 0) return workerSpawnerLeft_LH;
+        if (workerSpawnerLeft_FD.GetMobCount() > 0) return workerSpawnerLeft_FD;
+        return null;
+    }
+
+    private WorkerSpawner GetActiveRightWorkerSpawner() {
+        if (workerSpawnerRight_CC.GetMobCount() > 0) return workerSpawnerRight_CC;
+        if (workerSpawnerRight_VG.GetMobCount() > 0) return workerSpawnerRight_VG;
+        if (workerSpawnerRight_LH.GetMobCount() > 0) return workerSpawnerRight_LH;
+        if (workerSpawnerRight_FD.GetMobCount() > 0) return workerSpawnerRight_FD;
+        return null;
+    }
+
+    public void LoadStartingBlock(BlockSaveData data) {
+
+        // ANIMAUX GAUCHE
+        for (int i = 0; i < data.startingBlockAnimalSpawners_Left.Count && i < animalSpawnerList_Left.Count; i++) {
+            var save = data.startingBlockAnimalSpawners_Left[i];
+            animalSpawnerList_Left[i].SetSpawnerParameters(save.mobPrefab, save.currentMobsAlive, 5f);
+            animalSpawnerList_Left[i].SpawnMobs(save.currentMobsAlive);
+        }
+
+        // ANIMAUX DROITE
+        for (int i = 0; i < data.startingBlockAnimalSpawners_Right.Count && i < animalSpawnerList_Right.Count; i++) {
+            var save = data.startingBlockAnimalSpawners_Right[i];
+            animalSpawnerList_Right[i].SetSpawnerParameters(save.mobPrefab, save.currentMobsAlive, 5f);
+            animalSpawnerList_Right[i].SpawnMobs(save.currentMobsAlive);
+        }
+
+        // SCAVENGABLES
+        HordeModeBlockScavengables scav = GetComponent<HordeModeBlockScavengables>();
+        if (scav != null && data.scavengableSaveDataList != null) {
+            scav.LoadScavengables(data);
+        }
+
+        // WORKERS
+        WorkerSpawner activeLeft = GetActiveLeftWorkerSpawner();
+        WorkerSpawner activeRight = GetActiveRightWorkerSpawner();
+
+        if (activeLeft != null && data.startingBlockWorkers_Left.currentMobsAlive > 0) {
+            activeLeft.gameObject.SetActive(true);
+            activeLeft.SpawnMobs(data.startingBlockWorkers_Left.currentMobsAlive);
+        }
+
+        if (activeRight != null && data.startingBlockWorkers_Right.currentMobsAlive > 0) {
+            activeRight.gameObject.SetActive(true);
+            activeRight.SpawnMobs(data.startingBlockWorkers_Right.currentMobsAlive);
+        }
+         
+    }
+
+    public override BlockSaveData GetBlockSaveData() {
+        BlockSaveData save = new BlockSaveData();
+
+        List<SpawnerSaveData> creaturesSpawnerSaveData = new List<SpawnerSaveData>();
+        foreach (MobSpawner spawner in dayCreatureSpawnerList) {
+            DayCreatureSpawner creatureSpawner = spawner as DayCreatureSpawner;
+
+            SpawnerSaveData spawnerData = new SpawnerSaveData {
+                mobPrefab = creatureSpawner.GetMobPrefab(),
+                currentMobsAlive = creatureSpawner.GetMobCount(),
+                mobsCanSpawnAtDawn = creatureSpawner.GetMobsCanSpawnAtDawn(),
+                ambushSpawned = creatureSpawner.GetAmbushSpawned(),
+                creatureSO = creatureSpawner.GetCreatureSO(),
+                eliteMobsAlive = creatureSpawner.GetEliteMobsAlive(),
+                spawnerPosition = creatureSpawner.transform.position,
+            };
+
+            creaturesSpawnerSaveData.Add(spawnerData);
+        }
+
+        save.creatureSpawnerListSaveData = creaturesSpawnerSaveData;
+
+        // --- ANIMAUX GAUCHE / DROITE ---
+        save.startingBlockAnimalSpawners_Left = new List<SpawnerSaveData>();
+
+        foreach (var spawner in animalSpawnerList_Left) {
+            save.startingBlockAnimalSpawners_Left.Add(new SpawnerSaveData {
+                mobPrefab = spawner.GetMobPrefab(),
+                currentMobsAlive = spawner.GetMobCount(),
+                mobsCanSpawnAtDawn = spawner.GetMobsCanSpawnAtDawn(),
+            });
+        }
+
+        save.startingBlockAnimalSpawners_Right = new List<SpawnerSaveData>();
+        foreach (var spawner in animalSpawnerList_Right) {
+            save.startingBlockAnimalSpawners_Right.Add(new SpawnerSaveData {
+                mobPrefab = spawner.GetMobPrefab(),
+                currentMobsAlive = spawner.GetMobCount(),
+                mobsCanSpawnAtDawn = spawner.GetMobsCanSpawnAtDawn(),
+            });
+        }
+
+        // --- SCAVENGABLES ---
+        HordeModeBlockScavengables scav = GetComponent<HordeModeBlockScavengables>();
+        if (scav != null) {
+            save.scavengableSaveDataList = scav.GetScavengableSaveData();
+        }
+
+        // --- WORKERS ---
+        save.startingBlockWorkers_Left = new SpawnerSaveData();
+        save.startingBlockWorkers_Right = new SpawnerSaveData();
+
+        WorkerSpawner activeLeft = GetActiveLeftWorkerSpawner();
+        WorkerSpawner activeRight = GetActiveRightWorkerSpawner();
+
+        if (activeLeft != null)
+            save.startingBlockWorkers_Left.currentMobsAlive = activeLeft.GetMobCount();
+
+        if (activeRight != null)
+            save.startingBlockWorkers_Right.currentMobsAlive = activeRight.GetMobCount();
+
+        return save;
+    }
 }

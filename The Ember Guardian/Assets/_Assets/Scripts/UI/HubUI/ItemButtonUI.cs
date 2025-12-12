@@ -183,6 +183,7 @@ public class ItemButtonUI : ButtonUI {
         if (!hubMerchantItem.GetItemBought()) return false;
         int redGemsToRefund = GetTotalRedGunGemsToRefund();
         if (redGemsToRefund == 0) return false;
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) return false;
 
         return true;
     }

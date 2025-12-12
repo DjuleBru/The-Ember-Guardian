@@ -23,7 +23,7 @@ public class RefundGunButtonUI : MonoBehaviour
     }
 
     private void Start() {
-        
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) gameObject.SetActive(false);
     }
 
     private void ButtonUI_OnAnyButtonSelected(object sender, System.EventArgs e) {

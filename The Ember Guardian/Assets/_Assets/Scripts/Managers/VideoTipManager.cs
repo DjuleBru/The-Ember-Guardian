@@ -43,6 +43,7 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO savingTip;
     [SerializeField] private VideoTipSO refundGunsTip;
     [SerializeField] private VideoTipSO hordeModeSunDifficultyTip;
+    [SerializeField] private VideoTipSO hordeModeFindWeaponsTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -85,6 +86,7 @@ public class VideoTipManager : MonoBehaviour
     private bool savingTipShown;
     private bool refundGunsTipShown;
     private bool hordeMode_SunDifficultyTipShown;
+    private bool hordeMode_FindingWeaponsTipShown;
 
     private bool showGunManagementTip;
     private bool showEngineersAdvancedTip;
@@ -211,11 +213,24 @@ public class VideoTipManager : MonoBehaviour
     }
 
     private void Chest_Special_OnAnyNewWeaponFound(object sender, EventArgs e) {
-        if (findingWeaponTipShown) return;
-        VideoTipUI.Instance.PlayTipSO(findingWeaponTip, 2f);
 
-        findingWeaponTipShown = true;
-        ES3.Save("findingWeaponTipShown", true);
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            if (!hordeMode_FindingWeaponsTipShown) {
+                VideoTipUI.Instance.PlayTipSO(hordeModeFindWeaponsTip, 2f);
+
+                hordeMode_FindingWeaponsTipShown = true;
+                ES3.Save("hordeMode_FindingWeaponsTipShown", true);
+            };
+        } else {
+            if (!findingWeaponTipShown) {
+                VideoTipUI.Instance.PlayTipSO(findingWeaponTip, 2f);
+
+                findingWeaponTipShown = true;
+                ES3.Save("findingWeaponTipShown", true);
+            };
+        }
+      
+       
     }
 
     private void TrialArea_OnAnyTrialPaid(object sender, EventArgs e) {
@@ -617,6 +632,7 @@ public class VideoTipManager : MonoBehaviour
         savingTipShown = ES3.Load("savingTipShown", false);
         refundGunsTipShown = ES3.Load("refundGunsTipShown", false);
         hordeMode_SunDifficultyTipShown = ES3.Load("hordeMode_SunDifficultyTipShown", false);
+        hordeMode_FindingWeaponsTipShown = ES3.Load("hordeMode_FindingWeaponsTipShown", false);
     }
 
     public bool GetHuntingFlagTipShown() {

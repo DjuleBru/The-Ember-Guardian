@@ -1430,9 +1430,9 @@ public class PlayerShoot : MonoBehaviour
 
     #endregion
 
-    public void SaveAllGunStats() {
+    public void SaveAllGunStats(bool mainGame) {
         foreach (Gun gun in allGunsList) {
-            gun.SaveGunStatModifierLevels();
+            gun.SaveGunStatModifierLevels(mainGame);
         }
     }
 

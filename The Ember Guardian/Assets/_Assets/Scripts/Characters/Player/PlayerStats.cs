@@ -139,13 +139,20 @@ public class PlayerStats : MonoBehaviour
     }
 
     private void LoadPlayerStatBuffs_Meta() {
+        string key = "MetaBuffs";
+
         // Valeur isolée, pas dans le batch
         exhaustionTime = ES3.Load("exhaustionTime", 0);
 
-        if (!ES3.KeyExists("MetaBuffs")) return;
-        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) return;
+       
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            key = "MetaBuffs_Horde";
+            if (!SavingManager_Level.Instance.GetLoadingSavedLevel()) ES3.DeleteKey(key);
+        };
 
-        var buffData = ES3.Load<Dictionary<string, object>>("MetaBuffs");
+        if (!ES3.KeyExists(key)) return;
+
+        var buffData = ES3.Load<Dictionary<string, object>>(key);
 
         swapWeaponTimeReductionPercentBuff_meta = GetValue(buffData, "swapWeaponTimeReductionPercentBuff_meta", 0f);
         maxStaminaBuff_meta = GetValue(buffData, "maxStaminaBuff_meta", 0f);
@@ -639,6 +646,39 @@ public class PlayerStats : MonoBehaviour
         ES3.Save("MetaBuffs", buffData);
     }
 
+    public void SaveHordePlayerStats() {
+        var buffData = new Dictionary<string, object>();
+
+        buffData["swapWeaponTimeReductionPercentBuff_meta"] = swapWeaponTimeReductionPercentBuff_meta;
+        buffData["maxStaminaBuff_meta"] = maxStaminaBuff_meta;
+        buffData["moveSpeedPercentBuff_meta"] = moveSpeedPercentBuff_meta;
+
+        buffData["crouchDetectionRangeReductionPercentBuff_meta"] = crouchDetectionRangeReductionPercentBuff_meta;
+        buffData["runStaminaDepletionPercentBuff_meta"] = runStaminaDepletionPercentBuff_meta;
+        buffData["rollForcePercentBuff_meta"] = rollForcePercentBuff_meta;
+        buffData["rollStaminaDepletionPercentBuff_meta"] = rollStaminaDepletionPercentBuff_meta;
+
+        buffData["maxPlayerHPBuffAbsolute_meta"] = maxPlayerHPBuffAbsolute_meta;
+        buffData["respawnPlayerHPBuffAbsolute_meta"] = respawnPlayerHPBuffAbsolute_meta;
+        buffData["absoluteHpRegenTimer_meta"] = absoluteHpRegenTimer_meta;
+
+        buffData["startLevelAmmo_BuffAbsolute"] = startLevelAmmo_BuffAbsolute;
+        buffData["startLevelOrbs_BuffAbsolute"] = startLevelOrbs_BuffAbsolute;
+        buffData["flashlightRangeBuff_meta"] = flashlightRangeBuff_meta;
+        buffData["meleeDamageBuff_meta"] = meleeDamageBuff_meta;
+
+        buffData["backpackGemSizePercentBuff"] = backpackGemSizePercentBuff;
+        buffData["backpackAmmoSizePercentBuff"] = backpackAmmoSizePercentBuff;
+        buffData["backpackOrbSizePercentBuff"] = backpackOrbSizePercentBuff;
+
+        buffData["startWithRandomActiveSkillLevel"] = startWithRandomActiveSkillLevel;
+        buffData["startWithRandomPassiveSkillLevel"] = startWithRandomPassiveSkillLevel;
+
+        buffData["hold2WeaponsUnlocked"] = hold2WeaponsUnlocked;
+
+        // Sauvegarde unique
+        ES3.Save("MetaBuffs_Horde", buffData);
+    }
     public float GetSkillStat(SkillItem skillItem) {
         float skillStat = 0f;
 

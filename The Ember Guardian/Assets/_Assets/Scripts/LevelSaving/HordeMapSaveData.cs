@@ -6,6 +6,7 @@ using UnityEngine;
 public class HordeMapSaveData {
     public List<BlockSaveData> leftBlocks = new();
     public List<BlockSaveData> rightBlocks = new();
+    public BlockSaveData centralBlockSaveData;
 
     // Pour la cohérence : état interne de la génération
     public List<BlockSize> sizeHistory = new();
@@ -51,6 +52,12 @@ public class BlockSaveData {
     public List<SpawnerSaveData> creatureSpawnerListSaveData;
     public List<HordeScavengableSaveData> scavengableSaveDataList = new();
     public HordeScavengableSaveData mineSaveData;
+
+    public List<SpawnerSaveData> startingBlockAnimalSpawners_Left;
+    public List<SpawnerSaveData> startingBlockAnimalSpawners_Right;
+
+    public SpawnerSaveData startingBlockWorkers_Left;
+    public SpawnerSaveData startingBlockWorkers_Right;
 
     public int decorIndex;
 }

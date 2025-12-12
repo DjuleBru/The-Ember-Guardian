@@ -71,41 +71,47 @@ public class StructureStats : MonoBehaviour
 
 
     private void LoadStructureStats() {
+        string key = "StructureStats";
+
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
-            // Feu principal et secondaire
-            orbFuelValue = initialOrbFuelValue;
-            mainFireMaxFuelTreshold = initialMaxFuelTreshold;
-            mainFireFuelDepletionRate = initialFuelDepletionRate;
-            secondaryFireMaxFuelTreshold = initialSecondaryFireMaxFuelTreshold;
-            secondaryFireFuelDepletionRate = initialSecondaryFireFuelDepletionRate;
+            key = "StructureStats_Horde";
 
-            // Crafter munitions
-            ammoCrafterBatchCapacity = initialAmmoCrafterBatchCapacity;
-            singleAmmoCraftDuration = initialSingleAmmoCraftDuration;
-            ammoCrafterMaxAmmoPerBatch = initialAmmoCrafterMaxAmmoPerBatch;
+            if (!SavingManager_Level.Instance.GetLoadingSavedLevel()) ES3.DeleteKey(key);
 
-            // Crafter orbes
-            orbProcessorBatchCapacity = initialOrbProcessorBatchCapacity;
-            singleOrbCraftDuration = initialSingleOrbCraftDuration;
-            orbProcessorMaxOrbsPerBatch = initialOrbProcessorMaxOrbsPerBatch;
+            if (!ES3.KeyExists(key)) {
+                // Feu principal et secondaire
+                orbFuelValue = initialOrbFuelValue;
+                mainFireMaxFuelTreshold = initialMaxFuelTreshold;
+                mainFireFuelDepletionRate = initialFuelDepletionRate;
+                secondaryFireMaxFuelTreshold = initialSecondaryFireMaxFuelTreshold;
+                secondaryFireFuelDepletionRate = initialSecondaryFireFuelDepletionRate;
 
-            // Autres structures
-            tentHealAmountPerSmallOrb = initialTentHealAmountPerSmallOrb;
-            barricadeHealthPerCrate = initialBarricadeHealthPerCrate;
+                // Crafter munitions
+                ammoCrafterBatchCapacity = initialAmmoCrafterBatchCapacity;
+                singleAmmoCraftDuration = initialSingleAmmoCraftDuration;
+                ammoCrafterMaxAmmoPerBatch = initialAmmoCrafterMaxAmmoPerBatch;
 
-            skillMerchantMaxActiveSkillsDisplayed = 2;
-            skillMerchantMaxPassiveSkillsDisplayed = 3;
-            trapMerchantMaxTrapsDisplayed = 2;
-            trapMerchantMaxTrapUpgradesDisplayed = 3;
-            startWithRandomTrapAmount = 0;
+                // Crafter orbes
+                orbProcessorBatchCapacity = initialOrbProcessorBatchCapacity;
+                singleOrbCraftDuration = initialSingleOrbCraftDuration;
+                orbProcessorMaxOrbsPerBatch = initialOrbProcessorMaxOrbsPerBatch;
 
-            return;
+                // Autres structures
+                tentHealAmountPerSmallOrb = initialTentHealAmountPerSmallOrb;
+                barricadeHealthPerCrate = initialBarricadeHealthPerCrate;
+
+                skillMerchantMaxActiveSkillsDisplayed = 2;
+                skillMerchantMaxPassiveSkillsDisplayed = 3;
+                trapMerchantMaxTrapsDisplayed = 2;
+                trapMerchantMaxTrapUpgradesDisplayed = 3;
+                startWithRandomTrapAmount = 0;
+            }
         }
 
-        if (!ES3.KeyExists("StructureStats"))
+        if (!ES3.KeyExists(key))
             return;
 
-        var structureData = ES3.Load<Dictionary<string, object>>("StructureStats");
+        var structureData = ES3.Load<Dictionary<string, object>>(key);
 
         // Structures de base
         barricadesSpiked = GetValue(structureData, "barricadesSpiked", false);
@@ -194,6 +200,53 @@ public class StructureStats : MonoBehaviour
         structureData["researchTowerEnemyAmountDetectionUnlocked"] = observationTowerEnemyAmountDetectionUnlocked;
 
         ES3.Save("StructureStats", structureData);
+    }
+
+    public void SaveHordeStructureStats() {
+        var structureData = new Dictionary<string, object>();
+
+        // Structures de base
+        structureData["barricadesSpiked"] = barricadesSpiked;
+        structureData["startWithAmmoCrafter"] = startWithAmmoCrafter;
+        structureData["startWithResearchTower"] = startWithResearchTower;
+        structureData["startWithBarricadeLayer"] = startWithBarricadeLayer;
+
+        // Feu principal et secondaire
+        structureData["orbFuelValue"] = orbFuelValue;
+        structureData["mainFireMaxFuelTreshold"] = mainFireMaxFuelTreshold;
+        structureData["mainFireFuelDepletionRate"] = mainFireFuelDepletionRate;
+        structureData["secondaryFireMaxFuelTreshold"] = secondaryFireMaxFuelTreshold;
+        structureData["secondaryFireFuelDepletionRate"] = secondaryFireFuelDepletionRate;
+
+        // Crafter munitions
+        structureData["ammoCrafterBatchCapacity"] = ammoCrafterBatchCapacity;
+        structureData["singleAmmoCraftDuration"] = singleAmmoCraftDuration;
+        structureData["ammoCrafterMaxAmmoPerBatch"] = ammoCrafterMaxAmmoPerBatch;
+
+        // Crafter orbes
+        structureData["orbProcessorBatchCapacity"] = orbProcessorBatchCapacity;
+        structureData["singleOrbCraftDuration"] = singleOrbCraftDuration;
+        structureData["orbProcessorMaxOrbsPerBatch"] = orbProcessorMaxOrbsPerBatch;
+
+        // Autres structures
+        structureData["tentHealAmountPerSmallOrb"] = tentHealAmountPerSmallOrb;
+        structureData["barricadeHealthPerCrate"] = barricadeHealthPerCrate;
+
+        // Marchands
+        structureData["skillMerchantMaxActiveSkillsDisplayed"] = skillMerchantMaxActiveSkillsDisplayed;
+        structureData["skillMerchantMaxPassiveSkillsDisplayed"] = skillMerchantMaxPassiveSkillsDisplayed;
+        structureData["trapMerchantMaxTrapsDisplayed"] = trapMerchantMaxTrapsDisplayed;
+        structureData["trapMerchantMaxTrapUpgradesDisplayed"] = trapMerchantMaxTrapUpgradesDisplayed;
+        structureData["startWithRandomTrapAmount"] = startWithRandomTrapAmount;
+
+        // Buffs
+        structureData["engineerContainerSizeBuff"] = engineerContainerSizeBuff;
+
+        // Tour de recherche
+        structureData["researchTowerEnemyTypesDetectionUnlocked"] = observationTowerEnemyTypesDetectionUnlocked;
+        structureData["researchTowerEnemyAmountDetectionUnlocked"] = observationTowerEnemyAmountDetectionUnlocked;
+
+        ES3.Save("StructureStats_Horde", structureData);
     }
 
     private T GetValue<T>(Dictionary<string, object> dict, string key, T defaultValue) {

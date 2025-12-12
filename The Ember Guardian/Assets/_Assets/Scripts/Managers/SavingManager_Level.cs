@@ -134,6 +134,8 @@ public class SavingManager_Level : MonoBehaviour
         if (LevelManager.Instance.IsHordeMode()) {
             SaveHordeMap(tempPath);
             yield return new WaitForEndOfFrame();
+            SaveHordeMerchantItems();
+            yield return new WaitForEndOfFrame();
         }
 
         SaveLevelState(tempPath);
@@ -589,6 +591,7 @@ public class SavingManager_Level : MonoBehaviour
     private void SaveHordeMap(string path) {
         HordeMapSaveData data = new HordeMapSaveData();
 
+        data.centralBlockSaveData = HordeModeMapGenerationManager.Instance.GetStartingBlock().GetBlockSaveData();
         data.sizeHistory = HordeModeMapGenerationManager.Instance.GetSizeHistory();
         data.distSinceLastWeaponChest = HordeModeMapGenerationManager.Instance.GetDistSinceLastWeaponChest();
         data.nextWeaponChestThreshold = HordeModeMapGenerationManager.Instance.GetNextWeaponChestThreshold();
@@ -618,11 +621,19 @@ public class SavingManager_Level : MonoBehaviour
 
         data.leftBlocks = leftBlockSaveData;
         data.rightBlocks = rightBlockSaveData;
-
         ES3.Save("HordeMap", data, path);
 
     }
  
+    private void SaveHordeMerchantItems() {
+        HordeModeMapGenerationManager.Instance.SaveHordeMerchantItems();
+
+        StructureStats.Instance.SaveHordeStructureStats();
+        WorkerStats.Instance.SaveHordeWorkerValues();
+        PlayerStats.Instance.SaveHordePlayerStats();
+        DogStats.Instance.SaveHordeDogStats();
+        PlayerShoot.Instance.SaveAllGunStats(false);
+    }
 
     #endregion
 

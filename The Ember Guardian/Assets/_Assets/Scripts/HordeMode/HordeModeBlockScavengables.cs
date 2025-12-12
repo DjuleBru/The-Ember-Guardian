@@ -274,7 +274,6 @@ public class HordeModeBlockScavengables : MonoBehaviour
                 };
 
 
-                Debug.Log(saveData.prefabName);
                 saveDataList.Add(saveData);
             }
         }

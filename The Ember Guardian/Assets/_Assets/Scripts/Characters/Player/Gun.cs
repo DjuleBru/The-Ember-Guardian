@@ -810,7 +810,7 @@ public class Gun : MonoBehaviour
 
     #endregion
 
-    public void SaveGunStatModifierLevels() {
+    public void SaveGunStatModifierLevels(bool mainGame) {
         // Dictionnaire pour stocker toutes les valeurs de cette arme
         Dictionary<string, object> gunData = new Dictionary<string, object>();
 
@@ -835,11 +835,23 @@ public class Gun : MonoBehaviour
 
         // Sauvegarde en batch
         string key = gunSO.gunType + "_metaData";
+
+        if (!mainGame) {
+            key = gunSO.gunType + "_hordeData";
+        }
+
         ES3.Save(key, gunData);
     }
 
+
     public void LoadGunStatModifierLevels() {
         string key = gunSO.gunType + "_metaData";
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            key = gunSO.gunType + "_hordeData";
+            if (!SavingManager_Level.Instance.GetLoadingSavedLevel()) ES3.DeleteKey(key);
+        };
+
         gunUnlocked = MetaProgressionManager.Instance.GetGunUnlocked(gunSO);
 
         if (!ES3.KeyExists(key)) {

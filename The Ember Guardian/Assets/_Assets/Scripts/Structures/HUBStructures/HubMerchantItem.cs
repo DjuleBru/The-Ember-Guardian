@@ -523,12 +523,42 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public virtual void LoadItemStatus_HodeMode() {
+        var key = GetItemType() + "_HordeModeData";
+
         if (isBoughtAtStart) {
             itemBought = true;
         }
 
         if (isUnlockedAtStart) {
             itemUnlocked = true;
+        }
+
+        if (ES3.KeyExists(key)) {
+            var data = ES3.Load<Dictionary<string, object>>(key);
+
+            if (!itemBought) {
+                itemBought = data.ContainsKey("Bought") ? Convert.ToBoolean(data["Bought"]) : isBoughtAtStart;
+            }
+
+            if (!itemUnlocked) {
+                itemUnlocked = data.ContainsKey("Unlocked") ? Convert.ToBoolean(data["Unlocked"]) : isUnlockedAtStart;
+            }
+
+            if (!newItemUnlocked) {
+                newItemUnlocked = data.ContainsKey("NewlyUnlocked") ? Convert.ToBoolean(data["NewlyUnlocked"]) : false;
+                if (newItemUnlocked) {
+                    SetNewItemUnlocked(true);
+                }
+
+            }
+
+            itemLevel = data.ContainsKey("Level") ? Convert.ToInt32(data["Level"]) : 0;
+
+            if (linkedStatModifierSO != null) {
+                // Balancing Security 
+                int maxItemLevel = Mathf.Max(linkedStatModifierSO.blueGemCostList.Count, linkedStatModifierSO.redGemCostList.Count, linkedStatModifierSO.yellowGemCostList.Count, linkedStatModifierSO.purleGemCostList.Count, linkedStatModifierSO.cyanGemCostList.Count, linkedStatModifierSO.greenGemCostList.Count);
+                if (itemLevel > maxItemLevel) { itemLevel = maxItemLevel; }
+            }
         }
 
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
@@ -549,21 +579,31 @@ public class HubMerchantItem : MonoBehaviour
         };
 
         // Sauvegarde du dictionnaire complet en une seule clé
-        ES3.Save(GetItemType() + "_Data", dataToSave);
+        string key = GetItemType() + "_Data";
+        if (parentHubMerchant.GetIsHordeModeNPC()) {
+            key = GetItemType() + "_HordeModeData";
+        }
+        ES3.Save(key, dataToSave);
 
         itemStatusChanged = false;
     }
 
     // --- RESET ---
-    public void ResetItemStatus_Batch() {
-        itemBought = false;
+    public void ResetHordeItemStatus_Batch() {
+        var key = GetItemType() + "_HordeModeData";
+        ES3.DeleteKey(key);
 
-        itemLevel = 0;
+        //if (!isBoughtAtStart) {
+        //    itemBought = false;
+        //}
 
-        itemUnlocked = false;
-        newItemUnlocked = false;
+        //itemLevel = 0;
 
-        SaveItemStatus_Batch();
+        //if(!isUnlockedAtStart) {
+        //    itemUnlocked = false;
+        //}
+
+        //SaveItemStatus_Batch();
     }
 
     private void OnDestroy() {
