@@ -21,6 +21,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
     [SerializeField] private WorkerSpawner workerSpawnerRight_LH;
     [SerializeField] private WorkerSpawner workerSpawnerLeft_FD;
     [SerializeField] private WorkerSpawner workerSpawnerRight_FD;
+    [SerializeField] private int centralBlockInitialWorkers = 4;
 
     protected override void Start() {
         base.Start();
@@ -85,26 +86,26 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         if (env == LevelSO.LevelEnvironment.CorruptedCity) {
             workerSpawnerLeft_CC.gameObject.SetActive(true);
             workerSpawnerRight_CC.gameObject.SetActive(true);
-            workerSpawnerLeft_CC.SpawnMobs(2);
-            workerSpawnerRight_CC.SpawnMobs(2);
+            workerSpawnerLeft_CC.SpawnMobs(centralBlockInitialWorkers);
+            workerSpawnerRight_CC.SpawnMobs(centralBlockInitialWorkers);
         }
         if (env == LevelSO.LevelEnvironment.TheVerdantGraveyard) {
             workerSpawnerLeft_VG.gameObject.SetActive(true);
             workerSpawnerRight_VG.gameObject.SetActive(true);
-            workerSpawnerLeft_VG.SpawnMobs(2);
-            workerSpawnerRight_VG.SpawnMobs(2);
+            workerSpawnerLeft_VG.SpawnMobs(centralBlockInitialWorkers);
+            workerSpawnerRight_VG.SpawnMobs(centralBlockInitialWorkers);
         }
         if (env == LevelSO.LevelEnvironment.TheLumenHollow) {
             workerSpawnerLeft_LH.gameObject.SetActive(true);
             workerSpawnerRight_LH.gameObject.SetActive(true);
-            workerSpawnerLeft_LH.SpawnMobs(2);
-            workerSpawnerRight_LH.SpawnMobs(2);
+            workerSpawnerLeft_LH.SpawnMobs(centralBlockInitialWorkers);
+            workerSpawnerRight_LH.SpawnMobs(centralBlockInitialWorkers);
         }
         if (env == LevelSO.LevelEnvironment.TheFracturedDistrict) {
             workerSpawnerLeft_FD.gameObject.SetActive(true);
             workerSpawnerRight_FD.gameObject.SetActive(true);
-            workerSpawnerLeft_FD.SpawnMobs(2);
-            workerSpawnerRight_FD.SpawnMobs(2);
+            workerSpawnerLeft_FD.SpawnMobs(centralBlockInitialWorkers);
+            workerSpawnerRight_FD.SpawnMobs(centralBlockInitialWorkers);
         }
     }
 

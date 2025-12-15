@@ -136,6 +136,8 @@ public class SoundManager : MonoBehaviour
             HordeModeRewardsMenu.Instance.OnNewItemUnlocked += HordeModeRewardsMenu_OnNewItemUnlocked;
             HordeModeRewardsMenu.Instance.OnProgressionBarStartFill += HordeModeRewardsMenu_OnProgressionBarStartFill;
             HordeModeRewardsMenu.Instance.OnProgressionBarEndFill += HordeModeRewardsMenu_OnProgressionBarEndFill;
+            HordeModeUI.Instance.OnWeaponSelected += HordeModeUI_OnWeaponSelected;
+            HordeModeUI.Instance.OnDogSelected += HordeModeUI_OnDogSelected;
         }
 
         StructureBlueprint.OnAnyBlueprintWithStructureHovered += StructureBlueprint_OnAnyBlueprintWithStructureHovered;
@@ -210,6 +212,7 @@ public class SoundManager : MonoBehaviour
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
     }
 
+
     private void Update() {
         if(criticalFireTickJustRemoved) {
             criticalFireTickRemovedTimer -= Time.deltaTime;
@@ -263,6 +266,24 @@ public class SoundManager : MonoBehaviour
 
 
     #region UI
+
+    private void HordeModeUI_OnDogSelected(object sender, System.EventArgs e) {
+        Dog.DogType selectedDogType = HordeModeUI.Instance.GetSelectedDogType();
+        if(selectedDogType == Dog.DogType.GermanShepherd) {
+            PlaySound2D(soundRefsSO.germanShepherdSelected);
+        }
+        if (selectedDogType == Dog.DogType.GoldenRetreiver) {
+            PlaySound2D(soundRefsSO.retreiverSelected);
+        }
+        if (selectedDogType == Dog.DogType.DarkCompanion) {
+            PlaySound2D(soundRefsSO.darkCompanionSelected);
+        }
+
+    }
+
+    private void HordeModeUI_OnWeaponSelected(object sender, System.EventArgs e) {
+        PlaySound2D(HordeModeUI.Instance.GetSelectedGunSO().swapToWeaponSound, HordeModeUI.Instance.GetSelectedGunSO().swapToWeaponVolumeMultiplier);
+    }
 
     private void HordeModeRewardsMenu_OnProgressionBarStartFill(object sender, System.EventArgs e) {
         gunPoweringUpAudioSource.clip = soundRefsSO.hordeModeProgressionBar;
@@ -1069,6 +1090,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlaySound2D(AudioClip audioClip, float volume = 1f) {
+        //Debug.Log("PlaySound2D " + audioClip);
         if (audioSource2D == null) {
             Debug.LogError("PlaySound2D ignoré car audioSource2D est null !");
             return;
@@ -1173,6 +1195,8 @@ public class SoundManager : MonoBehaviour
             HordeModeRewardsMenu.Instance.OnNewItemUnlocked -= HordeModeRewardsMenu_OnNewItemUnlocked;
             HordeModeRewardsMenu.Instance.OnProgressionBarStartFill -= HordeModeRewardsMenu_OnProgressionBarStartFill;
             HordeModeRewardsMenu.Instance.OnProgressionBarEndFill -= HordeModeRewardsMenu_OnProgressionBarEndFill;
+            HordeModeUI.Instance.OnWeaponSelected -= HordeModeUI_OnWeaponSelected;
+            HordeModeUI.Instance.OnDogSelected -= HordeModeUI_OnDogSelected;
         }
         StructureUI_Fire.OnMainFireTickRemoved -= StructureUI_Fire_OnFireTickRemoved;
         StructureUI_Fire.OnMainCricitalFireTickRemoved -= StructureUI_Fire_OnCricitalFireTickRemoved;

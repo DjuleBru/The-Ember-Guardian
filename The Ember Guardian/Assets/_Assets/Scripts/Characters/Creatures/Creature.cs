@@ -237,17 +237,21 @@ public class Creature : Mob
         }
 
         if (LevelManager.Instance != null && LevelManager.Instance.IsHordeMode()) {
+
             HordeModeDropGems();
+
+        } else {
+
+            if (eliteCreature) {
+                if (DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetIsMainDemoLevel()) {
+                    DemoDropGems();
+                }
+                else {
+                    EliteDropGems();
+                }
+            }
         }
 
-        if (eliteCreature) {
-            if (DemoMainLevelManager.Instance != null && DemoMainLevelManager.Instance.GetIsMainDemoLevel()) {
-                DemoDropGems();
-            }
-            else {
-                EliteDropGems();
-            }
-        }
 
         if (creatureSO.isBoss) {
             BossUI.Instance.Hide();

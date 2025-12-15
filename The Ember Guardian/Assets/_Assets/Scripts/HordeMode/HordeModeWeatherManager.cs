@@ -27,7 +27,6 @@ public class HordeModeWeatherManager : MonoBehaviour
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-
         float randomValue = UnityEngine.Random.value;
 
         if(randomValue > .5f) {
@@ -48,7 +47,7 @@ public class HordeModeWeatherManager : MonoBehaviour
                 if(firstDayPassed) {
                     WindManager.Instance.SetRandomWindStrength();
                 } else {
-                    WindManager.Instance.SetWindStrengthExternal(WindManager.WindStrength.soft);
+                    WindManager.Instance.SetWindStrengthExternal(WindManager.WindStrength.none);
                 }
 
             }

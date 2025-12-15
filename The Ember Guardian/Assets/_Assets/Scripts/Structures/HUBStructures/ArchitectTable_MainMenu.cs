@@ -21,6 +21,19 @@ public class ArchitectTable_MainMenu : ArchitectTable
         }
         customizeCampPanelGO.SetActive(false);
 
+    }
+
+    protected void Start() {
+        bool moreGems1Unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.MoreCampCustomizationBudget1);
+        bool moreGems2Unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.MoreCampCustomizationBudget2);
+
+        if(moreGems1Unlocked) {
+            initialBudget += 10;
+        }
+        if (moreGems2Unlocked) {
+            initialBudget += 10;
+        }
+
         remainingBudget = initialBudget;
         remainingBudgetText.text = initialBudget.ToString();
     }

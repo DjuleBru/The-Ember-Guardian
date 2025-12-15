@@ -41,6 +41,7 @@ public class HordeModeUI : MonoBehaviour
     private bool dogCustomizationUnlocked;
     private bool campCustomizationUnlocked;
 
+    private GunSO selectedGunSO;
     private GunSO.GunType selectedGunType;
     public event EventHandler OnWeaponSelected;
     private Dog.DogType selectedDogType;
@@ -174,6 +175,7 @@ public class HordeModeUI : MonoBehaviour
 
     #region CUSTOMIZATION BUTTONS
     public void SetSelectedWeapon(GunSO gunSO) {
+        selectedGunSO = gunSO;
         selectedGunType = gunSO.gunType;
         OnWeaponSelected?.Invoke(this, EventArgs.Empty);
 
@@ -182,6 +184,9 @@ public class HordeModeUI : MonoBehaviour
         }
 
         CloseChangeWeaponPanel();
+    }
+    public GunSO GetSelectedGunSO() {
+        return selectedGunSO;
     }
 
     public GunSO.GunType GetSelectedGunType() {
@@ -397,6 +402,7 @@ public class HordeModeUI : MonoBehaviour
     }
 
     public void CloseHordeModePanel() {
+        MainMenuUI.Instance.OpenCloseHordeModeSelectButtons(false);
         StartCoroutine(CloseHordeModePanelCoroutine());
     }
 
@@ -409,5 +415,11 @@ public class HordeModeUI : MonoBehaviour
         HordeModeCustomizationManager.Instance.SetSelectedEnvironment(currentSelectedEnvironment);
 
         CampEditManager.Instance.SaveCampLayout();
+    }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnEscapePerformed -= GameInput_OnEscapePerformed;
+        GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
     }
 }

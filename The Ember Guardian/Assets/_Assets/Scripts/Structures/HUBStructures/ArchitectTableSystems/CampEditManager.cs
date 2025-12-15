@@ -67,6 +67,7 @@ public class CampEditManager : MonoBehaviour {
     void Awake() {
         Instance = this;
         campGrid = GetComponent<CampGrid>();
+        hordeMode = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
 
         LoadCampLayout();
     }
@@ -81,11 +82,10 @@ public class CampEditManager : MonoBehaviour {
         scrollRectEvents.OnDragEnded += ScrollRectEvents_OnDragEnded;
         scrollRectEvents.OnDragStarted += ScrollRectEvents_OnDragStarted;
 
-        hordeMode = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
         // Check if no structure was saved
         if (savedLayout.Count == 0) return;
 
-        InitializeCampLayout();
+        InitializeCampLayout(false);
     }
 
     void Update() {
@@ -415,7 +415,7 @@ public class CampEditManager : MonoBehaviour {
         }
     }
 
-    public void RemoveAllStructure() {
+    public void RemoveAllStructure(bool triggerSFX = true) {
         List<StructureBlueprint> structureBlueprintsToRemove = new List<StructureBlueprint>();
 
         foreach (var kvp in placedStructureBlueprints) {
@@ -433,7 +433,11 @@ public class CampEditManager : MonoBehaviour {
         //RemoveStructure(tentBlueprint, false);
 
         OnAnyChangeMade?.Invoke(this, EventArgs.Empty);
-        OnAllStructuresRemoved?.Invoke(this, EventArgs.Empty);
+
+        if(triggerSFX) {
+            OnAllStructuresRemoved?.Invoke(this, EventArgs.Empty);
+        }
+
     }
 
     public void ResetToDefault() {
@@ -486,6 +490,7 @@ public class CampEditManager : MonoBehaviour {
     }
 
     public void LoadCampLayout() {
+        Debug.Log("LoadCampLayout " + hordeMode);
         if(hordeMode) {
             savedLayout = ES3.Load("campLayout_HordeMode", new List<StructurePlacementData>());
         } else {
@@ -499,8 +504,8 @@ public class CampEditManager : MonoBehaviour {
         return savedLayout.Count > 0;
     }
 
-    public void InitializeCampLayout() {
-        RemoveAllStructure();
+    public void InitializeCampLayout(bool triggerSFX = true) {
+        RemoveAllStructure(triggerSFX);
 
         foreach (var data in savedLayout) {
 

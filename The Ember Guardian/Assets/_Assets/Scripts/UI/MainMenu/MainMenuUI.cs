@@ -17,6 +17,7 @@ public class MainMenuUI : MonoBehaviour {
     protected bool confirmHordeModeResetProgression;
     protected bool selectingHordeModeContinueOrNewGame;
     protected bool backFromHordeModeAfterDefeat;
+    protected bool loadingHordeMode;
 
     [SerializeField] protected GameObject mainMenuPanel;
     [SerializeField] protected GameObject fullGameDescriptionPanel;
@@ -106,7 +107,7 @@ public class MainMenuUI : MonoBehaviour {
     private void CheckBackFromHordeMode() {
         backFromHordeModeAfterDefeat = ES3.Load("backFromHordeModeAfterDefeat", false);
         if (backFromHordeModeAfterDefeat) {
-            ES3.DeleteFile("HordeMode.es3");
+            ES3.DeleteFile("HordeLevelSave.es3");
             HordeModeButton(true);
         }
     }
@@ -198,10 +199,10 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public virtual void HordeModeButton(bool changeCameraTarget = true) {
-        if (!ES3.FileExists("HordeMode.es3")) {
+        if (!ES3.FileExists("HordeLevelSave.es3")) {
             NewHordeModeGame(changeCameraTarget);
         } else {
-            if (!ES3.KeyExists("GameInProgress", "HordeMode.es3") || hasResetHordeMode) {
+            if (hasResetHordeMode) {
                 NewHordeModeGame(changeCameraTarget);
             } else {
                 OpenCloseHordeModeSelectButtons(true);
@@ -212,6 +213,7 @@ public class MainMenuUI : MonoBehaviour {
     public void NewHordeModeGame_ButtonConfirm() {
         if (confirmHordeModeResetProgression) {
             hasResetHordeMode = true;
+            ES3.DeleteFile("HordeLevelSave.es3");
             NewHordeModeGame();
         }
         else {
@@ -226,6 +228,8 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public void StartHordeMode() {
+        if (loadingHordeMode) return;
+        loadingHordeMode = true;
         StartCoroutine(StartHordeModeCoroutine());
     }
 
@@ -233,7 +237,7 @@ public class MainMenuUI : MonoBehaviour {
         OpenCloseHordeModeSelectButtons(false);
     }
 
-    private void OpenCloseHordeModeSelectButtons(bool open) {
+    public void OpenCloseHordeModeSelectButtons(bool open) {
         selectingHordeModeContinueOrNewGame = open;
         hordeModeMenuGO.SetActive(open);
         standardMenuGO.SetActive(!open);
@@ -286,8 +290,7 @@ public class MainMenuUI : MonoBehaviour {
 
     private IEnumerator StartHordeModeCoroutine() {
         OnGameStart?.Invoke(this, EventArgs.Empty);
-
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForEndOfFrame();
 
         MusicManager.Instance.FadeOutMusic(1f);
         MetaProgressionManager.Instance.SetSavedOnce();

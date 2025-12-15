@@ -502,14 +502,6 @@ public class MetaProgressionManager : MonoBehaviour
         SetLastLevelCompleted(levelSO);
         string key = levelSO.ToString() + "_Completed";
         ES3.Save(key, true);
-
-        ProgressInHordeModeThroughMainGame(levelSO);
-    }
-
-    private void ProgressInHordeModeThroughMainGame(LevelSO levelSO) {
-        if (levelSO != null && levelSO.linkedHordeUnlock != HordeModeProgressionManager.HordeModeUnlockables.None) {
-            HordeModeProgressionManager.Instance.EnsureUnlockReached_MainGame(levelSO.linkedHordeUnlock);
-        }
     }
 
     public void SetLastLevelCompleted(LevelSO levelSO) {

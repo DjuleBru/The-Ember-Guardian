@@ -306,7 +306,12 @@ public class HordeModeRewardsMenu : MonoBehaviour
             return 1f; // tout est unlock
 
         int requiredXP = HordeModeProgressionManager.Instance.unlockThresholds[nextUnlock];
-        int previousUnlockableXP = HordeModeProgressionManager.Instance.unlockThresholds[previousUnlock];
+        int previousUnlockableXP = 0;
+
+        if(previousUnlock != HordeModeProgressionManager.HordeModeUnlockables.None) {
+            previousUnlockableXP = HordeModeProgressionManager.Instance.unlockThresholds[previousUnlock];
+        }
+
 
         int diff = requiredXP - previousUnlockableXP;
         float progress = (float)(requiredXP - totalXP) / (float)diff;

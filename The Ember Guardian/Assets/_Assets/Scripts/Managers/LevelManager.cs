@@ -305,13 +305,13 @@ public class LevelManager : MonoBehaviour
 
             ES3.Save("lastXPGainFromMainGame", false);
             ES3.Save("backFromHordeModeAfterDefeat", true);
-            ES3.Save("lastHordeModeNightsSurvived", currentDay-1);
+            ES3.Save("lastHordeModeNightsSurvived", currentDay);
         }
     }
 
     public int CalculateHordeModeXPReward(int nightCount) {
         int baseXP = 30;        // XP pour la première nuit
-        int extraXP = 10;       // XP ajouté par nuit supplémentaire
+        int extraXP = 15;       // XP ajouté par nuit supplémentaire
 
         if (nightCount <= 0)
             return 0;

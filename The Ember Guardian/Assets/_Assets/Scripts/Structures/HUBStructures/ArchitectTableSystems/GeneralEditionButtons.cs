@@ -37,7 +37,6 @@ public class GeneralEditionButtons : ButtonUI
         }
 
         CampEditManager.Instance.OnAnyChangeMade += CampEditManager_OnAnyChangeMade;
-        CampEditManager.Instance.OnAllStructuresRemoved += CampEditManager_OnAllStructuresRemoved;
         CampEditManager.Instance.OnLayoutResetToDefault += CampEditManager_OnLayoutResetToDefault;
         CampEditManager.Instance.OnLayoutSaved += CampEditManager_OnLayoutSaved;
 
@@ -76,11 +75,7 @@ public class GeneralEditionButtons : ButtonUI
         }
     }
 
-    private void CampEditManager_OnAllStructuresRemoved(object sender, System.EventArgs e) {
-        if (buttonType == ButtonType.RemoveAllStructures) {
-            //SetButtonEnabled(false);
-        }
-    }
+
 
     private void CampEditManager_OnAnyChangeMade(object sender, System.EventArgs e) {
         if (buttonType == ButtonType.SaveLayout || buttonType == ButtonType.RevertChanges || buttonType == ButtonType.ResetToDefault || buttonType == ButtonType.RemoveAllStructures) {

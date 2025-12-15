@@ -59,9 +59,13 @@ public class HordeModeProgressionManager : MonoBehaviour
         MortarTower2,
         NewTraps2,
         Armorer,
+        MoreCampCustomizationBudget1,
+        MoreCampCustomizationBudget2,
         None,
     }
     public Dictionary<HordeModeUnlockables, int> unlockThresholds;
+
+    [SerializeField] private List<LevelSO> levelSOList;
 
     [Title("Unlock Order")]
     [InfoBox("This list defines the EXACT unlock order. The enum order is ignored.")]
@@ -83,14 +87,20 @@ public class HordeModeProgressionManager : MonoBehaviour
         hasXPToCommit = ES3.Load("hasXPToCommit", false);
 
         unlockThresholds = GenerateUnlockThresholds();
+        Debug.Log(unlockThresholds[HordeModeUnlockables.Armorer]);
         unlockedSet = ES3.Load("HordeModeUnlocks", new List<HordeModeUnlockables>());
     }
 
+    private void Start() {
+        CheckLastMainGameLevelCompleted();
+    }
+
     private Dictionary<HordeModeUnlockables, int> GenerateUnlockThresholds() {
+        Debug.Log("GenerateUnlockThresholds");
         Dictionary<HordeModeUnlockables, int> dict = new Dictionary<HordeModeUnlockables, int>();
 
-        int baseXP = 100;
-        int incremental = 5;
+        int baseXP = 10;
+        int incremental = 3;
         int currentIncrease = 0;
         int currentXP = baseXP;
 
@@ -110,6 +120,7 @@ public class HordeModeProgressionManager : MonoBehaviour
     // Called during run
     [Button]
     public void AddRunXP(int amount) {
+        //Debug.Log("AddRunXP " + amount);
         pendingXP += amount;
         totalHordeModeXP += amount;
 
@@ -120,8 +131,17 @@ public class HordeModeProgressionManager : MonoBehaviour
         ES3.Save("hasXPToCommit", true);
     }
 
+    private void CheckLastMainGameLevelCompleted() {
+        foreach (LevelSO levelSO in levelSOList) {
+            if (MetaProgressionManager.Instance.GetLevelCompleted(levelSO)) {
+                EnsureUnlockReached_MainGame(levelSO.linkedHordeUnlock);
+            }
+        }
+    }
+
     public void EnsureUnlockReached_MainGame(HordeModeUnlockables unlock) {
         if (unlock == HordeModeUnlockables.None) return;
+        //Debug.Log("GetUnlocked " + unlock  + " " + GetUnlocked(unlock));
         if (GetUnlocked(unlock)) return;
 
         if (unlockThresholds == null) unlockThresholds = GenerateUnlockThresholds();
