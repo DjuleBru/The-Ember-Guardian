@@ -40,6 +40,8 @@ public class HordeModeRewardsMenu : MonoBehaviour
     private bool skipFill = false;
     private bool unlockSequenceCoroutineRunning;
 
+    private Coroutine unlockSequenceCoroutine;
+
     public event EventHandler OnProgressionBarStartFill;
     public event EventHandler OnProgressionBarEndFill;
     public event EventHandler OnNewItemUnlocked;
@@ -59,6 +61,9 @@ public class HordeModeRewardsMenu : MonoBehaviour
         nextUnlockDescriptionText.text ="";
         nightsSurvivedAmountText.font = LocalizationManager.Instance.GetCurrentFont();
 
+        GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnEscapePerformed += GameInput_OnEscapePerformed;
+
         if (HordeModeProgressionManager.Instance.LastXPGainWasFromMainGame()) {
             nightsSurvivedAmountText.text = LocalizationManager.Instance.GetLocalizedText("menu_hordeModeXPBackFromMainGame");
         } else {
@@ -69,6 +74,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
         SetNextUnlockParameters(HordeModeProgressionManager.Instance.GetNextUnlockable());
         SetNextUnlockMaterialAndText();
     }
+
 
     private void Update() {
         if (!panelOpen) return;
@@ -83,11 +89,11 @@ public class HordeModeRewardsMenu : MonoBehaviour
     public void OpenPanelAndCommitXP() {
         panelOpen = true;
         MusicManager.Instance.SetAudioVolume(.5f);
-        StartUnlockSequence();
+         StartUnlockSequence();
     }
 
     public void StartUnlockSequence() {
-        StartCoroutine(UnlockSequence());
+        unlockSequenceCoroutine = StartCoroutine(UnlockSequence());
         unlockSequenceCoroutineRunning = true;
     }
 
@@ -211,40 +217,69 @@ public class HordeModeRewardsMenu : MonoBehaviour
         // -------------------------
         // FIN : REMPLISSAGE FINAL
         // -------------------------
+
         pressAnyKeyToContinueGO.SetActive(false);
 
-        SetNextUnlockParameters(HordeModeProgressionManager.Instance.GetNextUnlockable());
-        SetNextUnlockMaterialAndText();
-        
+        if (!HordeModeProgressionManager.Instance.GetAllUnlocked()) {
 
-        float finalTarget = Mathf.Clamp01(GetXPProgressNormalized());
-        float endSpeed = 1f;
+            SetNextUnlockParameters(HordeModeProgressionManager.Instance.GetNextUnlockable());
+            SetNextUnlockMaterialAndText();
 
-        ES3.Save("lastProgressionBarFillAmount", finalTarget);
+            float finalTarget = Mathf.Clamp01(GetXPProgressNormalized());
+            float endSpeed = 1f;
 
-        skipFill = false;
+            ES3.Save("lastProgressionBarFillAmount", finalTarget);
 
-        OnProgressionBarStartFill?.Invoke(this, EventArgs.Empty);
+            skipFill = false;
 
-        while (xpProgressionBar.fillAmount < finalTarget) {
-            if (skipFill || AnyInputPressed()) {
-                xpProgressionBar.fillAmount = finalTarget;
-                break;
+            OnProgressionBarStartFill?.Invoke(this, EventArgs.Empty);
+
+            while (xpProgressionBar.fillAmount < finalTarget) {
+                if (skipFill || AnyInputPressed()) {
+                    xpProgressionBar.fillAmount = finalTarget;
+                    break;
+                }
+
+                xpProgressionBar.fillAmount += Time.deltaTime * endSpeed;
+                yield return null;
             }
 
-            xpProgressionBar.fillAmount += Time.deltaTime * endSpeed;
-            yield return null;
+
         }
 
         OnProgressionBarEndFill?.Invoke(this, EventArgs.Empty);
-
         HordeModeProgressionManager.Instance.SetHasNoXPToCommit();
         unlockSequenceCoroutineRunning = false;
+
 
         yield return new WaitForSeconds(1f);
         pressAnyKeyToContinueGO.SetActive(true);
     }
 
+    private void GameInput_OnEscapePerformed(object sender, EventArgs e) {
+        SkipAllRewards();
+    }
+    private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        SkipAllRewards();
+    }
+
+    private void SkipAllRewards() {
+        if (!unlockSequenceCoroutineRunning) return;
+
+        // Récupération des unlocks atteignables
+        int totalXP = HordeModeProgressionManager.Instance.GetTotalXP();
+        foreach (var kvp in HordeModeProgressionManager.Instance.unlockThresholds) {
+            if (!HordeModeProgressionManager.Instance.GetUnlocked(kvp.Key) && totalXP >= kvp.Value) {
+                HordeModeProgressionManager.Instance.AddUnlocked(kvp.Key);
+            }
+
+        }
+
+        StopCoroutine(unlockSequenceCoroutine);
+        HordeModeProgressionManager.Instance.SetHasNoXPToCommit();
+        unlockSequenceCoroutineRunning = false;
+        ClosePanel();
+    }
 
     public void ClosePanel() {
         MusicManager.Instance.SetAudioVolume(1f);
@@ -302,8 +337,10 @@ public class HordeModeRewardsMenu : MonoBehaviour
         var nextUnlock = HordeModeProgressionManager.Instance.GetNextUnlockable();
         var previousUnlock = HordeModeProgressionManager.Instance.GetPreviousUnlockable();
 
-        if ((int)nextUnlock < 0)
+        if (HordeModeProgressionManager.Instance.GetAllUnlocked()) {
             return 1f; // tout est unlock
+        }
+
 
         int requiredXP = HordeModeProgressionManager.Instance.unlockThresholds[nextUnlock];
         int previousUnlockableXP = 0;

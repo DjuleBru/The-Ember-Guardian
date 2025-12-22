@@ -19,31 +19,44 @@ public class HordeModeCustomizationManager : MonoBehaviour
         selectedGunType = ES3.Load("hordeModeGunType", GunSO.GunType.Rifle);
         selectedEnvironmentType = ES3.Load("hordeModeEnvironment", LevelSO.LevelEnvironment.TheVerdantGraveyard);
 
-        if(useDebugEnv) {
+        if (useDebugEnv) {
             selectedEnvironmentType = debugEnvironmentType;
         }
     }
 
-
     public void SetSelectedDog(Dog.DogType dogType) {
+        Debug.Log("SetSelectedDog " + dogType);
         ES3.Save("hordeModeDogType", dogType);
     }
 
     public void SetSelectedWeapon(GunSO.GunType gunType) {
+        Debug.Log("SetSelectedWeapon " + gunType);
         ES3.Save("hordeModeGunType", gunType);
     }
 
     public void SetSelectedEnvironment(LevelSO.LevelEnvironment environment) {
+        Debug.Log("SetSelectedEnvironment " + environment);
         ES3.Save("hordeModeEnvironment", environment);
     }
 
     public LevelSO.LevelEnvironment GetSelectedEnvironment() {
         return selectedEnvironmentType;
     }
+
     public Dog.DogType GetSelectedDogType() {
+        Debug.Log("GetSelectedDogType " + selectedDogType);
         return selectedDogType;
     }
+
     public GunSO.GunType GetSelectedWeaponType() {
         return selectedGunType;
+    }
+
+    public void SaveHordeModeParameters() {
+        HordeModeCustomizationManager.Instance.SetSelectedWeapon(selectedGunType);
+        HordeModeCustomizationManager.Instance.SetSelectedDog(selectedDogType);
+        HordeModeCustomizationManager.Instance.SetSelectedEnvironment(selectedEnvironmentType);
+
+        CampEditManager.Instance.SaveCampLayout();
     }
 }

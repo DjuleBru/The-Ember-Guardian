@@ -120,7 +120,7 @@ public class HordeModeProgressionManager : MonoBehaviour
     // Called during run
     [Button]
     public void AddRunXP(int amount) {
-        //Debug.Log("AddRunXP " + amount);
+        Debug.Log("AddRunXP " + amount);
         pendingXP += amount;
         totalHordeModeXP += amount;
 
@@ -376,7 +376,18 @@ public class HordeModeProgressionManager : MonoBehaviour
 
         return HordeModeUnlockables.None;
     }
+    public bool GetAllUnlocked() {
 
+        foreach (var unlock in unlockOrder) {
+            if (unlock == HordeModeUnlockables.None)
+                continue;
+
+            if (!unlockedSet.Contains(unlock))
+                return false;
+        }
+
+        return true;
+    }
     public HordeModeUnlockables GetPreviousUnlockable() {
         HordeModeUnlockables previous = HordeModeUnlockables.None;
 

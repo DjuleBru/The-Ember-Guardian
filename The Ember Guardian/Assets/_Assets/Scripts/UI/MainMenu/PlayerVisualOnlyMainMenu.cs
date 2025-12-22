@@ -14,6 +14,7 @@ public class PlayerVisualOnlyMainMenu : MonoBehaviour
     private void Start() {
         CharacterSelectUI.Instance.OnCharacterChanged += CharacterSelectUI_OnCharacterChanged;
         HordeModeUI.Instance.OnWeaponSelected += HordeModeUI_OnWeaponSelected;
+        HordeModeUI.Instance.OnHordeModePanelOpened += HordeModeUI_OnWeaponSelected;
 
         SetCharacterVisuals();
 
@@ -22,7 +23,7 @@ public class PlayerVisualOnlyMainMenu : MonoBehaviour
     }
 
     private void HordeModeUI_OnWeaponSelected(object sender, System.EventArgs e) {
-        SetGunVisuals(HordeModeUI.Instance.GetSelectedGunType());
+        SetGunVisuals(HordeModeCustomizationManager.Instance.GetSelectedWeaponType());
     }
 
     private void CharacterSelectUI_OnCharacterChanged(object sender, System.EventArgs e) {
@@ -44,6 +45,7 @@ public class PlayerVisualOnlyMainMenu : MonoBehaviour
 
         weaponSpriteRenderer.sprite = gunSO.gunSprite_mainMenu;
         weaponLightsSpriteRenderer.sprite = gunSO.gunSprite_mainMenuLights;
+        Debug.Log("SetGunVisuals " + gunType);
     }
 
     private GunSO GetGunSO(GunSO.GunType gunType) {

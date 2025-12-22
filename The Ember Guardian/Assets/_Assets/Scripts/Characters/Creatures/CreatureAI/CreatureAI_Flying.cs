@@ -214,7 +214,7 @@ public class CreatureAI_Flying : CreatureAI
             attackTargetPosition = diveAttackTargetDestination;
         }
 
-        if (Vector3.Distance(transform.position, targetDestination) < minAttackRange) {
+        if (Vector3.Distance(transform.position, targetDestination) < maxAttackRange) {
             ChangeState(State.attacking);
             return;
         }
@@ -223,7 +223,7 @@ public class CreatureAI_Flying : CreatureAI
 
         if (diveAttack && diveAttackTargetSet) {
 
-            if (Vector3.Distance(transform.position, diveAttackTargetDestination) < minAttackRange) {
+            if (Vector3.Distance(transform.position, diveAttackTargetDestination) < minAttackRange/1.5f) {
                 RepositionAfterAttack();
                 OnCreatureDropOnTargetEnded?.Invoke(this, EventArgs.Empty);
                 return;

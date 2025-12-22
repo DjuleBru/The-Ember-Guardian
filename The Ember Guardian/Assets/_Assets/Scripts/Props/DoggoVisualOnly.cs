@@ -24,11 +24,12 @@ public class DoggoVisualOnly : MonoBehaviour
        }
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
             HordeModeUI.Instance.OnDogSelected += HordeModeUI_OnDogSelected;
+            HordeModeUI.Instance.OnHordeModePanelOpened += HordeModeUI_OnDogSelected;
         }
     }
 
     private void HordeModeUI_OnDogSelected(object sender, System.EventArgs e) {
-        RefreshActiveDog(HordeModeUI.Instance.GetSelectedDogType());
+        RefreshActiveDog(HordeModeCustomizationManager.Instance.GetSelectedDogType());
     }
 
     private void Dog_OnDogTypeChanged(object sender, Dog.OnDogTypeChangedEventArgs e) {

@@ -46,6 +46,7 @@ public class HordeModeUI : MonoBehaviour
     public event EventHandler OnWeaponSelected;
     private Dog.DogType selectedDogType;
     public event EventHandler OnDogSelected;
+    public event EventHandler OnHordeModePanelOpened;
 
     private void Awake() {
         Instance = this;
@@ -183,8 +184,10 @@ public class HordeModeUI : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(swapWeaponButtonWorlUI);
         }
 
+        HordeModeCustomizationManager.Instance.SetSelectedWeapon(gunSO.gunType);
         CloseChangeWeaponPanel();
     }
+
     public GunSO GetSelectedGunSO() {
         return selectedGunSO;
     }
@@ -278,6 +281,7 @@ public class HordeModeUI : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(SwapDogButtonWorlUI);
         }
 
+        HordeModeCustomizationManager.Instance.SetSelectedDog(dogType);
         CloseChangeDogPanel();
     }
 
@@ -325,11 +329,12 @@ public class HordeModeUI : MonoBehaviour
         int maxNightsSurvivedInEnvironment = ES3.Load(key, 0);
         maxNightsSurvivedText.text = LocalizationManager.Instance.GetLocalizedText("menu_maxNightsSurvived") + " " + maxNightsSurvivedInEnvironment;
 
+        HordeModeCustomizationManager.Instance.SetSelectedEnvironment(env);
         MainMenuVisual.Instance.SetEnvironment(env);
     }
 
     public void StartNewHordeMode() {
-        SaveHordeModeParameters();
+       HordeModeCustomizationManager.Instance.SaveHordeModeParameters();
         MainMenuUI.Instance.StartHordeMode();
     }
 
@@ -348,6 +353,7 @@ public class HordeModeUI : MonoBehaviour
         }
 
         SetEnvironment(MainMenuVisual.Instance.GetLevelEnvironment());
+        OnHordeModePanelOpened?.Invoke(this, EventArgs.Empty);
 
         if(MainMenuVisual.Instance.GetLevelEnvironment() == LevelSO.LevelEnvironment.City) {
             SetEnvironment(LevelSO.LevelEnvironment.TheVerdantGraveyard);
@@ -355,7 +361,7 @@ public class HordeModeUI : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        if(!HordeModeProgressionManager.Instance.GetHasXPToCommit()) {
+        if(!HordeModeProgressionManager.Instance.GetHasXPToCommit() || HordeModeProgressionManager.Instance.GetAllUnlocked()) {
 
             hordeModePanelGO.gameObject.SetActive(true);
             panelAnimator.SetTrigger("Show");
@@ -408,14 +414,7 @@ public class HordeModeUI : MonoBehaviour
 
     #endregion
 
-    [Button]
-    public void SaveHordeModeParameters() {
-        HordeModeCustomizationManager.Instance.SetSelectedWeapon(selectedGunType);
-        HordeModeCustomizationManager.Instance.SetSelectedDog(selectedDogType);
-        HordeModeCustomizationManager.Instance.SetSelectedEnvironment(currentSelectedEnvironment);
 
-        CampEditManager.Instance.SaveCampLayout();
-    }
 
     private void OnDestroy() {
         GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
