@@ -28,6 +28,7 @@ public class HUBManager : MonoBehaviour
     [SerializeField] private MerchantTextLinesSO gemMerchantIntroTextLines;
     [SerializeField] private MerchantTextLinesSO gemMerchantOutroTextLines;
     [SerializeField] private MerchantTextLinesSO gemMerchantComeBuyTextLines;
+    [SerializeField] private MerchantTextLinesSO gemMerchantFinalLevelTextLines;
 
     [SerializeField] private GameObject gemMerchantIndicator;
     [SerializeField] private GameObject chestIndicator;
@@ -155,6 +156,8 @@ public class HUBManager : MonoBehaviour
         if (DebugManager.Instance.GetDebugMode_Credits()) {
             endGameSequenceDone = false;
             lastPrimordialFireColorLit = Fire.PrimordialFireColor.Purple;
+            gemMerchant.SetHasTalkLinesToShow(true);
+            gemMerchantTalkUI.SetTextLinesSO(gemMerchantFinalLevelTextLines);
         }
 
         if (lastPrimordialFireColorLit == Fire.PrimordialFireColor.Purple && !endGameSequenceDone) {

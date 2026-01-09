@@ -177,7 +177,7 @@ public class PauseMenuUI : MonoBehaviour
     }
 
     protected void OpenClosePauseMenu() {
-        Debug.Log("OpenClosePauseMenu");
+        //Debug.Log("OpenClosePauseMenu");
         isPaused = !isPaused;
         ShowPauseMenu(isPaused);
     }

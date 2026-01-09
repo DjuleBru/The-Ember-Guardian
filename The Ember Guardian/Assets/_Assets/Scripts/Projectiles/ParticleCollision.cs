@@ -189,7 +189,7 @@ public class ParticleCollision : MonoBehaviour
     } 
 
     public bool GetIsPlayerBullet() {
-        Debug.Log("source " + source);
+        //Debug.Log("source " + source);
         return source == null;
     }
 

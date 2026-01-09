@@ -20,6 +20,7 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private List<int> maxCurrencyStorageList;
     [SerializeField] private List<float> difficultyReductionFactorsList;
+    [SerializeField] private bool isFinalLevel;
 
     private LevelSO.LevelEnvironment currentLevelEnvironment;
     private List<Obstacle> allObstacles = new List<Obstacle>();
@@ -429,6 +430,10 @@ public class LevelManager : MonoBehaviour
 
     public bool IsHordeMode() {
         return isHordeMode;
+    }
+
+    public bool GetIsFinalLevelNight() {
+        return isFinalLevel && DayNightManager.Instance.GetCurrentDay() == 9;
     }
 
     public void SetConditionalLockedStructureLocationState(bool conditionalLockedStructureLocationUnlocked, bool conditionalLockedStructureLocationBuilt) {

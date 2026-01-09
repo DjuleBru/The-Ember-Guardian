@@ -31,14 +31,14 @@ MonoBehaviour:
   canAttackPlayerOnTower: 1
   blockSwitchXScaleWhileAttacking: 0
   startblockSwitchXScaleWhileAttackingTime: 0
-  attackAnimationDelay: 1.2
+  attackAnimationDelay: 0.6
   totalAttackAnimationTime: 2.4
   attackSFXDelayAfterAnimationStart: 0
   staticProjectilePrefab: {fileID: 0}
   staticProjectileAutoTargetsPlayer: 0
   projectileAmountInPool: 6
-  projectileAmountShotInAttack: 3
-  delayBetweenProjectileSpawns: 0.1
+  projectileAmountShotInAttack: 6
+  delayBetweenProjectileSpawns: 0.2
   projectileSO: {fileID: 11400000, guid: 8d3d110e17c946a4b9e61781c6862730, type: 2}
   attackRangeRandomizerMiss: 8
   attackSFXHandledByAnimation: 1

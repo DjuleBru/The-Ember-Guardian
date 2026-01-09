@@ -480,7 +480,6 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public void LoadItemStatus_Batch() {
-        Debug.Log("LoadItemStatus_Batch ");
         var key = GetItemType() + "_Data";
 
         if(isBoughtAtStart) {

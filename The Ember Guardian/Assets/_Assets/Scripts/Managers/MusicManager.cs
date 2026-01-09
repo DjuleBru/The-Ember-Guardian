@@ -54,6 +54,8 @@ public class MusicManager : MonoBehaviour {
 
     [SerializeField] private AudioClip endLevelMusic;
     [SerializeField] private AudioClip clearingObstacleCreaturesSpawningClip;
+    [SerializeField] private AudioClip finalLevelTrack;
+
     private List<AudioClip> levelRandomBackgroundTracks;
     private List<AudioClip> levelRandomBackgroundTracksPooled;
     private List<AudioClip> levelExplorationTracks;
@@ -84,6 +86,7 @@ public class MusicManager : MonoBehaviour {
     private bool isPlayingClearRubbleMusic;
     private bool isPlayingEndLevelAreaMusic;
     private bool isPlayingNightMusic;
+    private bool isPlayingFinalLevelMusic;
     private bool musicAudioLevelReducedWithPause;
     private float musicVolumeReductionWithPause = 2.5f;
     private AudioSource audioSourceA;
@@ -148,6 +151,7 @@ public class MusicManager : MonoBehaviour {
             levelExplorationTracksStreamerMode = LevelManager.Instance.GetLevelSO().levelExplorationTracksStreamerMode;
             DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
             DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
+            DayNightManager.Instance.OnDayStart += DayNightManager_OnDayStart;
             CreaturesManager.Instance.OnAllCreaturesAtNightKilled += CreaturesManager_OnAllCreaturesAtNightKilled;
             Player.Instance.OnPlayerDied += Player_OnPlayerDied;
             Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
@@ -199,7 +203,6 @@ public class MusicManager : MonoBehaviour {
             audioSourceA.clip = hubMusic;
         }
     }
-
 
     private void Update() {
         if (fireDamageTakenRecently != 0) {
@@ -402,6 +405,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void DayNightManager_OnNightStart(object sender, EventArgs e) {
+        if (isPlayingFinalLevelMusic) return;
 
         audioSourceA.loop = true;
         audioSourceB.loop = true;
@@ -413,11 +417,22 @@ public class MusicManager : MonoBehaviour {
         //StartCoroutine(FadeInDelayedCoroutine(3f, 4f));
     }
 
+    private void DayNightManager_OnDayStart(object sender, EventArgs e) {
+
+        if (LevelManager.Instance.GetIsFinalLevelNight()) {
+            PlayFinalLevelMusic();
+            isPlayingFinalLevelMusic = true;
+        }
+
+    }
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         if (!isLevelScene) return;
 
         isDuskOrNight = true;
+
+        if (isPlayingFinalLevelMusic) return;
         StopCurrentMusic(2f);
+
     }
 
     private void CreatureAI_OnAnyCreatureAggro(object sender, System.EventArgs e) {
@@ -491,6 +506,8 @@ public class MusicManager : MonoBehaviour {
             if (streamerMode) {
                 outroAudioClip = nightMusicOutroStreamer;
             }
+
+            if (isPlayingFinalLevelMusic) return;
             CrossfadeToNextNightClip(outroAudioClip);
 
             StartCoroutine(FadeOutDelayedCoroutine(5f, 2f));
@@ -538,6 +555,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     private void PlayNextNightMusicSegment() {
+        if (isPlayingFinalLevelMusic) return;
 
         if (isPlayingNightIntroMusic) {
             PlayFirstNightClip();
@@ -565,6 +583,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     private IEnumerator WaitForClipToEnd(float duration) {
+        if (isPlayingFinalLevelMusic) yield break;
         yield return new WaitForSeconds(duration);
 
         PlayNextNightMusicSegment();
@@ -845,8 +864,17 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void PlayCreditsMusic() {
+        Debug.Log("PlayCreditsMusic");
         audioSourceA.clip = creditsMusic;
         audioSourceA.Play();
+    }
+
+    public void PlayFinalLevelMusic() {
+        Debug.Log("PlayFinalLevelMusic");
+        audioSourceA.clip = finalLevelTrack;
+        SetAudioVolume(1.5f);
+        SetAudioTargerVolume(1.5f);
+        PlayMusicDelayed(39.5f);
     }
 
     public void FadeInMusic(float fadeDuration) {
