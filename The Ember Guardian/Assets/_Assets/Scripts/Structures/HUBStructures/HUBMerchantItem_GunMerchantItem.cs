@@ -223,63 +223,63 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
     private void ResetStats() {
         if (gunItem == GunItemType.bulletDamage || gunItem == GunItemType.explosionDamage) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetBulletDamage_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.shotsPerClip) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetShotsPerClip_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetShotsPerClip_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.maxAmmo) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetMaxAmmo_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetMaxAmmo_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.cooldownTime) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetCooldownTime_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetCooldownTime_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.reloadTime) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetReloadTime_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetReloadTime_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.critChance) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetCritChange_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetCritChange_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.shootConeAngle) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetShootConeAngle_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetShootConeAngle_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.pelletsPerBullet) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetPelletsPerBullet_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetPelletsPerBullet_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.range) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetGunBulletLifetime_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.surgeReloadBulletsBoosted) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSurgeWindowBulletBoost_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSurgeWindowBulletBoost_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.surgeReloadProbability) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSurgeReloadProbability_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSurgeReloadProbability_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.explosionRadiusBuff) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetExplosionRadiusModified_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetExplosionRadiusModified_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.spinUpTime) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSpinUpDuration_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSpinUpDuration_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.subExplosivesDamage) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesDamage_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesDamage_StatModifierListLevel(-1);
         }
 
         if (gunItem == GunItemType.subExplosivesAmount) {
-            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesAmount_StatModifierListLevel(0);
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSubExplosivesAmount_StatModifierListLevel(-1);
         }
     }
 

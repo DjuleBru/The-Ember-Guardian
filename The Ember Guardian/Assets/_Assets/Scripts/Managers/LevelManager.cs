@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
 
     [SerializeField] private LevelSO levelSO;
     [SerializeField] private bool isHordeMode;
+    [SerializeField] private bool isTutorial;
     [SerializeField] private Portal endLevelPortal;
     [SerializeField] private HubMerchant levelHubMerchant;
 
@@ -269,7 +270,11 @@ public class LevelManager : MonoBehaviour
 
     public void SaveLevelCompletedProgression() {
         MetaProgressionManager.Instance.SetLevelCompleted(GetLevelSO());
-        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
+
+        if(!isTutorial) {
+            MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
+        }
+
         SaveMerchantsAndTalkLines();
     }
 

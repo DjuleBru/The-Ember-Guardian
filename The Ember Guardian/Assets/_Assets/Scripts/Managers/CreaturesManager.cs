@@ -172,7 +172,6 @@ public class CreaturesManager : MonoBehaviour
         });
 
         if (creaturesSpawnedAtNightList.Count == 0 && CreaturesSpawnManager.Instance.GetAllNightCreaturesKilled()) {
-            Debug.Log("OnAllCreaturesAtNightKilled");
             OnAllCreaturesAtNightKilled?.Invoke(this, EventArgs.Empty);
         }
 
@@ -193,6 +192,10 @@ public class CreaturesManager : MonoBehaviour
         }
 
         return creaturesCloseToCamp;
+    }
+
+    public List<Creature> GetAllNightCreatures() {
+        return creaturesSpawnedAtNightList;
     }
 
     public bool GetCreatureAggroingPlayer() {

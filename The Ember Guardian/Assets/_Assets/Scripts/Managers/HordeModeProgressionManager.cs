@@ -87,7 +87,6 @@ public class HordeModeProgressionManager : MonoBehaviour
         hasXPToCommit = ES3.Load("hasXPToCommit", false);
 
         unlockThresholds = GenerateUnlockThresholds();
-        Debug.Log(unlockThresholds[HordeModeUnlockables.Armorer]);
         unlockedSet = ES3.Load("HordeModeUnlocks", new List<HordeModeUnlockables>());
     }
 
@@ -96,7 +95,6 @@ public class HordeModeProgressionManager : MonoBehaviour
     }
 
     private Dictionary<HordeModeUnlockables, int> GenerateUnlockThresholds() {
-        Debug.Log("GenerateUnlockThresholds");
         Dictionary<HordeModeUnlockables, int> dict = new Dictionary<HordeModeUnlockables, int>();
 
         int baseXP = 10;

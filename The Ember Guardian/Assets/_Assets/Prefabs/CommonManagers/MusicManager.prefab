@@ -142,10 +142,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   discoveryMusicInterruptionSource: 0
-  discoverNewLocationAudioVolume: 0.6
-  backgroundTracksAudioVolume: 0.4
-  nightMusicAudioVolume: 0.2
-  mainMenuMusicAudioVolume: 1.5
+  discoverNewLocationAudioVolume: 1.2
+  backgroundTracksAudioVolume: 0.8
+  nightMusicAudioVolume: 0.4
+  mainMenuMusicAudioVolume: 3
   mainMenuMusic: {fileID: 8300000, guid: 8b8b2cfb3d839924fbb8a360293e4d18, type: 3}
   mainMenuMusicStreamerMode: {fileID: 8300000, guid: 8b8b2cfb3d839924fbb8a360293e4d18, type: 3}
   hubMusic: {fileID: 8300000, guid: 6849e7a4ecdd2ce479723486c636734c, type: 3}
@@ -180,3 +180,6 @@ MonoBehaviour:
   endLevelMusic: {fileID: 8300000, guid: a235baf8c3b9c68498cb5ddebacab0a9, type: 3}
   clearingObstacleCreaturesSpawningClip: {fileID: 8300000, guid: f5b9152fff1bac546918e7db33750cf2, type: 3}
   finalLevelTrack: {fileID: 8300000, guid: d1fadade13b2ecd48b9af4eb22fd77a7, type: 3}
+  finalIntro: {fileID: 8300000, guid: 5ed8b21895050244f8e7cc8be0ea57e1, type: 3}
+  finalLoop: {fileID: 8300000, guid: 5e291d178c4fbe14ca9396cc47bda861, type: 3}
+  finalOutro: {fileID: 8300000, guid: 6023ac4b62641794e8f7d8c5bb4abbdf, type: 3}

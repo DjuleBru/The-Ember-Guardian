@@ -475,26 +475,22 @@ public class HUBManager : MonoBehaviour
         firstPortalArrival.TeleportPlayerOutInHubManually();
         yield return new WaitForSeconds(2f);
 
-        if(MetaProgressionManager.Instance.GetTutorialSkipped()) {
-            // Tutorial has been skipped
+        MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, initialYellowGemsAfterTutorial);
+        MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, initialRedGemsAfterTutorial);
+        MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, initialGreenGemsAfterTutorial);
+        MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.purpleGem, initialPurpleGemsAfterTutorial);
 
-            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.yellowGem, initialYellowGemsAfterTutorial);
-            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.redGem, initialRedGemsAfterTutorial);
-            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.greenGem, initialGreenGemsAfterTutorial);
-            MetaProgressionManager.Instance.SetGemAmountFromLevel(PlayerCurrencies.CurrencyType.purpleGem, initialPurpleGemsAfterTutorial);
-
-            List<PlayerCurrencies.CurrencyType> tutorialSkippedGems = new List<PlayerCurrencies.CurrencyType> {
-                PlayerCurrencies.CurrencyType.yellowGem,
-                PlayerCurrencies.CurrencyType.redGem,
-                PlayerCurrencies.CurrencyType.greenGem,
-                PlayerCurrencies.CurrencyType.purpleGem
-            };
-            List<int> tutorialSkippedGemAmount = new List<int> {
-                initialYellowGemsAfterTutorial,initialRedGemsAfterTutorial,initialGreenGemsAfterTutorial,initialPurpleGemsAfterTutorial
-            };
-            UICurrencyManager.PlayerInventoryUI.AddMultipleCurrencies(tutorialSkippedGems, tutorialSkippedGemAmount);
-        }
-
+        List<PlayerCurrencies.CurrencyType> tutorialSkippedGems = new List<PlayerCurrencies.CurrencyType> {
+            PlayerCurrencies.CurrencyType.yellowGem,
+            PlayerCurrencies.CurrencyType.redGem,
+            PlayerCurrencies.CurrencyType.greenGem,
+            PlayerCurrencies.CurrencyType.purpleGem
+        };
+        List<int> tutorialSkippedGemAmount = new List<int> {
+            initialYellowGemsAfterTutorial,initialRedGemsAfterTutorial,initialGreenGemsAfterTutorial,initialPurpleGemsAfterTutorial
+        };
+        UICurrencyManager.PlayerInventoryUI.AddMultipleCurrencies(tutorialSkippedGems, tutorialSkippedGemAmount);
+        
         yield return new WaitForSeconds(2f);
 
         LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.HUB_HeadToFire);

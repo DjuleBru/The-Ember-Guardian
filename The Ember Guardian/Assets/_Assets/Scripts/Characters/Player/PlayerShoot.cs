@@ -1437,7 +1437,15 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public bool GetHasOnlySpecialAmmo() {
-        return primaryGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special && (secondayGunSO != null && secondayGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special);
+        bool hasOnlySpecialAmmo = false;
+        bool holding2Weapons = secondayGunSO != null;
+
+        if(holding2Weapons) {
+            hasOnlySpecialAmmo = primaryGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special && (secondayGunSO != null && secondayGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special);
+        } else {
+            hasOnlySpecialAmmo = primaryGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special;
+        }
+        return hasOnlySpecialAmmo;
     }
 
     private void OnDestroy() {

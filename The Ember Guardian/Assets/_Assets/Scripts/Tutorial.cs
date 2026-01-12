@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -546,6 +547,11 @@ public class Tutorial : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
     }
 
+    [Button]
+    public void EndTutorialDebug() {
+        StartCoroutine(EndTutorialCorioutine());
+    }
+
     private IEnumerator DebugStartDestroyNestObjective(float delay) {
         LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.Survive);
 
@@ -844,7 +850,6 @@ public class Tutorial : MonoBehaviour
     private IEnumerator EndTutorialCorioutine() {
         LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
         MetaProgressionManager.Instance.SetTutorialCompleted(); 
-        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
         
         yield return new WaitForSeconds(4f); 
         endTutorialPortal.gameObject.SetActive(true);

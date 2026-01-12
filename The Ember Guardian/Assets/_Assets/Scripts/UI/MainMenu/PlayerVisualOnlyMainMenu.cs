@@ -45,7 +45,7 @@ public class PlayerVisualOnlyMainMenu : MonoBehaviour
 
         weaponSpriteRenderer.sprite = gunSO.gunSprite_mainMenu;
         weaponLightsSpriteRenderer.sprite = gunSO.gunSprite_mainMenuLights;
-        Debug.Log("SetGunVisuals " + gunType);
+        //Debug.Log("SetGunVisuals " + gunType);
     }
 
     private GunSO GetGunSO(GunSO.GunType gunType) {

@@ -99,7 +99,7 @@ public class MainMenuVisual : MonoBehaviour
         }
         levelEnvironment = ES3.Load("lastLevelEnvironment", defaultEnvironment);
 
-        Debug.Log("levelEnvironment " + levelEnvironment);
+        //Debug.Log("levelEnvironment " + levelEnvironment);
 
         if(showDebugEnvironment) {
             levelEnvironment = debugEnvironment;

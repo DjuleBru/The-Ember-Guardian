@@ -678,21 +678,39 @@ public class Gun : MonoBehaviour
     public void SetBulletDamage_StatModifierListLevel(int bulletDamageStatModifierLevel) {
         this.bulletDamageStatModifierLevel = bulletDamageStatModifierLevel;
 
-        this.damagePerBullet = gunSO.damagePerBullet + (int)gunSO.damageStatModifier.statModifierList[bulletDamageStatModifierLevel];
+        if (bulletDamageStatModifierLevel == -1) {
+            damagePerBullet = gunSO.damagePerBullet;
+        } else {
+            this.damagePerBullet = gunSO.damagePerBullet + (int)gunSO.damageStatModifier.statModifierList[bulletDamageStatModifierLevel];
+        }
+
         damagePerBulletAtRunStart = damagePerBullet;
     }
 
     public void SetShotsPerClip_StatModifierListLevel(int shotsPerClipStatModifierLevel) {
         this.shotsPerClipStatModifierLevel = shotsPerClipStatModifierLevel;
 
-        int modifiedShotsPerClip = gunSO.shotsPerClip + (int)gunSO.shotsPerClipStatModifier.statModifierList[shotsPerClipStatModifierLevel];
+        int modifiedShotsPerClip = gunSO.shotsPerClip;
+
+        if (shotsPerClipStatModifierLevel == -1) {
+            modifiedShotsPerClip = gunSO.shotsPerClip;
+        } else {
+            modifiedShotsPerClip = gunSO.shotsPerClip + (int)gunSO.shotsPerClipStatModifier.statModifierList[shotsPerClipStatModifierLevel];
+        }
+
         this.shotsPerClip = modifiedShotsPerClip;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
     }
 
     public void SetMaxAmmo_StatModifierListLevel(int maxAmmoModifierLevel) {
         this.maxAmmoStatModifierLevel = maxAmmoModifierLevel;
-        int modifiedMaxAmmo = gunSO.maxAmmo + (int)gunSO.maxAmmoStatModifier.statModifierList[maxAmmoModifierLevel];
+        int modifiedMaxAmmo = gunSO.maxAmmo;
+
+        if (maxAmmoModifierLevel == -1) {
+            modifiedMaxAmmo = gunSO.maxAmmo;
+        } else {
+            modifiedMaxAmmo = gunSO.maxAmmo + (int)gunSO.maxAmmoStatModifier.statModifierList[maxAmmoModifierLevel];
+        }
 
         this.maxAmmo = modifiedMaxAmmo;
         OnAnyGunMaxAmmoChanged?.Invoke(this, EventArgs.Empty);
@@ -700,7 +718,13 @@ public class Gun : MonoBehaviour
 
     public virtual void SetCooldownTime_StatModifierListLevel(int cooldownTimeLevel) {
         this.cooldownTimeStatModifierLevel = cooldownTimeLevel;
-        float modifiedCooldown = gunSO.shootCooldownTime + gunSO.shootCooldownTime * gunSO.cooldownTimeStatModifier.statModifierList[cooldownTimeLevel] * 0.01f;
+        float modifiedCooldown = gunSO.shootCooldownTime;
+
+        if (cooldownTimeLevel == -1) {
+            modifiedCooldown = gunSO.shootCooldownTime;
+        } else {
+            modifiedCooldown = gunSO.shootCooldownTime + gunSO.shootCooldownTime * gunSO.cooldownTimeStatModifier.statModifierList[cooldownTimeLevel] * 0.01f;
+        }
 
         this.cooldownTime = modifiedCooldown;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
@@ -708,7 +732,14 @@ public class Gun : MonoBehaviour
     public void SetReloadTime_StatModifierListLevel(int reloadTimeStatModifierLevel) {
         this.reloadTimeStatModifierLevel = reloadTimeStatModifierLevel;
 
-        float modifiedReloadTime = gunSO.reloadTime + gunSO.reloadTime * gunSO.reloadTimeStatModifier.statModifierList[reloadTimeStatModifierLevel] * 0.01f;
+        float modifiedReloadTime = gunSO.reloadTime;
+
+        if (reloadTimeStatModifierLevel == -1) {
+            modifiedReloadTime = gunSO.reloadTime;
+        } else {
+            modifiedReloadTime = gunSO.reloadTime + gunSO.reloadTime * gunSO.reloadTimeStatModifier.statModifierList[reloadTimeStatModifierLevel] * 0.01f;
+        }
+
         float reloadTimeRecuctionFactor = modifiedReloadTime / reloadTime;
 
         reloadTime = modifiedReloadTime;
@@ -719,7 +750,13 @@ public class Gun : MonoBehaviour
     public void SetCritChange_StatModifierListLevel(int critChanceStatModifierLevel) {
         this.critChanceStatModifierLevel = critChanceStatModifierLevel;
 
-        float modifiedCritChance = gunSO.critChance + gunSO.critChanceStatModifier.statModifierList[critChanceStatModifierLevel];
+        float modifiedCritChance = gunSO.critChance;
+
+        if (critChanceStatModifierLevel == -1) {
+            modifiedCritChance = gunSO.critChance;
+        } else {
+            modifiedCritChance = gunSO.critChance + gunSO.critChanceStatModifier.statModifierList[critChanceStatModifierLevel];
+        }
 
         this.critChance = modifiedCritChance;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
@@ -727,7 +764,13 @@ public class Gun : MonoBehaviour
     public void SetShootConeAngle_StatModifierListLevel(int shootConeAngleStatModifierLevel) {
         this.shootConeAngleStatModifierLevel = shootConeAngleStatModifierLevel;
 
-        float modifiedShootAngle = gunSO.shootConeAngle + gunSO.shootConeAngleStatModifier.statModifierList[shootConeAngleStatModifierLevel];
+        float modifiedShootAngle = gunSO.shootConeAngle;
+
+        if (shootConeAngleStatModifierLevel == -1) {
+            modifiedShootAngle = gunSO.shootConeAngle;
+        } else {
+            modifiedShootAngle = gunSO.shootConeAngle + gunSO.shootConeAngleStatModifier.statModifierList[shootConeAngleStatModifierLevel];
+        }
 
         this.defaultAngle = modifiedShootAngle;
         ParticleSystem.ShapeModule shootPSShape = shootPS.shape;
@@ -737,7 +780,13 @@ public class Gun : MonoBehaviour
     public void SetPelletsPerBullet_StatModifierListLevel(int pelletsPerBulletStatModifierLevel) {
         this.pelletsPerBulletStatModifierLevel = pelletsPerBulletStatModifierLevel;
 
-        int modifiedPelletsPerBullet = gunSO.pelletsPerBullet + (int)gunSO.pelletsPerBulletStatModifier.statModifierList[pelletsPerBulletStatModifierLevel];
+        int modifiedPelletsPerBullet = gunSO.pelletsPerBullet;
+
+        if (pelletsPerBulletStatModifierLevel == -1) {
+            modifiedPelletsPerBullet = gunSO.pelletsPerBullet;
+        } else {
+            modifiedPelletsPerBullet = gunSO.pelletsPerBullet + (int)gunSO.pelletsPerBulletStatModifier.statModifierList[pelletsPerBulletStatModifierLevel];
+        }
 
         this.pelletsPerBullet_meta = modifiedPelletsPerBullet;
         this.pelletsPerBullet = modifiedPelletsPerBullet;
@@ -747,7 +796,13 @@ public class Gun : MonoBehaviour
     public void SetGunBulletLifetime_StatModifierListLevel(int bulletLifetimeStatModifierLevel) {
         this.bulletLifetimeStatModifierLevel = bulletLifetimeStatModifierLevel;
 
-        float modifiedBulletLifetime = gunSO.bulletLifetime + gunSO.bulletLifetimeStatModifier.statModifierList[bulletLifetimeStatModifierLevel] / gunSO.bulletSpeed;
+        float modifiedBulletLifetime = gunSO.bulletLifetime;
+
+        if (bulletLifetimeStatModifierLevel == -1) {
+            modifiedBulletLifetime = gunSO.bulletLifetime;
+        } else {
+            modifiedBulletLifetime = gunSO.bulletLifetime + gunSO.bulletLifetimeStatModifier.statModifierList[bulletLifetimeStatModifierLevel] / gunSO.bulletSpeed;
+        }
 
         this.bulletLifetime = modifiedBulletLifetime;
 
@@ -760,7 +815,13 @@ public class Gun : MonoBehaviour
     public void SetSubExplosivesAmount_StatModifierListLevel(int subExplosivesAmountStatModifierLevel) {
         this.subExplosivesAmountStatModifierLevel = subExplosivesAmountStatModifierLevel;
 
-        int modifiedSubExplosivesAmount = gunSO.subExplosivesAmount + (int)gunSO.subExplosivesAmountStatModifier.statModifierList[subExplosivesAmountStatModifierLevel];
+        int modifiedSubExplosivesAmount = gunSO.subExplosivesAmount;
+
+        if (subExplosivesAmountStatModifierLevel == -1) {
+            modifiedSubExplosivesAmount = gunSO.subExplosivesAmount;
+        } else {
+            modifiedSubExplosivesAmount = gunSO.subExplosivesAmount + (int)gunSO.subExplosivesAmountStatModifier.statModifierList[subExplosivesAmountStatModifierLevel];
+        }
 
         this.subExplosivesAmount = modifiedSubExplosivesAmount;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
@@ -768,7 +829,13 @@ public class Gun : MonoBehaviour
     public void SetSubExplosivesDamage_StatModifierListLevel(int subExplosivesDamageStatModifierLevel) {
         this.subExplosivesDamageStatModifierLevel = subExplosivesDamageStatModifierLevel;
 
-        int modifiedSubExplosivesDamage = gunSO.subExplosivesDamage + (int)gunSO.subExplosivesDamageStatModifier.statModifierList[subExplosivesDamageStatModifierLevel];
+        int modifiedSubExplosivesDamage = gunSO.subExplosivesDamage;
+
+        if (subExplosivesDamageStatModifierLevel == -1) {
+            modifiedSubExplosivesDamage = gunSO.subExplosivesDamage;
+        } else {
+            modifiedSubExplosivesDamage = gunSO.subExplosivesDamage + (int)gunSO.subExplosivesDamageStatModifier.statModifierList[subExplosivesDamageStatModifierLevel];
+        }
 
         this.subExplosivesDamage = modifiedSubExplosivesDamage;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
@@ -776,7 +843,13 @@ public class Gun : MonoBehaviour
     public void SetSpinUpDuration_StatModifierListLevel(int spinUpDurationStatModifierLevel) {
         this.spinUpDurationStatModifierLevel = spinUpDurationStatModifierLevel;
 
-        float modifiedSpinUpTime = gunSO.spinUpDuration + gunSO.spinUpDurationStatModifier.statModifierList[spinUpDurationStatModifierLevel];
+        float modifiedSpinUpTime = gunSO.spinUpDuration;
+
+        if (spinUpDurationStatModifierLevel == -1) {
+            modifiedSpinUpTime = gunSO.spinUpDuration;
+        } else {
+            modifiedSpinUpTime = gunSO.spinUpDuration + gunSO.spinUpDurationStatModifier.statModifierList[spinUpDurationStatModifierLevel];
+        }
 
         this.spinUpDuration = modifiedSpinUpTime;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
@@ -785,7 +858,13 @@ public class Gun : MonoBehaviour
     public void SetSurgeReloadProbability_StatModifierListLevel(int surgeReloadProbabilityStatModifierLevel) {
         this.surgeReloadProbabilityStatModifierLevel = surgeReloadProbabilityStatModifierLevel;
 
-        float modifiedSurgeReloadProbability = gunSO.surgeReloadProbability + gunSO.surgeReloadProbabilityStatModifier.statModifierList[this.surgeReloadProbabilityStatModifierLevel];
+        float modifiedSurgeReloadProbability = gunSO.surgeReloadProbability;
+
+        if (surgeReloadProbabilityStatModifierLevel == -1) {
+            modifiedSurgeReloadProbability = gunSO.surgeReloadProbability;
+        } else {
+            modifiedSurgeReloadProbability = gunSO.surgeReloadProbability + gunSO.surgeReloadProbabilityStatModifier.statModifierList[this.surgeReloadProbabilityStatModifierLevel];
+        }
 
         this.surgeReloadProbability = modifiedSurgeReloadProbability;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
@@ -794,7 +873,13 @@ public class Gun : MonoBehaviour
     public void SetSurgeWindowBulletBoost_StatModifierListLevel(int surgeWindowBulletAmountStatModifierLevel) {
         this.surgeWindowBulletAmountBuffedStatModifierLevel = surgeWindowBulletAmountStatModifierLevel;
 
-        int modifiedBulletsAmount = gunSO.perfectQTEBulletAmountDamageBuffed + (int)gunSO.surgeWindowBulletAmountBuffedStatModifier.statModifierList[surgeWindowBulletAmountStatModifierLevel];
+        int modifiedBulletsAmount = gunSO.perfectQTEBulletAmountDamageBuffed;
+
+        if (surgeWindowBulletAmountStatModifierLevel == -1) {
+            modifiedBulletsAmount = gunSO.perfectQTEBulletAmountDamageBuffed;
+        } else {
+            modifiedBulletsAmount = gunSO.perfectQTEBulletAmountDamageBuffed + (int)gunSO.surgeWindowBulletAmountBuffedStatModifier.statModifierList[surgeWindowBulletAmountStatModifierLevel];
+        }
 
         surgeWindowBulletAmountBuffed = modifiedBulletsAmount;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);
@@ -802,7 +887,13 @@ public class Gun : MonoBehaviour
 
     public void SetExplosionRadiusModified_StatModifierListLevel(int radiusModifiedStatModifierLevel) {
         this.explosionRadiusMultiplierStatModifierLevel = radiusModifiedStatModifierLevel;
-        float modifiedExplosionRadius = (100 + gunSO.explosionRadiusMultiplierStatModifier.statModifierList[radiusModifiedStatModifierLevel]) / 100;
+        float modifiedExplosionRadius = 100;
+
+        if (radiusModifiedStatModifierLevel == -1) {
+            modifiedExplosionRadius = 100;
+        } else {
+            modifiedExplosionRadius = (100 + gunSO.explosionRadiusMultiplierStatModifier.statModifierList[radiusModifiedStatModifierLevel]) / 100;
+        }
 
         this.explosionRadiusMultiplier = modifiedExplosionRadius;
         OnAnyGunStatsUpgraded?.Invoke(this, EventArgs.Empty);

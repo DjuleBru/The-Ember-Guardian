@@ -110,6 +110,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
     protected bool debugInputs;
     protected bool debugDontSpawnAtNight;
+    private bool forceEndNightWave = false;
 
     protected float easyDifficultyNightWaveMultiplier = 0.8f;
     protected float hardDifficultyNightWaveMultiplier = 1.1f;
@@ -219,9 +220,10 @@ public class CreaturesSpawnManager : MonoBehaviour {
     }
 
     protected void CreaturesManager_OnCreatureAtNightKilled(object sender, CreaturesManager.OnCreatureAtNightKilledEventArgs e) {
+        Creature creatureKilled = e.creature;
+
         remainingNightCreaturesHP -= e.creature.GetCreatureSO().maxHealth;
         remainingNightCreatures--;
-        //Debug.Log("creature killed : remainingNightCreatures " + remainingNightCreatures);
 
         float remainingNightCreaturesHealthNormalized = (float)remainingNightCreaturesHP / (float)totalNightCreatureHP;
         float remainingNightCreaturesNormalized = (float)remainingNightCreatures / (float)totalNightCreatures;
@@ -233,6 +235,34 @@ public class CreaturesSpawnManager : MonoBehaviour {
         OnRemainingNightCreaturesChanged?.Invoke(this, new OnRemainingNightCreaturesChangedEventArgs {
             remainingNightCreaturesNormalized = remainingNightCreaturesNormalized
         });
+
+        if(creatureKilled.GetCreatureSO().isBoss) {
+            if(LevelManager.Instance.GetIsFinalLevelNight()) {
+               StartCoroutine(KillAllRemainingCreatures());
+            }
+        }
+    }
+
+    private IEnumerator KillAllRemainingCreatures() {
+        // Récupère un SNAPSHOT des créatures encore en vie
+        forceEndNightWave = true;
+        List<Creature> remainingCreatures = CreaturesManager.Instance.GetAllNightCreatures().Where(c => !c.GetCreatureSO().isBoss).ToList();
+        remainingNightCreatures = 0;
+
+        float delayBetweenKills = 0.08f; // ajuste à ton goût
+
+        foreach (Creature creature in remainingCreatures) {
+
+            if (creature == null) continue;
+
+            // Sécurité : éviter de tuer deux fois
+            if (creature.GetDead()) continue;
+
+            // Kill "propre" pour déclencher tous les events existants
+            creature.Die();
+
+            yield return new WaitForSeconds(delayBetweenKills);
+        }
     }
 
     protected void Update() {
@@ -582,6 +612,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         while (subWaveIndex < subWaveNumber && waveNumber == currentWaveNumber) {
 
+            if (forceEndNightWave) {
+                Debug.Log("Force ending wave due to boss death");
+                yield break;
+            }
+
             // === BOSS FIRST, puis cinématique ===
             if (subWaveIndex == 0 && bossSpawnsThisNight) {
                 // récupère toutes les entrées boss (peut être 1 ou 2 selon ta logique)
@@ -809,7 +844,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     }
 
     public bool GetAllNightCreaturesKilled() {
-        return remainingNightCreatures == 0;
+        return remainingNightCreatures <= 0;
     }
 
     public int GetRemainingSubWavesCreatures() {

@@ -490,7 +490,7 @@ public class CampEditManager : MonoBehaviour {
     }
 
     public void LoadCampLayout() {
-        Debug.Log("LoadCampLayout " + hordeMode);
+        //Debug.Log("LoadCampLayout " + hordeMode);
         if(hordeMode) {
             savedLayout = ES3.Load("campLayout_HordeMode", new List<StructurePlacementData>());
         } else {
