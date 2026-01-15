@@ -7,6 +7,7 @@ public class Portal : MonoBehaviour
 {
     [SerializeField] private bool isHubDemoPortal;
     [SerializeField] private List<LevelSO> linkedLevelSOList;
+    [SerializeField] private List<LevelSO> demoLevelSOList;
     [SerializeField] private Transform playerPosition;
     [SerializeField] private Transform levelSelectionCameraTarget;
     [SerializeField] private Transform dogPosition;
@@ -135,12 +136,17 @@ public class Portal : MonoBehaviour
         if (playerIsSetOnTeleporter) return;
         if (playerOpenedPortalUI) return;
 
+        if (isHUBTeleporter && HUBManager.Instance.GetIsNewDemo() && !demoLevelSOList.Contains(linkedLevelSO)) {
+            PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_lockedInDemo"), 2f);
+            return;
+        }
+
         if (isHUBTeleporter && !PlayerCurrencies.Instance.GetCarryingEmber() && !DEBUGMODE) {
             PlayerTalkUI.Instance.ShowTalkText(LocalizationManager.Instance.GetLocalizedText("tooltip_carryEmber"), 2f);
             return;
         }
 
-        if(isHubDemoPortal || isEndLevelTeleporter) {
+        if (isHubDemoPortal || isEndLevelTeleporter) {
             StartCoroutine(TeleportPlayerIn());
             return;
         }

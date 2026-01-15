@@ -455,7 +455,7 @@ public class HUBManager_Demo : MonoBehaviour
             hubFire.SetHubFireEmberExtractable(true);
 
             VideoTipUI.Instance.PlayTipSO(endDemoTipSO);
-            VideoTipUI.Instance.SetEndDemoTip();
+            VideoTipUI.Instance.SetSpecialInteractableTip();
 
             Debug.Log("firstHubEnterWithDemoLevelCompleted false");
         }

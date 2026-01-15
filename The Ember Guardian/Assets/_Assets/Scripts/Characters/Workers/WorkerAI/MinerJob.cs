@@ -285,6 +285,7 @@ public class MinerJob : WorkerJob {
     }
 
     private void CheckAvailableScavengables() {
+        if (ScavengableManager.Instance == null) return;
         IScavengable assignableScavengable = ScavengableManager.Instance.GetClosestHighestPriorityScavengableToScavenge(this);
 
         if(assignableScavengable != null) {

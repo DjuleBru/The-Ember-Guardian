@@ -71,7 +71,7 @@ public class ShowTooltipOnTrigger : MonoBehaviour
         playerInTriggerArea = false;
         if (!tooltipBeingShown) return;
         if (!Player.Instance.GetCanInteractWithStructureLocation()) return;
-        if (hideTooltipAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night)
+        if (hideTooltipAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
 
         if (isControlTooltip) {
             tooltipBeingShown = false;
@@ -98,6 +98,7 @@ public class ShowTooltipOnTrigger : MonoBehaviour
                 PlayerTooltipManager.Instance.GetTooltipRight().HideTooltip();
             }
         }
+
         amountShown++;
         OnAnyTooltipAmountShownIncreased?.Invoke(this, EventArgs.Empty);
         ES3.Save(amountShownSaveKey, amountShown);

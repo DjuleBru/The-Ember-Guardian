@@ -2891,6 +2891,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isHubDemoPortal: 0
   linkedLevelSOList: []
+  demoLevelSOList:
+  - {fileID: 11400000, guid: 9f3ffb6ca49f8944ea5a0e5d16ebb9e8, type: 2}
+  - {fileID: 11400000, guid: 3ab5857536799d443b55dded6a554750, type: 2}
+  - {fileID: 11400000, guid: 3a0673a7c12356241a8cba1c954bec69, type: 2}
   playerPosition: {fileID: 1733278613251480736}
   levelSelectionCameraTarget: {fileID: 6177259559816371931}
   dogPosition: {fileID: 2247185379840086432}
@@ -20715,7 +20719,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -37.5}
-  m_SizeDelta: {x: 208.25, y: 60}
+  m_SizeDelta: {x: 0, y: 60}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2097630169537575483
 CanvasRenderer:

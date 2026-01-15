@@ -761,11 +761,11 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(audioClipArray, PlayerShoot.Instance.GetHeldGunSO().cooldownSFXVolumeMultiplier);
     }
     private void PlayerShoot_OnPlayerStartedShot(object sender, System.EventArgs e) {
-        if (!PlayerShoot.Instance.GetHeldGunSO().triggersShootSFXOnEachBuller) return;
+        //if (!PlayerShoot.Instance.GetHeldGunSO().triggersShootSFXOnEachBuller) return;
 
-        AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGun().GetComponent<GunSounds>().GetShootAudioClips();
-        float volume = PlayerShoot.Instance.GetHeldGunSO().shootGunVolumeMultiplier;
-        PlaySound2D(audioClipArray, volume);
+        //AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGun().GetComponent<GunSounds>().GetShootAudioClips();
+        //float volume = PlayerShoot.Instance.GetHeldGunSO().shootGunVolumeMultiplier;
+        //PlaySound2D(audioClipArray, volume);
     }
 
     private void PlayerShoot_OnPlayerAimedSightEnded(object sender, System.EventArgs e) {

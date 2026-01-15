@@ -25,6 +25,7 @@ public class VideoTipUI : MonoBehaviour
     [SerializeField] private Transform tipTextContainer;
     [SerializeField] private Transform tipTextTemplate;
     [SerializeField] private Transform wishlistButton;
+    [SerializeField] private Transform backToMainMenuButton;
     [SerializeField] private Animator videoTipUIMainPanelAnimator;
 
     [SerializeField] private VideoTipSO testTipSO;
@@ -49,6 +50,13 @@ public class VideoTipUI : MonoBehaviour
     private void Awake() {
         Instance = this;
         wishlistButton.gameObject.SetActive(false);
+        backToMainMenuButton.gameObject.SetActive(false);
+
+        backToMainMenuButton.GetComponent<Button>().onClick.AddListener(() => {
+            ClosePanel();
+            HUBManager.Instance.SaveHub();
+            SceneLoader.Instance.LoadMainMenu(1f);
+        });
     }
 
     private void Start() {
@@ -91,11 +99,11 @@ public class VideoTipUI : MonoBehaviour
         PlayTip();
     }
 
-    public void SetEndDemoTip() {
-       StartCoroutine(SetEndDemoTipCoroutine());
+    public void SetSpecialInteractableTip(float delay = 0f, bool endDemoTip = true, bool hordeModeUnlockedTip = false) {
+       StartCoroutine(SetEndDemoTipCoroutine(delay, endDemoTip, hordeModeUnlockedTip));
     }
-
-    private IEnumerator SetEndDemoTipCoroutine() {
+    private IEnumerator SetEndDemoTipCoroutine(float delay, bool endDemoTip = true, bool hordeModeUnlockedTip = false) {
+        yield return new WaitForSeconds(delay);
         RectTransform rt = videoTipUIMainPanel.GetComponent<RectTransform>();
         rt.anchorMin = new Vector2(0.5f, 0.5f); // Centre en X, bas en Y
         rt.anchorMax = new Vector2(0.5f, 0.5f);
@@ -109,7 +117,15 @@ public class VideoTipUI : MonoBehaviour
         yield return new WaitForSecondsRealtime(5f);
 
         EventSystem.current.SetSelectedGameObject(wishlistButton.gameObject);
-        wishlistButton.gameObject.SetActive(true);
+
+        if(endDemoTip) {
+            wishlistButton.gameObject.SetActive(true);
+        }
+
+        if(hordeModeUnlockedTip) {
+            backToMainMenuButton.gameObject.SetActive(true);
+        }
+
     }
 
     public void PlayTipSO(VideoTipSO videoTipSO, float delayToPlayTip = 0f, bool openPanel = true, bool setReplayTipButtonInteractable = false, bool unlockNewTip = true) {

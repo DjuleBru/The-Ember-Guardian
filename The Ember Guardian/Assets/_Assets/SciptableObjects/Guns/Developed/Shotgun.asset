@@ -48,14 +48,14 @@ MonoBehaviour:
   minLoadShotTime: 0
   delayBetweenClickAndShot: 0
   useAngleInPS: 1
-  damagePerBullet: 4
+  damagePerBullet: 8
   maxAmmo: 6
   pelletsPerBullet: 5
   shotsPerClip: 4
   critChance: 5
   bulletLifetime: 0.35
   bulletSpeed: 30
-  shootCooldownTime: 0.8
+  shootCooldownTime: 1
   reloadTime: 1.5
   handsReloadTime: 1.5
   handsAnimationReloadTime: 1
@@ -72,9 +72,9 @@ MonoBehaviour:
   followMouseSpeed: 40
   swapToWeaponTimeMultiplier: 1.5
   gunKnockback: 2.5
-  gunRecoil: 0.6
+  gunRecoil: 1
   gunRecoilDamping: 3
-  shootConeAngle: 10
+  shootConeAngle: 16
   weaponPrecisionMultiplier: 1
   movePrecisionDebuff: 1.25
   runPrecisionDebuff: 1.5
@@ -98,8 +98,8 @@ MonoBehaviour:
   spinUpDurationStatModifier: {fileID: 0}
   subExplosivesAmountStatModifier: {fileID: 0}
   subExplosivesDamageStatModifier: {fileID: 0}
-  shotCooldownAnimationTriggerTime: 0
-  shootCooldownSFXTriggerTime: 0.3
+  shotCooldownAnimationTriggerTime: 0.3
+  shootCooldownSFXTriggerTime: 0.4
   triggersShootFeedbackOnEachBuller: 1
   triggersShootSFXOnEachBuller: 1
   shootGunSound:

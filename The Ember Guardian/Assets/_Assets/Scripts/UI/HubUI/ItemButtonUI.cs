@@ -310,7 +310,9 @@ public class ItemButtonUI : ButtonUI {
 
         descriptionCard.SetDescriptionCardFonts();
         descriptionCard.SetDescriptionCardText(itemName, constantUnlockDescription, itemStatDescription, itemDescription, itemStatValues, itemStatModifierValues);
+
         descriptionCard.SetDescriptionCardCost(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
+
         descriptionCard.ChestDescriptionCardFree(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
 
         if(itemLockedInDemo && HUBManager.Instance != null && HUBManager.Instance.GetIsDemo()) {

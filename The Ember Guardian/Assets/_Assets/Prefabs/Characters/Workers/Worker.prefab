@@ -291,6 +291,7 @@ MonoBehaviour:
   projectileSO: {fileID: 11400000, guid: fc5a371a9204ee043880c5cf26d510e9, type: 2}
   staticProjectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 2310341056989899468}
+  multipleProjectileSpawnPointList: []
   attackCooldown: 3
   attackAnimationDelay: 0.6
   totalAttackAnimationTime: 0
@@ -11444,6 +11445,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac9a249edf6317a4b8f020bce8bdea5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   workerFootstepAudioClips:
   - {fileID: 8300000, guid: 14596ce363b0c0e4abbcd73c0dca15d0, type: 3}
   - {fileID: 8300000, guid: c5b65ff09eaf75c45a188660dcaacc5e, type: 3}

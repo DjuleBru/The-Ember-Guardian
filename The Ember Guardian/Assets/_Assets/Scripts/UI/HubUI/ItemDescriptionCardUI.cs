@@ -43,6 +43,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI maxLevelText;
     [SerializeField] private GameObject foreGround;
 
+    private bool gemGODisabled;
     private int greenGem;
     private int redGem;
     private int blueGem;
@@ -102,6 +103,8 @@ public class ItemDescriptionCardUI : MonoBehaviour
     }
 
     public void SetDescriptionCardCost(int greenGem, int redGem, int blueGem, int yellowGem, int purpleGem, int cyanGem) {
+        if (gemGODisabled) return;
+
         this.greenGem = greenGem;
         this.redGem = redGem;
         this.blueGem = blueGem;
@@ -300,6 +303,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
     }
 
     private void DisableGemCostGO() {
+        gemGODisabled = true;
         greenGemCostGO.SetActive(false);
         redGemCostGO.SetActive(false);
         blueGemCostGO.SetActive(false);

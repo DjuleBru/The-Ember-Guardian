@@ -180,7 +180,7 @@ public class PlayerWorldUITooltip : MonoBehaviour
     }
 
     public void HideTooltip(float delay = 0f) {
-        
+
         if (showTooltipCoroutine != null) {
             StopCoroutine(showTooltipCoroutine);
         }

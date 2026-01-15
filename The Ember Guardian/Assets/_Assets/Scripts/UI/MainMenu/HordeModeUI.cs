@@ -93,10 +93,11 @@ public class HordeModeUI : MonoBehaviour
     }
 
     private void RefreshUnlockedCustomizationOptions() {
+        weaponCustomizationUnlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.SMG);
         dogCustomizationUnlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.GoldenRetreiver);
         campCustomizationUnlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.ArchitectTable);
 
-        changeWeaponCustomizable.SetCustomizable(true);
+        changeWeaponCustomizable.SetCustomizable(weaponCustomizationUnlocked);
         changeDogCustomizable.SetCustomizable(dogCustomizationUnlocked);
         architectTableCustomizable.SetCustomizable(campCustomizationUnlocked);
 
@@ -122,6 +123,10 @@ public class HordeModeUI : MonoBehaviour
 
         LevelSO.LevelEnvironment defaultEnvironment = LevelSO.LevelEnvironment.TheVerdantGraveyard;
         currentSelectedEnvironment = ES3.Load("lastLevelEnvironment", defaultEnvironment);
+
+        if(currentSelectedEnvironment == LevelSO.LevelEnvironment.TheLostGreens) {
+            currentSelectedEnvironment = LevelSO.LevelEnvironment.TheVerdantGraveyard;
+        }
 
         unlockedEnvironmentList = new List<LevelSO.LevelEnvironment> { LevelSO.LevelEnvironment.TheVerdantGraveyard};
 
@@ -352,10 +357,11 @@ public class HordeModeUI : MonoBehaviour
             CameraManager.Instance.ZoomIn(false, 1.3f);
         }
 
-        SetEnvironment(MainMenuVisual.Instance.GetLevelEnvironment());
+        LevelSO.LevelEnvironment currentEnvironment = MainMenuVisual.Instance.GetLevelEnvironment();
+        SetEnvironment(currentEnvironment);
         OnHordeModePanelOpened?.Invoke(this, EventArgs.Empty);
 
-        if(MainMenuVisual.Instance.GetLevelEnvironment() == LevelSO.LevelEnvironment.City) {
+        if(MainMenuVisual.Instance.GetLevelEnvironment() == LevelSO.LevelEnvironment.City || MainMenuVisual.Instance.GetLevelEnvironment() == LevelSO.LevelEnvironment.TheLostGreens) {
             SetEnvironment(LevelSO.LevelEnvironment.TheVerdantGraveyard);
         }
 
@@ -372,8 +378,9 @@ public class HordeModeUI : MonoBehaviour
             if (dogCustomizationUnlocked) {
                 SwapDogButtonWorlUI.gameObject.SetActive(true);
             }
-
-            swapWeaponButtonWorlUI.gameObject.SetActive(true);
+            if (weaponCustomizationUnlocked) {
+                swapWeaponButtonWorlUI.gameObject.SetActive(true);
+            }
 
             architectTableCustomizable.SetCustomizing(true);
             changeWeaponCustomizable.SetCustomizing(true);
@@ -408,6 +415,18 @@ public class HordeModeUI : MonoBehaviour
     }
 
     public void CloseHordeModePanel() {
+        if (customizeCampPanelOpen) {
+            CloseCustomizeCampPanel();
+        }
+
+        if (changeDogPanelOpen) {
+            CloseChangeDogPanel();
+        }
+
+        if (changeWeaponPanelOpen) {
+            CloseChangeWeaponPanel();
+        }
+
         MainMenuUI.Instance.OpenCloseHordeModeSelectButtons(false);
         StartCoroutine(CloseHordeModePanelCoroutine());
     }

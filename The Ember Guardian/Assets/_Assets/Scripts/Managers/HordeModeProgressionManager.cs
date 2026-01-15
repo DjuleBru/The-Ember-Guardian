@@ -66,6 +66,7 @@ public class HordeModeProgressionManager : MonoBehaviour
     public Dictionary<HordeModeUnlockables, int> unlockThresholds;
 
     [SerializeField] private List<LevelSO> levelSOList;
+    [SerializeField] private LevelSO demoMaxlevelSO;
 
     [Title("Unlock Order")]
     [InfoBox("This list defines the EXACT unlock order. The enum order is ignored.")]
@@ -151,6 +152,15 @@ public class HordeModeProgressionManager : MonoBehaviour
         if(needed > 0) {
             ES3.Save("lastXPGainFromMainGame", true);
         }
+    }
+
+    public bool CheckUnlockableLockedInDemo(HordeModeUnlockables unlock) {
+        if(VersioningManager.Instance.GetIsNewDemo()) {
+            if (unlock == demoMaxlevelSO.linkedHordeUnlock) return true;
+        }
+
+        return false;
+
     }
 
     public bool GetHasXPToCommit() {

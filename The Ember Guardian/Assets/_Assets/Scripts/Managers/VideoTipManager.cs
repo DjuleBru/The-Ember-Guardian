@@ -44,6 +44,8 @@ public class VideoTipManager : MonoBehaviour
     [SerializeField] private VideoTipSO refundGunsTip;
     [SerializeField] private VideoTipSO hordeModeSunDifficultyTip;
     [SerializeField] private VideoTipSO hordeModeFindWeaponsTip;
+    [SerializeField] private VideoTipSO demoEndedTip;
+    [SerializeField] private VideoTipSO hordeModeUnlockedTip;
 
     private bool isLevelScene;
     private bool isTutorialScene;
@@ -318,6 +320,23 @@ public class VideoTipManager : MonoBehaviour
         HubChest.Instance.OnChestSetCanOpen += HubChest_OnChestSetCanOpen;
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+        HUBManager.Instance.OnLastDemoLevelUnlocked += HubManager_OnLastDemoLevelUnlocked;
+        HUBManager.Instance.OnFirstHubEncounterRoutineOver += HubManager_OnFirstHubEncounterRoutineOver;
+    }
+
+    private void HubManager_OnFirstHubEncounterRoutineOver(object sender, EventArgs e) {
+        PlayHordeModeUnlockedTip();
+    }
+
+    private void HubManager_OnLastDemoLevelUnlocked(object sender, EventArgs e) {
+        VideoTipUI.Instance.PlayTipSO(demoEndedTip, 2f);
+        VideoTipUI.Instance.SetSpecialInteractableTip(2f);
+    }
+
+    [Button]
+    private void PlayHordeModeUnlockedTip() {
+        VideoTipUI.Instance.PlayTipSO(hordeModeUnlockedTip, 3f);
+        VideoTipUI.Instance.SetSpecialInteractableTip(3f, false, true);
     }
 
     private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {

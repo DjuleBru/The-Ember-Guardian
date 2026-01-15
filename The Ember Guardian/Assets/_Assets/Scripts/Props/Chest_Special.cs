@@ -164,6 +164,17 @@ public class Chest_Special : Chest
         MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(gunShopItemString, true);
         MetaProgressionManager.Instance.SetGunUnlocked(gunSOInChest, true);
 
+        // Auto unlock SMG if player finds shotgun
+        if(gunSOInChest.gunType == GunSO.GunType.Shotgun) {
+            GunSO smgGunSO = PlayerShoot.Instance.GetGunSO(GunSO.GunType.SMG);
+            string smgShopItemString = HUBMerchantItem_GunMerchantItem.GunItemType.smg.ToString() + " " + smgGunSO.ToString();
+
+            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(smgShopItemString, true);
+            MetaProgressionManager.Instance.SetHubMerchantItemBought(smgShopItemString, true);
+            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(smgShopItemString, true);
+            MetaProgressionManager.Instance.SetGunUnlocked(smgGunSO, true);
+        }
+
     }
 
     public override void SetChestPaid(bool paid) {

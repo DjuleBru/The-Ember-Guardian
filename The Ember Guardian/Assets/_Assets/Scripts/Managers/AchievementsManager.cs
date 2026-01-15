@@ -1,28 +1,30 @@
 using Sirenix.OdinInspector;
 using Steamworks;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
-public class AchievementsManager : MonoBehaviour
-{
-
+public class AchievementsManager : MonoBehaviour {
     public static AchievementsManager Instance;
     private bool playerConnected;
 
     private void Awake() {
-        Instance = this; 
-        
+        // Singleton strict
+        if (Instance != null) {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         try {
-            Steamworks.SteamClient.Init(3570060);
-            Debug.Log(Steamworks.SteamClient.Name);
+            SteamClient.Init(3570060);
+            Debug.Log(SteamClient.Name);
             playerConnected = true;
         }
         catch (System.Exception e) {
-            Debug.Log(e);
+            playerConnected = false;
+            Debug.LogError(e);
         }
-
     }
 
     private void Update() {
@@ -30,60 +32,64 @@ public class AchievementsManager : MonoBehaviour
         SteamClient.RunCallbacks();
     }
 
+    private void OnDestroy() {
+        // Sécurité : shutdown propre si l'objet racine est détruit
+        if (Instance == this && SteamClient.IsValid) {
+            SteamClient.Shutdown();
+        }
+    }
+
     [Button]
     public bool IsThisAchievementUnlocked(string id) {
-        if (!playerConnected) return true;
-        var ach = new Steamworks.Data.Achievement(id);
-        //Debug.Log("Achievement " + id + "status : " + ach.State);
+        if (!playerConnected) return false;
 
+        var ach = new Steamworks.Data.Achievement(id);
         return ach.State;
     }
 
     [Button]
     public void UnlockAchievement(string id) {
         if (!playerConnected) return;
+
         var ach = new Steamworks.Data.Achievement(id);
         ach.Trigger();
-
-        //Debug.Log("Achievement " + id + "unlocked");
+        SteamUserStats.StoreStats();
     }
 
     [Button]
     public void ClearAchievementStatus(string id) {
         if (!playerConnected) return;
+
         var ach = new Steamworks.Data.Achievement(id);
         ach.Clear();
-
-        //Debug.Log("Achievement " + id + "Cleared : ");
+        SteamUserStats.StoreStats();
     }
 
     [Button]
     public int GetSteamStat(string id) {
         if (!playerConnected) return 0;
-
-        //Debug.Log(id + " = " + Steamworks.SteamUserStats.GetStatInt(id));
-        return Steamworks.SteamUserStats.GetStatInt(id);
+        return SteamUserStats.GetStatInt(id);
     }
 
     [Button]
     public void SetSteamStat(string id, int value) {
         if (!playerConnected) return;
-        Steamworks.SteamUserStats.SetStat(id, value);
 
-        //Debug.Log("Setting " + id + "to: " + value);
+        SteamUserStats.SetStat(id, value);
+        SteamUserStats.StoreStats();
     }
 
     [Button]
     public void AddToSteamStat(string id, int value) {
         if (!playerConnected) return;
-        Steamworks.SteamUserStats.AddStat(id, value);
 
-        //Debug.Log("Adding " + value + " to: " + id);
+        SteamUserStats.AddStat(id, value);
+        SteamUserStats.StoreStats();
     }
 
     [Button]
     public void SaveSteamStats() {
         if (!playerConnected) return;
-        Steamworks.SteamUserStats.StoreStats();
+        SteamUserStats.StoreStats();
     }
 }

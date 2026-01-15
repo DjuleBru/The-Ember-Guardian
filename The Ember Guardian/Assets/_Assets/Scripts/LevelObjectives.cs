@@ -21,6 +21,9 @@ public class LevelObjectives : MonoBehaviour
     private bool rightDarklingNestFound;
     private bool rightDarklingNestDestroyed;
     private bool returnToHubObjectiveShown;
+
+    private bool tamerMet;
+    private bool trainerMet;
     private int NPCInteractionsIndex;
 
     private int nightsSurvived = -1;
@@ -204,8 +207,14 @@ public class LevelObjectives : MonoBehaviour
                 LevelUI_ObjectiveUI.SubObjectiveType.MeetTamer,
                 LevelUI_ObjectiveUI.SubObjectiveType.MeetTrainer};
 
-            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+            if(tamerMet) {
+                subObjectives.Remove(LevelUI_ObjectiveUI.SubObjectiveType.MeetTamer);
+            }
+            if (trainerMet) {
+                subObjectives.Remove(LevelUI_ObjectiveUI.SubObjectiveType.MeetTrainer);
+            }
 
+            LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
         }
 
         if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
@@ -285,6 +294,7 @@ public class LevelObjectives : MonoBehaviour
     private IEnumerator SetNextNPCObjective(HubMerchant levelMerchant) {
 
         if(levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.HeroMerchant) {
+            trainerMet = true;
 
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.MeetTrainer);
 
@@ -297,6 +307,8 @@ public class LevelObjectives : MonoBehaviour
         }
 
         if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.DogTamer) {
+            tamerMet = true;
+
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.MeetTamer);
 
             yield return new WaitForSeconds(1f);

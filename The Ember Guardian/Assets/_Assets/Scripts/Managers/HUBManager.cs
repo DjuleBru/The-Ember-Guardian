@@ -14,6 +14,9 @@ public class HUBManager : MonoBehaviour
     private bool DEBUGMODE;
 
     [SerializeField] private bool demoHUB;
+    [SerializeField] private bool newDemoHub;
+    [SerializeField] private LevelSO lastDemoLevelSO;
+    private bool justUnlockedLastDemoLevel;
 
     [SerializeField] private Transform firstHubLoadPlayerSpawnPoint;
     [SerializeField] private Transform firstHubLoadDogSpawnPoint;
@@ -63,6 +66,8 @@ public class HUBManager : MonoBehaviour
     private bool endGameSequenceDone;
 
     public event EventHandler OnHubSaved;
+    public event EventHandler OnLastDemoLevelUnlocked;
+    public event EventHandler OnFirstHubEncounterRoutineOver;
 
     private void Awake() {
         Instance = this;
@@ -538,12 +543,23 @@ public class HUBManager : MonoBehaviour
             linkedPortal.UnlockOrActivatePortal();
 
             yield return new WaitForSeconds(3f);
+
         }
+
+        if(newDemoHub && levelSOList.Contains(lastDemoLevelSO)) {
+            OnLastDemoLevelUnlocked?.Invoke(this, EventArgs.Empty);
+        }
+
         CameraManager.Instance.ResetCameraTargetToPlayer();
 
         PauseMenuUI.Instance.SetCanSave(true);
-        firstHubEncounterRoutineOver = true;
-        ES3.Save("firstHubEncounterRoutineOver", true);
+
+        if(!firstHubEncounterRoutineOver) {
+            firstHubEncounterRoutineOver = true;
+            ES3.Save("firstHubEncounterRoutineOver", true);
+            OnFirstHubEncounterRoutineOver?.Invoke(this, EventArgs.Empty);
+        }
+
     }
 
     #endregion
@@ -730,6 +746,10 @@ public class HUBManager : MonoBehaviour
             fireIndicator.SetActive(false);
             chestIndicator.SetActive(false);
         }
+    }
+
+    public bool GetIsNewDemo() {
+        return newDemoHub;
     }
 
     private void OnDestroy() {

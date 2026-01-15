@@ -32,6 +32,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
     [SerializeField] private Animator newUnlockAnimator;
     [SerializeField] private Button nextUnlockButton;
     [SerializeField] private GameObject pressAnyKeyToContinueGO;
+    [SerializeField] private GameObject lockedInDemoDescriptionGO;
     [SerializeField] private float barFillSpeed;
 
     private string nextUnlockNameLocalizationKey;
@@ -41,6 +42,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
     private bool unlockSequenceCoroutineRunning;
 
     private Coroutine unlockSequenceCoroutine;
+    private Coroutine shineCoroutine;
 
     public event EventHandler OnProgressionBarStartFill;
     public event EventHandler OnProgressionBarEndFill;
@@ -71,6 +73,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
         }
 
         pressAnyKeyToContinueGO.SetActive(false);
+        //lockedInDemoDescriptionGO.SetActive(false);
         SetNextUnlockParameters(HordeModeProgressionManager.Instance.GetNextUnlockable());
         SetNextUnlockMaterialAndText();
     }
@@ -106,13 +109,21 @@ public class HordeModeRewardsMenu : MonoBehaviour
         skipFill = false;
 
         int totalXP = HordeModeProgressionManager.Instance.GetTotalXP();
+        bool reachedLockedInDemoUnlockable = false;
 
         // Récupération des unlocks atteignables
         List<HordeModeProgressionManager.HordeModeUnlockables> pendingUnlocks = new List<HordeModeProgressionManager.HordeModeUnlockables>();
 
         foreach (var kvp in HordeModeProgressionManager.Instance.unlockThresholds) {
-            if (!HordeModeProgressionManager.Instance.GetUnlocked(kvp.Key) && totalXP >= kvp.Value)
+
+            if (HordeModeProgressionManager.Instance.CheckUnlockableLockedInDemo(kvp.Key)) {
+                reachedLockedInDemoUnlockable = true;
+                break;
+            };
+            if (!HordeModeProgressionManager.Instance.GetUnlocked(kvp.Key) && totalXP >= kvp.Value) {
                 pendingUnlocks.Add(kvp.Key);
+            }
+
         }
 
         // Séquence pour chaque unlock
@@ -132,6 +143,11 @@ public class HordeModeRewardsMenu : MonoBehaviour
             // Animation de début
             newUnlockAnimator.ResetTrigger("Next");
             newUnlockAnimator.SetTrigger("Unlock");
+
+            if(shineCoroutine != null) {
+                StopCoroutine(shineCoroutine);
+            }
+            shineCoroutine = StartCoroutine(AnimateUIShineMaterial());
 
             // ----------------------
             //  FILL SEQUENCE
@@ -251,6 +267,13 @@ public class HordeModeRewardsMenu : MonoBehaviour
         HordeModeProgressionManager.Instance.SetHasNoXPToCommit();
         unlockSequenceCoroutineRunning = false;
 
+        if(reachedLockedInDemoUnlockable) {
+            pressAnyKeyToContinueGO.SetActive(true);
+            nextUnlockText.text = LocalizationManager.Instance.GetLocalizedText(nextUnlockNameLocalizationKey);
+            nextUnlockDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(nextUnlockNameDescriptionLocalizationKey);
+            pressAnyKeyToContinueGO.GetComponent<TextMeshProUGUI>().text = LocalizationManager.Instance.GetLocalizedText("card_lockedInDemo");
+        }
+
 
         yield return new WaitForSeconds(1f);
         pressAnyKeyToContinueGO.SetActive(true);
@@ -306,6 +329,31 @@ public class HordeModeRewardsMenu : MonoBehaviour
         nextUnlockNameDescriptionLocalizationKey = GetUnlockableDescriptionLocalizationKey(unlockable);
         newUnlockAnimator.ResetTrigger("Unlock");
         newUnlockAnimator.SetTrigger("Next");
+    }
+
+    private IEnumerator AnimateUIShineMaterial() {
+        yield return new WaitForSeconds(1.2f);
+        float duration = 0.8f;
+        float elapsed = 0f;
+
+        float startValue = 0.9f;
+        float endValue = 0f;
+
+        Material mat = nextUnlockImage.material;
+
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float value = Mathf.Lerp(startValue, endValue, t);
+
+            mat.SetFloat("_ShineLocation", value);
+            Debug.Log(value);
+            yield return null;
+        }
+
+        // Sécurité : forcer la valeur finale
+        mat.SetFloat("_ShineLocation", endValue);
+        shineCoroutine = null;
     }
 
     public Sprite GetUnlockableSprite(HordeModeProgressionManager.HordeModeUnlockables unlockable) {

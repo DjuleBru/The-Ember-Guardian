@@ -186,29 +186,45 @@ public class UICurrencyManager : MonoBehaviour
         TrapSO randomTrapSO = unlockedTraps[UnityEngine.Random.Range(0,unlockedTraps.Count)];
         PlayerCurrencies.CurrencyType randomTrap = CurrenciesManager.Instance.GetTrapCurrencyType(randomTrapSO.trapType);
 
-        PlayerCurrencies.CurrencyType initialAmmoType = PlayerCurrencies.CurrencyType.ammo;
-        int ammoAmount = PlayerStats.Instance.GetStartLevelAmmo();
-        bool hasOnlySpecialAmmo = PlayerShoot.Instance.GetHasOnlySpecialAmmo();
-
-        if(hasOnlySpecialAmmo) {
-            initialAmmoType = PlayerCurrencies.CurrencyType.ammo_special;
-            ammoAmount /= 2;
-        }
-
         List<PlayerCurrencies.CurrencyType> currencyTypes = new List<PlayerCurrencies.CurrencyType> {
                 PlayerCurrencies.CurrencyType.bigBlueOrb,
-                initialAmmoType,
                 randomTrap,
             };
 
         List<int> currencyTypesAmount = new List<int> {
             PlayerStats.Instance.GetStartLevelOrbs(),
-            ammoAmount,
             StructureStats.Instance.GetStartWithRandomTrapAmount(),
             };
 
+        int standardAmmoAmount = PlayerStats.Instance.GetStartLevelAmmo();
+        bool hasOnlySpecialAmmo = PlayerShoot.Instance.GetHasOnlySpecialAmmo();
+        bool hasBothAmmoTypes = PlayerShoot.Instance.GetHasBothAmmoTypes();
+        int specialAmmoAmount = 0;
+
+        if(hasOnlySpecialAmmo) {
+            specialAmmoAmount = standardAmmoAmount / 2;
+
+            currencyTypes.Add(PlayerCurrencies.CurrencyType.ammo_special);
+            currencyTypesAmount.Add(specialAmmoAmount);
+
+        } else if(hasBothAmmoTypes) {
+
+            standardAmmoAmount /= 2;
+            specialAmmoAmount = standardAmmoAmount / 2;
+
+            if(specialAmmoAmount == 0) {
+                specialAmmoAmount = 1;
+            }
+            currencyTypes.Add(PlayerCurrencies.CurrencyType.ammo);
+            currencyTypes.Add(PlayerCurrencies.CurrencyType.ammo_special);
+            currencyTypesAmount.Add(standardAmmoAmount);
+            currencyTypesAmount.Add(specialAmmoAmount);
 
 
+        } else {
+            currencyTypes.Add(PlayerCurrencies.CurrencyType.ammo);
+            currencyTypesAmount.Add(standardAmmoAmount);
+        }
         AddMultipleCurrencies(currencyTypes, currencyTypesAmount);
     }
 

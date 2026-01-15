@@ -25303,7 +25303,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.75
+  lastBulletVolume: 1.2
 --- !u!1 &791928386114633328
 GameObject:
   m_ObjectHideFlags: 0
@@ -42433,6 +42436,134 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2127559736128193383
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7790192553887052597}
+  - component: {fileID: 1810423313413778066}
+  m_Layer: 12
+  m_Name: BulletAudioSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7790192553887052597
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127559736128193383}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 981314326692650962}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1810423313413778066
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2127559736128193383}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2139059005237435044
 GameObject:
   m_ObjectHideFlags: 0
@@ -43118,7 +43249,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.3
+  lastBulletVolume: 1.2
 --- !u!1 &2247522805809411216
 GameObject:
   m_ObjectHideFlags: 0
@@ -43564,7 +43698,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4712941642942225807
 Transform:
   m_ObjectHideFlags: 0
@@ -43745,7 +43879,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.3
+  lastBulletVolume: 1.2
 --- !u!1 &2323658240935819318
 GameObject:
   m_ObjectHideFlags: 0
@@ -49395,6 +49532,7 @@ ParticleSystem:
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
+    radiusThickness: 0
     donutRadius: 0.2
     m_Position: {x: -0.40029693, y: -0.013730168, z: -0.00000002385955}
     m_Rotation: {x: 0, y: 90, z: 0}
@@ -49535,7 +49673,7 @@ ParticleSystem:
           m_RotationOrder: 4
     arc:
       value: 360
-      mode: 0
+      mode: 3
       spread: 0
       speed:
         serializedVersion: 2
@@ -64976,7 +65114,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.75
+  lastBulletVolume: 1.2
 --- !u!1 &2683016430594531095
 GameObject:
   m_ObjectHideFlags: 0
@@ -89903,7 +90044,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.3
+  lastBulletVolume: 1.2
 --- !u!1 &3237320309064725914
 GameObject:
   m_ObjectHideFlags: 0
@@ -96670,7 +96814,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.75
+  lastBulletVolume: 1.2
 --- !u!1 &3755223407975608531
 GameObject:
   m_ObjectHideFlags: 0
@@ -127151,6 +127298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialActiveGun: {fileID: 11400000, guid: fe0cb88ff99660845ad659fb6f82c3a5, type: 2}
+  allGunsList: []
   allSkillsList:
   - {fileID: 11400000, guid: 586a280df149cc040bc19783fe1cb282, type: 2}
   - {fileID: 11400000, guid: 3d01119ee7e48d34887e9f278a2d8234, type: 2}
@@ -127385,7 +127533,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.75
+  lastBulletVolume: 1.2
 --- !u!1 &4975682505801664034
 GameObject:
   m_ObjectHideFlags: 0
@@ -128092,6 +128243,7 @@ Transform:
   - {fileID: 1435721059984221856}
   - {fileID: 2541241187479884349}
   - {fileID: 5898622292328710148}
+  - {fileID: 7790192553887052597}
   m_Father: {fileID: 4959335473103312796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5054163266634100829
@@ -128607,7 +128759,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.75
+  lastBulletVolume: 1.2
   silencedAudioClips:
   - {fileID: 8300000, guid: e19663f781bb3164eaec3de06eb93189, type: 3}
   - {fileID: 8300000, guid: c406cce7323e38143bf11207d111197b, type: 3}
@@ -171600,7 +171755,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.3
+  lastBulletVolume: 1.2
 --- !u!1 &6886630744676724978
 GameObject:
   m_ObjectHideFlags: 0
@@ -184815,7 +184973,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 0}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.3
+  lastBulletVolume: 1.2
 --- !u!114 &1691439504649091301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184832,7 +184993,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 0}
   surgeAudioSource: {fileID: 0}
+  bulletAudioSource: {fileID: 0}
   surgeBuffVolume: 0
+  lastBulletPitch: 1.3
+  lastBulletVolume: 1.2
   shootAudioSource: {fileID: 0}
   startShotAudioClips: []
   shootLoopAudioClips: []
@@ -190006,7 +190170,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.75
+  lastBulletVolume: 1.2
 --- !u!1 &7700401196638512832
 GameObject:
   m_ObjectHideFlags: 0
@@ -197027,7 +197194,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.75
+  lastBulletVolume: 1.2
 --- !u!1 &7915249734270255090
 GameObject:
   m_ObjectHideFlags: 0
@@ -202140,7 +202310,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.75
+  lastBulletVolume: 1.2
   gunPoweringDownClip: {fileID: 8300000, guid: 5c95e06662bbb314aa8569be37262094, type: 3}
   gunPoweredClip: {fileID: 8300000, guid: 3a4efa3bcc013a443b9ee9f9033d978a, type: 3}
   poweringAudioSource: {fileID: 7163602008624779846}
@@ -213655,7 +213828,10 @@ MonoBehaviour:
   maxInstancesPerClip: 10
   surgeAudioClip: {fileID: 8300000, guid: f93c04e54d1690c46aa2a9c39d941c14, type: 3}
   surgeAudioSource: {fileID: 680134493645706436}
+  bulletAudioSource: {fileID: 1810423313413778066}
   surgeBuffVolume: 0.3
+  lastBulletPitch: 1.75
+  lastBulletVolume: 1.2
 --- !u!1 &8408226057727364104
 GameObject:
   m_ObjectHideFlags: 0

@@ -1448,6 +1448,26 @@ public class PlayerShoot : MonoBehaviour
         return hasOnlySpecialAmmo;
     }
 
+    public bool GetHasBothAmmoTypes() {
+        bool hasBothAmmo = false;
+        bool hasOnlySpecialAmmo = false;
+        bool hasOnlyStandardAmmo = false;
+        bool holding2Weapons = secondayGunSO != null;
+
+        if (holding2Weapons) {
+            hasOnlySpecialAmmo = primaryGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special && (secondayGunSO != null && secondayGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special);
+            hasOnlyStandardAmmo = primaryGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo && (secondayGunSO != null && secondayGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo);
+        }
+        else {
+            return false;
+        }
+
+        hasBothAmmo = !hasOnlySpecialAmmo && !hasOnlyStandardAmmo;
+
+        return hasBothAmmo;
+    }
+
+
     private void OnDestroy() {
         GameInput.Instance.OnPlayerShootCanceled -= GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootPerformed -= GameInput_OnPlayerShootStarted;

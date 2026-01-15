@@ -46,6 +46,7 @@ public class VideoTipSO : ScriptableObject
         RefundGun,
         HordeModeSunDifficulty,
         HordeModeWeapons,
+        HordeModeUnlocked,
     }
 
     public VideoTipType tipType;
