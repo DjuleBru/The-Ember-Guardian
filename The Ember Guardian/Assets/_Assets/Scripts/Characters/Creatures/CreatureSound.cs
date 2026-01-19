@@ -68,6 +68,7 @@ public class CreatureSound : SoundObject
         }
 
         if (IsTooFarFromPlayer()) return;
+
         if (creatureSO.spawnAudioClips.Length > 0) {
             AudioClip audioClip = creatureSO.spawnAudioClips[Random.Range(0, creatureSO.spawnAudioClips.Length)];
             creatureAudioSource.PlayOneShot(audioClip, creatureSO.spawnVolumeMultiplier * sfxVolume);

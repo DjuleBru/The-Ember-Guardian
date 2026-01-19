@@ -368,9 +368,14 @@ public class AddStructureBlueprint : ButtonUI
         }
     }
 
-    protected override void OnDestroy() {
-        base.OnDestroy();
+    public void UnsubscribeToNewItemsEvents() {
+
         HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
         HubMerchantItem.OnAnyHubMerchantItemArchitectTableUnlocks -= HubMerchantItem_OnAnyHubMerchantItemArchitectTableUnlocks;
+
+    }
+    protected override void OnDestroy() {
+        base.OnDestroy();
+        UnsubscribeToNewItemsEvents();
     }
 }

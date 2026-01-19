@@ -238,7 +238,7 @@ public class PlayerShoot : MonoBehaviour
             }
         }
 
-        if (playerJustPressedReload) {
+        if (playerJustPressedReload && !swappingGun) {
             playerJustPressedReloadTimer += Time.deltaTime;
 
             if (playerJustPressedReloadTimer > .2f) {
@@ -248,7 +248,7 @@ public class PlayerShoot : MonoBehaviour
 
         }
 
-        if (transferringAmmoFromBag) {
+        if (transferringAmmoFromBag && !swappingGun) {
             transferringAmmoFromBagTimer += Time.deltaTime;
             if (transferringAmmoFromBagTimer > transferringAmmoFromBagCooldown) {
                 transferringAmmoFromBagTimer = 0;
@@ -334,20 +334,6 @@ public class PlayerShoot : MonoBehaviour
         TransferNextAmmoFromBag(false);
     }
 
-    private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
-        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
-
-        HandleSurgeBulletSpinningInput();
-
-        if (!canShoot) return;
-        if (swappingGun) return;
-        if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.reload)) return;
-
-        playerJustPressedReload = true;
-        playerJustPressedReloadTimer = 0;
-       
-    }
-
     private void HandleSurgeBulletSpinningInput() {
         if (surgeBulletSpinning) {
             if (surgeBulletSpinningInWindow) {
@@ -368,17 +354,30 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+
+        HandleSurgeBulletSpinningInput();
+
+        if (!canShoot) return;
+        if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.reload)) return;
+
+        playerJustPressedReload = true;
+        playerJustPressedReloadTimer = 0;
+
+    }
+
     private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
         if(playerJustPressedReload) {
             playerJustPressedReload = false;
         }
+
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (!canShoot) return;
         if (swappingGun) return;
         if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.reload)) return;
 
         if (transferringAmmoFromBag) {
-            // Player is trying to reload weapon
             transferringAmmoFromBag = false;
             return;
         };

@@ -3660,6 +3660,17 @@ MonoBehaviour:
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 4036192485864741668}
   structureType: 23
+--- !u!114 &7445063817153997716 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+  m_PrefabInstance: {fileID: 492964019985046215}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4978921212095337577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aaae745621c53a49a0d2b8e64a8ca73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &577034828948183956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7496,12 +7507,12 @@ PrefabInstance:
       objectReference: {fileID: 9149233398654120254}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.data[0]
       value: 
-      objectReference: {fileID: 6218332712157843217}
+      objectReference: {fileID: 7445063817153997716}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.data[1]
       value: 
@@ -10042,6 +10053,7 @@ MonoBehaviour:
   hubMerchantItemParent: {fileID: 6649104612643112754}
   isHubMerchant: 1
   isLevelNPC: 0
+  isHordeModeMerchant: 0
   fadeOutAfterTalk: 0
   delayToFadeOutAfterTalk: 0
   isFunctionalDemoHubMerchant: 0

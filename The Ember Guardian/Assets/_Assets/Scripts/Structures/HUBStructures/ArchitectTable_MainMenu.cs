@@ -15,7 +15,7 @@ public class ArchitectTable_MainMenu : ArchitectTable
     protected override void Awake() {
         Instance = this;
 
-        AddStructureBlueprint[] allStructureBlueprints = allStructureBlueprintsParent.GetComponentsInChildren<AddStructureBlueprint>();
+        AddStructureBlueprint[] allStructureBlueprints = allStructureBlueprintsParent.GetComponentsInChildren<AddStructureBlueprint>(true);
         foreach (AddStructureBlueprint blueprint in allStructureBlueprints) {
             blueprint.SubscribeToNewItemsEvents();
         }
@@ -63,5 +63,13 @@ public class ArchitectTable_MainMenu : ArchitectTable
     public override void RemoveFromBudget(int removal) {
         remainingBudget -= removal;
         remainingBudgetText.text = remainingBudget.ToString();
+    }
+
+    private void OnDestroy() {
+        AddStructureBlueprint[] allStructureBlueprints = allStructureBlueprintsParent.GetComponentsInChildren<AddStructureBlueprint>(true);
+
+        foreach (AddStructureBlueprint blueprint in allStructureBlueprints) {
+            blueprint.UnsubscribeToNewItemsEvents();
+        }
     }
 }

@@ -51,6 +51,7 @@ public class PlayerCamp : MonoBehaviour
     private bool barricades1BuiltAtStart;
 
     private bool initialFireLit;
+
     private void Awake() {
         Instance = this;
         InitializeBarricadePositions();
@@ -69,6 +70,11 @@ public class PlayerCamp : MonoBehaviour
             researchTowerBuiltAtStart = StructureStats.Instance.GetStartWithResearchTower();
             barricades1BuiltAtStart = StructureStats.Instance.GetStartWithBarricades();
         }
+
+        Debug.Log("ammoCrafterBuiltAtStart " + ammoCrafterBuiltAtStart);
+        Debug.Log("researchTowerBuiltAtStart " + researchTowerBuiltAtStart);
+        Debug.Log("barricades1BuiltAtStart " + barricades1BuiltAtStart);
+        Debug.Log("SavingManager_Level.Instance.GetLoadingSavedLevel() " + SavingManager_Level.Instance.GetLoadingSavedLevel());
 
         if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
 
@@ -154,7 +160,8 @@ public class PlayerCamp : MonoBehaviour
         if(structureSO.structureType == StructureSO.StructureType.ammoCrafter && ammoCrafterBuiltAtStart) {
             ammoCrafter1Location = structureLocation;
         }
-        if (structureSO.structureType == StructureSO.StructureType.ammoCrafter && researchTowerBuiltAtStart) {
+
+        if (structureSO.structureType == StructureSO.StructureType.observationTower && researchTowerBuiltAtStart) {
             researchTowerLocation = structureLocation;
         }
     }

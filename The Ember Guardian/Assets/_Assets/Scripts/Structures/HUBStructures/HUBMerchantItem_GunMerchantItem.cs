@@ -538,11 +538,12 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
             }
 
             if (gunItem == GunItemType.surgeReloadProbability) {
-                initialStatValue = linkedGunSO.surgeReloadProbability;
-                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetSurgeReloadProbability()).ToString();
+                initialStatValue = linkedGunSO.surgeReloadProbability * 100;
+                currentStatValue = (PlayerShoot.Instance.GetGun(linkedGunSO).GetSurgeReloadProbability()*100).ToString();
                 relativeStatPrefix = "+";
                 totalStatWithModifierPostfix = "%";
                 relativeStatPostfix = "%";
+                statValueModifierMultiplier = 100;
             }
 
             if (gunItem == GunItemType.explosionRadiusBuff) {
@@ -589,8 +590,12 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
                 }
             }
 
+            if(gunItem == GunItemType.surgeReloadProbability) {
+                relativeStatModifier *= 100;
+            }
+
             if(gunItem == GunItemType.cooldownTime || gunItem == GunItemType.reloadTime) {
-                totalStatWithModifier = initialStatValue + (absoluteStatValueModifier * statValueModifierMultiplier)*initialStatValue;
+                totalStatWithModifier = initialStatValue + (absoluteStatValueModifier * statValueModifierMultiplier) * initialStatValue;
                 totalStatValue = totalStatWithModifier.ToString("F2");
             }
 

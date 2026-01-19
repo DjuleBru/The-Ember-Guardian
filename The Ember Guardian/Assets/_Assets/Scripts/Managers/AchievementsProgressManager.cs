@@ -301,6 +301,8 @@ public class AchievementsProgressManager : MonoBehaviour
         TryUnlockSuccess("LOOSE_RESPAWNING");
     }
     private void Fire_OnAnySecondaryFireReset(object sender, System.EventArgs e) {
+        if (AchievementsManager.Instance == null) return;
+
         AchievementsManager.Instance.AddToSteamStat("SECONDARY_FIRES_LIT_v3", 1);
         if (AchievementsManager.Instance.GetSteamStat("SECONDARY_FIRES_LIT_v3") >= secondaryFiresLitTreshold) {
             TryUnlockSuccess("SECONDARY_FIRES");
@@ -439,7 +441,9 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
-        if(DayNightManager.Instance.GetCurrentDay() == 0) {
+        if (AchievementsManager.Instance == null) return;
+
+        if (DayNightManager.Instance.GetCurrentDay() == 0) {
             boneReaperDeathAmount = 0;
         } else {
             AchievementsManager.Instance.AddToSteamStat("NIGHTS_SURVIVED_v3", 1);
@@ -474,6 +478,8 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void DogDigAbility_OnAnyResourceDug(object sender, System.EventArgs e) {
+        if (AchievementsManager.Instance == null) return;
+
         AchievementsManager.Instance.AddToSteamStat("RESOURCES_DUG_BY_DOG_v3", 1);
         if(AchievementsManager.Instance.GetSteamStat("RESOURCES_DUG_BY_DOG_v3") >= resourcesDugByDogTreshold) {
             TryUnlockSuccess("DOG_RESOURCES");
@@ -481,6 +487,8 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void DogAI_Retreiver_OnAnyOrbDroppedByDog(object sender, System.EventArgs e) {
+        if (AchievementsManager.Instance == null) return;
+
         AchievementsManager.Instance.AddToSteamStat("RESOURCES_DROPPED_BY_DOG", 1);
         if (AchievementsManager.Instance.GetSteamStat("RESOURCES_DROPPED_BY_DOG") >= resourcesFetchedByDogTreshold) {
             TryUnlockSuccess("DOG_FETCH");
@@ -488,6 +496,8 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void Creature_OnAnyCreatureKilledByDog(object sender, System.EventArgs e) {
+        if (AchievementsManager.Instance == null) return;
+
         TryUnlockSuccess("FIRST_KILL_DOG");
 
         AchievementsManager.Instance.AddToSteamStat("CREATURES_KILLED_BY_DOG", 1);
@@ -497,6 +507,8 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void Creature_OnAnyCreatureDied(object sender, Creature.OnCreatureDiedEventArgs e) {
+        if (AchievementsManager.Instance == null) return;
+
         if (e.damageSource != Player.Instance.transform) return;
 
         Creature creature = sender as Creature;
@@ -588,11 +600,13 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void TryUnlockSuccess(string id) {
+       if (AchievementsManager.Instance == null) return;
        if(!AchievementsManager.Instance.IsThisAchievementUnlocked(id)) {
             AchievementsManager.Instance.UnlockAchievement(id);
        }
     }
     private IEnumerator TryUnlockSuccessAfterDelay(string id, float delay) {
+        if (AchievementsManager.Instance == null) yield break;
         yield return new WaitForSeconds(delay);
         if (!AchievementsManager.Instance.IsThisAchievementUnlocked(id)) {
             AchievementsManager.Instance.UnlockAchievement(id);
