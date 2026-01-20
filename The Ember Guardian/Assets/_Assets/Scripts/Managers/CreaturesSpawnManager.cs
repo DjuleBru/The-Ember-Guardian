@@ -384,6 +384,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         if(DebugManager.Instance.GetLogNightWavesData()) {
             Debug.Log("waveNumber " + waveNumber);
+            Debug.Log("currentSpecialWaveType" + currentSpecialWaveType);
             Debug.Log("Total subwaves " + subWaveNumber);
             Debug.Log("WaveDifficulty " + waveDifficulty);
             Debug.Log("minSubwaveDifficulty " + minSubwaveDifficulty);

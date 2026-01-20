@@ -186,7 +186,7 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
     }
 
     void AssignDistanceBlockTypesDynamic(int dist) {
-        Debug.Log("AssignDistanceBlockTypesDynamic " + dist);
+        //Debug.Log("AssignDistanceBlockTypesDynamic " + dist);
         HordeModeBlock left = (leftBlocks.Count >= dist) ? leftBlocks[dist - 1] : null;
         HordeModeBlock right = (rightBlocks.Count >= dist) ? rightBlocks[dist - 1] : null;
 

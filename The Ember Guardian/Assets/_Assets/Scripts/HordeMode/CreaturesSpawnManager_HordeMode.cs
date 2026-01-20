@@ -102,6 +102,9 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
 
     public override void SetWaveParameters(int waveNumber, bool wavesRandomSideProportion, bool subWaveRandomSideProportion) {
         DetermineHordeWaveType();
+        if (crawlerCreature == null) {
+            SetNightCreaturesPool();
+        }
 
         totalNightCreatures = 0;
         bossSpawnsThisNight = false;
@@ -113,10 +116,12 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
         if (hasSpecialWaveTypes && !bossSpawnsThisNight && currentSpecialWaveAmount < maxSpecialWaveAmount) {
             float roll = UnityEngine.Random.Range(0f, 1f);
             if (roll < specialWaveProbability) {
+
                 currentSpecialWaveType = specialWaveTypesInLevel[UnityEngine.Random.Range(0, specialWaveTypesInLevel.Count)];
                 currentSpecialWaveAmount++;
             }
         }
+        currentSpecialWaveType = SpecialWaveType.crawlers;
 
         if (setDifficultyAnimationCurve) {
 
@@ -185,6 +190,7 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
 
         if (DebugManager.Instance.GetLogNightWavesData()) {
             Debug.Log("waveNumber " + waveNumber);
+            Debug.Log("currentSpecialWaveType " + currentSpecialWaveType);
             Debug.Log("Total subwaves " + subWaveNumber);
             Debug.Log("WaveDifficulty " + waveDifficulty);
             Debug.Log("minSubwaveDifficulty " + minSubwaveDifficulty);
@@ -268,7 +274,7 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
         // Sinon : Normal
         currentHordeWaveType = HordeWaveType.Normal;
 
-        //Debug.Log("currentHordeWaveType " + currentHordeWaveType);
+        Debug.Log("currentHordeWaveType " + currentHordeWaveType);
     }
 
     private IEnumerator IncrementIndexesAfterDelay(bool bossWave, bool hitExtreme, bool hitPeaceful) {
