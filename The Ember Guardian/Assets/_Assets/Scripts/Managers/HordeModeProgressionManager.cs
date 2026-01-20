@@ -140,13 +140,15 @@ public class HordeModeProgressionManager : MonoBehaviour
 
     public void EnsureUnlockReached_MainGame(HordeModeUnlockables unlock) {
         if (unlock == HordeModeUnlockables.None) return;
-        //Debug.Log("GetUnlocked " + unlock  + " " + GetUnlocked(unlock));
+        Debug.Log("GetUnlocked " + unlock + " " + GetUnlocked(unlock));
         if (GetUnlocked(unlock)) return;
 
         if (unlockThresholds == null) unlockThresholds = GenerateUnlockThresholds();
 
         int threshold = unlockThresholds[unlock];
         int needed = threshold - totalHordeModeXP;
+
+        if (needed < 0) return;
         AddRunXP(needed);
 
         if(needed > 0) {

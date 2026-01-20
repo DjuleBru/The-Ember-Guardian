@@ -6,6 +6,7 @@ public class PlayerSounds : SoundObject
 {
     [SerializeField] private AudioSource playerAudioSource;
     [SerializeField] private AudioSource playerReloadAudioSource;
+    [SerializeField] private AudioSource playerFootstepsAudioSource;
 
     [SerializeField] private AudioClip[] footStepAudioClips;
     [SerializeField] private AudioClip[] playerDamagedAudioClips;
@@ -177,7 +178,9 @@ public class PlayerSounds : SoundObject
         StartCoroutine(SetExhaustionSFXPlaying(audioclip.length));
     }
     private void PlayerAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
-        playerAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)], sfxVolume * masterVolume);
+        playerFootstepsAudioSource.clip = footStepAudioClips[Random.Range(0, footStepAudioClips.Length)];
+        playerFootstepsAudioSource.volume = sfxVolume * masterVolume;
+        playerFootstepsAudioSource.Play();
     }
 
     private void PlayerAnimator_OnPantTriggered(object sender, System.EventArgs e) {

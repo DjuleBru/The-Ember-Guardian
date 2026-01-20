@@ -272,7 +272,7 @@ public class MobAttack : MonoBehaviour
     }
 
     public virtual void DealDamage() {
-        Debug.Log("DealDamage");
+        //Debug.Log("DealDamage");
         if (attackTargetIDamageable != null) {
             attackTargetIDamageable.TakeDamage(attackDamage, transform, false, attackIgnoresTemporaryInvincibility);
         }

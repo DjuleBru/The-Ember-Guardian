@@ -52,9 +52,12 @@ public class WindManager : MonoBehaviour
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
 
-        RandomizeWindDir();
-        SetWindStrength(LevelManager.Instance.GetLevelSO().initialWindStrength);
-        windStrengthOutside = currentWindStrength;
+        if(!SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+            RandomizeWindDir();
+            SetWindStrength(LevelManager.Instance.GetLevelSO().initialWindStrength);
+            windStrengthOutside = currentWindStrength;
+        }
+
         SetWindPSColor();
 
         debugMode = DebugManager.Instance.GetDebugMode_WindManager();

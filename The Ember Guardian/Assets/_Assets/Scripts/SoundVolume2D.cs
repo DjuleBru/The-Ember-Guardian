@@ -7,6 +7,7 @@ public class SoundVolume2D : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private float maxDistanceToHear = 20f;
     [SerializeField] private float maxAudioSourceVolume = 1f;
+    private float volumeMultiplier = 1f;
 
     [SerializeField] private bool active = true;
     private bool isPlaying = true;
@@ -72,7 +73,7 @@ public class SoundVolume2D : MonoBehaviour
     private void HandleAudioSourceVolumeAndSleep() {
         if (Player.Instance == null) return;
         float distanceToAudioSource = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
-        float volume = (1 - (distanceToAudioSource / maxDistanceToHear)) * maxAudioSourceVolume * sfxVolume * masterVolume;
+        float volume = (1 - (distanceToAudioSource / maxDistanceToHear)) * maxAudioSourceVolume * sfxVolume * masterVolume * volumeMultiplier;
 
         if (volume < 0 && isPlaying) {
             audioSource.Stop();
@@ -87,5 +88,9 @@ public class SoundVolume2D : MonoBehaviour
         }
 
         audioSource.volume = volume * fadeMultiplier;
+    }
+
+    public void SetVolumeMultiplier(float multiplier) {
+        volumeMultiplier = multiplier;
     }
 }

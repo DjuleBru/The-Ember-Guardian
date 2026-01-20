@@ -105,6 +105,7 @@ MonoBehaviour:
   projectileSO: {fileID: 0}
   staticProjectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 1926586374160934664}
+  multipleProjectileSpawnPointList: []
   attackCooldown: 0
   attackAnimationDelay: 0
   totalAttackAnimationTime: 0
@@ -189,6 +190,150 @@ CapsuleCollider2D:
   m_Offset: {x: -0.08200529, y: 0.2908635}
   m_Size: {x: 0.5889699, y: 0.603492}
   m_Direction: 0
+--- !u!1 &56661523626321262
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3857221798768932500}
+  - component: {fileID: 6190975775882562284}
+  - component: {fileID: 3990125756803490069}
+  m_Layer: 15
+  m_Name: FootstepAudioSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3857221798768932500
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56661523626321262}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7954929331775950098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &6190975775882562284
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56661523626321262}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.501
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &3990125756803490069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56661523626321262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8b52ebbea11cad48b0d93c2883134ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxDistanceToHear: 10
+  maxAudioSourceVolume: 1
+  active: 1
 --- !u!1 &655494122029233142
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,6 +1165,7 @@ MonoBehaviour:
   enteredLightFeedbacks: {fileID: 1868321048775084425}
   footStepFeedbacks: {fileID: 0}
   attackHitFeedbacks: {fileID: 0}
+  attackFeedbacks: {fileID: 0}
   creatureAnimatorManager: {fileID: 7431457357262241407}
   creatureAI: {fileID: 6447040630869028713}
   creature: {fileID: 5757064800425388701}
@@ -1117,6 +1263,7 @@ MonoBehaviour:
   mobAttack: {fileID: 6184710609068459157}
   creatureDamageColliderParent: {fileID: 2465198453920117791}
   maxImpactAmountInSingleAnimation: 0
+  blindingAttack: 0
 --- !u!1 &2166404257115817191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1408,6 +1555,8 @@ MonoBehaviour:
   debuffedGameObject: {fileID: 6355303796101193538}
   glowSpriteRenderer: {fileID: 628358577469823449}
   glowSpriteRenderer2: {fileID: 0}
+  glowSpriteRenderer3: {fileID: 0}
+  vfxSprite: {fileID: 0}
   creatureElitePS: {fileID: 2533432998412958594}
   damageEliteOutlineColor: {r: 0.735849, g: 0.03818085, b: 0.03818085, a: 1}
   speedEliteOutlineColor: {r: 0.6579144, g: 0.9339623, b: 0, a: 1}
@@ -6537,6 +6686,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2847206202282216212}
+  - {fileID: 3857221798768932500}
   - {fileID: 2687340004489637311}
   m_Father: {fileID: 6409776439602011119}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6552,9 +6702,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce7ec275ea019e349931593740d2ac34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   creatureContinousAudioSource: {fileID: 6961134185101660663}
   canHearCreatureOutsideScreen: 0
   creatureIdleAudioSource: {fileID: 67990355953189852}
+  creatureFootStepsAudioSource: {fileID: 6190975775882562284}
   creature: {fileID: 5757064800425388701}
   creatureAI: {fileID: 6447040630869028713}
   creatureAttack: {fileID: 6184710609068459157}

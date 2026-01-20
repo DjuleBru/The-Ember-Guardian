@@ -71,6 +71,11 @@ public class HordeModeBlock : MonoBehaviour
         if (dir < 0) {
             Vector3 scale = new Vector3(-1, 1, 1);
             gridAndObstacleParent.transform.localScale = scale;
+
+            resourceChest.transform.localScale = scale;
+            weaponChest.transform.localScale = scale;
+            trapChest.transform.localScale = scale;
+            fastTravelTPLocation.transform.localScale = scale;
         }
 
         SetSpawnersToCenterPosition();

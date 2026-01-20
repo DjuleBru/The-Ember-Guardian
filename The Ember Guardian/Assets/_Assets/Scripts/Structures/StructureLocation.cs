@@ -51,6 +51,7 @@ public class StructureLocation : MonoBehaviour {
 
     protected virtual void Start() {
         LoadStructureLocationBought();
+
         GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractStarted;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;

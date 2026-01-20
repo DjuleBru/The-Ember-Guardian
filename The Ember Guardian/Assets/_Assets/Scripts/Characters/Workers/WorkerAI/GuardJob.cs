@@ -198,7 +198,7 @@ public class GuardJob : WorkerJob {
         ChangeState(GuardState.headingToGuard);
     }
     private void HeadToEscort() {
-        mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
+        mobMovement.SetMoveSpeed(headToEscortMoveSpeed);
         Vector3 destination = escortTransform.position;
         if (Mathf.Abs(destination.x - transform.position.x) > .5f) {
             mobMovement.SetMoveTarget(destination);

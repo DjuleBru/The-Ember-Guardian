@@ -142,6 +142,7 @@ public class RainManager : MonoBehaviour
             SetRainLevel(currentRainIntensity);
         }
     }
+
     private void RainFollowCamera()
     {
         cameraTransform = Camera.main.transform;

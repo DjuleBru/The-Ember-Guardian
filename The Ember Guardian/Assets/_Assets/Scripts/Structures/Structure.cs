@@ -92,7 +92,7 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
-
+        //Debug.Log("PayOrbsUI_OnOrbPaymentSuccess " + currentStructureInteractionType);
         if (currentStructureInteractionType == StructureInteractionType.primaryFunction) {
             TriggerStructurePrimaryFunction();
         }
@@ -121,7 +121,7 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void UpgradeStructure() {
-        //Debug.Log("Upgrade");
+        Debug.Log("Upgrade");
         structureLevel++;
         RefreshStructureUpgradeInteraction();
 
@@ -538,6 +538,15 @@ public class Structure : MonoBehaviour {
         RefreshPlayerCanInteract();
     }
 
+    protected void ActivateStructurePrimaryFunctionInteractionAfterFrame(bool active) {
+        StartCoroutine(ActivateStructurePrimaryFunctionInteractionAfterFrameCoroutine(active));
+    }
+
+    protected IEnumerator ActivateStructurePrimaryFunctionInteractionAfterFrameCoroutine(bool active) {
+        yield return new WaitForEndOfFrame();
+        ActivateStructurePrimaryFunctionInteraction(active);
+    }
+
     protected virtual void RefreshPlayerCanInteract() {
         if (activeStructureInteractionsTypeList.Count == 0) {
             playerCanInteract = false;
@@ -562,7 +571,6 @@ public class Structure : MonoBehaviour {
             OnForceUpdateInteractionTypeUI?.Invoke(this, EventArgs.Empty);
         }
     }
-
 
     public GameObject GetVisualIndicator() {
         return visualIndicator;

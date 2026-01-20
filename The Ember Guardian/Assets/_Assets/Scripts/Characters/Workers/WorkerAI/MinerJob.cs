@@ -227,7 +227,7 @@ public class MinerJob : WorkerJob {
 
     public void StayOutOfCreatureRange() {
 
-        mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
+        mobMovement.SetMoveSpeed(fleeMoveSpeed);
 
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
 
@@ -390,10 +390,20 @@ public class MinerJob : WorkerJob {
             UnAssignScavengable();
             mobMovement.SetMoveSpeed(roamMoveSpeed);
         }
+
         if (state == MinerState.headingToMine) {
             workerAttack.RemoveAttackTarget();
-            mobMovement.SetMoveSpeed(headToMineMoveSpeed);
+
+            if(assignedScavengable is ScavengableObstacle) {
+                Debug.Log("CAAAC");
+                Debug.Log("mobMovement " + mobMovement);
+                mobMovement.SetMoveSpeed(headToEscortMoveSpeed);
+                Debug.Log("CAAAC2");
+            } else {
+                mobMovement.SetMoveSpeed(headToMineMoveSpeed);
+            }
         }
+
         if (state == MinerState.pickingUpOrbs) {
             if(assignedScavengable != null) {
                 assignedScavengable.MinerStopsMining(this);

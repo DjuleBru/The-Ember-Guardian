@@ -10,6 +10,7 @@ public class CreatureSound : SoundObject
 
     [SerializeField] protected bool canHearCreatureOutsideScreen;
     [SerializeField] protected AudioSource creatureIdleAudioSource;
+    [SerializeField] protected AudioSource creatureFootStepsAudioSource;
 
     [SerializeField] protected Creature creature;
     [SerializeField] protected CreatureAI creatureAI;
@@ -48,7 +49,9 @@ public class CreatureSound : SoundObject
 
         creatureSO = creature.GetCreatureSO();
 
-        if(creatureAttack.GetCurrentCreatureAttackSO() != null) {
+        creatureFootStepsAudioSource.GetComponent<SoundVolume2D>().SetVolumeMultiplier(creatureSO.footstepVolumeMultiplier);
+
+        if (creatureAttack.GetCurrentCreatureAttackSO() != null) {
             attackSFXDelayAfterAnimationStart = creatureAttack.GetCurrentCreatureAttackSO().attackSFXDelayAfterAnimationStart;
         }
 
@@ -73,6 +76,7 @@ public class CreatureSound : SoundObject
             AudioClip audioClip = creatureSO.spawnAudioClips[Random.Range(0, creatureSO.spawnAudioClips.Length)];
             creatureAudioSource.PlayOneShot(audioClip, creatureSO.spawnVolumeMultiplier * sfxVolume);
         }
+
     }
 
     private void Creature_OnCreatureEnabled(object sender, System.EventArgs e) {
@@ -139,7 +143,10 @@ public class CreatureSound : SoundObject
 
     protected void CreatureAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
         if (IsTooFarFromPlayer()) return;
-        creatureAudioSource.PlayOneShot(creatureSO.footStepAudioClips[Random.Range(0, creatureSO.footStepAudioClips.Length)], creatureSO.footstepVolumeMultiplier * sfxVolume);
+        if (creatureFootStepsAudioSource.isPlaying) return;
+
+        creatureFootStepsAudioSource.clip = creatureSO.footStepAudioClips[Random.Range(0, creatureSO.footStepAudioClips.Length)];
+        creatureFootStepsAudioSource.Play();
     }
 
     protected void Creature_OnCreatureEnteredLight(object sender, System.EventArgs e) {

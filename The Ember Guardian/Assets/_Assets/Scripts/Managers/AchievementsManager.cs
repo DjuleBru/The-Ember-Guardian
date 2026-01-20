@@ -6,7 +6,7 @@ public class AchievementsManager : MonoBehaviour {
     public static AchievementsManager Instance;
     private bool playerConnected;
 
-    private void Awake() {
+    private void Start() {
         // Singleton strict
         if (Instance != null) {
             Destroy(gameObject);
@@ -23,7 +23,6 @@ public class AchievementsManager : MonoBehaviour {
         }
         catch (System.Exception e) {
             playerConnected = false;
-            Debug.LogError(e);
         }
     }
 

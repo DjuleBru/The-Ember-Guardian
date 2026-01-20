@@ -936,7 +936,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void SetAudioVolume(float volume) {
-        Debug.Log("SetAudioVolume : " + volume);
+        //Debug.Log("SetAudioVolume : " + volume);
 
         if (isLevelScene && isPlayingLevelDiscoveryMusic) {
             volume *= discoverNewLocationAudioVolume;
@@ -957,7 +957,7 @@ public class MusicManager : MonoBehaviour {
         volume *= musicSettingVolume;
         volume *= masterSettingVolume;
 
-        Debug.Log("Audio volume set : " + volume + " isPlayingNightIntroMusic " + isPlayingNightIntroMusic + " isPlayingNightMusic " + isPlayingNightMusic);
+        //Debug.Log("Audio volume set : " + volume + " isPlayingNightIntroMusic " + isPlayingNightIntroMusic + " isPlayingNightMusic " + isPlayingNightMusic);
 
         audioSourceA.volume = volume;
         audioSourceB.volume = volume;

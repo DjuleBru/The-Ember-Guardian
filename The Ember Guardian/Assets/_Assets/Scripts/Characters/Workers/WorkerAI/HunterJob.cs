@@ -133,7 +133,7 @@ public class HunterJob : WorkerJob {
             switch (state) {
 
                 case HunterState.headingToEscort:
-                    mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
+                    mobMovement.SetMoveSpeed(headToEscortMoveSpeed);
 
                     if (worker.GetDefensiveStructureAssigned() != null) {
                         assignedTower = worker.GetDefensiveStructureAssigned() as Tower;
@@ -512,7 +512,7 @@ public class HunterJob : WorkerJob {
     }
 
     private void HeadToEscort() {
-        mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
+        mobMovement.SetMoveSpeed(headToEscortMoveSpeed);
         if (Mathf.Abs(escortDestination.x - transform.position.x) > .5f) {
             mobMovement.SetMoveTarget(escortDestination);
         } else {
@@ -521,7 +521,7 @@ public class HunterJob : WorkerJob {
     }
 
     public void StayOutOfCreatureRange() {
-        mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
+        mobMovement.SetMoveSpeed(fleeMoveSpeed);
 
         Creature closestCreature = workerDetectionCollider.GetClosestCreature();
 
@@ -804,7 +804,7 @@ public class HunterJob : WorkerJob {
     public void HeadToAssignedTower() {
 
         if (!hasSetSpeed) {
-            mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
+            mobMovement.SetMoveSpeed(fleeMoveSpeed);
             hasSetSpeed = true;
         }
 

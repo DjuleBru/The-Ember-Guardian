@@ -9,6 +9,7 @@ public class WorkerSound : SoundObject
     [SerializeField] private AudioClip[] guardSpearHitAudioClips;
     [SerializeField] private AudioClip[] pickaxeHitAudioClips;
     [SerializeField] private AudioClip[] turnWrenchAudioClips;
+    [SerializeField] private AudioSource footStepAudioSource;
     [SerializeField] private float footstepVolumeMultiplier;
     [SerializeField] private float spearHitVolumeMultiplier;
     [SerializeField] private float pickaxeHitVolumeMultiplier;
@@ -30,18 +31,25 @@ public class WorkerSound : SoundObject
         workerAttack.OnMobAttackHit += WorkerAttack_OnMobAttackHit;
         workerAnimator.OnFootstepTriggered += WorkerAnimator_OnFootstepTriggered;
         engineerJob.OnEngineerTurnsWrench += EngineerJob_OnEngineerTurnsWrench;
+
+        footStepAudioSource.GetComponent<SoundVolume2D>().SetVolumeMultiplier(footstepVolumeMultiplier);
     }
 
     private void EngineerJob_OnEngineerTurnsWrench(object sender, System.EventArgs e) {
-        audioSource.PlayOneShot(turnWrenchAudioClips[Random.Range(0, turnWrenchAudioClips.Length)], sfxVolume * turnWrenchVolumeMultiplier);
+        PlaySound2D(turnWrenchAudioClips[Random.Range(0, turnWrenchAudioClips.Length)], sfxVolume * turnWrenchVolumeMultiplier);
     }
 
     private void WorkerAnimator_OnFootstepTriggered(object sender, System.EventArgs e) {
-        if(workerAI.GetJob() == WorkerAI.JobTypes.guard) {
-            audioSource.PlayOneShot(guardFootstepAudioClips[Random.Range(0, guardFootstepAudioClips.Length)], sfxVolume* footstepVolumeMultiplier);
-        } else {
-            audioSource.PlayOneShot(workerFootstepAudioClips[Random.Range(0, workerFootstepAudioClips.Length)], sfxVolume* footstepVolumeMultiplier);
+        if (!footStepAudioSource.enabled) return;
+        if (footStepAudioSource.isPlaying) return;
+
+        if (workerAI.GetJob() == WorkerAI.JobTypes.guard) {
+            footStepAudioSource.clip = guardFootstepAudioClips[Random.Range(0, guardFootstepAudioClips.Length)];
         }
+        else {
+            footStepAudioSource.clip = workerFootstepAudioClips[Random.Range(0, workerFootstepAudioClips.Length)];
+        }
+        footStepAudioSource.Play();
     }
 
     private void WorkerAttack_OnMobAttackHit(object sender, System.EventArgs e) {

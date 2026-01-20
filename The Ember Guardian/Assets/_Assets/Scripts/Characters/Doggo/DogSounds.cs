@@ -8,6 +8,9 @@ public class DogSounds : SoundObject
     [SerializeField] private AudioSource dogAudioSource;
     [SerializeField] private AudioSource dogOtherSFXAudioSource;
     [SerializeField] private AudioSource dogRollingAudioSource;
+    [SerializeField] private AudioSource dogBreatheAudioSource;
+    [SerializeField] private AudioSource dogFootstepsAudioSource;
+    [SerializeField] private AudioSource dogPantAudioSource;
     [SerializeField] private AudioClip[] footStepAudioClips;
     [SerializeField] private AudioClip[] breatheAudioClips;
     [SerializeField] private AudioClip[] sniffAudioClips;
@@ -50,6 +53,10 @@ public class DogSounds : SoundObject
 
     protected override void Start() {
         base.Start();
+
+        dogFootstepsAudioSource.GetComponent<SoundVolume2D>().SetVolumeMultiplier(.5f);
+        dogBreatheAudioSource.GetComponent<SoundVolume2D>().SetVolumeMultiplier(.8f);
+        dogPantAudioSource.GetComponent<SoundVolume2D>().SetVolumeMultiplier(.2f);
 
         dogVolume = SettingsManager.Instance.GetDogVolume();
         SettingsManager.Instance.OnDogVolumeChanged += SettingsManager_OnDogVolumeChanged;
@@ -258,17 +265,24 @@ public class DogSounds : SoundObject
     }
 
     private void DogAnimator_OnDogBreathe(object sender, System.EventArgs e) {
-        AudioClip audioClip = breatheAudioClips[Random.Range(0, breatheAudioClips.Length)];
-        dogAudioSource.PlayOneShot(audioClip, masterVolume * dogVolume * .8f);
+        if (dogBreatheAudioSource.isPlaying) return;
+
+        dogBreatheAudioSource.clip = breatheAudioClips[Random.Range(0, breatheAudioClips.Length)];
+        dogBreatheAudioSource.Play();
     }
 
     private void PlayerAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
-        dogAudioSource.PlayOneShot(footStepAudioClips[Random.Range(0, footStepAudioClips.Length)], masterVolume * dogVolume * .5f);
+        if (dogFootstepsAudioSource.isPlaying) return;
+
+        dogFootstepsAudioSource.clip = footStepAudioClips[Random.Range(0, footStepAudioClips.Length)];
+        dogFootstepsAudioSource.Play();
     }
 
     private void DogAnimator_OnDogPant(object sender, System.EventArgs e) {
-        dogAudioSource.PlayOneShot(pantAudioClips[Random.Range(0, pantAudioClips.Length)], masterVolume * dogVolume * .2f);
-        dogAudioSource.PlayOneShot(pantAudioClips[Random.Range(0, pantAudioClips.Length)], masterVolume * dogVolume * .2f);
+        if (dogPantAudioSource.isPlaying) return;
+
+        dogPantAudioSource.clip = pantAudioClips[Random.Range(0, pantAudioClips.Length)];
+        dogPantAudioSource.Play();
 
     }
 

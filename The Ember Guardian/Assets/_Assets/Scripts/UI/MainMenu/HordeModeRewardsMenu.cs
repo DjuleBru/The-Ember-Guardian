@@ -347,7 +347,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
             float value = Mathf.Lerp(startValue, endValue, t);
 
             mat.SetFloat("_ShineLocation", value);
-            Debug.Log(value);
+            //Debug.Log(value);
             yield return null;
         }
 

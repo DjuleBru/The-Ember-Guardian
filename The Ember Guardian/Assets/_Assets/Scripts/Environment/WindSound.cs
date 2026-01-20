@@ -30,20 +30,10 @@ public class WindSound : SoundObject
             StartCoroutine(ChangeVolumeGradually(sfxVolume * audioSourceVolume));
         }
         else {
+
             StartCoroutine(ChangeVolumeGradually(0f, stopAfter: true));
+
         }
-    }
-
-    private IEnumerator ChangeWindAudio(AudioClip newClip) {
-        // Réduction progressive du volume avant de changer le clip
-        yield return StartCoroutine(ChangeVolumeGradually(0f));
-
-        // Changer le clip et le jouer
-        audioSource2D.clip = newClip;
-        audioSource2D.Play();
-
-        // Remonter progressivement le volume
-        yield return StartCoroutine(ChangeVolumeGradually(sfxVolume * audioSourceVolume));
     }
 
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {

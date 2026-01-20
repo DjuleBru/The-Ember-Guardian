@@ -119,7 +119,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void ShowObjectiveAfterDelay(ObjectiveType objectiveType, float delay) {
-        //Debug.Log("ShowObjectiveAfterDelay " + objectiveType);
+        Debug.Log("ShowObjectiveAfterDelay " + objectiveType);
         StartCoroutine(ShowObjectiveAfterDelayCoroutine(objectiveType, delay));
     }
 
@@ -138,7 +138,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void ShowObjectiveUI(ObjectiveType objectiveType) {
-        //Debug.Log("ShowObjectiveUI " + objectiveType);
+        Debug.Log("ShowObjectiveUI " + objectiveType);
         objectiveText.text = GetObjectiveTextFromType(objectiveType);
         GetComponent<Animator>().enabled = true;
         objectiveGameObject.SetActive(true);
@@ -148,7 +148,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
     }
 
     public void SetNewObjectiveUI(ObjectiveType objectiveType) {
-        //Debug.Log("SetNewObjectiveUI " + objectiveType);
+        Debug.Log("SetNewObjectiveUI " + objectiveType);
 
         objectiveText.text = GetObjectiveTextFromType(objectiveType);
         objectiveGameObject.SetActive(true);
@@ -301,7 +301,7 @@ public class LevelUI_ObjectiveUI : MonoBehaviour
 
         if (subObjectiveType == SubObjectiveType.SurviveNights) {
             if(LevelManager.Instance.IsHordeMode()) {
-                return LocalizationManager.Instance.GetLocalizedText("SubObj_Survive") + " " +  LocalizationManager.Instance.GetLocalizedText("SubObj_Nights") + " " + "(" + LevelObjectives.Instance.GetNightsSurvived() + ")";
+                return LocalizationManager.Instance.GetLocalizedText("SubObj_NightsSurvived") + " : " + LevelObjectives.Instance.GetNightsSurvived();
             }
             return LocalizationManager.Instance.GetLocalizedText("SubObj_Survive") + " " + LevelObjectives.Instance.GetNightsToSurvive() + " " + LocalizationManager.Instance.GetLocalizedText("SubObj_Nights") + " " + "(" + LevelObjectives.Instance.GetNightsSurvived() + "/" + LevelObjectives.Instance.GetNightsToSurvive() + ")";
         }

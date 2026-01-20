@@ -108,7 +108,10 @@ public class FireSound : StructureSounds
         if (fire.GetState() == Fire.State.extinguished) {
             audioSource.Pause();
         } else {
-            audioSource.Play();
+            if(audioSource.enabled) {
+                audioSource.Play();
+            }
+
         }
     }
 }

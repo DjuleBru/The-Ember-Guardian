@@ -31,7 +31,8 @@ public class WorkerJob : MonoBehaviour
 
     protected float headToCampMoveSpeed = 2.5f;
     protected float roamMoveSpeed = 1.5f;
-    protected float fleeOrHeadToEscortMoveSpeed = 3.5f;
+    protected float headToEscortMoveSpeed = 4.5f;
+    protected float fleeMoveSpeed = 3.5f;
     protected float escortMoveSpeed = 2f;
     protected float roamTimer;
     protected float roamChangeDestinationRate = 6f;
@@ -49,7 +50,7 @@ public class WorkerJob : MonoBehaviour
     protected virtual void Start() {
         headToCampMoveSpeed = WorkerStats.Instance.GetHeadToCampMoveSpeed();
         roamMoveSpeed = WorkerStats.Instance.GetRoamMoveSpeed();
-        fleeOrHeadToEscortMoveSpeed = WorkerStats.Instance.GetFleeMoveSpeed();
+        fleeMoveSpeed = WorkerStats.Instance.GetFleeMoveSpeed();
     }
 
     protected virtual void TargetCreature(Creature newTargetCreature) {
@@ -137,7 +138,7 @@ public class WorkerJob : MonoBehaviour
 
     public virtual void StayAwayFromCreature(Creature closestCreature) {
 
-        mobMovement.SetMoveSpeed(fleeOrHeadToEscortMoveSpeed);
+        mobMovement.SetMoveSpeed(headToEscortMoveSpeed);
         if (closestCreature != null) {
 
             float direction = closestCreature.transform.position.x - transform.position.x;

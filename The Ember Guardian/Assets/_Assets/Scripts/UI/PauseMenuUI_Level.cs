@@ -31,6 +31,10 @@ public class PauseMenuUI_Level : PauseMenuUI {
 
         backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_backToHub");
         backToHubText.font = LocalizationManager.Instance.GetCurrentFont();
+
+        if(LevelManager.Instance.IsHordeMode()) {
+            backToHubButton.gameObject.SetActive(false);
+        }
     }
 
     private void ButtonConfirm_RestartLevel_OnButtonDeHovered(object sender, EventArgs e) {

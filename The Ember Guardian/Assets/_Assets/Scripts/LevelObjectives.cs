@@ -16,6 +16,7 @@ public class LevelObjectives : MonoBehaviour
     private bool initialFireLit;
     private bool darklingNestFound;
     private bool darklingNestCleared;
+    private bool darklingNestFlameLit;
     private bool leftDarklingNestFound;
     private bool leftDarklingNestDestroyed; 
     private bool rightDarklingNestFound;
@@ -320,22 +321,35 @@ public class LevelObjectives : MonoBehaviour
 
         if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.GunMerchant) {
 
+            if (!darklingNestFlameLit) {
 
-            if (NPCInteractionsIndex == 1) {
-
-                LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(.5f);
-
-                yield return new WaitForSeconds(2f);
                 LevelUI_ObjectiveUI.Instance.SetNewObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.DestroyNest);
-
                 List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>();
                 if (!PlayerCurrencies.Instance.GetCarryingEmber()) {
                     subObjectives.Add(LevelUI_ObjectiveUI.SubObjectiveType.ExtractEmber);
                 }
+                LevelUI_ObjectiveUI.Instance.SetObjectiveCompleted(.5f);
 
-                subObjectives.Add(LevelUI_ObjectiveUI.SubObjectiveType.ClearNest);
+                if (!darklingNestCleared) {
+
+                    subObjectives.Add(LevelUI_ObjectiveUI.SubObjectiveType.ClearNest);
+
+                } else {
+
+                    subObjectives.Add(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
+
+                }
+
+                yield return new WaitForSeconds(2f);
 
                 LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
+
+            }
+            
+            else {
+
+                ShowReturnToHubObj(0f);
+                LevelManager.Instance.LevelSuccess(4f);
             }
         }
 
@@ -420,8 +434,9 @@ public class LevelObjectives : MonoBehaviour
     }
 
     private void EndLevelArea_OnEndLevelFireLit(object sender, System.EventArgs e) {
+        darklingNestFlameLit = true;
 
-        if(LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
+        if (LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) {
             StartCoroutine(StartFinalMerchantDialog());
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
             return;

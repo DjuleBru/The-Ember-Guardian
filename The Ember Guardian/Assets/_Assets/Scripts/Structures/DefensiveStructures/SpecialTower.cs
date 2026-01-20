@@ -61,7 +61,7 @@ public class SpecialTower : Structure {
 
         if (currentAmmoClip == maxAmmoClipsInStorage) {
             needsRefill = false;
-            ActivateStructurePrimaryFunctionInteraction(false);
+            ActivateStructurePrimaryFunctionInteractionAfterFrame(false);
 
             return;
         }

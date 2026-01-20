@@ -71,14 +71,10 @@ public class PlayerCamp : MonoBehaviour
             barricades1BuiltAtStart = StructureStats.Instance.GetStartWithBarricades();
         }
 
-        Debug.Log("ammoCrafterBuiltAtStart " + ammoCrafterBuiltAtStart);
-        Debug.Log("researchTowerBuiltAtStart " + researchTowerBuiltAtStart);
-        Debug.Log("barricades1BuiltAtStart " + barricades1BuiltAtStart);
-        Debug.Log("SavingManager_Level.Instance.GetLoadingSavedLevel() " + SavingManager_Level.Instance.GetLoadingSavedLevel());
-
         if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
 
             initialFireStructureLocation.gameObject.SetActive(false);
+            InitializeCampLayoutOnGameLoad();
 
         } else {
 
@@ -132,6 +128,17 @@ public class PlayerCamp : MonoBehaviour
                 AddCustomCampStructureLocationsList(structureSO, structureLocation);
             }
 
+        }
+    }
+
+    private void InitializeCampLayoutOnGameLoad() {
+
+        trapLocations.Clear();
+        towerLocations.Clear();
+
+        foreach (StructureLocation location in initialStructureLocationsParent.GetComponentsInChildren<StructureLocation>()) {
+
+            location.gameObject.SetActive(false);
         }
     }
 
@@ -461,7 +468,9 @@ public class PlayerCamp : MonoBehaviour
         foreach (Structure structure in currencyStorages) {
 
             CurrencyStorage storage = structure as CurrencyStorage;
-            if(storage.GetCurrencyTypeStored() != currencyType) continue;
+
+            if (storage is CurrencyStorage_Objective) continue;
+            if (storage.GetCurrencyTypeStored() != currencyType) continue;
             if(storage.GetEngineerCanPickUpOrbs()) continue;
 
             float distanceToStructure = Mathf.Abs(engineerPosition.x - structure.transform.position.x);
@@ -473,6 +482,7 @@ public class PlayerCamp : MonoBehaviour
 
         return closestAvailableCurrencyStorage;
     }
+
     public void AddCurrencyStorage(CurrencyStorage storage) {
         currencyStorages.Add(storage);
     }

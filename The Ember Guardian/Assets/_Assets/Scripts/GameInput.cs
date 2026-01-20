@@ -130,7 +130,7 @@ public class GameInput : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
         playerInputActions = new PlayerInputActions();
         settingsSaveFileSettings = new ES3Settings("Settings.es3");
 

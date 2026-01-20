@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AnimalSounds : SoundObject
 {
     [SerializeField] private Animal animal;
     [SerializeField] private AnimalAnimatorManager animatorManager;
+    [SerializeField] private AudioSource footstepAudioSource;
     [SerializeField] private float footstepSFXVolume;
     [SerializeField] private float idleSFXVolume;
     [SerializeField] private float damagedSFXVolume;
@@ -15,6 +17,8 @@ public class AnimalSounds : SoundObject
         animal.OnMobDamageTaken += Animal_OnMobDamageTaken;
         animatorManager.OnFootstepTriggered += AnimatorManager_OnFootstepTriggered;
         animatorManager.OnIdleSoundTriggered += AnimatorManager_OnIdleSoundTriggered;
+
+        footstepAudioSource.GetComponent<SoundVolume2D>().SetVolumeMultiplier(footstepSFXVolume);
     }
 
     private void AnimatorManager_OnIdleSoundTriggered(object sender, System.EventArgs e) {
@@ -26,6 +30,10 @@ public class AnimalSounds : SoundObject
     }
 
     private void AnimatorManager_OnFootstepTriggered(object sender, System.EventArgs e) {
-        PlaySound2D(animal.GetAnimalSO().footstepAudioClips, footstepSFXVolume * sfxVolume);
+        if (!footstepAudioSource.enabled) return;
+        if (footstepAudioSource.isPlaying) return;
+
+        footstepAudioSource.clip = animal.GetAnimalSO().footstepAudioClips[UnityEngine.Random.Range(0, animal.GetAnimalSO().footstepAudioClips.Length)];
+        footstepAudioSource.Play();
     }
 }
