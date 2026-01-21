@@ -1177,6 +1177,7 @@ MonoBehaviour:
   creatureContinousAudioSource: {fileID: 4766088066437605691}
   canHearCreatureOutsideScreen: 1
   creatureIdleAudioSource: {fileID: 2472456054417652496}
+  creatureFootStepsAudioSource: {fileID: 8598676647461958176}
   creature: {fileID: 7879982819402797649}
   creatureAI: {fileID: 2513964925426630948}
   creatureAttack: {fileID: 8604937390394473561}
@@ -1186,6 +1187,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c7cff591dcc14a94fa5613ca0e4015c7, type: 3}
   - {fileID: 8300000, guid: fb9173e716fec7d4aaa0d43a401e67ab, type: 3}
   wakeAudioClip: {fileID: 8300000, guid: f4f74ef3dff52664fb0245c79f07c0b0, type: 3}
+--- !u!82 &8598676647461958176 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6190975775882562284, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 2503545580168280268}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8604937390394473561 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6184710609068459157, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}

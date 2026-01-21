@@ -55,6 +55,7 @@ public class SettingsManager : MonoBehaviour
     private UIDisplayType currentUIDisplayType;
 
     private LocalizationManager.Language currentLanguage = LocalizationManager.Language.English;
+    private Resolution resolution;
     private bool holdToRun;
     private bool aimAssist;
     private bool autoAlignAimWithMovement;
@@ -104,7 +105,15 @@ public class SettingsManager : MonoBehaviour
         showDamageNumbers = ES3.Load("showDamageNumbers", true, settingsSaveFileSettings);
         waterPerspective = ES3.Load("waterPerspective", true, settingsSaveFileSettings);
 
+        Resolution defaultRes = Screen.currentResolution;
+        resolution = ES3.Load("resolution", resolution, settingsSaveFileSettings);
+        // sécurité : résolution invalide
+        if (resolution.width <= 0 || resolution.height <= 0) {
+            resolution = defaultRes;
+        }
+
         ApplyScreenMode(currentScreenMode);
+        SetResolution(resolution);
 
         if (settingsVersion < 0.9) {
             // Mise à jour vers la version 0.9 : autoReload passe à true
@@ -297,6 +306,17 @@ public class SettingsManager : MonoBehaviour
 
         ES3.Save("steamerMode", streamerMode, settingsSaveFileSettings);
     }
+
+    public void SetResolution(Resolution res) {
+        resolution = res;
+        ApplyResolution(res);
+        ES3.Save("resolution", resolution, settingsSaveFileSettings);
+    }
+
+    private void ApplyResolution(Resolution res) {
+        Screen.SetResolution(res.width,res.height,Screen.fullScreenMode,res.refreshRateRatio);
+    }
+
     public void ChangeShowDamageNumbers() {
         showDamageNumbers = !showDamageNumbers;
         OnShowDamageNumbersChanged?.Invoke(this, EventArgs.Empty);

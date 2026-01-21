@@ -175,11 +175,13 @@ public class HordeModeBlock : MonoBehaviour
 
             animalAmountToSpawn = Mathf.RoundToInt(animalAmountToSpawn * GetSizeRewardMultiplier());
 
-            animalSpawner.SetSpawnerParameters(AnimalManager.Instance.GetAnimalPrefab(randomAnimal), animalAmountToSpawn, radiusToRoamAround);
+            animalSpawner.SetSpawnerParameters_HordeMode(AnimalManager.Instance.GetAnimalPrefab(randomAnimal), animalAmountToSpawn, radiusToRoamAround);
 
         } else {
+
             int animalAmountToSpawn = saveData.animalSpawnerData.currentMobsAlive;
-            animalSpawner.SetSpawnerParameters(saveData.animalSpawnerData.mobPrefab, animalAmountToSpawn, radiusToRoamAround);
+            animalSpawner.SetSpawnerParameters_HordeMode(saveData.animalSpawnerData.mobPrefab, animalAmountToSpawn, radiusToRoamAround, saveData.animalSpawnerData.daysSinceSpawnerActive);
+
         }
 
     }
@@ -475,6 +477,7 @@ public class HordeModeBlock : MonoBehaviour
                 mobPrefab = animalSpawner.GetMobPrefab(),
                 currentMobsAlive = animalSpawner.GetMobCount(),
                 mobsCanSpawnAtDawn = animalSpawner.GetMobsCanSpawnAtDawn(),
+                daysSinceSpawnerActive = animalSpawner.GetDaysSinceSpawnerActive(),
             },
 
 

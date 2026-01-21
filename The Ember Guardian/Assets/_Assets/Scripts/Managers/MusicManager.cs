@@ -30,6 +30,8 @@ public class MusicManager : MonoBehaviour {
     [SerializeField] private AudioClip hubMusic;
     [SerializeField] private AudioClip hubMusicStreamerMode;
 
+    [SerializeField] private AudioClip hordeModeMusic;
+
     [SerializeField] private AudioClip creditsMusic;
 
     [SerializeField] private AudioClip nightMusicIntro;
@@ -200,6 +202,13 @@ public class MusicManager : MonoBehaviour {
             SetHubMusic();
         }
 
+    }
+
+    public void FadeInToMainMenuMusic() {
+        StartCoroutine(FadeOutThenInCoroutine(1f, 1f, mainMenuMusic));
+    }
+    public void FadeInToHordeModeMusic() {
+        StartCoroutine(FadeOutThenInCoroutine(1f, 1f, hordeModeMusic));
     }
 
     public void SetHubMusic() {

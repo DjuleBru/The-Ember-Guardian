@@ -290,6 +290,7 @@ public class SavingManager_Level : MonoBehaviour
             data.currentMobsAlive = spawner.GetMobCount(); // tu ajoutes une méthode pour retourner mobSpawnedList.Count
             data.mobsCanSpawnAtDawn = spawner.GetMobsCanSpawnAtDawn();
             data.ambushSpawned = spawner.GetAmbushSpawned();
+            data.daysSinceSpawnerActive = spawner.GetDaysSinceSpawnerActive();
 
             if (spawner is CreatureSpawnerContinuous continuousSpawner) {
                 data.dead = continuousSpawner.GetDead();

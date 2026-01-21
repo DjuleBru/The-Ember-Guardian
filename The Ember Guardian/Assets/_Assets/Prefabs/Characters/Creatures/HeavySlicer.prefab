@@ -1294,6 +1294,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc51d5d6719406a4cb0882115274ef49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!82 &1168742045788465327 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6190975775882562284, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 5031355418187637315}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1588285680508702298 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6041665148349852697, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
@@ -1311,9 +1316,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62bb441cc3cb27418c1b9b017ab06e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   creatureContinousAudioSource: {fileID: 2686429822013387700}
   canHearCreatureOutsideScreen: 0
   creatureIdleAudioSource: {fileID: 4981961703696736671}
+  creatureFootStepsAudioSource: {fileID: 1168742045788465327}
   creature: {fileID: 736273631340726494}
   creatureAI: {fileID: 8006041699414327635}
   creatureAttack: {fileID: 1154740782353229526}
@@ -1434,6 +1442,7 @@ MonoBehaviour:
   enteredLightFeedbacks: {fileID: 6647149223325232074}
   footStepFeedbacks: {fileID: 0}
   attackHitFeedbacks: {fileID: 0}
+  attackFeedbacks: {fileID: 0}
   creatureAnimatorManager: {fileID: 6432388729153140042}
   creatureAI: {fileID: 8006041699414327635}
   creature: {fileID: 736273631340726494}

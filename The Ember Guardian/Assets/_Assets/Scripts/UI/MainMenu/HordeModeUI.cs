@@ -348,6 +348,7 @@ public class HordeModeUI : MonoBehaviour
     #region OpenClosePanel
 
     public void OpenHordeModePanel(bool changeCameraTarget = true) {
+        MusicManager.Instance.FadeInToHordeModeMusic();
         StartCoroutine(OpenHordeModePanelCoroutine(changeCameraTarget));
     }
 
@@ -399,6 +400,7 @@ public class HordeModeUI : MonoBehaviour
     private IEnumerator CloseHordeModePanelCoroutine() {
         CameraManager.Instance.ResetCameraTarget();
         CameraManager.Instance.ZoomOut(true);
+        MusicManager.Instance.FadeInToMainMenuMusic();
         panelAnimator.SetTrigger("Hide");
 
         customizeCampButtonWorlUI.gameObject.SetActive(false);

@@ -203,7 +203,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
 
         animalAmountToSpawn = Mathf.RoundToInt(animalAmountToSpawn * GetSizeRewardMultiplier());
 
-        spawner.SetSpawnerParameters(AnimalManager.Instance.GetAnimalPrefab(randomAnimal), animalAmountToSpawn, radiusToRoamAround);
+        spawner.SetSpawnerParameters_HordeMode(AnimalManager.Instance.GetAnimalPrefab(randomAnimal), animalAmountToSpawn, radiusToRoamAround);
     }
 
     public override void GenerateCreatureSpawners(List<CreatureSO> selectedCreatures, List<int> spawnAmounts, List<int> eliteAmounts, List<Vector3> positions = null) {
@@ -268,14 +268,14 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         // ANIMAUX GAUCHE
         for (int i = 0; i < data.startingBlockAnimalSpawners_Left.Count && i < animalSpawnerList_Left.Count; i++) {
             var save = data.startingBlockAnimalSpawners_Left[i];
-            animalSpawnerList_Left[i].SetSpawnerParameters(save.mobPrefab, save.currentMobsAlive, 5f);
+            animalSpawnerList_Left[i].SetSpawnerParameters_HordeMode(save.mobPrefab, save.currentMobsAlive, 5f, save.daysSinceSpawnerActive);
             animalSpawnerList_Left[i].SpawnMobs(save.currentMobsAlive);
         }
 
         // ANIMAUX DROITE
         for (int i = 0; i < data.startingBlockAnimalSpawners_Right.Count && i < animalSpawnerList_Right.Count; i++) {
             var save = data.startingBlockAnimalSpawners_Right[i];
-            animalSpawnerList_Right[i].SetSpawnerParameters(save.mobPrefab, save.currentMobsAlive, 5f);
+            animalSpawnerList_Right[i].SetSpawnerParameters_HordeMode(save.mobPrefab, save.currentMobsAlive, 5f, save.daysSinceSpawnerActive);
             animalSpawnerList_Right[i].SpawnMobs(save.currentMobsAlive);
         }
 
@@ -331,6 +331,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
                 mobPrefab = spawner.GetMobPrefab(),
                 currentMobsAlive = spawner.GetMobCount(),
                 mobsCanSpawnAtDawn = spawner.GetMobsCanSpawnAtDawn(),
+                daysSinceSpawnerActive = spawner.GetDaysSinceSpawnerActive(),
             });
         }
 
@@ -340,6 +341,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
                 mobPrefab = spawner.GetMobPrefab(),
                 currentMobsAlive = spawner.GetMobCount(),
                 mobsCanSpawnAtDawn = spawner.GetMobsCanSpawnAtDawn(),
+                daysSinceSpawnerActive = spawner.GetDaysSinceSpawnerActive(),
             });
         }
 

@@ -1545,7 +1545,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 38783848799533230, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Name
-      value: TarnishedWidow
+      value: TarnishedWidowDemo
       objectReference: {fileID: 0}
     - target: {fileID: 62396730589590046, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: managedReferences[7866843137777336321].RemapCurveOne
@@ -2020,6 +2020,7 @@ MonoBehaviour:
   enteredLightFeedbacks: {fileID: 4275039096813007173}
   footStepFeedbacks: {fileID: 5770638787668322218}
   attackHitFeedbacks: {fileID: 6205369940484092142}
+  attackFeedbacks: {fileID: 0}
   creatureAnimatorManager: {fileID: 3275870740288881474}
   creatureAI: {fileID: 4155408012607941830}
   creature: {fileID: 7879982819402797649}
@@ -2092,8 +2093,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c48f4edb2c7a20488a149560faefc48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
+  creatureContinousAudioSource: {fileID: 0}
   canHearCreatureOutsideScreen: 1
   creatureIdleAudioSource: {fileID: 2472456054417652496}
+  creatureFootStepsAudioSource: {fileID: 8598676647461958176}
   creature: {fileID: 7879982819402797649}
   creatureAI: {fileID: 4155408012607941830}
   creatureAttack: {fileID: 8604937390394473561}
@@ -2105,6 +2110,11 @@ MonoBehaviour:
   widow: {fileID: 4155408012607941830}
   jumpAudioClip: {fileID: 8300000, guid: e4eb05b2fc8cc564a99e423a59c45a35, type: 3}
   landAudioClip: {fileID: 8300000, guid: 07e11bb87b222d740aa1fdf15cda9415, type: 3}
+--- !u!82 &8598676647461958176 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6190975775882562284, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 2503545580168280268}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8604937390394473561 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6184710609068459157, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}

@@ -40,6 +40,10 @@ public class MobSpawner : MonoBehaviour
 
     [SerializeField] protected MobSpawner linkedMobSpawner;
     protected int eliteSpawnedAmount;
+    protected int daysSinceSpawnerActive;
+    protected bool isAnimalHordeModeSpawner;
+    protected bool animalHordeModeSpawnerActive;
+    protected float animalSpawnerActivationDistance_HordeMode = 15f;
 
     private float easyDifficultySpawnAmountMultiplier = 0.8f;
     private float hardDifficultySpawnAmountMultiplier = 1.15f;
@@ -101,12 +105,25 @@ public class MobSpawner : MonoBehaviour
     }
 
     protected virtual void Update() {
-        if (!isCreatureSpawner) return;
-
         checkTimer -= Time.deltaTime;
         if (checkTimer <= 0f) {
             checkTimer = checkInterval;
-            HandleMobActivationPerMob();
+
+            if(isCreatureSpawner) {
+                HandleMobActivationPerMob();
+            }
+
+            if(isAnimalHordeModeSpawner && !animalHordeModeSpawnerActive) {
+                HandleAnimalSpawnerActivation();
+            }
+
+        }
+    }
+    private void HandleAnimalSpawnerActivation() {
+        float distance = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
+        //Debug.Log(this + " distance " + distance);
+        if(distance < animalSpawnerActivationDistance_HordeMode) {
+            animalHordeModeSpawnerActive = true;
         }
     }
 
@@ -140,6 +157,7 @@ public class MobSpawner : MonoBehaviour
 
     protected void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         if (!mobsCanSpawnAtDawn) return;
+
         if (firstDawnAfterLoad) {
             firstDawnAfterLoad = false;
             return;
@@ -147,7 +165,14 @@ public class MobSpawner : MonoBehaviour
 
         int mobAmountToSpawnOnDawn = mobAmountToSpawn - mobSpawnedList.Count;
 
-        if(mobAmountToSpawnOnDawn > maxMobsRespawningAtDawn) {
+        if (isAnimalSpawner && isAnimalHordeModeSpawner && animalHordeModeSpawnerActive) {
+            mobAmountToSpawnOnDawn = GetAnimalAmountToSpawn_HordeMode();
+            daysSinceSpawnerActive++;
+            SpawnMobs(mobAmountToSpawnOnDawn);
+            return;
+        }
+
+        if (mobAmountToSpawnOnDawn > maxMobsRespawningAtDawn) {
             mobAmountToSpawnOnDawn = maxMobsRespawningAtDawn;
         }
 
@@ -157,6 +182,23 @@ public class MobSpawner : MonoBehaviour
         }
 
         SpawnMobs(mobAmountToSpawnOnDawn);
+
+
+    }
+
+    protected int GetAnimalAmountToSpawn_HordeMode() {
+        Debug.Log("GetAnimalAmountToSpawn_HordeMode initialmobAmountToSpawn" + mobAmountToSpawn);
+        int mobAmountToSpawnOnDawn = 0;
+
+        if (daysSinceSpawnerActive == 0) {
+            mobAmountToSpawnOnDawn = mobAmountToSpawn / 2;
+        }
+        if (daysSinceSpawnerActive == 1) {
+            mobAmountToSpawnOnDawn = mobAmountToSpawn / 4;
+        }
+
+        Debug.Log("GetAnimalAmountToSpawn_HordeMode mobAmountToSpawnOnDawn" + mobAmountToSpawnOnDawn);
+        return mobAmountToSpawnOnDawn;
     }
 
     public virtual void SpawnMobs(int mobAmount) {
@@ -362,17 +404,23 @@ public class MobSpawner : MonoBehaviour
     public bool GetAmbushSpawned() {
         return ambushSpawned;
     }
+    public int GetDaysSinceSpawnerActive() {
+        return daysSinceSpawnerActive;
+    }
 
     public Transform GetMobPrefab() {
         return mobPrefab;
     }
 
-    public void SetSpawnerParameters(Transform mobPrefab, int mobAmountToSpawn, float radiusToRoamAround) {
-        //Debug.Log(this + " SetSpawnerParameters " + mobPrefab + " mobAmountToSpawn " + mobAmountToSpawn);
+    public void SetSpawnerParameters_HordeMode(Transform mobPrefab, int mobAmountToSpawn, float radiusToRoamAround, int daysSinceSpawnerActive = 0) {
         this.mobPrefab = mobPrefab;
         this.mobAmountToSpawn = mobAmountToSpawn;
         this.radiusToRoamAround = radiusToRoamAround;
+        this.daysSinceSpawnerActive = daysSinceSpawnerActive;
+
+        isAnimalHordeModeSpawner = true;
     }
+
     public void SetMobAmountToSpawn(int mobAmountToSpawn) {
         Debug.Log(this + " mobAmountToSpawn " + mobAmountToSpawn);
         this.mobAmountToSpawn = mobAmountToSpawn;

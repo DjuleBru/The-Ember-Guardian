@@ -14,4 +14,5 @@ public class SpawnerSaveData
     public CreatureSO creatureSO;
     public int eliteMobsAlive;
     public Vector3 spawnerPosition;
+    public int daysSinceSpawnerActive;
 }

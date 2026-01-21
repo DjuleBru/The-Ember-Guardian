@@ -6244,6 +6244,7 @@ MonoBehaviour:
   creatureContinousAudioSource: {fileID: 4766088066437605691}
   canHearCreatureOutsideScreen: 1
   creatureIdleAudioSource: {fileID: 2472456054417652496}
+  creatureFootStepsAudioSource: {fileID: 8598676647461958176}
   creature: {fileID: 8907704577248589371}
   creatureAI: {fileID: 7949393331764076333}
   creatureAttack: {fileID: 8604937390394473561}
@@ -6255,6 +6256,11 @@ MonoBehaviour:
   ancientGuardian: {fileID: 7949393331764076333}
   startTPClip: {fileID: 8300000, guid: 697395437f0c6a0439015c105757cd8a, type: 3}
   endTPClip: {fileID: 8300000, guid: 341581360a893fa48b9c9ee04de796c8, type: 3}
+--- !u!82 &8598676647461958176 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6190975775882562284, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+  m_PrefabInstance: {fileID: 2503545580168280268}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8604937390394473561 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6184710609068459157, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
