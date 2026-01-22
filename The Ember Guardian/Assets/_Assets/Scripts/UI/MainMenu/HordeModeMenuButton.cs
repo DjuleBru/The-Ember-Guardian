@@ -21,7 +21,8 @@ public class HordeModeMenuButton : MonoBehaviour, IPointerEnterHandler, IPointer
 
         lockedTextGO.SetActive(false);
         descriptionPanelAnimator.gameObject.SetActive(false);
-        if (!MetaProgressionManager.Instance.GetTutorialCompletedOrSkipped()) {
+
+        if (!MetaProgressionManager.Instance.GetHordeModeUnlocked()) {
             hordeModeUnlocked = false;
         } else {
             hordeModeUnlocked = true;

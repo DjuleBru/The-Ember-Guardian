@@ -28,6 +28,7 @@ public class StructureLocationVisual_Trap : StructureLocationVisual
     }
 
     private void RefreshShowSlotVisual() {
+        if (!structureLocation_Trap.GetStructureLocationUnlocked()) return;
         if (structureLocation_Trap.GetTrapTypeAmountInInventory() == 0) {
             slotVisual.SetActive(false);
         }

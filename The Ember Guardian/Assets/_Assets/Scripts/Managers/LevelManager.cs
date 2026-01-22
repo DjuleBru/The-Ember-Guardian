@@ -302,22 +302,25 @@ public class LevelManager : MonoBehaviour
         MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
 
         if(isHordeMode) {
+            ES3Settings hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
+
             string key = "hordeMode_maxNightsSurvived_" + currentLevelEnvironment.ToString();
-            ES3.Save(key, DayNightManager.Instance.GetCurrentDay());
+            ES3.Save(key, DayNightManager.Instance.GetCurrentDay(), hordeModeSaveFileSettings);
 
             int currentDay = DayNightManager.Instance.GetCurrentDay();
-            int xpReward = CalculateHordeModeXPReward(currentDay - 1);
+            int xpReward = CalculateHordeModeXPReward(currentDay);
             HordeModeProgressionManager.Instance.AddRunXP(xpReward);
 
-            ES3.Save("lastXPGainFromMainGame", false);
-            ES3.Save("backFromHordeModeAfterDefeat", true);
-            ES3.Save("lastHordeModeNightsSurvived", currentDay);
+            ES3.Save("lastXPGainFromMainGame", false, hordeModeSaveFileSettings);
+            ES3.Save("backFromHordeModeAfterDefeat", true, hordeModeSaveFileSettings);
+            ES3.Save("lastHordeModeNightsSurvived", currentDay, hordeModeSaveFileSettings);
         }
     }
 
     public int CalculateHordeModeXPReward(int nightCount) {
         int baseXP = 30;        // XP pour la première nuit
-        int extraXP = 15;       // XP ajouté par nuit supplémentaire
+        int extraXP = 12;       // XP ajouté par nuit supplémentaire
+        int extraXPPerNightSurvived = 3;
 
         if (nightCount <= 0)
             return 0;
@@ -327,7 +330,7 @@ public class LevelManager : MonoBehaviour
         // Nuit 3 donne baseXP + (extraXP * 2)
         // etc.
 
-        int reward = baseXP + (extraXP * (nightCount - 1));
+        int reward = baseXP + ((extraXP + nightCount * extraXPPerNightSurvived) * (nightCount - 1));
         return reward;
     }
 

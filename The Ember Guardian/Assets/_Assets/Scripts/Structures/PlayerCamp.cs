@@ -132,12 +132,10 @@ public class PlayerCamp : MonoBehaviour
     }
 
     private void InitializeCampLayoutOnGameLoad() {
-
         trapLocations.Clear();
         towerLocations.Clear();
 
         foreach (StructureLocation location in initialStructureLocationsParent.GetComponentsInChildren<StructureLocation>()) {
-
             location.gameObject.SetActive(false);
         }
     }
@@ -145,6 +143,8 @@ public class PlayerCamp : MonoBehaviour
     public void AddStructureLocationLoaded(StructureSO structureSO, Vector2 position, bool unlocked) {
         StructureLocation structureLocation = Instantiate(structureSO.structureLocationPrefab, customCampStructureLocationParent).GetComponent<StructureLocation>();
         structureLocation.transform.position = position;
+
+        //Debug.Log("AddStructureLocationLoaded " + structureSO + " unlocked " + unlocked);
 
         if(unlocked) {
             structureLocation.UnlockStructureLocation();
@@ -224,7 +224,7 @@ public class PlayerCamp : MonoBehaviour
             if (structureLocation.GetStructureLocationUnlocked()) continue;
 
             //Debug.Log(structureLocation + " " + structureLocation.transform.position + " IsWithinBarricadePosition " + IsWithinBarricadePosition(structureLocation.transform.position, minBarricadePosition, maxBarricadePosition) + " min " + minBarricadePosition + " max " + maxBarricadePosition);
-            
+
             if (IsWithinBarricadePosition(structureLocation.transform.position, minBarricadePosition, maxBarricadePosition)) {
                 structureLocation.UnlockStructureLocation();
             }

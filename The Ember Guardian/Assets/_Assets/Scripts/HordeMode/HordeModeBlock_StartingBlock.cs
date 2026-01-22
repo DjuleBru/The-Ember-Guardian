@@ -38,7 +38,10 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         workerSpawnerLeft_FD.gameObject.SetActive(false);
         workerSpawnerRight_FD.gameObject.SetActive(false);
 
-        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+            resourceChest.gameObject.SetActive(false);
+            return;
+        }
 
         HandleCentralBlockResources();
         HandleCentralBlockWorkerSpawners();

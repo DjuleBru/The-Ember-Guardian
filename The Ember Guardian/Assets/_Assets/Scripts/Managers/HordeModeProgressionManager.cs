@@ -79,16 +79,18 @@ public class HordeModeProgressionManager : MonoBehaviour
 
     // Unlock data
     public List<HordeModeUnlockables> unlockedSet = new List<HordeModeUnlockables>();
+    private ES3Settings hordeModeSaveFileSettings;
 
     private void Awake() {
         Instance = this;
 
-        totalHordeModeXP = ES3.Load("HordeModeXP", 0);
-        pendingXP = ES3.Load("HordeModeXP_pending", 0);
-        hasXPToCommit = ES3.Load("hasXPToCommit", false);
+        hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
+        totalHordeModeXP = ES3.Load("HordeModeXP", 0, hordeModeSaveFileSettings);
+        pendingXP = ES3.Load("HordeModeXP_pending", 0, hordeModeSaveFileSettings);
+        hasXPToCommit = ES3.Load("hasXPToCommit", false, hordeModeSaveFileSettings);
 
         unlockThresholds = GenerateUnlockThresholds();
-        unlockedSet = ES3.Load("HordeModeUnlocks", new List<HordeModeUnlockables>());
+        unlockedSet = ES3.Load("HordeModeUnlocks", new List<HordeModeUnlockables>(), hordeModeSaveFileSettings);
     }
 
     private void Start() {
@@ -123,11 +125,11 @@ public class HordeModeProgressionManager : MonoBehaviour
         pendingXP += amount;
         totalHordeModeXP += amount;
 
-        ES3.Save("HordeModeXP", totalHordeModeXP);
-        ES3.Save("HordeModeXP_pending", pendingXP);
+        ES3.Save("HordeModeXP", totalHordeModeXP, hordeModeSaveFileSettings);
+        ES3.Save("HordeModeXP_pending", pendingXP, hordeModeSaveFileSettings);
 
         hasXPToCommit = true;
-        ES3.Save("hasXPToCommit", true);
+        ES3.Save("hasXPToCommit", true, hordeModeSaveFileSettings);
     }
 
     private void CheckLastMainGameLevelCompleted() {
@@ -140,7 +142,6 @@ public class HordeModeProgressionManager : MonoBehaviour
 
     public void EnsureUnlockReached_MainGame(HordeModeUnlockables unlock) {
         if (unlock == HordeModeUnlockables.None) return;
-        Debug.Log("GetUnlocked " + unlock + " " + GetUnlocked(unlock));
         if (GetUnlocked(unlock)) return;
 
         if (unlockThresholds == null) unlockThresholds = GenerateUnlockThresholds();
@@ -152,7 +153,7 @@ public class HordeModeProgressionManager : MonoBehaviour
         AddRunXP(needed);
 
         if(needed > 0) {
-            ES3.Save("lastXPGainFromMainGame", true);
+            ES3.Save("lastXPGainFromMainGame", true, hordeModeSaveFileSettings);
         }
     }
 
@@ -171,15 +172,15 @@ public class HordeModeProgressionManager : MonoBehaviour
 
     public void SetHasNoXPToCommit() {
         hasXPToCommit = false;
-        ES3.Save("hasXPToCommit", false);
+        ES3.Save("hasXPToCommit", false, hordeModeSaveFileSettings);
 
         pendingXP = 0;
-        ES3.Save("HordeModeXP_pending", pendingXP);
+        ES3.Save("HordeModeXP_pending", pendingXP, hordeModeSaveFileSettings);
     }
 
     public void AddUnlocked(HordeModeUnlockables unlock) {
         unlockedSet.Add(unlock);
-        ES3.Save("HordeModeUnlocks", new List<HordeModeProgressionManager.HordeModeUnlockables>(HordeModeProgressionManager.Instance.unlockedSet));
+        ES3.Save("HordeModeUnlocks", new List<HordeModeProgressionManager.HordeModeUnlockables>(HordeModeProgressionManager.Instance.unlockedSet), hordeModeSaveFileSettings);
         OnHordeModeUnlockableUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
@@ -372,7 +373,7 @@ public class HordeModeProgressionManager : MonoBehaviour
     }
 
     public bool LastXPGainWasFromMainGame() {
-        return ES3.Load("lastXPGainFromMainGame", false);
+        return ES3.Load("lastXPGainFromMainGame", false, hordeModeSaveFileSettings);
     }
 
     public HordeModeUnlockables GetNextUnlockable() {

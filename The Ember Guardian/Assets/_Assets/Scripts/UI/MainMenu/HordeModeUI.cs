@@ -183,13 +183,13 @@ public class HordeModeUI : MonoBehaviour
     public void SetSelectedWeapon(GunSO gunSO) {
         selectedGunSO = gunSO;
         selectedGunType = gunSO.gunType;
+        HordeModeCustomizationManager.Instance.SetSelectedWeapon(gunSO.gunType);
         OnWeaponSelected?.Invoke(this, EventArgs.Empty);
 
         if (GameInput.Instance.IsUsingGamepad()) {
             EventSystem.current.SetSelectedGameObject(swapWeaponButtonWorlUI);
         }
 
-        HordeModeCustomizationManager.Instance.SetSelectedWeapon(gunSO.gunType);
         CloseChangeWeaponPanel();
     }
 
@@ -330,8 +330,9 @@ public class HordeModeUI : MonoBehaviour
 
         levelEnvironmentText.text = LocalizationManager.Instance.GetLocalizedText(env.ToString());
 
+        ES3Settings hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
         string key = "hordeMode_maxNightsSurvived_" + env.ToString();
-        int maxNightsSurvivedInEnvironment = ES3.Load(key, 0);
+        int maxNightsSurvivedInEnvironment = ES3.Load(key, 0, hordeModeSaveFileSettings);
         maxNightsSurvivedText.text = LocalizationManager.Instance.GetLocalizedText("menu_maxNightsSurvived") + " " + maxNightsSurvivedInEnvironment;
 
         HordeModeCustomizationManager.Instance.SetSelectedEnvironment(env);

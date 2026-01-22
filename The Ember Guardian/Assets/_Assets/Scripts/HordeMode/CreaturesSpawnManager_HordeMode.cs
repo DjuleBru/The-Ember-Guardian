@@ -121,7 +121,6 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
                 currentSpecialWaveAmount++;
             }
         }
-        currentSpecialWaveType = SpecialWaveType.crawlers;
 
         if (setDifficultyAnimationCurve) {
 

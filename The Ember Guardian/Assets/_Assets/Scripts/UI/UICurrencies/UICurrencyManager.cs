@@ -156,7 +156,7 @@ public class UICurrencyManager : MonoBehaviour
             AddCurrencyInBag(PlayerCurrencies.CurrencyType.smallBlueOrb);
         }
         if (Input.GetKeyDown(KeyCode.M)) {
-            AddCurrencyInBag(PlayerCurrencies.CurrencyType.smallRedOrb);
+            AddCurrencyInBag(PlayerCurrencies.CurrencyType.bearTrap);
         }
     }
 

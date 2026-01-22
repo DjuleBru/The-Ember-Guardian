@@ -24,8 +24,6 @@ public class StructureLocation_Trap : StructureLocation {
         UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += PlayerInventoryUI_OnCurrencyDropped;
         UICurrencyManager.PlayerInventoryUI.OnCurrencyRemovedFromBag += PlayerInventoryUI_OnCurrencyRemovedFromBag;
-
-
     }
 
     private IEnumerator InitializeTrapTypesInPlayerInventory() {

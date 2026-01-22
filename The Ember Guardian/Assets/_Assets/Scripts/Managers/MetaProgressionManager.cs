@@ -116,16 +116,20 @@ public class MetaProgressionManager : MonoBehaviour
     #region TUTORIAL
     public void SetTutorialCompleted() {
         ES3.Save("tutorialComplete", true);
+        SetHordeModeUnlocked();
     }
 
     public bool GetTutorialCompletedOrSkipped() {
         bool tutorialCompleted = ES3.Load("tutorialComplete", false);
         bool tutorialSkipped = ES3.Load("tutorialSkipped", false);
+
         return tutorialCompleted || tutorialSkipped;
     }
     public void SetTutorialSkipped() {
         ES3.Save("tutorialSkipped", true);
+        SetHordeModeUnlocked();
     }
+
     public bool GetTutorialSkipped() {
         return ES3.Load("tutorialSkipped", false);
     }
@@ -144,7 +148,6 @@ public class MetaProgressionManager : MonoBehaviour
     public List<string> GetTipUnlockedList() {
         return unlockedVideoTipList;;
     }
-
 
     public void SetTipNewlyUnlocked(VideoTipSO videoTipSO, bool newlyUnlocked) {
         string key = videoTipSO.tipNameLocalizationKey;
@@ -580,7 +583,24 @@ public class MetaProgressionManager : MonoBehaviour
 
     #endregion
 
+    public void SetHordeModeUnlocked() {
+        ES3Settings hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
+        ES3.Save("HordeModeUnlocked", true, hordeModeSaveFileSettings);
+    }
 
+    public bool GetHordeModeUnlocked() {
+
+        ES3Settings hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
+
+        bool hordeModeUnlocked = ES3.Load("HordeModeUnlocked", false, hordeModeSaveFileSettings);
+
+        if (!hordeModeUnlocked && GetTutorialCompletedOrSkipped()) {
+            SetHordeModeUnlocked();
+            hordeModeUnlocked = true;
+        }
+
+        return hordeModeUnlocked;
+    }
 
     private void OnApplicationQuit() {
 

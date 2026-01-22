@@ -87,7 +87,6 @@ public class StructureLocation : MonoBehaviour {
         Player.Instance.SetInPayCurrencyArea(false);
     }
 
-
     public virtual Structure BuildStructure(bool buildOnLoad = false) {
         Structure structure = Instantiate(structureSOToBuild.structurePrefab, transform.position, Quaternion.identity).GetComponent<Structure>();
 
@@ -168,6 +167,7 @@ public class StructureLocation : MonoBehaviour {
     }
 
     public virtual void UnlockStructureLocation() {
+        //Debug.Log(structureSOToBuild + " UnlockStructureLocation ");
         structureLocationUnlocked = true;
         OnStructureLocationUnlocked?.Invoke(this, EventArgs.Empty);
         showTooltipOnTrigger.SetShowTooltips(true);
@@ -200,6 +200,7 @@ public class StructureLocation : MonoBehaviour {
         };
 
         if (DebugManager.Instance.GetAllStructuresUnlocked() || debugStructureTypeBought || structureSOToBuild.level1StructureInitiallyUnlocked) {
+            Debug.Log(this + " " + structureSOToBuild + " level1StructureInitiallyUnlocked ");
             structureLocationBought = true;
             gameObject.SetActive(true);
             return;
@@ -207,9 +208,10 @@ public class StructureLocation : MonoBehaviour {
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
             bool structureUnlocked = HordeModeProgressionManager.Instance.GetStructureUnlocked(structureSOToBuild.structureType);
+            Debug.Log(structureSOToBuild + " structureUnlocked " + structureUnlocked);
             if (structureUnlocked) {
                 structureLocationBought = true;
-                gameObject.SetActive(true);
+                //gameObject.SetActive(true);
             } else {
                 structureLocationBought = false;
                 OnStructureLocationLoaded_Locked?.Invoke(this, EventArgs.Empty);

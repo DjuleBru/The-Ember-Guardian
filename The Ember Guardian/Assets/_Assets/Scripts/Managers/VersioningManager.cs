@@ -91,16 +91,30 @@ public class VersioningManager : MonoBehaviour
     public static float ReconstructFloatVersion(int major, int minor, int patch, int build) {
         return major + (minor * 0.01f) + (patch * 0.0001f) + (build * 0.000001f);
     }
+
     public bool CheckNewSaveFile() {
-        //Debug.Log("ES3.FileExists " + ES3.FileExists());
+
         if (!ES3.FileExists()) {
+            bool openAdjustGammaUIPanel = CheckOpenAdjustGammaUIPanel();
+            if(openAdjustGammaUIPanel) {
+                return true;
+            }
 
-            //if(MainMenuUI_StartupMessagePanel.Instance != null) {
-            //    MainMenuUI_StartupMessagePanel.Instance.OpenPanel();
-            //    MainMenuUI_StartupMessagePanel.Instance.SetNewTesterPanel();
-            //} 
+            return false;
 
-            if(AdjustGammaUI.Instance != null) {
+        } else {
+
+            return false;
+        }
+
+    }
+
+    private bool CheckOpenAdjustGammaUIPanel() {
+        ES3Settings settingsSaveFileSettings = new ES3Settings("Settings.es3");
+
+        if (!ES3.FileExists(settingsSaveFileSettings)) {
+
+            if (AdjustGammaUI.Instance != null) {
                 AdjustGammaUI.Instance.OpenPanel(true);
             }
 
@@ -110,11 +124,9 @@ public class VersioningManager : MonoBehaviour
             ES3.Save(key, true);
 
             return true;
-        } else {
-
-            return false;
         }
 
+        return false;
     }
 
     public bool GetNewSaveFile() {

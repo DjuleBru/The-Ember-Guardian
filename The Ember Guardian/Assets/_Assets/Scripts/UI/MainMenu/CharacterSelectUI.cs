@@ -25,8 +25,10 @@ public class CharacterSelectUI : MonoBehaviour
         swapCharacter_WorldCanvas.SetActive(false);
         Instance = this;
 
-        hasChosenCharacter = ES3.Load("hasChosenCharacter", false);
-        characterType = ES3.Load("characterType", false);
+        ES3Settings settingsSaveFileSettings = new ES3Settings("Settings.es3");
+
+        hasChosenCharacter = ES3.Load("hasChosenCharacter", false, settingsSaveFileSettings);
+        characterType = ES3.Load("characterType", false, settingsSaveFileSettings);
     }
 
     private void Start() {
@@ -46,8 +48,10 @@ public class CharacterSelectUI : MonoBehaviour
     }
 
     private void SelectCharacter(bool female) {
-        ES3.Save("characterType", female);  
-        ES3.Save("hasChosenCharacter", true);
+        ES3Settings settingsSaveFileSettings = new ES3Settings("Settings.es3");
+
+        ES3.Save("characterType", female, settingsSaveFileSettings);  
+        ES3.Save("hasChosenCharacter", true, settingsSaveFileSettings);
 
         characterType = female;
         OnCharacterChanged?.Invoke(this, EventArgs.Empty);

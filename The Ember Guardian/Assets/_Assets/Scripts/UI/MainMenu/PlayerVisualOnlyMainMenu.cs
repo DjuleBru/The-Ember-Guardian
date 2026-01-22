@@ -23,6 +23,7 @@ public class PlayerVisualOnlyMainMenu : MonoBehaviour
     }
 
     private void HordeModeUI_OnWeaponSelected(object sender, System.EventArgs e) {
+        //Debug.Log("HordeModeUI_OnWeaponSelected " + HordeModeCustomizationManager.Instance.GetSelectedWeaponType());
         SetGunVisuals(HordeModeCustomizationManager.Instance.GetSelectedWeaponType());
     }
 

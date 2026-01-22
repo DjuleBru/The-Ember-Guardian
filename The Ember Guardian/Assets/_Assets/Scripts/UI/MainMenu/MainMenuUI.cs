@@ -89,13 +89,13 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     private void InitializeHordeModeButton() {
-
         hordeModeMenuGO.SetActive(false);
+        Debug.Log("InitializeHordeModeButton");
 
         // CHECK HORDE MODE UNLOCKED
         if (DebugManager.Instance.GetHordeModeActiveDebug()) return;
 
-        if (!MetaProgressionManager.Instance.GetTutorialCompletedOrSkipped()) {
+        if (!MetaProgressionManager.Instance.GetHordeModeUnlocked()) {
             hordeModeButton.interactable = false;
         }
 
@@ -105,8 +105,11 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     private void CheckBackFromHordeMode() {
-        backFromHordeModeAfterDefeat = ES3.Load("backFromHordeModeAfterDefeat", false);
+        ES3Settings hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
+
+        backFromHordeModeAfterDefeat = ES3.Load("backFromHordeModeAfterDefeat", false, hordeModeSaveFileSettings);
         if (backFromHordeModeAfterDefeat) {
+            ES3.Save("backFromHordeModeAfterDefeat", false, hordeModeSaveFileSettings);
             ES3.DeleteFile("HordeLevelSave.es3");
             HordeModeButton(true);
         }
@@ -125,7 +128,6 @@ public class MainMenuUI : MonoBehaviour {
         }
         else {
             if (backFromHordeModeAfterDefeat) {
-
                 return;
             };
 

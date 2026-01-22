@@ -25,18 +25,21 @@ public class HordeModeCustomizationManager : MonoBehaviour
     }
 
     public void SetSelectedDog(Dog.DogType dogType) {
-        Debug.Log("SetSelectedDog " + dogType);
+        //Debug.Log("SetSelectedDog " + dogType);
         ES3.Save("hordeModeDogType", dogType);
+        selectedDogType = dogType;
     }
 
     public void SetSelectedWeapon(GunSO.GunType gunType) {
-        Debug.Log("SetSelectedWeapon " + gunType);
+        //Debug.Log("SetSelectedWeapon " + gunType);
         ES3.Save("hordeModeGunType", gunType);
+        selectedGunType = gunType;
     }
 
     public void SetSelectedEnvironment(LevelSO.LevelEnvironment environment) {
-        Debug.Log("SetSelectedEnvironment " + environment);
+        //Debug.Log("SetSelectedEnvironment " + environment);
         ES3.Save("hordeModeEnvironment", environment);
+        selectedEnvironmentType = environment;
     }
 
     public LevelSO.LevelEnvironment GetSelectedEnvironment() {
@@ -44,7 +47,7 @@ public class HordeModeCustomizationManager : MonoBehaviour
     }
 
     public Dog.DogType GetSelectedDogType() {
-        Debug.Log("GetSelectedDogType " + selectedDogType);
+        //Debug.Log("GetSelectedDogType " + selectedDogType);
         return selectedDogType;
     }
 

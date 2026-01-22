@@ -289,6 +289,10 @@ public class Creature : Mob
     }
 
     protected void HordeModeDropGems() {
+        if (!HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.Armorer)) return;
+
+        Debug.Log("CAC");
+
         List<PlayerCurrencies.CurrencyType> gemTypeDrop = new List<PlayerCurrencies.CurrencyType>();
         List<int> gemTypeAmountDrop = new List<int>();
         gemTypeDrop.Add(PlayerCurrencies.CurrencyType.redGem);
