@@ -9,6 +9,7 @@ public class Creature_Shielded : Creature
     [SerializeField] private float shieldCooldown;
     [SerializeField] private bool activateShieldOnStart = true;
     [SerializeField] private bool activateShieldAfterDamageTaken;
+    [SerializeField] private bool activateShieldRandomly;
     [SerializeField] private float timeToActivateShieldAfterDamageTaken;
 
     private float shieldTimer;
@@ -29,6 +30,14 @@ public class Creature_Shielded : Creature
 
         if(activateShieldOnStart) {
             ActivateShield();
+        }
+
+
+        if (activateShieldRandomly) {
+            float randomValue = UnityEngine.Random.value;
+            if (randomValue > .5f) {
+                ActivateShield();
+            }
         }
     }
 

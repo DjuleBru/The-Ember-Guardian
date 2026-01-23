@@ -339,14 +339,14 @@ public class SoundManager : MonoBehaviour
     }
 
     private void StructureBlueprint_OnAnyBlueprintWithStructureHovered(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.campEdit_GridHoveredWithStructure);
+        PlaySound2D(soundRefsSO.campEdit_GridHoveredWithStructure, .6f);
     }
 
     private void GridVisualUnit_OnAnyGidWithoutStructureHovered(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.campEdit_GridHovered, .3f);
+        PlaySound2D(soundRefsSO.campEdit_GridHovered, .6f);
     }
     private void GridVisualUnit_OnAnyGridHoveredWhileMovingBlueprint(object sender, System.EventArgs e) {
-        PlaySound2D(soundRefsSO.campEdit_GridHoveredWhileMovingBlueprint, .2f);
+        PlaySound2D(soundRefsSO.campEdit_GridHoveredWhileMovingBlueprint, .1f);
     }
 
     private void CampEditManager_OnStructurePickedUp(object sender, System.EventArgs e) {

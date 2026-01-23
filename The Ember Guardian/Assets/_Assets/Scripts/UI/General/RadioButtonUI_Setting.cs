@@ -19,7 +19,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         AdjustGamma,
         StreamerMode,
         ShowDamageNumbers,
-        WaterSimulations,
+        WaterReflections,
         UIDisplay,
         Difficulty,
     }
@@ -51,7 +51,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnAutoReloadChanged += SettingsManager_OnAutoReloadChanged;
         SettingsManager.Instance.OnSteamerModeChanged += SettingsManager_OnSteamerModeChanged;
         SettingsManager.Instance.OnShowDamageNumbersChanged += SettingsManager_OnShowDamageNumbersChanged;
-        SettingsManager.Instance.OnWaterPerspectiveChanged += SettingsManager_OnWaterSimulationChanged;
+        SettingsManager.Instance.OnWaterReflectionsChanged += SettingsManager_OnWaterSimulationChanged;
         SettingsManager.Instance.OnUIDisplayChanged += SettingsManager_OnUIDisplayChanged;
         SettingsManager.Instance.OnDifficultyChanged += SettingsManager_OnDifficultyChanged;
 
@@ -93,8 +93,8 @@ public class RadioButtonUI_Setting : RadioButtonUI
             AdjustGammaUI.Instance.OpenPanel(false);
             SettingsMenuUI.Instance.HideSettingsPanel();
         }
-        if (settingType == SettingType.WaterSimulations) {
-            SettingsManager.Instance.ChangeWaterPerspective();
+        if (settingType == SettingType.WaterReflections) {
+            SettingsManager.Instance.ChangeWaterReflections();
         }
 
         if (settingType == SettingType.UIDisplay) {
@@ -190,8 +190,8 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.ShowDamageNumbers) {
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetShowDamageNumbers());
         }
-        if (settingType == SettingType.WaterSimulations) {
-            toggledImageGameObject.SetActive(SettingsManager.Instance.GetWaterPerspectiveActive());
+        if (settingType == SettingType.WaterReflections) {
+            toggledImageGameObject.SetActive(SettingsManager.Instance.GetWaterReflectionsActive());
         }
     }
 

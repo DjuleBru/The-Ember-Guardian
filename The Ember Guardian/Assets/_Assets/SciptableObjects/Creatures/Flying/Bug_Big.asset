@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: BugBig
   isBoss: 0
+  appearTwiceOnSecondPhase: 0
   description: Melee mob that can respawn after it's first death !
   creatureIcon: {fileID: 21300000, guid: 7f675f0524980934f9d701cfaf84139c, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: a79bf533d53e1e14d8fb098be887a2ad, type: 3}
@@ -30,13 +31,16 @@ MonoBehaviour:
   flightMinAltitude: 3
   flightMaxAltitude: 9
   flightAltitudeRandomizer: 3
+  minRepositionDistanceToPlayer: 0
+  maxRepositionDistanceToPlayer: 8
   dayMoveSpeed: 2
   nightMoveSpeed: 2
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.5
   moveSpeedRandomizerDelta: 0.25
-  maxHealth: 100
+  maxHealth: 135
   enteredLightattackRateDebuff: 2.5
+  nightSpawnYPosition: 2
   probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0
@@ -48,6 +52,7 @@ MonoBehaviour:
   workerTargetingPriority: 0
   playerTargetingPriority: 3
   barricadeTargetingPriority: 0
+  fireTargetingPriority: 2147483647
   probabilityToDropOrb: 0.5
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
@@ -55,6 +60,7 @@ MonoBehaviour:
   initialWaveSpawn: 3
   spawnProbability: 0.3
   maxCreaturesPerPacket: 3
+  maxCreaturesPerPacket_Day: 0
   dieAudioClips:
   - {fileID: 8300000, guid: ebf06376f75092d438e3a03eabd09c31, type: 3}
   - {fileID: 8300000, guid: 94062543c87eb044e9c320d820396be0, type: 3}

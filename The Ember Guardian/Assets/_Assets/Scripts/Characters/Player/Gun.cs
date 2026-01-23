@@ -147,7 +147,6 @@ public class Gun : MonoBehaviour
         }
         pelletsPerBullet = gunSO.pelletsPerBullet + buffedPelletsPerBullet;
 
-
         DebuffBulletDamage(focusedBlastDamageBuff, false);
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = .2f;

@@ -11,7 +11,7 @@ public class WaterManager : MonoBehaviour
     private ModernWater2D modernWater2D;
 
     [SerializeField] private float reflectionLevel = 1f;
-    private bool perspectiveActive;
+    private bool reflectionsActive;
 
     public event EventHandler OnReflectionLevelChanged;
     private ES3Settings settingsSaveFileSettings;
@@ -27,29 +27,27 @@ public class WaterManager : MonoBehaviour
     }
 
     private void Start() {
-        RefreshPerspectiveActive();
+        RefreshReflectionsActive();
 
-        SettingsManager.Instance.OnWaterPerspectiveChanged += SettingsManager_OnWaterPerspectiveChanged;
+        SettingsManager.Instance.OnWaterReflectionsChanged += SettingsManager_OnWaterPerspectiveChanged;
         RefreshReflectionsLevel();
     }
 
     private void SettingsManager_OnWaterPerspectiveChanged(object sender, System.EventArgs e) {
-        RefreshPerspectiveActive();
+        RefreshReflectionsActive();
     }
 
-    private void RefreshPerspectiveActive() {
-        perspectiveActive = SettingsManager.Instance.GetWaterPerspectiveActive();
+    public void RefreshReflectionsActive() {
+        reflectionsActive = SettingsManager.Instance.GetWaterReflectionsActive();
+        Debug.Log("RefreshReflectionsActive " + reflectionsActive);
 
-        modernWater2D.settings._reflectionsSettings.usePerspective.value = perspectiveActive;
-
-        modernWater2D.reflectionsManagerPlatformer.UpdateSettings(
-            modernWater2D.settings._reflectionsSettings,
-            false
-        );
-
+        modernWater2D.enableReflections.value = reflectionsActive;
+        modernWater2D.enableObstruction.value = reflectionsActive;
+        modernWater2D.enableSimulation.value = reflectionsActive;
     }
 
     private void RefreshReflectionsLevel() {
+        Debug.Log("RefreshReflectionsLevel");
 
         // Liste complète des layers disponibles
         List<int> allLayers = new List<int> { 0, 6, 11, 12, 13, 14, 15, 16, 17, 18, 19, 25, 28, 29, 30 };

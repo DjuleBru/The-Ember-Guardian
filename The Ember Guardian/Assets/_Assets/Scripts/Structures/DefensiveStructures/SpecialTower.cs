@@ -67,11 +67,16 @@ public class SpecialTower : Structure {
         }
 
         if (GetHasCurrenciesToPay() && playerInteracting) {
-            payCurrencyUI.SetPlayerInteractingContinuous(.2f); // Continue l'interaction
+            StartCoroutine(SetPlayerInteractingAfterFrame());
         }
         else {
             payCurrencyUI.SetPlayerInteracting(false);
         }
+    }
+
+    public IEnumerator SetPlayerInteractingAfterFrame() {
+        yield return new WaitForEndOfFrame();
+        payCurrencyUI.SetPlayerInteracting(true); // Continue l'interaction
     }
 
     public void SetCurrentAmmoClips(int ammoClips) {

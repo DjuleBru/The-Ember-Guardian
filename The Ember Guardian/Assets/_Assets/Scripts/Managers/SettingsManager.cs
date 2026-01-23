@@ -30,7 +30,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnAutoReloadChanged;
     public event EventHandler OnSteamerModeChanged;
     public event EventHandler OnShowDamageNumbersChanged;
-    public event EventHandler OnWaterPerspectiveChanged;
+    public event EventHandler OnWaterReflectionsChanged;
     public event EventHandler OnZoomLevelChanged;
     public event EventHandler OnUIDisplayChanged;
     public event EventHandler OnDifficultyChanged;
@@ -65,7 +65,7 @@ public class SettingsManager : MonoBehaviour
     private bool autoReload;
     private bool streamerMode;
     private bool showDamageNumbers;
-    private bool waterPerspective;
+    private bool waterReflections;
 
     private float settingsVersion;
 
@@ -103,7 +103,7 @@ public class SettingsManager : MonoBehaviour
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         streamerMode = ES3.Load("steamerMode", false, settingsSaveFileSettings);
         showDamageNumbers = ES3.Load("showDamageNumbers", true, settingsSaveFileSettings);
-        waterPerspective = ES3.Load("waterPerspective", true, settingsSaveFileSettings);
+        waterReflections = ES3.Load("waterReflections", true, settingsSaveFileSettings);
 
         Resolution defaultRes = Screen.currentResolution;
         resolution = ES3.Load("resolution", resolution, settingsSaveFileSettings);
@@ -347,12 +347,13 @@ public class SettingsManager : MonoBehaviour
         ES3.Save("currentLanguage", currentLanguage, settingsSaveFileSettings);
     }
 
-    public void ChangeWaterPerspective() {
-        waterPerspective = !waterPerspective;
-        Debug.Log("waterPerspective " + waterPerspective);
-        ES3.Save("waterPerspective", waterPerspective);
+    public void ChangeWaterReflections() {
+        waterReflections = !waterReflections;
+        Debug.Log("waterReflections " + waterReflections);
+        ES3.Save("waterReflections", waterReflections, settingsSaveFileSettings);
 
-        OnWaterPerspectiveChanged?.Invoke(this, EventArgs.Empty);
+        OnWaterReflectionsChanged?.Invoke(this, EventArgs.Empty);
+        WaterManager.Instance.RefreshReflectionsActive();
     }
 
     #endregion
@@ -418,8 +419,8 @@ public class SettingsManager : MonoBehaviour
         return gammaLevel;
     }
 
-    public bool GetWaterPerspectiveActive() {
-        return waterPerspective;
+    public bool GetWaterReflectionsActive() {
+        return waterReflections;
     }
     #endregion
 }

@@ -71,6 +71,7 @@ public class PlayerShoot : MonoBehaviour
     private bool holdingStationaryGun;
     private bool emptyingRevolverMag;
     private bool silencerActive;
+    private bool rightClickHeldDown;
 
     public class OnAmmoRefilledEventArgs : EventArgs {
         public int ammoAmount;
@@ -609,6 +610,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void Shoot(bool shootOnReload = false) {
+        //Debug.Log("Shoot " + loadingShot);
         StartCoroutine(ShootAfterDelay(heldGunSO.delayBetweenClickAndShot, shootOnReload));
     }
 
@@ -809,11 +811,14 @@ public class PlayerShoot : MonoBehaviour
             };
         }
 
-        loadingShot = false;
-        shotLoaded = false;
+        if(!rightClickHeldDown) {
+            loadingShot = false;
+            shotLoaded = false;
+
+            OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
+        }
 
         playerIsHoldingDownShoot = false;
-        OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
     }
 
     private void TryAutoReload() {
@@ -826,6 +831,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
+        rightClickHeldDown = true;
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
 
         if (heldGun.GetGunJammedAndNextInputSequence(GameInput.Binding.secondary)) {
@@ -841,6 +847,7 @@ public class PlayerShoot : MonoBehaviour
         if (!secondaryAbilityUnlocked) return;
         if (!canShoot) return;
         if (reloading) return;
+        if (swappingGun) return;
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
             OnPlayerAimedSightStarted?.Invoke(this, EventArgs.Empty);
@@ -1016,6 +1023,8 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
+        rightClickHeldDown = false;
+
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (secondaryAbilityActive) {
 

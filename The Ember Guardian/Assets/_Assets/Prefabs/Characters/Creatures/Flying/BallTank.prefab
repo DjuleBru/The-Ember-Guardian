@@ -5158,6 +5158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dd0db2e0eb5e164d9443bd280a10e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   creature_Shielded: {fileID: 4409248079181873493}
   generateShieldAudioClips:
   - {fileID: 8300000, guid: a7f92ddb2f819ca4a96ee037d2a91caa, type: 3}
@@ -6185,7 +6187,7 @@ MonoBehaviour:
   - {fileID: 5567317440449189492}
   autoAimPosition: {fileID: 4447324208709954084}
   shieldMaxHealth: 30
-  shieldCooldown: 3
+  shieldCooldown: 4
   activateShieldOnStart: 1
   activateShieldAfterDamageTaken: 0
   timeToActivateShieldAfterDamageTaken: 0
@@ -6210,6 +6212,7 @@ MonoBehaviour:
   maxSpeedMultiplier: 1.4
   speedLerpDuration: 0.5
   speedChangeInterval: 1
+  useNoise: 0
   noiseAmplitude: 0.8
   noiseFrequency: 2.5
 --- !u!114 &4559363108854811627
@@ -6226,10 +6229,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roamChangeDestinationRate: 1.5
   roamRadius: 2
-  repositionCooldown: 0
   distanceToDropOnTarget: 4
   distanceToDropOnTargetRandomizer: 1
   playerYTargetAltitude: 1.5
+  moveSpeedBuffWhenDropping: 1.5
+  diveAttack: 0
+  diveAttackFollowTargetStrength: 2
 --- !u!70 &5567317440449189492 stripped
 CapsuleCollider2D:
   m_CorrespondingSourceObject: {fileID: 617523866817803319, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}

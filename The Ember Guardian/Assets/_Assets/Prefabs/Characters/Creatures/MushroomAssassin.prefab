@@ -214,6 +214,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dd0db2e0eb5e164d9443bd280a10e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   creature_Shielded: {fileID: 8678822888402941321}
   generateShieldAudioClips:
   - {fileID: 8300000, guid: a7f92ddb2f819ca4a96ee037d2a91caa, type: 3}
@@ -5565,6 +5567,7 @@ MonoBehaviour:
   shieldCooldown: 99
   activateShieldOnStart: 0
   activateShieldAfterDamageTaken: 1
+  activateShieldRandomly: 1
   timeToActivateShieldAfterDamageTaken: 1.2
 --- !u!70 &3039793270435466491 stripped
 CapsuleCollider2D:
