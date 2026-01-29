@@ -102,6 +102,10 @@ public class GunSO : ScriptableObject
     public float minLoadShotTime;
     [BoxGroup("General")]
     [LabelWidth(300)]
+    [ShowIf("shotNeedsLoading")]
+    public float minLoadShotForceNormalized;
+    [BoxGroup("General")]
+    [LabelWidth(300)]
     public float delayBetweenClickAndShot;
     [BoxGroup("General")]
     [LabelWidth(300)]

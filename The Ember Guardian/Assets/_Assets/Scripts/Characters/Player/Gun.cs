@@ -379,12 +379,16 @@ public class Gun : MonoBehaviour
             GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
             gunProjectile.gameObject.SetActive(true);
 
-            float loadingShotMultiplier = 1;
-            if(PlayerShoot.Instance.GetHeldGunSO().shotNeedsLoading && PlayerShoot.Instance.GetHeldGunSO().loadedShotFiredIfNotFullyLoaded) {
-                loadingShotMultiplier = PlayerShoot.Instance.GetLoadingShotTimerNormalized();
-            }
+            float loadingShotTimer = PlayerShoot.Instance.GetLoadingShotTimerNormalized(); // 0 -> 1
+            float minLoadShotForceNormalized = PlayerShoot.Instance.GetHeldGunSO().minLoadShotForceNormalized;
+
+            // Remapper pour que 0 -> minForce, 1 -> 1
+            float loadingShotMultiplier = Mathf.Lerp(minLoadShotForceNormalized, 1f, loadingShotTimer);
 
             Vector2 initialForce = loadingShotMultiplier * PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed;
+
+            // --- Force minimale ---
+
 
             gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
         }
@@ -899,6 +903,8 @@ public class Gun : MonoBehaviour
     }
 
     #endregion
+
+    public float GetBulletSpeed() { return bulletSpeed; }
 
     public void SaveGunStatModifierLevels(bool mainGame) {
         // Dictionnaire pour stocker toutes les valeurs de cette arme

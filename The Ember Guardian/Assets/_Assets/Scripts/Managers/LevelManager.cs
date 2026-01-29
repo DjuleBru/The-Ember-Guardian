@@ -331,6 +331,12 @@ public class LevelManager : MonoBehaviour
         // etc.
 
         int reward = baseXP + ((extraXP + nightCount * extraXPPerNightSurvived) * (nightCount - 1));
+        
+        if(SettingsManager.Instance.GetHordeDifficulty() == SettingsManager.Difficulty.Hard) {
+            int bonusXP = (int)(reward * 0.3f);
+            reward += bonusXP;
+        }
+        
         return reward;
     }
 

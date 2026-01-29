@@ -94,7 +94,12 @@ public class HordeModeProgressionManager : MonoBehaviour
     }
 
     private void Start() {
-        CheckLastMainGameLevelCompleted();
+        bool resettedHordeModeOnce = ES3.Load("ResettedHordeMode", false , hordeModeSaveFileSettings);
+
+        if(!resettedHordeModeOnce) {
+            CheckLastMainGameLevelCompleted();
+        }
+
     }
 
     private Dictionary<HordeModeUnlockables, int> GenerateUnlockThresholds() {
@@ -182,6 +187,13 @@ public class HordeModeProgressionManager : MonoBehaviour
         unlockedSet.Add(unlock);
         ES3.Save("HordeModeUnlocks", new List<HordeModeProgressionManager.HordeModeUnlockables>(HordeModeProgressionManager.Instance.unlockedSet), hordeModeSaveFileSettings);
         OnHordeModeUnlockableUnlocked?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ResetHordeProgression() {
+        unlockedSet.Clear();
+        pendingXP = 0;
+        hasXPToCommit = false;
+        ES3.Save("HordeModeUnlocks", new List<HordeModeProgressionManager.HordeModeUnlockables>(HordeModeProgressionManager.Instance.unlockedSet), hordeModeSaveFileSettings);
     }
 
     public int GetTotalXP() => totalHordeModeXP;
@@ -414,6 +426,21 @@ public class HordeModeProgressionManager : MonoBehaviour
 
         // Tout débloqué = dernier de la liste
         return previous;
+    }
+    public bool GetEnvironmentUnlocked(LevelSO.LevelEnvironment environment) {
+        bool environmentUnlocked = true;
+
+        if (environment == LevelSO.LevelEnvironment.TheLumenHollow && !HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.LumenHollow)) {
+            environmentUnlocked = false;
+        }
+        if (environment == LevelSO.LevelEnvironment.CorruptedCity && !HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.CorruptedCity)) {
+            environmentUnlocked = false;
+        }
+        if (environment == LevelSO.LevelEnvironment.TheFracturedDistrict && !HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.FracturedDistrict)) {
+            environmentUnlocked = false;
+        }
+
+        return environmentUnlocked;
     }
 
 }

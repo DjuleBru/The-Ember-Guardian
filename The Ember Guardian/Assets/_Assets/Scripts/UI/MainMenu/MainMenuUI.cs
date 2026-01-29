@@ -15,6 +15,8 @@ public class MainMenuUI : MonoBehaviour {
     protected bool confirmResetProgression;
     protected bool hasResetHordeMode;
     protected bool confirmHordeModeResetProgression;
+    protected bool confirmHordeModeResetEntireProgression;
+    protected bool justResetEntireHordeProgression;
     protected bool selectingHordeModeContinueOrNewGame;
     protected bool backFromHordeModeAfterDefeat;
     protected bool loadingHordeMode;
@@ -35,7 +37,9 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] protected Button hordeMode_continueGameButton;
     [SerializeField] protected Button_Confirm buttonConfirm_ResetProgression;
     [SerializeField] protected Button_Confirm buttonConfirm_ResetHordeModeProgression;
+    [SerializeField] protected Button_Confirm buttonConfirm_ResetHordeModeEntireProgression;
     [SerializeField] protected TextMeshProUGUI newHordeModeGameText;
+    [SerializeField] protected TextMeshProUGUI resetEntireHordeModeProgressionText;
     [SerializeField] protected TextMeshProUGUI continueHordeModeGameText;
     [SerializeField] protected TextMeshProUGUI continueGameText;
     [SerializeField] protected TextMeshProUGUI newGameText;
@@ -49,6 +53,7 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] protected GameObject mainMenuPanelGameObject;
 
     public event EventHandler OnGameStart;
+    public event EventHandler OnHordeModeProgressionReset;
 
     private void Awake() {
         Instance = this;
@@ -60,6 +65,7 @@ public class MainMenuUI : MonoBehaviour {
         SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
         buttonConfirm_ResetProgression.OnButtonDeselected += ButtonConfirm_ResetProgression_OnButtonDeselected;
         buttonConfirm_ResetHordeModeProgression.OnButtonDeselected += ButtonConfirm_ResetHordeModeProgression_OnButtonDeselected;
+        buttonConfirm_ResetHordeModeEntireProgression.OnButtonDeselected += ButtonConfirm_ResetHordeModeEntireProgression_OnButtonDeselected;
 
         InitializeButtonNavigation();
 
@@ -75,6 +81,7 @@ public class MainMenuUI : MonoBehaviour {
         }
 
         CheckBackFromHordeMode();
+        RefreshHordeModeContinueVsNewGameButtonEnabledAndFonts();
 
         if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
 
@@ -87,6 +94,7 @@ public class MainMenuUI : MonoBehaviour {
         RefreshFonts();
         InitializeHordeModeButton();
     }
+
 
     private void InitializeHordeModeButton() {
         hordeModeMenuGO.SetActive(false);
@@ -111,7 +119,7 @@ public class MainMenuUI : MonoBehaviour {
         if (backFromHordeModeAfterDefeat) {
             ES3.Save("backFromHordeModeAfterDefeat", false, hordeModeSaveFileSettings);
             ES3.DeleteFile("HordeLevelSave.es3");
-            HordeModeButton(true);
+            NewHordeModeGame(true);
         }
     }
 
@@ -141,7 +149,7 @@ public class MainMenuUI : MonoBehaviour {
 
     private void RefreshFonts() {
         ctaText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
-        continueHordeModeGameText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
+        RefreshHordeModeContinueVsNewGameButtonEnabledAndFonts();
     }
 
     private void SetFirstSelectedButton() {
@@ -165,7 +173,7 @@ public class MainMenuUI : MonoBehaviour {
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
 
             if(!VersioningManager.Instance.GetIsDemo()) {
-                SelectDifficultyUI.Instance.OpenPanel();
+                SelectDifficultyUI.Instance.OpenPanel(false);
             } else {
                 StartNewGame();
             }
@@ -201,6 +209,10 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public virtual void HordeModeButton(bool changeCameraTarget = true) {
+
+        OpenCloseHordeModeSelectButtons(true);
+        return;
+
         if (!ES3.FileExists("HordeLevelSave.es3")) {
             NewHordeModeGame(changeCameraTarget);
         } else {
@@ -213,6 +225,11 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public void NewHordeModeGame_ButtonConfirm() {
+        if(justResetEntireHordeProgression || !ES3.FileExists("HordeLevelSave.es3")) {
+            NewHordeModeGame(true);
+            return;
+        }
+
         if (confirmHordeModeResetProgression) {
             hasResetHordeMode = true;
             ES3.DeleteFile("HordeLevelSave.es3");
@@ -221,6 +238,52 @@ public class MainMenuUI : MonoBehaviour {
         else {
             confirmHordeModeResetProgression = true;
             newHordeModeGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_resetHordeMode");
+        }
+    }
+
+    public void ResetHordeProgression_ButtonConfirm() {
+        if (confirmHordeModeResetEntireProgression) {
+
+            ES3.DeleteFile("SaveFile_HordeMode.es3");
+            ES3.DeleteFile("HordeLevelSave.es3");
+            buttonConfirm_ResetHordeModeEntireProgression.GetComponent<Button>().interactable = false;
+            resetEntireHordeModeProgressionText.text = LocalizationManager.Instance.GetLocalizedText("menu_resetEntireHordeMode");
+            RefreshHordeModeContinueVsNewGameButtonEnabledAndFonts();
+            HordeModeProgressionManager.Instance.ResetHordeProgression();
+
+            ES3Settings settings = new ES3Settings("SaveFile_HordeMode.es3");
+            ES3.Save("ResettedHordeMode", true, settings);
+
+            justResetEntireHordeProgression = true;
+            OnHordeModeProgressionReset?.Invoke(this, EventArgs.Empty);
+
+        }
+        else {
+
+            confirmHordeModeResetEntireProgression = true;
+            resetEntireHordeModeProgressionText.text = LocalizationManager.Instance.GetLocalizedText("menu_resetEntireHordeMode2");
+
+        }
+    }
+
+    private void RefreshHordeModeContinueVsNewGameButtonEnabledAndFonts() {
+        if (!ES3.FileExists("HordeLevelSave.es3")) {
+
+            hordeMode_continueGameButton.interactable = false;
+            newHordeModeGameText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
+            continueHordeModeGameText.fontMaterial = LocalizationManager.Instance.GetStandardMaterial();
+
+        }
+        else {
+
+            hordeMode_continueGameButton.interactable = true;
+            newHordeModeGameText.fontMaterial = LocalizationManager.Instance.GetStandardMaterial();
+            continueHordeModeGameText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
+
+        }
+
+        if(!HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.Armorer)) {
+            buttonConfirm_ResetHordeModeEntireProgression.GetComponent<Button>().interactable = false;
         }
     }
 
@@ -245,12 +308,18 @@ public class MainMenuUI : MonoBehaviour {
         standardMenuGO.SetActive(!open);
 
         if(open) {
-            EventSystem.current.SetSelectedGameObject(hordeMode_continueGameButton.gameObject);
+
+            if(!ES3.FileExists("HordeLevelSave.es3")) {
+                EventSystem.current.SetSelectedGameObject(hordeMode_newGameGameButton.gameObject);
+            } else {
+                EventSystem.current.SetSelectedGameObject(hordeMode_continueGameButton.gameObject);
+            }
+
+
         } else {
             EventSystem.current.SetSelectedGameObject(hordeModeButton.gameObject);
         }
     }
-
 
     public virtual void ExitGameButton() {
         Application.Quit();
@@ -358,6 +427,7 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     private void ButtonConfirm_ResetProgression_OnButtonDeselected(object sender, EventArgs e) {
+        Debug.Log("ButtonConfirm_ResetProgression_OnButtonDeselected");
         confirmResetProgression = false;
         newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_newGame");
     }
@@ -365,6 +435,13 @@ public class MainMenuUI : MonoBehaviour {
     private void ButtonConfirm_ResetHordeModeProgression_OnButtonDeselected(object sender, EventArgs e) {
         confirmHordeModeResetProgression = false;
         newHordeModeGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_startHordeMode");
+
+        RefreshHordeModeContinueVsNewGameButtonEnabledAndFonts();
+    }
+
+    private void ButtonConfirm_ResetHordeModeEntireProgression_OnButtonDeselected(object sender, EventArgs e) {
+        confirmHordeModeResetEntireProgression = false;
+        resetEntireHordeModeProgressionText.text = LocalizationManager.Instance.GetLocalizedText("menu_resetEntireHordeMode");
     }
 
     private void InitializeButtonNavigation() {
@@ -461,6 +538,7 @@ public class MainMenuUI : MonoBehaviour {
 
     private void OnDestroy() {
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+        GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
     }
 
 }

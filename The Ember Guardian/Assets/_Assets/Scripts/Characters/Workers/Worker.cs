@@ -42,11 +42,14 @@ public class Worker : Mob {
     public event EventHandler OnWorkerCollectedCurrency;
     public event EventHandler OnWorkerDroppedCurrency;
     public event EventHandler OnWorkerDroppedAllCurrencies;
+    public event EventHandler OnWorkerPaused;
+    public event EventHandler OnWorkerUnpaused;
     public static event EventHandler OnAnyWorkerDroppedAllCurrencies;
     public event EventHandler OnWildJobTypeSet;
 
     private void Awake() {
-        workerAI = GetComponent<WorkerAI>();    
+        workerAI = GetComponent<WorkerAI>();
+        rb = GetComponent<Rigidbody2D>();    
     }
 
     private void Start() {
@@ -55,9 +58,31 @@ public class Worker : Mob {
         initialHealth = health;
 
         WorkerStats.Instance.OnMaxHealthChanged += WorkerStats_OnMaxHealthChanged;
+
+        DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
+    }
+
+    private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
+        if (!LevelManager.Instance.IsHordeMode()) return;
+
+        isPaused = false;
+        rb.simulated = true;
+        OnWorkerUnpaused?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void DayNightManager_OnCyclePaused(object sender, EventArgs e) {
+        if (!LevelManager.Instance.IsHordeMode()) return;
+
+        isPaused = true;
+        rb.simulated = false;
+        rb.velocity = Vector2.zero;
+        OnWorkerPaused?.Invoke(this, EventArgs.Empty);
     }
 
     private void Update() {
+        if (isPaused) return;
+
         if(droppingCurrencies) {
             HandleDroppingCurrencies();
         }
@@ -292,4 +317,8 @@ public class Worker : Mob {
         return collectedCurrencies;
     }
 
+    private void OnDestroy() {
+        DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
+    }
 }

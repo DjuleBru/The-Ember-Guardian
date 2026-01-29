@@ -37,7 +37,17 @@ public class CreatureAnimatorManager : MonoBehaviour
         creature.OnCreatureStunStarted += Creature_OnCreatureStunStarted;
         creature.OnCreatureStunStopped += Creature_OnCreatureStunStopped;
         creature.OnCreatureEnabled += Creature_OnCreatureEnabled;
+        creature.OnCreaturePaused += Creature_OnCreaturePaused;
+        creature.OnCreatureUnpaused += Creature_OnCreatureUnpaused;
         mobMovement.OnMoveSpeedBuffChanged += MobMovement_OnMoveSpeedBuffChanged;
+    }
+
+    private void Creature_OnCreatureUnpaused(object sender, EventArgs e) {
+        animator.speed = 1f; // resume
+    }
+
+    private void Creature_OnCreaturePaused(object sender, EventArgs e) {
+        animator.speed = 0f; // pause
     }
 
     protected void RandomizeIdleAnimationStart() {

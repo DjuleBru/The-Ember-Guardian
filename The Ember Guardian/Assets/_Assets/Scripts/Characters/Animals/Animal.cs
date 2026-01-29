@@ -11,13 +11,33 @@ public class Animal : Mob
     private int maxHuntersAssigned;
     private List<Worker> workersAssigned = new List<Worker>();
 
-    private float checkWorkerListTimer;
-    private float checkWorkerListTime = 5f;
+    public event EventHandler OnAnimalPaused;
+    public event EventHandler OnAnimalUnpaused;
 
     private void Start() {
         health = animalSO.maxHP;
         maxHuntersAssigned = animalSO.maxHuntersAssigned;
         AnimalManager.Instance.AddAnimalSpawned(this);
+
+        DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
+        rb = GetComponent<Rigidbody2D>();
+    }
+    private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
+        if (!LevelManager.Instance.IsHordeMode()) return;
+
+        isPaused = false;
+        rb.simulated = true;
+        OnAnimalUnpaused?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void DayNightManager_OnCyclePaused(object sender, EventArgs e) {
+        if (!LevelManager.Instance.IsHordeMode()) return;
+
+        isPaused = true;
+        rb.simulated = false;
+        rb.velocity = Vector2.zero;
+        OnAnimalPaused?.Invoke(this, EventArgs.Empty);
     }
 
     [Button]
@@ -89,5 +109,11 @@ public class Animal : Mob
 
         return maxDistance;
 
+    }
+
+
+    private void OnDestroy() {
+        DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
     }
 }

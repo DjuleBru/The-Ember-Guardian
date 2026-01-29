@@ -17,6 +17,7 @@ public class CreatureAI_Colossus : CreatureAI {
     protected override void Start() {
         base.Start();
         BossUI.Instance.LinkBoss(creature, false);
+        BossUI.Instance.SetBossName(LocalizationManager.Instance.GetLocalizedText("The Colossus"));
     }
 
     protected override void CheckAttackChange() {

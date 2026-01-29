@@ -536,10 +536,17 @@ public class PlayerShoot : MonoBehaviour
 
         }
 
+       
+
         activeGun.gameObject.SetActive(true);
         heldGunSO = activeGunSO;
         heldGun = activeGun;
         heldGun.SetGunActive(true);
+
+        if (heldGunSO.shotNeedsLoading) {
+            loadingShotTime = heldGunSO.loadShotTime;
+            loadingShotTimer = 0;
+        }
 
         shootCooldownSFXTriggerTime = heldGunSO.shootCooldownSFXTriggerTime;
         gunRecoil = heldGunSO.gunRecoil;
@@ -599,7 +606,6 @@ public class PlayerShoot : MonoBehaviour
         });
     }
 
-
     private void InitializeGuns() {
         foreach (Gun gun in allGunsList) {
             gun.LoadGunStatModifierLevels();
@@ -642,6 +648,10 @@ public class PlayerShoot : MonoBehaviour
         OnBulletsChanged?.Invoke(this, EventArgs.Empty);
 
         OnPlayerShot?.Invoke(this, EventArgs.Empty);
+
+        if (shotNeedsLoading) {
+            loadingShotTimer = 0;
+        }
     }
 
     private void CooldownFinished() {
@@ -1453,6 +1463,7 @@ public class PlayerShoot : MonoBehaviour
         } else {
             hasOnlySpecialAmmo = primaryGunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special;
         }
+
         return hasOnlySpecialAmmo;
     }
 

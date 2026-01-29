@@ -36,6 +36,7 @@ public class Chest : MonoBehaviour
     [SerializeField] protected List<int> rewardAmountList;
     [SerializeField] protected bool chestDisappearsAutomaticallyAfterOpened;
     [SerializeField] protected bool payToOpenChest;
+    [SerializeField] protected bool isHordeChest;
     [SerializeField] protected PayCurrencyUI payCurrencyUI;
     [SerializeField] protected List<PayCurrencyTemplateWorldUI> payCurrencyTemplates;
 
@@ -62,6 +63,7 @@ public class Chest : MonoBehaviour
     public event EventHandler OnChestPricePaid;
     public event EventHandler OnChestPricePaidLoaded;
     public event EventHandler OnChestTypeSet;
+    public event EventHandler OnChestClosed;
 
     public class OnChestUnlockedEventArgs:EventArgs {
         public bool triggerSFX;
@@ -102,7 +104,7 @@ public class Chest : MonoBehaviour
         LevelManager.Instance.AddChest(this);
     }
 
-    private void SetChestAnimationTimes() {
+    protected void SetChestAnimationTimes() {
         if (chestType == ChestType.orbChest) {
             delayToChestUnlockAnimation = 2.5f;
             delayToSpawnCollectibles = 3.4f;
@@ -137,7 +139,6 @@ public class Chest : MonoBehaviour
         }
     }
 
-
     protected void GameInput_OnPlayerInteractPerformed(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if(payToOpenChest) {
@@ -171,7 +172,7 @@ public class Chest : MonoBehaviour
         OpenChest(chestDisappearsAutomaticallyAfterOpened);
     }
 
-    protected void OpenChest(bool spawnCollectibles) {
+    protected virtual void OpenChest(bool spawnCollectibles) {
         chestOpened = true;
         StartCoroutine(OpenChestCoroutine(spawnCollectibles));
         OnChestOpened?.Invoke(this, new OnChestUnlockedEventArgs {
@@ -179,7 +180,7 @@ public class Chest : MonoBehaviour
         });
     }
 
-    private void Player_OnPlayerDied(object sender, EventArgs e) {
+    protected void Player_OnPlayerDied(object sender, EventArgs e) {
         if (!playerInTriggerArea) return;
         if (chestLocked) return;
 
@@ -241,20 +242,24 @@ public class Chest : MonoBehaviour
 
                 if (currencyType == PlayerCurrencies.CurrencyType.ammo) {
                     bool secondaryGunUnlocked = PlayerShoot.Instance.GetSecondaryGunSO() != null;
+                    bool hasOnlySpecialAmmo = PlayerShoot.Instance.GetHasOnlySpecialAmmo();
+                    bool hasBothAmmoTypes = PlayerShoot.Instance.GetHasBothAmmoTypes();
 
-                    if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special || (secondaryGunUnlocked && PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special)) {
-                        // Player has at least 1 special ammo weapon:
+                    if (hasOnlySpecialAmmo) {
+
+                        // Player has 2 special ammo weapons OR only 1 weapon with special ammo:
+                        currencyTypeToReward = PlayerCurrencies.CurrencyType.ammo_special;
+                        rewardAmount /= 2;
+
+                    }
+                    else if (hasBothAmmoTypes) {
+
                         float randomFloat = UnityEngine.Random.value;
-                        if(randomFloat < 0.5f) {
+                        if (randomFloat < 0.5f) {
                             currencyTypeToReward = PlayerCurrencies.CurrencyType.ammo_special;
                             rewardAmount /= 2;
-                        } else {
-                            if (PlayerShoot.Instance.GetPrimaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special && (secondaryGunUnlocked && PlayerShoot.Instance.GetSecondaryGunSO().ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special)) {
-                                // Player has at 2 special ammo weapons:
-                                currencyTypeToReward = PlayerCurrencies.CurrencyType.ammo_special;
-                                rewardAmount /= 2;
-                            }
                         }
+
                     }
                 }
 
@@ -305,11 +310,22 @@ public class Chest : MonoBehaviour
             triggerSFX = triggerSFX
         });
     }
+    public void InvokeOnChestClosed() {
+        OnChestClosed?.Invoke(this, EventArgs.Empty);
+    }
+    public void InvokeOnChestUnlocked(bool triggerSFX = true) {
+        OnChestUnlocked?.Invoke(this, new OnChestUnlockedEventArgs {
+            triggerSFX = triggerSFX
+        });
+    }
 
     public void InvokeOnAnyChestSpawnedCollectibles(PlayerCurrencies.CurrencyType currencyType) {
         OnAnyChestSpawnedCollectible?.Invoke(this, new OnAnyChestSpawnedCollectibleEventArgs {
             currencyType = currencyType,
         });
+    }
+    public void InvokeOnAnyChestOpenedAnimationOver() {
+        OnChestOpenedAnimationOver?.Invoke(this, EventArgs.Empty);
     }
 
     public bool GetChestDisappearsAutomatically() {
@@ -348,6 +364,11 @@ public class Chest : MonoBehaviour
 
     }
 
+    public void SetChestOpenable() {
+        chestLocked = false;
+        OnChestOpenable?.Invoke(this, EventArgs.Empty);
+    }
+
     public void SetChestOpened(bool opened) {
         chestOpened = opened;
 
@@ -369,6 +390,10 @@ public class Chest : MonoBehaviour
 
     public bool GetChestLocked() {
         return chestLocked;
+    }
+
+    public bool GetIsHordeChest() {
+        return isHordeChest;
     }
 
     public void SetChestParameters(ChestType chestType, List<PlayerCurrencies.CurrencyType> currencyTypeToRewardList, List<int> rewardAmountList) {

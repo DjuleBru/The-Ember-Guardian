@@ -33,11 +33,11 @@ MonoBehaviour:
   flightAltitudeRandomizer: 0
   minRepositionDistanceToPlayer: 0
   maxRepositionDistanceToPlayer: 8
-  dayMoveSpeed: 2.2
+  dayMoveSpeed: 2
   nightMoveSpeed: 3
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.3
-  moveSpeedRandomizerDelta: 0.5
+  moveSpeedRandomizerDelta: 0.25
   maxHealth: 45
   enteredLightattackRateDebuff: 2.5
   nightSpawnYPosition: 2
@@ -60,6 +60,7 @@ MonoBehaviour:
   initialWaveSpawn: 1
   spawnProbability: 1
   maxCreaturesPerPacket: 8
+  maxCreaturesPerPacket_Day: 0
   dieAudioClips:
   - {fileID: 8300000, guid: 5754133c60f687f4f948198eb0096c83, type: 3}
   - {fileID: 8300000, guid: 3db2b71397825294c9ee1bc322b68620, type: 3}

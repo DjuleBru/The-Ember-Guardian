@@ -46,6 +46,8 @@ public class Creature : Mob
     public event EventHandler OnCreatureTargetable;
     public event EventHandler OnCreatureIdleSoundTriggered;
     public event EventHandler OnCreatureEnabled;
+    public event EventHandler OnCreaturePaused;
+    public event EventHandler OnCreatureUnpaused;
     public static event EventHandler OnAnyCreatureKilledByDog;
 
     protected float triggerSoundTimer;
@@ -122,12 +124,33 @@ public class Creature : Mob
     }
 
     protected virtual void Start() {
+        DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
         creatureUnlocked = MetaProgressionManager.Instance.GetCreatureUnlocked(creatureSO);
 
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded += PlayerMovement_OnPlayerCrouchedEnded;
         MetaProgressionManager.Instance.OnCreatureSOUnlocked += MetaProgressionMaanger_OnCreatureSOUnlocked;
+    }
+
+    private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
+        if (!creatureActive) return;
+        if (!LevelManager.Instance.IsHordeMode()) return;
+
+        isPaused = false;
+        rb.simulated = true;
+        OnCreatureUnpaused?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void DayNightManager_OnCyclePaused(object sender, EventArgs e) {
+        if (!creatureActive) return;
+        if (!LevelManager.Instance.IsHordeMode()) return;
+
+        isPaused = true;
+        rb.simulated = false;
+        rb.velocity = Vector2.zero;
+        OnCreaturePaused?.Invoke(this, EventArgs.Empty);
     }
 
     protected virtual void OnEnable() {
@@ -153,6 +176,8 @@ public class Creature : Mob
     }
 
     protected override void Update() {
+        if (isPaused) return;
+
         base.Update();
         if (dead) return;
 
@@ -290,8 +315,6 @@ public class Creature : Mob
 
     protected void HordeModeDropGems() {
         if (!HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.Armorer)) return;
-
-        Debug.Log("CAC");
 
         List<PlayerCurrencies.CurrencyType> gemTypeDrop = new List<PlayerCurrencies.CurrencyType>();
         List<int> gemTypeAmountDrop = new List<int>();
@@ -445,6 +468,7 @@ public class Creature : Mob
     }
 
     protected void CreatureHeardPlayerShoot(bool heard) {
+        if (isPaused) return;
         if (heard) {
 
             float randomFloat = UnityEngine.Random.value;
@@ -716,6 +740,8 @@ public class Creature : Mob
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded -= PlayerMovement_OnPlayerCrouchedEnded;
+        DayNightManager.Instance.OnCyclePaused -= DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
     }
 
 

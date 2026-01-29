@@ -30,4 +30,9 @@ public class ActiveShootSpeedBoostVisual : MonoBehaviour
             skillActivePS.Play();
         }
     }
+    private void OnDestroy() {
+        PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
+        PlayerSkills.Instance.OnLeftActiveSkillDeactivated -= PlayerSkills_OnLeftActiveSkillDeactivated;
+        PlayerSkills.Instance.OnRightActiveSkillDeactivated -= PlayerSkills_OnRightActiveSkillDeactivated;
+    }
 }

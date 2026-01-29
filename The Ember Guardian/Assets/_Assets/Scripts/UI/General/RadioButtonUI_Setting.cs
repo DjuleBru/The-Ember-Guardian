@@ -153,7 +153,25 @@ public class RadioButtonUI_Setting : RadioButtonUI
         }
 
         if (settingType == SettingType.Difficulty) {
-            string displayTypeText = "difficulty_" + SettingsManager.Instance.GetDifficulty().ToString().ToLower();
+
+            SettingsManager.Difficulty currentDifficulty = SettingsManager.Instance.GetDifficulty();
+
+            if (LevelManager.Instance != null && LevelManager.Instance.IsHordeMode()) {
+                currentDifficulty = SettingsManager.Instance.GetHordeDifficulty();
+            }
+
+            string displayTypeText = "difficulty_" + currentDifficulty;
+
+            if(currentDifficulty == SettingsManager.Difficulty.Easy) {
+                displayTypeText = "difficulty_easy";
+            }
+            if (currentDifficulty == SettingsManager.Difficulty.Medium) {
+                displayTypeText = "difficulty_medium";
+            }
+            if (currentDifficulty == SettingsManager.Difficulty.Hard) {
+                displayTypeText = "difficulty_hard";
+            }
+
             toggledText.text = LocalizationManager.Instance.GetLocalizedText(displayTypeText);
         }
 

@@ -89,10 +89,16 @@ public class MobSpawner : MonoBehaviour
         }
 
         if(isCreatureSpawner) {
-            if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
+            SettingsManager.Difficulty currentDifficulty = SettingsManager.Instance.GetDifficulty();
+
+            if (LevelManager.Instance.IsHordeMode()) {
+                currentDifficulty = SettingsManager.Instance.GetHordeDifficulty();
+            }
+
+            if (currentDifficulty == SettingsManager.Difficulty.Easy) {
                 mobAmountToSpawn = (int)(mobAmountToSpawn * easyDifficultySpawnAmountMultiplier);
             }
-            if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Hard) {
+            if (currentDifficulty == SettingsManager.Difficulty.Hard) {
                 mobAmountToSpawn = (int)(mobAmountToSpawn * hardDifficultySpawnAmountMultiplier);
             }
 

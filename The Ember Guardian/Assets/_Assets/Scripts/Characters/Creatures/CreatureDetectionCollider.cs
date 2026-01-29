@@ -60,6 +60,7 @@ public class CreatureDetectionCollider : MonoBehaviour {
     }
 
     private void Update() {
+        if (creature.GetIsPaused()) return;
         if (DebugManager.Instance.GetDisableCreatureDetection()) return;
         if (!creature.GetCreatureActive()) return;
 

@@ -73,6 +73,7 @@ public class EngineerJob : WorkerJob {
 
 
     private void Update() {
+        if (worker.GetIsPaused()) return;
         if (CheckDropCurrenciesToPlayer() && state != EngineerState.droppingCurrency) {
             ChangeState(EngineerState.droppingCurrency);
             return;

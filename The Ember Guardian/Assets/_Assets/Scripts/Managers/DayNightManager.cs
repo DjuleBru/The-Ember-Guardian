@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,7 +68,15 @@ public class DayNightManager : MonoBehaviour
         initialDayDuration = dayDuration;
         initialDuskDuration = duskDuration;
 
-        if(SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
+        SettingsManager.Difficulty currentDifficulty = SettingsManager.Instance.GetDifficulty();
+
+        if (LevelManager.Instance.IsHordeMode()) {
+            currentDifficulty = SettingsManager.Instance.GetHordeDifficulty();
+            HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
+            HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
+        }
+
+        if (currentDifficulty == SettingsManager.Difficulty.Easy) {
             SetEasyDifficultyDayDurations();
         }
 
@@ -86,6 +95,15 @@ public class DayNightManager : MonoBehaviour
         if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
         state = State.Dawn;
         OnDawnStart?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void HubMerchantUI_OnAnyHubMerchantCloseUIPanel(object sender, EventArgs e) {
+        Debug.Log("HubMerchantUI_OnAnyHubMerchantCloseUIPanel");
+        SetCyclePaused(false, true);
+    }
+
+    private void HubMerchant_OnPlayerOpenedAnyHubMerchantShop(object sender, EventArgs e) {
+        SetCyclePaused(true, true);
     }
 
 
@@ -133,7 +151,13 @@ public class DayNightManager : MonoBehaviour
     }
 
     private void SettingsManager_OnDifficultyChanged(object sender, EventArgs e) {
-        if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
+        SettingsManager.Difficulty currentDifficulty = SettingsManager.Instance.GetDifficulty();
+
+        if (LevelManager.Instance.IsHordeMode()) {
+            currentDifficulty = SettingsManager.Instance.GetHordeDifficulty();
+        }
+
+        if (currentDifficulty == SettingsManager.Difficulty.Easy) {
             SetEasyDifficultyDayDurations();
         } else {
             dawnDuration = initialDawnDuration;
@@ -217,10 +241,11 @@ public class DayNightManager : MonoBehaviour
         }
     }
 
+    [Button]
     public void SetCyclePaused(bool paused, bool showCyclePauseUI = false) {
 
-        // Don't unpause when closing Video Tip and fire has not been lit
-        if (!Fire.Instance.GetInitialFireLit() && !paused) return;
+        // Don't unpause when closing Video Tip and fire has not been lit IF NOT IN HORDE MODE
+        if (!Fire.Instance.GetInitialFireLit() && !paused && !LevelManager.Instance.IsHordeMode()) return;
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
 
         cyclePaused = paused;
@@ -302,5 +327,10 @@ public class DayNightManager : MonoBehaviour
     }
     public bool GetManualInitialCycleSet() {
         return manualInitialCycleSet;
+    }
+
+    private void OnDestroy() {
+        HubMerchant.OnPlayerOpenedAnyHubMerchantShop -= HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
+        HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
     }
 }

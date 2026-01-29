@@ -343,7 +343,8 @@ public class ItemButtonUI : ButtonUI {
 
     private void RefreshDescriptionCardCosts() {
         if (hubMerchantItem.GetItemBought()) return;
-        if (itemLockedInDemo) return;
+        if (itemLockedInDemo && HUBManager.Instance != null && HUBManager.Instance.GetIsDemo()) return;
+
         int greenGemCost = hubMerchantItem.GetGreenGemCost();
         int redGemCost = hubMerchantItem.GetRedGemCost();
         int blueGemCost = hubMerchantItem.GetBlueGemCost();
@@ -746,6 +747,7 @@ public class ItemButtonUI : ButtonUI {
         if (lockHoverInteractions) return;
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
         if (itemButtonUI == null) return;
+
 
         if (this == itemButtonUI) {
             itemHovered = true;

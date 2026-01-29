@@ -43,6 +43,18 @@ public class WorkerAnimatorManager : MonoBehaviour
         worker.OnMobDamageTaken += Worker_OnMobDamageTaken;
         engineerJob.OnOrbExtractorTriggeredDrill += EngineerJob_OnOrbExtractorTriggeredDrill;
         engineerJob.OnEngineerTurnsWrench += EngineerJob_OnEngineerTurnsWrench;
+        worker.OnWorkerPaused += Worker_OnWorkerPaused;
+        worker.OnWorkerUnpaused += Worker_OnWorkerUnpaused;
+    }
+
+    private void Worker_OnWorkerUnpaused(object sender, EventArgs e) {
+        animator.speed = 1f; // pause
+
+    }
+
+    private void Worker_OnWorkerPaused(object sender, EventArgs e) {
+        animator.speed = 0f; // pause
+
     }
 
     private void Worker_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {

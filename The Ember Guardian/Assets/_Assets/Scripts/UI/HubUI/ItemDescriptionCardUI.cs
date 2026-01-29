@@ -126,6 +126,38 @@ public class ItemDescriptionCardUI : MonoBehaviour
         purpleGemAmountText.text = purpleGem.ToString();
         cyanGemAmountText.text = cyanGem.ToString();
 
+        RefreshDescriptionCardCostColors();
+
+        if (greenGem == 0) {
+            greenGemCostGO.SetActive(false);
+        }
+
+        if (redGem == 0) {
+            redGemCostGO.SetActive(false);
+        }
+
+        if (blueGem == 0) {
+            blueGemCostGO.SetActive(false);
+        }
+
+        if (yellowGem == 0) {
+            yellowGemCostGO.SetActive(false);
+        }
+
+        if (purpleGem == 0) {
+            purpleGemCostGO.SetActive(false);
+        }
+
+        if (cyanGem == 0) {
+            cyanGemCostGO.SetActive(false);
+        }
+       
+    }
+
+    public void RefreshDescriptionCardCostColors() {
+
+        //Debug.Log("RefreshDescriptionCardCostColors");
+
         int playerGreenGems = 0;
         int playerRedGems = 0;
         int playerCyanGems = 0;
@@ -133,14 +165,15 @@ public class ItemDescriptionCardUI : MonoBehaviour
         int playerYellowGems = 0;
         int playerPurpleGems = 0;
 
-        if(HUBManager.Instance != null) {
+        if (HUBManager.Instance != null) {
             playerGreenGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
             playerRedGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
             playerCyanGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.cyanGem).Count;
             playerBlueGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.blueGem).Count;
             playerYellowGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.yellowGem).Count;
             playerPurpleGems = UICurrencyManager.HubInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.purpleGem).Count;
-        } else {
+        }
+        else {
             playerGreenGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.greenGem).Count;
             playerRedGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.redGem).Count;
             playerCyanGems = UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.cyanGem).Count;
@@ -153,7 +186,8 @@ public class ItemDescriptionCardUI : MonoBehaviour
         if (greenGem > playerGreenGems) {
             //greenGemAmountText.fontMaterial = LocalizationManager.Instance.GetRedGlowMaterial();
             greenGemAmountText.color = redItemColor;
-        } else {
+        }
+        else {
             greenGemAmountText.color = Color.white;
         }
 
@@ -192,32 +226,6 @@ public class ItemDescriptionCardUI : MonoBehaviour
         else {
             purpleGemAmountText.color = Color.white;
         }
-
-        if (greenGem == 0) {
-            greenGemCostGO.SetActive(false);
-        }
-
-        if (redGem == 0) {
-            redGemCostGO.SetActive(false);
-        }
-
-        if (blueGem == 0) {
-            blueGemCostGO.SetActive(false);
-        }
-
-        if (yellowGem == 0) {
-            yellowGemCostGO.SetActive(false);
-        }
-
-        if (purpleGem == 0) {
-            purpleGemCostGO.SetActive(false);
-        }
-
-        if (cyanGem == 0) {
-            cyanGemCostGO.SetActive(false);
-        }
-
-       
     }
 
     private void RefreshItemStatDescription(List<string> itemStatDescriptionList, List<string> itemStatList, List<bool> itemStatModifiersBools) {

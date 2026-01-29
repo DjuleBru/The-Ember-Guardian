@@ -81,6 +81,7 @@ public class CreatureAI : MonoBehaviour {
 
 
     protected virtual void Update() {
+        if (creature.GetIsPaused()) return;
         if (died) return;
         if (!spawned) return;
 

@@ -49,7 +49,7 @@ public class AnimalAI : MonoBehaviour
     }
 
     private void Update() {
-
+        if (animal.GetIsPaused()) return;
         if (isSafe) {
             Roam();
         }

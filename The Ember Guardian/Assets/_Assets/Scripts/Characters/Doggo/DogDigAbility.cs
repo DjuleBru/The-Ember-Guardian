@@ -12,6 +12,7 @@ public class DogDigAbility : MonoBehaviour
 
     private bool digAbilityUnlocked;
     private bool sniffing;
+    private bool fireLit;
 
     private float digTimer;
 
@@ -23,11 +24,16 @@ public class DogDigAbility : MonoBehaviour
     }
 
     private void Start() {
+        Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         dogAnimator.OnDogSniffedEnd += DogAnimator_OnDogSniffedEnd;
 
         digAbilityUnlocked = DogStats.Instance.GetGermanShepherdDigResourceAbilityUnlocked();
 
         digTimer = DogStats.Instance.GetGermanShepherdDigResourceCooldown();
+    }
+
+    private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
+        fireLit = true;
     }
 
     private void DogAnimator_OnDogSniffedEnd(object sender, EventArgs e) {
@@ -41,6 +47,7 @@ public class DogDigAbility : MonoBehaviour
 
         if (!digAbilityUnlocked) return;
         if (CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) return;
+        if (!fireLit) return;
 
 
         if(!sniffing) {

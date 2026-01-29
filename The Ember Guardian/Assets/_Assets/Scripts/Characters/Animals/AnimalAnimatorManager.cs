@@ -30,6 +30,17 @@ public class AnimalAnimatorManager : MonoBehaviour
         animalAI.OnAnimalReachedSafeZone += AnimalAI_OnAnimalReachedSafeZone;
         animalMovement.OnDestinationReached += AnimalMovement_OnDestinationReached;
         animalMovement.OnDestinationSet += AnimalMovement_OnDestinationSet;
+
+        animal.OnAnimalPaused += Animal_OnAnimalPaused;
+        animal.OnAnimalUnpaused += Animal_OnAnimalUnpaused;
+    }
+
+    private void Animal_OnAnimalUnpaused(object sender, EventArgs e) {
+        animator.speed = 1f; // resume
+    }
+
+    private void Animal_OnAnimalPaused(object sender, EventArgs e) {
+        animator.speed = 0f; // resume
     }
 
     private void AnimalMovement_OnDestinationSet(object sender, System.EventArgs e) {

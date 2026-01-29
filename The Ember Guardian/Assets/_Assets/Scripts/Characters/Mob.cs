@@ -12,6 +12,7 @@ public class Mob : MonoBehaviour, IDamageable
     [SerializeField] protected Transform mobHitPS_Splatter_Continuous;
     [SerializeField] protected Transform mobHitPS_Splatter_Crit;
     [SerializeField] protected bool useHitXPosition;
+    protected bool isPaused;
     protected bool instantiatePSOnHit = true;
 
     protected MobSpawner mobSpawner;
@@ -221,6 +222,9 @@ public class Mob : MonoBehaviour, IDamageable
         return health;
     }
 
+    public bool GetIsPaused() {
+        return isPaused;
+    }
     public void SetHealth(int health) {
         this.health = health;
     }

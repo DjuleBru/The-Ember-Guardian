@@ -46,6 +46,7 @@ public class MinerJob : WorkerJob {
 
 
     private void Update() {
+        if (worker.GetIsPaused()) return;
         closestCreature = workerDetectionCollider.GetClosestCreature();
 
         if (CheckDropCurrenciesToPlayer()) {

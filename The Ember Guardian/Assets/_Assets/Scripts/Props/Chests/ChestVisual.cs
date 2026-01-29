@@ -32,8 +32,8 @@ public class ChestVisual : MonoBehaviour
         chest.OnPlayerTriggeredOut += Chest_OnPlayerTriggeredOut;
         chest.OnChestOpenedAnimationOver += Chest_OnChestOpenedAnimationOver;
         chest.OnChestOpenable += Chest_OnChestOpenable;
+        chest.OnChestClosed += Chest_OnChestClosed;
     }
-
 
     protected virtual void Start() {
         chest.OnChestOpened += Chest_OnChestOpened;
@@ -98,10 +98,18 @@ public class ChestVisual : MonoBehaviour
             inputIconAnimator.SetTrigger("Show");
         }
 
+        if(chest.GetIsHordeChest() && !chest.GetChestOpened()) {
+            inputIconAnimator.gameObject.SetActive(true);
+            inputIconAnimator.ResetTrigger("Hide");
+            inputIconAnimator.SetTrigger("Show");
+        }
+
         if (showHoveringIndicator) {
             hoveringIndicatorGO.SetActive(false);
         }
     }
+
+
     protected void Chest_OnChestDisappear(object sender, System.EventArgs e) {
         animator.SetTrigger("Disappear");
         inputIconAnimator.gameObject.SetActive(false);
@@ -113,15 +121,26 @@ public class ChestVisual : MonoBehaviour
         chestSpriteRenderer.material = unhoveredMaterial;
 
     }
+
     protected void Chest_OnChestOpenedAnimationOver(object sender, System.EventArgs e) {
 
-        if (!chest.GetChestDisappearsAutomatically()) {
+        if (!chest.GetChestDisappearsAutomatically() && !chest.GetIsHordeChest()) {
             inputIconAnimator.gameObject.SetActive(true);
             animator.SetTrigger("Opened_Idle");
             inputIconAnimator.ResetTrigger("Hide");
             inputIconAnimator.SetTrigger("Show");
         }
 
+        if(chest.GetIsHordeChest()) {
+            animator.SetTrigger("Opened_Idle");
+        }
+
+    }
+
+    protected void Chest_OnChestClosed(object sender, System.EventArgs e) {
+        animator.SetTrigger("Close");
+        inputIconAnimator.gameObject.SetActive(false);
+        chestSpriteRenderer.material = unhoveredMaterial;
     }
 
 }

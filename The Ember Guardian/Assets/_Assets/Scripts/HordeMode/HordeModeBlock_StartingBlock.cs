@@ -38,11 +38,6 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         workerSpawnerLeft_FD.gameObject.SetActive(false);
         workerSpawnerRight_FD.gameObject.SetActive(false);
 
-        if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
-            resourceChest.gameObject.SetActive(false);
-            return;
-        }
-
         HandleCentralBlockResources();
         HandleCentralBlockWorkerSpawners();
     }
@@ -61,26 +56,29 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
             randomValue = 1;
         }
 
-        if (randomValue > .75) {
+        if (randomValue >= .3) {
             // Only animals
             HandleAnimalsCentralBlock(3, true, randomDirValue);
         }
-        if (randomValue > .5 && randomValue <= .75) {
+
+        if (randomValue < .3) {
             // 2x Animals and  1x Scavengables
 
             HandleAnimalsCentralBlock(2, true, randomDirValue);
             HandleScavengablesCentralBlock(1, false, randomDirValue);
         }
-        if (randomValue > .25 && randomValue <= .5) {
-            // 1x Animal and 2x Scavengables
 
-            HandleAnimalsCentralBlock(1, false, randomDirValue);
-            HandleScavengablesCentralBlock(2, true, randomDirValue);
-        }
-        if (randomValue <= .25) {
-            // Only scavengables
-            HandleScavengablesCentralBlock(3, true, randomDirValue);
-        }
+        // Removed majority of scavengables
+        //if (randomValue > .25 && randomValue <= .5) {
+        //    // 1x Animal and 2x Scavengables
+
+        //    HandleAnimalsCentralBlock(1, false, randomDirValue);
+        //    HandleScavengablesCentralBlock(2, true, randomDirValue);
+        //}
+        //if (randomValue <= .25) {
+        //    // Only scavengables
+        //    HandleScavengablesCentralBlock(3, true, randomDirValue);
+        //}
     }
 
     private void HandleCentralBlockWorkerSpawners() {
@@ -330,6 +328,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         save.startingBlockAnimalSpawners_Left = new List<SpawnerSaveData>();
 
         foreach (var spawner in animalSpawnerList_Left) {
+            if (spawner.GetMobCount() == 0) continue;
             save.startingBlockAnimalSpawners_Left.Add(new SpawnerSaveData {
                 mobPrefab = spawner.GetMobPrefab(),
                 currentMobsAlive = spawner.GetMobCount(),
@@ -340,6 +339,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
 
         save.startingBlockAnimalSpawners_Right = new List<SpawnerSaveData>();
         foreach (var spawner in animalSpawnerList_Right) {
+            if (spawner.GetMobCount() == 0) continue;
             save.startingBlockAnimalSpawners_Right.Add(new SpawnerSaveData {
                 mobPrefab = spawner.GetMobPrefab(),
                 currentMobsAlive = spawner.GetMobCount(),

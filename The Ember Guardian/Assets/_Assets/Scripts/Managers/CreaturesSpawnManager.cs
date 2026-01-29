@@ -185,10 +185,16 @@ public class CreaturesSpawnManager : MonoBehaviour {
         RefreshDifficultyMultiplier();
     }
     protected void RefreshDifficultyMultiplier() {
-        if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
+        SettingsManager.Difficulty currentDifficulty = SettingsManager.Instance.GetDifficulty();
+        
+        if(LevelManager.Instance.IsHordeMode()) {
+            currentDifficulty = SettingsManager.Instance.GetHordeDifficulty();
+        }
+
+        if (currentDifficulty == SettingsManager.Difficulty.Easy) {
             currentNightWaveDifficultyMultiplier = easyDifficultyNightWaveMultiplier;
         }
-        if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Hard) {
+        if (currentDifficulty == SettingsManager.Difficulty.Hard) {
             currentNightWaveDifficultyMultiplier = hardDifficultyNightWaveMultiplier;
         }
     }

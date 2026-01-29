@@ -109,9 +109,7 @@ public class BossUI : MonoBehaviour
         bossHealthBarPhase2.fillAmount = 0;
         yield return new WaitForEndOfFrame();
 
-        if (bossName != null) {
-            bossNameText.text = bossName;
-        }
+        bossNameText.text = bossName;
 
         yield return new WaitForSeconds(.1f);
 

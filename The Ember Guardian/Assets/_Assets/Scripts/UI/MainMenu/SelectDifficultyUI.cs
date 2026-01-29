@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -12,11 +13,16 @@ public class SelectDifficultyUI : MonoBehaviour
     [SerializeField] private GameObject panel;
     [SerializeField] private Button mediumDifficultyButton;
     [SerializeField] private Transform cameraTarget;
+    [SerializeField] private Transform hordeModeCameraTarget;
+    [SerializeField] private Transform hordeModeMenuCameraTarget;
     [SerializeField] private Animator canvasAnimator;
     [SerializeField] private GameObject easyGO;
     [SerializeField] private GameObject mediumGO;
     [SerializeField] private GameObject hardGO;
+    [SerializeField] private TextMeshProUGUI hordeXPText;
+
     private bool panelOpen;
+    private bool fromHordeMode;
 
     private void Awake() {
         panel.SetActive(false);
@@ -34,7 +40,16 @@ public class SelectDifficultyUI : MonoBehaviour
         ClosePanel();
     }
 
-    public void OpenPanel() {
+    public void OpenPanel(bool fromHordeMode) {
+        this.fromHordeMode = fromHordeMode;
+
+        if(fromHordeMode) {
+            hordeXPText.gameObject.SetActive(true);
+            hordeXPText.text = " +30% " + LocalizationManager.Instance.GetLocalizedText("difficulty_hordeBonus");
+        } else {
+            hordeXPText.gameObject.SetActive(false);
+        }
+
         StartCoroutine(OpenPanelCoroutine());
     }
 
@@ -46,7 +61,12 @@ public class SelectDifficultyUI : MonoBehaviour
 
         }
 
-        CameraManager.Instance.ChangeCameraTarget(cameraTarget, false);
+        if(fromHordeMode) {
+            CameraManager.Instance.ChangeCameraTarget(hordeModeCameraTarget, false);
+        } else {
+            CameraManager.Instance.ChangeCameraTarget(cameraTarget, false);
+        }
+        
         MainMenuUI.Instance.HideMainMenuButtons();
         MusicManager.Instance.SetAudioVolume(.75f);
 
@@ -66,13 +86,23 @@ public class SelectDifficultyUI : MonoBehaviour
 
         panel.gameObject.SetActive(false);
 
-        CameraManager.Instance.ResetCameraTarget();
+        if (fromHordeMode) {
+            CameraManager.Instance.ChangeCameraTarget(hordeModeMenuCameraTarget);
+        }
+        else {
+            CameraManager.Instance.ResetCameraTarget();
+        }
+
         MusicManager.Instance.SetAudioVolume(1f);
 
         if (MainMenuUI.Instance != null) {
 
-            MainMenuUI.Instance.ShowAllMenuUI();
-            MainMenuUI.Instance.ShowMainMenuButtons();
+            if(fromHordeMode) {
+                HordeModeUI.Instance.FadeInHordeModePanel();
+            } else {
+                MainMenuUI.Instance.ShowAllMenuUI();
+                MainMenuUI.Instance.ShowMainMenuButtons();
+            }
 
         }
 
@@ -82,21 +112,44 @@ public class SelectDifficultyUI : MonoBehaviour
     private IEnumerator ClosePanelAfterDifficultySelect() {
 
         yield return new WaitForSeconds(.5f);
-        CameraManager.Instance.ResetCameraTarget();
+
+        if(fromHordeMode) {
+            CameraManager.Instance.ChangeCameraTarget(hordeModeMenuCameraTarget);
+        } else {
+            CameraManager.Instance.ResetCameraTarget();
+        }
+
         canvasAnimator.SetTrigger("Hide");
         panelOpen = false;
-        MainMenuUI.Instance.StartNewGame();
+
+        if(fromHordeMode) {
+            MainMenuUI.Instance.StartHordeMode();
+        } else {
+            MainMenuUI.Instance.StartNewGame();
+        }
+
     }
 
     public void EasyDifficultyButton() {
-        SettingsManager.Instance.SetDifficulty(SettingsManager.Difficulty.Easy);
+        if(fromHordeMode) {
+            SettingsManager.Instance.SetHordeDifficulty(SettingsManager.Difficulty.Easy);
+        } else {
+            SettingsManager.Instance.SetDifficulty(SettingsManager.Difficulty.Easy);
+        }
+
         StartCoroutine(ClosePanelAfterDifficultySelect());
         mediumGO.SetActive(false);
         hardGO.SetActive(false);
     }
 
     public void MediumDifficultyButton() {
-        SettingsManager.Instance.SetDifficulty(SettingsManager.Difficulty.Medium);
+
+        if (fromHordeMode) {
+            SettingsManager.Instance.SetHordeDifficulty(SettingsManager.Difficulty.Medium);
+        }
+        else {
+            SettingsManager.Instance.SetDifficulty(SettingsManager.Difficulty.Medium);
+        }
 
         StartCoroutine(ClosePanelAfterDifficultySelect());
         easyGO.SetActive(false);
@@ -104,7 +157,13 @@ public class SelectDifficultyUI : MonoBehaviour
     }
 
     public void HardDifficultyButton() {
-        SettingsManager.Instance.SetDifficulty(SettingsManager.Difficulty.Hard);
+
+        if (fromHordeMode) {
+            SettingsManager.Instance.SetHordeDifficulty(SettingsManager.Difficulty.Hard);
+        }
+        else {
+            SettingsManager.Instance.SetDifficulty(SettingsManager.Difficulty.Hard);
+        }
 
         StartCoroutine(ClosePanelAfterDifficultySelect());
         easyGO.SetActive(false);

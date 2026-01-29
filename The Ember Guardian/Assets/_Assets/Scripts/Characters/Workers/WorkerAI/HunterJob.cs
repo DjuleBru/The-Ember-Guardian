@@ -96,6 +96,7 @@ public class HunterJob : WorkerJob {
     }
 
     private void Update() {
+        if (worker.GetIsPaused()) return;
 
         if (targetAnimal != null) {
             Debug.DrawLine(mobMovement.transform.position, targetAnimal.transform.position, Color.red);

@@ -25,9 +25,7 @@ public class PauseMenuUI_Level : PauseMenuUI {
         //SetButtonNavigations();
 
         buttonConfirm_BackToHub.OnButtonDeselected += ButtonConfirm_BackToHub_OnButtonDeselected;
-        buttonConfirm_BackToHub.OnButtonDeHovered += ButtonConfirm_BackToHub_OnButtonDeHovered;
         buttonConfirm_RestartLevel.OnButtonDeselected += ButtonConfirm_RestartLevel_OnButtonDeselected;
-        buttonConfirm_RestartLevel.OnButtonDeHovered += ButtonConfirm_RestartLevel_OnButtonDeHovered;
 
         backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_backToHub");
         backToHubText.font = LocalizationManager.Instance.GetCurrentFont();
@@ -35,20 +33,6 @@ public class PauseMenuUI_Level : PauseMenuUI {
         if(LevelManager.Instance.IsHordeMode()) {
             backToHubButton.gameObject.SetActive(false);
         }
-    }
-
-    private void ButtonConfirm_RestartLevel_OnButtonDeHovered(object sender, EventArgs e) {
-        confirmRestartLevel = false;
-        restartLevelText.text = LocalizationManager.Instance.GetLocalizedText("menu_restartLevel");
-        restartLevelText.font = LocalizationManager.Instance.GetCurrentFont();
-        progressionSavedTextIndicator.SetTrigger("Hide");
-    }
-
-    private void ButtonConfirm_BackToHub_OnButtonDeHovered(object sender, EventArgs e) {
-        confirmBackToHub = false;
-        backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_backToHub");
-        backToHubText.font = LocalizationManager.Instance.GetCurrentFont();
-        progressionSavedTextIndicator.SetTrigger("Hide");
     }
 
     private void ButtonConfirm_RestartLevel_OnButtonDeselected(object sender, EventArgs e) {

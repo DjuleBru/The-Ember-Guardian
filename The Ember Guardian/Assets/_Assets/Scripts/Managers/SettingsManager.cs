@@ -51,6 +51,7 @@ public class SettingsManager : MonoBehaviour
         Hard
     }
     private Difficulty difficulty;
+    private Difficulty hordeDifficulty;
 
     private UIDisplayType currentUIDisplayType;
 
@@ -91,6 +92,7 @@ public class SettingsManager : MonoBehaviour
         gammaLevel = ES3.Load("gammaLevel", 0f, settingsSaveFileSettings);
         currentUIDisplayType = ES3.Load("currentUIDisplayType", UIDisplayType.Adaptive, settingsSaveFileSettings);
         difficulty = ES3.Load("difficulty", Difficulty.Medium, settingsSaveFileSettings);
+        hordeDifficulty = ES3.Load("hordeDifficulty", Difficulty.Medium, settingsSaveFileSettings);
 
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         holdToRun = ES3.Load("holdToRun", true, settingsSaveFileSettings);
@@ -130,6 +132,12 @@ public class SettingsManager : MonoBehaviour
         OnDifficultyChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    public void SetHordeDifficulty(Difficulty difficulty) {
+        this.hordeDifficulty = difficulty;
+        ES3.Save("hordeDifficulty", difficulty, settingsSaveFileSettings);
+        OnDifficultyChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public void ChangeDifficulty() {
         switch (difficulty) {
             case Difficulty.Easy:
@@ -149,6 +157,10 @@ public class SettingsManager : MonoBehaviour
 
     public Difficulty GetDifficulty() {
         return difficulty;
+    }
+
+    public Difficulty GetHordeDifficulty() {
+        return hordeDifficulty;
     }
 
     public void ChangeUIDisplayType() {

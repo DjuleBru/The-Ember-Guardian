@@ -200,7 +200,7 @@ public class StructureLocation : MonoBehaviour {
         };
 
         if (DebugManager.Instance.GetAllStructuresUnlocked() || debugStructureTypeBought || structureSOToBuild.level1StructureInitiallyUnlocked) {
-            Debug.Log(this + " " + structureSOToBuild + " level1StructureInitiallyUnlocked ");
+            //Debug.Log(this + " " + structureSOToBuild + " level1StructureInitiallyUnlocked ");
             structureLocationBought = true;
             gameObject.SetActive(true);
             return;

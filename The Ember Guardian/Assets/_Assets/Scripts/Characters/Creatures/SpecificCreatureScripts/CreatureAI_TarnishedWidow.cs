@@ -50,6 +50,7 @@ public class CreatureAI_TarnishedWidow : CreatureAI
 
         OnWidowJumpStarted?.Invoke(this, EventArgs.Empty);
         BossUI.Instance.LinkBoss(creature, !isFirstAppearance);
+        BossUI.Instance.SetBossName(LocalizationManager.Instance.GetLocalizedText("The Tarnished Widow"));
     }
 
     private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {

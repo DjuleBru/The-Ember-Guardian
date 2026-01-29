@@ -61,6 +61,7 @@ public class MobAttack : MonoBehaviour
     }
 
     protected void Update() {
+        if (mob.GetIsPaused()) return;
         if (!notStunned) return;
 
         attackTimer -= Time.deltaTime;
