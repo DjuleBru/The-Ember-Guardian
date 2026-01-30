@@ -68,7 +68,6 @@ public class SelectDifficultyUI : MonoBehaviour
         }
         
         MainMenuUI.Instance.HideMainMenuButtons();
-        MusicManager.Instance.SetAudioVolume(.75f);
 
         yield return new WaitForSeconds(2f);
         panel.gameObject.SetActive(true);
@@ -92,8 +91,6 @@ public class SelectDifficultyUI : MonoBehaviour
         else {
             CameraManager.Instance.ResetCameraTarget();
         }
-
-        MusicManager.Instance.SetAudioVolume(1f);
 
         if (MainMenuUI.Instance != null) {
 

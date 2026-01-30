@@ -206,9 +206,11 @@ public class MusicManager : MonoBehaviour {
 
     public void FadeInToMainMenuMusic() {
         StartCoroutine(FadeOutThenInCoroutine(1f, 1f, mainMenuMusic));
+        targetVolume = .75f;
     }
     public void FadeInToHordeModeMusic() {
         StartCoroutine(FadeOutThenInCoroutine(1f, 1f, hordeModeMusic));
+        targetVolume = .5f;
     }
 
     public void SetHubMusic() {

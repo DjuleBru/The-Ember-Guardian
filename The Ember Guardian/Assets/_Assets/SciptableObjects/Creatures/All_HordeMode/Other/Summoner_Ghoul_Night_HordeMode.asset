@@ -18,7 +18,7 @@ MonoBehaviour:
   description: Melee mob that can respawn after it's first death !
   creatureIcon: {fileID: 21300000, guid: c8da4e1937bd88c43951c33f6d726431, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: 9d43ad776aed051429d6cfc34ba8c831, type: 3}
-  creaturePrefab: {fileID: 4997657120178985709, guid: 3afa92358c2b7d44dbea84894aba0cfe, type: 3}
+  creaturePrefab: {fileID: 4997657120178985709, guid: b4a52539460884142b0fe0b297c84e86, type: 3}
   mass: 20
   detectionRange_Day: 8
   detectionRange_Night: 8
@@ -60,6 +60,7 @@ MonoBehaviour:
   initialWaveSpawn: 3
   spawnProbability: 0.25
   maxCreaturesPerPacket: 2
+  maxCreaturesPerPacket_Day: 0
   dieAudioClips:
   - {fileID: 8300000, guid: 5754133c60f687f4f948198eb0096c83, type: 3}
   - {fileID: 8300000, guid: 3db2b71397825294c9ee1bc322b68620, type: 3}

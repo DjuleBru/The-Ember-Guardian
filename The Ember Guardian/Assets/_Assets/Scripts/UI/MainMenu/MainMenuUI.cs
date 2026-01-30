@@ -427,7 +427,7 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     private void ButtonConfirm_ResetProgression_OnButtonDeselected(object sender, EventArgs e) {
-        Debug.Log("ButtonConfirm_ResetProgression_OnButtonDeselected");
+        //Debug.Log("ButtonConfirm_ResetProgression_OnButtonDeselected");
         confirmResetProgression = false;
         newGameText.text = LocalizationManager.Instance.GetLocalizedText("menu_newGame");
     }

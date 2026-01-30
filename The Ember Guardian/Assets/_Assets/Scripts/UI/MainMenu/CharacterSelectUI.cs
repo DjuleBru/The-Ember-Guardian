@@ -45,6 +45,8 @@ public class CharacterSelectUI : MonoBehaviour
             SelectCharacter(true);
             ClosePanel();
         });
+
+        GameInput.Instance.OnPlayerInputChanged += Instance_OnPlayerInputChanged;
     }
 
     private void SelectCharacter(bool female) {
@@ -65,6 +67,13 @@ public class CharacterSelectUI : MonoBehaviour
         if (MainMenuUI.Instance != null) {
             MainMenuUI.Instance.HideAllMenuUI();
             MainMenuUI.Instance.HideMainMenuButtons();
+        }
+
+    }
+
+    private void Instance_OnPlayerInputChanged(object sender, EventArgs e) {
+        if(GameInput.Instance.IsUsingGamepad()) {
+            EventSystem.current.SetSelectedGameObject(maleCharacterButton.gameObject);
         }
 
     }

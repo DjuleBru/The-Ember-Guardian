@@ -360,6 +360,10 @@ public class Chest : MonoBehaviour
                 OnPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
                 OnChestOpenable?.Invoke(this, EventArgs.Empty);
             }
+        } else {
+            playerInTriggerArea = false;
+            Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
+            OnPlayerTriggeredOut?.Invoke(this, EventArgs.Empty);
         }
 
     }

@@ -71,7 +71,7 @@ public class GrenadeTrajectoryPreview : MonoBehaviour
         // Remapper pour que 0 -> minForce, 1 -> 1
         float loadingShotMultiplier = Mathf.Lerp(minLoadShotForceNormalized, 1f, loadingShotTimer);
 
-        Vector2 initialForce = loadingShotMultiplier * PlayerAim.Instance.GetEffectiveAimDir().normalized * PlayerShoot.Instance.GetHeldGun().GetBulletSpeed();
+        Vector2 initialForce = (loadingShotMultiplier+.025f) * PlayerAim.Instance.GetEffectiveAimDir().normalized * PlayerShoot.Instance.GetHeldGun().GetBulletSpeed();
         DrawTrajectory(lineRenderer.transform.position, initialForce);
     }
 

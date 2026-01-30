@@ -18,7 +18,7 @@ MonoBehaviour:
   description: Basic, slightly tanky, slow creature.
   creatureIcon: {fileID: 21300000, guid: fc2ff6869f9b2c24680784fcec2a3cb5, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: a0ad925b64dd46943b94d5d1303efa8d, type: 3}
-  creaturePrefab: {fileID: 2465624883499499618, guid: 6689a457d1d1e094d929af96df66dfca, type: 3}
+  creaturePrefab: {fileID: 2465624883499499618, guid: 3198ebfb705df3440bd337b2923feb6d, type: 3}
   mass: 1000
   detectionRange_Day: 12
   detectionRange_Night: 10
@@ -31,6 +31,8 @@ MonoBehaviour:
   flightMinAltitude: 0
   flightMaxAltitude: 0
   flightAltitudeRandomizer: 0
+  minRepositionDistanceToPlayer: 0
+  maxRepositionDistanceToPlayer: 8
   dayMoveSpeed: 0.5
   nightMoveSpeed: 0.5
   aggroMoveSpeedBuff: 1.2
@@ -58,6 +60,7 @@ MonoBehaviour:
   initialWaveSpawn: 1
   spawnProbability: 0.4
   maxCreaturesPerPacket: 1
+  maxCreaturesPerPacket_Day: 0
   dieAudioClips:
   - {fileID: 8300000, guid: 2aacf1f4dfbfd344abcc334250c0a30a, type: 3}
   - {fileID: 8300000, guid: 11fae8d2abe8d0d46937105f934664c5, type: 3}

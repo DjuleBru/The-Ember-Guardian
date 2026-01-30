@@ -44,6 +44,7 @@ MonoBehaviour:
   loadedShotFiredIfNotFullyLoaded: 0
   loadShotTime: 0.3
   minLoadShotTime: 0
+  minLoadShotForceNormalized: 0
   delayBetweenClickAndShot: 0.1
   useAngleInPS: 0
   damagePerBullet: 60
@@ -65,7 +66,7 @@ MonoBehaviour:
   surgeReloadProbability: 0
   jamRepairHitAmount: 3
   perfectQTEBulletAmountDamageBuffed: 1
-  weightAccelerationFactor: 0.85
+  weightAccelerationFactor: 0.8
   reloadAccelerationFactor: 0.85
   followMouseSpeed: 25
   swapToWeaponTimeMultiplier: 2.5

@@ -379,11 +379,15 @@ public class Gun : MonoBehaviour
             GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
             gunProjectile.gameObject.SetActive(true);
 
-            float loadingShotTimer = PlayerShoot.Instance.GetLoadingShotTimerNormalized(); // 0 -> 1
-            float minLoadShotForceNormalized = PlayerShoot.Instance.GetHeldGunSO().minLoadShotForceNormalized;
 
-            // Remapper pour que 0 -> minForce, 1 -> 1
-            float loadingShotMultiplier = Mathf.Lerp(minLoadShotForceNormalized, 1f, loadingShotTimer);
+            float loadingShotMultiplier = 1f;
+            if (gunSO.gunType == GunSO.GunType.GrenadeLauncher) {
+                float loadingShotTimer = PlayerShoot.Instance.GetLoadingShotTimerNormalized(); // 0 -> 1
+                float minLoadShotForceNormalized = PlayerShoot.Instance.GetHeldGunSO().minLoadShotForceNormalized;
+                // Remapper pour que 0 -> minForce, 1 -> 1
+                loadingShotMultiplier = Mathf.Lerp(minLoadShotForceNormalized, 1f, loadingShotTimer);
+            }
+         
 
             Vector2 initialForce = loadingShotMultiplier * PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed;
 
