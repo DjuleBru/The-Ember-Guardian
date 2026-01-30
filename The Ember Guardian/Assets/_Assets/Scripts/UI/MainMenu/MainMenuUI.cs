@@ -170,13 +170,11 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     public virtual void NewGameButton() {
+       
+
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
 
-            if(!VersioningManager.Instance.GetIsDemo()) {
-                SelectDifficultyUI.Instance.OpenPanel(false);
-            } else {
-                StartNewGame();
-            }
+            SelectDifficultyUI.Instance.OpenPanel(false);
 
         } else {
 
@@ -340,10 +338,6 @@ public class MainMenuUI : MonoBehaviour {
 
     private IEnumerator StartNewGameCoroutine() {
 
-        if(VersioningManager.Instance.GetIsDemo()) {
-            mainMenuPanelAnimator.SetTrigger("FadeOut");
-        }
-
         OnGameStart?.Invoke(this, EventArgs.Empty);
 
         yield return new WaitForSeconds(1f);
@@ -351,12 +345,7 @@ public class MainMenuUI : MonoBehaviour {
         MusicManager.Instance.FadeOutMusic(1f);
         MetaProgressionManager.Instance.SetSavedOnce();
 
-        if(VersioningManager.Instance.GetIsDemo()) {
-            SceneLoader.Instance.LoadDemoIntro(2f);
-
-        } else {
-            SceneLoader.Instance.LoadTutorial(2f);
-        }
+        SceneLoader.Instance.LoadTutorial(2f);
     }
 
     private IEnumerator StartHordeModeCoroutine() {
@@ -375,41 +364,19 @@ public class MainMenuUI : MonoBehaviour {
 
         yield return new WaitForSeconds(1f);
 
-        // DEMO
-        if (VersioningManager.Instance.GetIsDemo()) {
-            bool demoTutorialCompleted = MetaProgressionManager.Instance.GetTutorialCompletedOrSkipped();
-            if (!demoTutorialCompleted) {
-                SceneLoader.Instance.LoadDemoIntro(2f);
+        if (MetaProgressionManager.Instance.GetTutorialCompletedOrSkipped()) {
+            bool playerLeftInLevel = MetaProgressionManager.Instance.GetPlayerLeftInLevel();
+
+            if (playerLeftInLevel) {
+                SceneLoader.Instance.LoadLastLevel(1f);
             }
             else {
-                bool playerLeftInLevel = MetaProgressionManager.Instance.GetPlayerLeftInLevel();
-
-                if(playerLeftInLevel) {
-                    SceneLoader.Instance.LoadLastLevel(1f);
-                } else {
-                    SceneLoader.Instance.LoadHub(1f);
-                }
-
+                SceneLoader.Instance.LoadHub(1f);
             }
-
         }
-        // FULL GAME
         else {
-            if (MetaProgressionManager.Instance.GetTutorialCompletedOrSkipped()) {
-                bool playerLeftInLevel = MetaProgressionManager.Instance.GetPlayerLeftInLevel();
-
-                if (playerLeftInLevel) {
-                    SceneLoader.Instance.LoadLastLevel(1f);
-                }
-                else {
-                    SceneLoader.Instance.LoadHub(1f);
-                }
-            }
-            else {
-                SceneLoader.Instance.LoadTutorial(1f);
-            }
+            SceneLoader.Instance.LoadTutorial(1f);
         }
-
         
 
         MusicManager.Instance.FadeOutMusic(1f);

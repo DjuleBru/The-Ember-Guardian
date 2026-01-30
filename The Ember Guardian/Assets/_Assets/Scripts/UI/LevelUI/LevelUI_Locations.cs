@@ -67,7 +67,6 @@ public class LevelUI_Locations : MonoBehaviour
 
         // On définit une position cible fluide au lieu de téléporter directement
         targetPos = new Vector2(posX, locationsPSRT.anchoredPosition.y);
-        Debug.Log(shownChars + " " + targetPos);
 
         if (shownChars == totalChars) {
             StartCoroutine(StopPSAfterDelay());

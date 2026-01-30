@@ -75,17 +75,6 @@ public class SettingsMenuUI : MonoBehaviour
 
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
 
-        if(VersioningManager.Instance.GetIsDemo()) {
-            difficultyButton.gameObject.SetActive(false);
-            Navigation zoomSliderNav = zoomLevelSlider.navigation;
-            Navigation UIDisplayNav = UIDisplayButton.navigation;
-
-            zoomSliderNav.selectOnDown = UIDisplayButton;
-            UIDisplayNav.selectOnUp = zoomLevelSlider;
-
-            zoomLevelSlider.navigation = zoomSliderNav;
-            UIDisplayButton.navigation = UIDisplayNav;
-        }
     }
 
     protected void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {

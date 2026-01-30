@@ -95,11 +95,8 @@ public class SceneLoader : MonoBehaviour
     }
 
     public void LoadHub(float crossfadeDuration) {
-        if(isDemoIntro || DemoMainLevelManager.Instance != null || (VersioningManager.Instance != null && VersioningManager.Instance.GetIsDemo())) {
-            StartCoroutine(LoadSceneAfterCrossfade("HUB_Demo", crossfadeDuration));
-        } else {
-            StartCoroutine(LoadSceneAfterCrossfade("HUB_Main", crossfadeDuration));
-        }
+        StartCoroutine(LoadSceneAfterCrossfade("HUB_Main", crossfadeDuration));
+        return;
     }
 
     public void LoadLevel(LevelSO levelSO, float crossfadeDuration) {

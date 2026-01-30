@@ -34,14 +34,14 @@ public class VersioningManager : MonoBehaviour
     private void Start() {
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.MainMenu) return;
 
-        int vMajor = isDemo ? demoState : state;
-        int vMinor = isDemo ? demoMajor : major;
-        int vPatch = isDemo ? demoMinor : minor;
-        int vBuild = isDemo ? demoPatch : patch;
+        int vMajor = (isDemo || isNewDemo) ? demoState : state;
+        int vMinor = (isDemo || isNewDemo) ? demoMajor : major;
+        int vPatch = (isDemo || isNewDemo) ? demoMinor : minor;
+        int vBuild = (isDemo || isNewDemo) ? demoPatch : patch;
 
         string versionString = FormatVersion(vMajor, vMinor, vPatch, vBuild);
 
-        if (isDemo) {
+        if ((isDemo || isNewDemo)) {
             prefixText = "Demo";
         }
 
@@ -139,7 +139,7 @@ public class VersioningManager : MonoBehaviour
     }
 
     public bool GetIsDemo() {
-        return isDemo;
+        return (isDemo || isNewDemo);
     }
     public bool GetIsNewDemo() {
         return isNewDemo;
