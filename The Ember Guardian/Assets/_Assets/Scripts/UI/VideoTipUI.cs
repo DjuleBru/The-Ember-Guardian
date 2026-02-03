@@ -25,7 +25,6 @@ public class VideoTipUI : MonoBehaviour
     [SerializeField] private Transform tipTextContainer;
     [SerializeField] private Transform tipTextTemplate;
     [SerializeField] private Transform wishlistButton;
-    [SerializeField] private Transform backToMainMenuButton;
     [SerializeField] private Animator videoTipUIMainPanelAnimator;
 
     [SerializeField] private VideoTipSO testTipSO;
@@ -50,13 +49,6 @@ public class VideoTipUI : MonoBehaviour
     private void Awake() {
         Instance = this;
         wishlistButton.gameObject.SetActive(false);
-        backToMainMenuButton.gameObject.SetActive(false);
-
-        backToMainMenuButton.GetComponent<Button>().onClick.AddListener(() => {
-            ClosePanel();
-            HUBManager.Instance.SaveHub();
-            SceneLoader.Instance.LoadMainMenu(1f);
-        });
     }
 
     private void Start() {
@@ -120,10 +112,6 @@ public class VideoTipUI : MonoBehaviour
 
         if(endDemoTip) {
             wishlistButton.gameObject.SetActive(true);
-        }
-
-        if(hordeModeUnlockedTip) {
-            backToMainMenuButton.gameObject.SetActive(true);
         }
 
     }

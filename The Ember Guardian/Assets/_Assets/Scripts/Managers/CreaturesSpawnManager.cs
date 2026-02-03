@@ -282,7 +282,8 @@ public class CreaturesSpawnManager : MonoBehaviour {
             SetWaveParameters(currentWaveNumber, true, true);
             //SetTutorialWave();
         }
-        if (Input.GetKeyDown(KeyCode.T)) {
+
+        if (Input.GetKeyDown(KeyCode.Backspace)) {
             Debug.Log("SpawnWave");
             StartCoroutine(SpawnWave(currentWaveNumber));
         }

@@ -38,6 +38,7 @@ public class MainMenuUI : MonoBehaviour {
     [SerializeField] protected Button_Confirm buttonConfirm_ResetProgression;
     [SerializeField] protected Button_Confirm buttonConfirm_ResetHordeModeProgression;
     [SerializeField] protected Button_Confirm buttonConfirm_ResetHordeModeEntireProgression;
+    [SerializeField] protected HordeModeMenuButton hordeModeMenuButton;
     [SerializeField] protected TextMeshProUGUI newHordeModeGameText;
     [SerializeField] protected TextMeshProUGUI resetEntireHordeModeProgressionText;
     [SerializeField] protected TextMeshProUGUI continueHordeModeGameText;
@@ -96,7 +97,7 @@ public class MainMenuUI : MonoBehaviour {
     }
 
 
-    private void InitializeHordeModeButton() {
+    public void InitializeHordeModeButton() {
         hordeModeMenuGO.SetActive(false);
         Debug.Log("InitializeHordeModeButton");
 
@@ -105,11 +106,16 @@ public class MainMenuUI : MonoBehaviour {
 
         if (!MetaProgressionManager.Instance.GetHordeModeUnlocked()) {
             hordeModeButton.interactable = false;
+        } else {
+            hordeModeButton.interactable = true;
         }
 
         if (!VersioningManager.Instance.GetHordeModeImplemented()) {
             hordeModeButton.gameObject.SetActive(false);
         }
+
+        hordeModeMenuButton.RefreshHordeModeUnlocked();
+
     }
 
     private void CheckBackFromHordeMode() {

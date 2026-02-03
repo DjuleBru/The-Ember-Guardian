@@ -124,8 +124,11 @@ public class Creature : Mob
     }
 
     protected virtual void Start() {
-        DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
-        DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
+        if(DayNightManager.Instance != null) {
+            DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+            DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
+        }
+
         creatureUnlocked = MetaProgressionManager.Instance.GetCreatureUnlocked(creatureSO);
 
         PlayerShoot.Instance.OnPlayerShot += PlayerShoot_OnPlayerShotProjectile;
@@ -740,8 +743,12 @@ public class Creature : Mob
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded -= PlayerMovement_OnPlayerCrouchedEnded;
-        DayNightManager.Instance.OnCyclePaused -= DayNightManager_OnCyclePaused;
-        DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
+
+        if(DayNightManager.Instance != null) {
+            DayNightManager.Instance.OnCyclePaused -= DayNightManager_OnCyclePaused;
+            DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
+        }
+
     }
 
 

@@ -163,6 +163,8 @@ public class PlayerTabMenuUI : MonoBehaviour
     }
     private void OnDestroy() {
         GameInput.Instance.OnPlayerOpenPlayerTabPerformed -= GameInput_OnPlayerOpenPlayerTabPerformed;
+        GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnPlayerPausePerformed -= GameInput_OnPlayerPausePerformed;
         HubMerchantUI.OnAnyHubMerchantOpenUIPanel -= HubMerchantUI_OnAnyHubMerchantOpenUIPanel;
         HubMerchantUI.OnAnyHubMerchantCloseUIPanel -= HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
         GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;

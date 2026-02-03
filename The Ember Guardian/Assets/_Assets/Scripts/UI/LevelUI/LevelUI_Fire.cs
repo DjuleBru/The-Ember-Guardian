@@ -221,10 +221,14 @@ public class LevelUI_Fire : MonoBehaviour
         }
 
         PlayerUI_TickTemplate[] tickArray = progressBarContainer.GetComponentsInChildren<PlayerUI_TickTemplate>();
+        PlayerUI_TickTemplate tick = tickArray[tickArray.Length - 1];
 
-        tickArray[tickArray.Length - 1].RemoveTick(1);
-        tickArray[tickArray.Length - 1].GetComponent<Rigidbody2D>().gravityScale = 2f;
-        tickArray[tickArray.Length - 1].transform.SetParent(fireUIGameObject.transform, true);
+        if(tick != null) {
+            tick.RemoveTick(1);
+            tick.GetComponent<Rigidbody2D>().gravityScale = 2f;
+            tick.transform.SetParent(fireUIGameObject.transform, true);
+        }
+
 
         if(currentBarAmount == maxBars) {
             Instantiate(progressBarTemplate, progressBarContainer);

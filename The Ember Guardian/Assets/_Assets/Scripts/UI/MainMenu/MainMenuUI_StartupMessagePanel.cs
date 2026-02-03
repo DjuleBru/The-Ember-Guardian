@@ -53,8 +53,6 @@ public class MainMenuUI_StartupMessagePanel : MonoBehaviour
         panelName.text = LocalizationManager.Instance.GetLocalizedText("startupMessagePanel_Name");
         panelText.text = loadedText;
 
-        Debug.Log(SettingsManager.Instance.GetLanguage());
-        Debug.Log(LocalizationManager.Instance.GetLocalizedText("startupMessagePanel_Text"));
         panelNameImageAnimator.SetTrigger("DeletedSaveFile");
     }
 

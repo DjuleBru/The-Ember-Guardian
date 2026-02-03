@@ -25,13 +25,15 @@ public class DogDigAbility : MonoBehaviour
 
     private void Start() {
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
-            Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+            if(Fire.Instance != null) {
+                Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
+            }
+
         }
 
         dogAnimator.OnDogSniffedEnd += DogAnimator_OnDogSniffedEnd;
 
         digAbilityUnlocked = DogStats.Instance.GetGermanShepherdDigResourceAbilityUnlocked();
-
         digTimer = DogStats.Instance.GetGermanShepherdDigResourceCooldown();
     }
 

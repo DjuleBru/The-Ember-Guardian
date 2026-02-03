@@ -144,7 +144,7 @@ MonoBehaviour:
   discoveryMusicInterruptionSource: 0
   discoverNewLocationAudioVolume: 1.2
   backgroundTracksAudioVolume: 0.8
-  nightMusicAudioVolume: 0.4
+  nightMusicAudioVolume: 1.4
   mainMenuMusicAudioVolume: 3
   mainMenuMusic: {fileID: 8300000, guid: 8b8b2cfb3d839924fbb8a360293e4d18, type: 3}
   mainMenuMusicStreamerMode: {fileID: 8300000, guid: 8b8b2cfb3d839924fbb8a360293e4d18, type: 3}
@@ -152,20 +152,21 @@ MonoBehaviour:
   hubMusicStreamerMode: {fileID: 8300000, guid: 6849e7a4ecdd2ce479723486c636734c, type: 3}
   hordeModeMusic: {fileID: 8300000, guid: 4529cb2bdc5827247b2f21b3c3ea9d9c, type: 3}
   creditsMusic: {fileID: 8300000, guid: 6be0e396dd03dd54e83c4b1bd9269e22, type: 3}
-  nightMusicIntro: {fileID: 8300000, guid: 1e81e21f23207bd4aa9cccb17a0529cf, type: 3}
-  nightMusicIntroLoop: {fileID: 8300000, guid: bcc4f5b7c93a94043b4e1ee05e3090d7, type: 3}
-  nightMusicOutro: {fileID: 8300000, guid: a51e99431cc79db49afe94f10ec3399c, type: 3}
+  nightMusicIntro: {fileID: 8300000, guid: 98284023eebfacf4994707cd502aaa15, type: 3}
+  nightMusicIntroLoop: {fileID: 8300000, guid: 563ef790a68219149bfb7de30bea3eb3, type: 3}
+  nightMusicOutro: {fileID: 8300000, guid: 4dd4e314d1a03a54a9b09b13c92d8163, type: 3}
   nightMusicTension1Loops:
-  - {fileID: 8300000, guid: d5fd983014f3a5a42bc51f6d942b4ede, type: 3}
-  - {fileID: 8300000, guid: 4c9d6d1d7a621ac4b8732d25875008cc, type: 3}
+  - {fileID: 8300000, guid: 563ef790a68219149bfb7de30bea3eb3, type: 3}
+  - {fileID: 8300000, guid: 87c8a64668eb4bb47a978597b45da738, type: 3}
   nightMusicTension2Loops:
-  - {fileID: 8300000, guid: 7a99f2c20561652478cd195467b62a3c, type: 3}
-  - {fileID: 8300000, guid: f64904f7e8aade74eb7e061bdc39c127, type: 3}
+  - {fileID: 8300000, guid: 03e15c7c76987a24da5341e75499b16c, type: 3}
+  - {fileID: 8300000, guid: 5fa4d7079316d564e903520c13d03c48, type: 3}
   nightMusicTension3Loops:
-  - {fileID: 8300000, guid: 32229f301ca09bf43b16503e06e094c0, type: 3}
-  - {fileID: 8300000, guid: dbb9c3b642384494c841bcbbceebe985, type: 3}
+  - {fileID: 8300000, guid: 5e662f92ce7fbeb4aa800f7156a20f42, type: 3}
+  - {fileID: 8300000, guid: 61705d15112fc2c43a81cd04c44f0dea, type: 3}
   nightMusicTension4Loops:
-  - {fileID: 8300000, guid: 5e6d8d53c3b979b479170c5bb509dacd, type: 3}
+  - {fileID: 8300000, guid: e2897066d545a3d4d83102f6c0226f98, type: 3}
+  - {fileID: 8300000, guid: f3c7b07934f34874f832fc3af60ca012, type: 3}
   nightMusicIntroStreamer: {fileID: 8300000, guid: 397ce595898b39944916494f5329999c, type: 3}
   nightMusicIntroLoopStreamer: {fileID: 8300000, guid: 7367ee01253286949bacbfa745ceabe1, type: 3}
   nightMusicOutroStreamer: {fileID: 8300000, guid: f803033c9410a2c4d93278a4b624fb6f, type: 3}

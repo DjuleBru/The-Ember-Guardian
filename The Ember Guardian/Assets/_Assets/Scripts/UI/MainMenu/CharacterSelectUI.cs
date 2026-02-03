@@ -83,12 +83,23 @@ public class CharacterSelectUI : MonoBehaviour
         swapCharacter_WorldCanvas.gameObject.SetActive(false);
 
         if (MainMenuUI.Instance != null) {
-            MainMenuUI.Instance.ShowAllMenuUI();
-            MainMenuUI.Instance.ShowMainMenuButtons();
 
-            if (!MusicManager.Instance.GetPlayingMusic()) {
-                MusicManager.Instance.PlayMusic();
+            if(DemoSaveImportManager.Instance.HasDemoSaveToImport()) {
+
+                MainMenuUI_ImportDemoSavePanel.Instance.OpenPanel();
+
+            } else {
+
+                MainMenuUI.Instance.ShowAllMenuUI();
+                MainMenuUI.Instance.ShowMainMenuButtons();
+
+                if (!MusicManager.Instance.GetPlayingMusic()) {
+                    MusicManager.Instance.PlayMusic();
+                }
+
             }
+
+          
         }
     }
 

@@ -29,6 +29,15 @@ public class HordeModeMenuButton : MonoBehaviour, IPointerEnterHandler, IPointer
         }
     }
 
+    public void RefreshHordeModeUnlocked() {
+        if (!MetaProgressionManager.Instance.GetHordeModeUnlocked()) {
+            hordeModeUnlocked = false;
+        }
+        else {
+            hordeModeUnlocked = true;
+        }
+    }
+
     public void OnDeselect(BaseEventData eventData) {
         if (hordeModeUnlocked) {
             descriptionPanelAnimator.gameObject.SetActive(false);

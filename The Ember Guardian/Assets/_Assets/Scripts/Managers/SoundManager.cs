@@ -97,9 +97,17 @@ public class SoundManager : MonoBehaviour
             LevelUI_ObjectiveUI.Instance.OnSubObjectiveUICompleted += LevelUI_OnSubObjectiveUICompleted;
             LevelUI_ObjectiveUI.Instance.OnSubObjectiveUIProgressed += LevelUI_OnSubObjectiveUIProgressed;
         }
+
         if (LevelUI_Locations.Instance != null) {
             LevelUI_Locations.Instance.OnLocationTextShown += LevelUI_OnLocationTextShown;
+            if(HUBManager.Instance != null) {
+                PlaySound2D(soundRefsSO.locationRevealed, 0f);
+            }
+            if(LevelManager.Instance != null && LevelManager.Instance.GetLevelSO().isNewEnvironmentDiscoveryLevel) {
+                PlaySound2D(soundRefsSO.locationRevealed, 0f);
+            }
         }
+
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged += WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
             LevelUI_DayCountUI.Instance.OnDayUIShown += LevelUI_OnDayUIShown;

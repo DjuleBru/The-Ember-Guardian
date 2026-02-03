@@ -113,7 +113,7 @@ public class Animal : Mob
 
 
     private void OnDestroy() {
-        DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
-        DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
+        DayNightManager.Instance.OnCyclePaused -= DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
     }
 }

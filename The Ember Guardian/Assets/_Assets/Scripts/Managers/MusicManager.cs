@@ -535,7 +535,7 @@ public class MusicManager : MonoBehaviour {
 
 
 
-            CrossfadeToNextNightClip(outroAudioClip);
+            CrossfadeToNextNightClip(outroAudioClip, false, .5f);
 
             StartCoroutine(FadeOutDelayedCoroutine(5f, 2f));
             isDuskOrNight = false;
@@ -639,13 +639,29 @@ public class MusicManager : MonoBehaviour {
 
         if (fireDamageTakenRecently >= 3) {
             // fire just took a bunch of damage : player in deep ****
-            if (tensionLevelMusicPlaying == 4) {
-                selectedAudioClip = currentAudioClipPlaying;
+            if(fireDamageTakenRecently > 5) {
+
+                if (tensionLevelMusicPlaying == 4) {
+                    selectedAudioClip = currentAudioClipPlaying;
+                }
+                else {
+                    selectedAudioClip = selectedNightMusicTension4Loops[UnityEngine.Random.Range(0, selectedNightMusicTension4Loops.Count)];
+                }
+                tensionLevelMusicPlaying = 4;
+
+            } else {
+
+                if (tensionLevelMusicPlaying == 3) {
+                    selectedAudioClip = currentAudioClipPlaying;
+                }
+                else {
+                    selectedAudioClip = selectedNightMusicTension4Loops[UnityEngine.Random.Range(0, selectedNightMusicTension3Loops.Count)];
+                }
+                tensionLevelMusicPlaying = 3;
+
             }
-            else {
-                selectedAudioClip = selectedNightMusicTension4Loops[UnityEngine.Random.Range(0, selectedNightMusicTension4Loops.Count)];
-            }
-            tensionLevelMusicPlaying = 4;
+
+           
         }
         else if (creaturesInsidePlayerCamp != 0) {
 
@@ -688,7 +704,7 @@ public class MusicManager : MonoBehaviour {
         }
         else {
 
-            if (creaturesCloseToPlayerCamp < 5) {
+            if (creaturesCloseToPlayerCamp < 4) {
                 if (tensionLevelMusicPlaying == 1) {
                     selectedAudioClip = currentAudioClipPlaying;
                 }
@@ -698,7 +714,7 @@ public class MusicManager : MonoBehaviour {
                 tensionLevelMusicPlaying = 1;
             }
 
-            if (creaturesCloseToPlayerCamp >= 5 && creaturesCloseToPlayerCamp < 12) {
+            if (creaturesCloseToPlayerCamp >= 4 && creaturesCloseToPlayerCamp < 15) {
                 if (tensionLevelMusicPlaying == 2) {
                     selectedAudioClip = currentAudioClipPlaying;
                 }
@@ -708,7 +724,7 @@ public class MusicManager : MonoBehaviour {
                 tensionLevelMusicPlaying = 2;
             }
 
-            if (creaturesCloseToPlayerCamp >= 12 && creaturesCloseToPlayerCamp < 20) {
+            if (creaturesCloseToPlayerCamp >= 15 && creaturesCloseToPlayerCamp < 25) {
                 if (tensionLevelMusicPlaying == 3) {
                     selectedAudioClip = currentAudioClipPlaying;
                 }
@@ -718,7 +734,7 @@ public class MusicManager : MonoBehaviour {
                 tensionLevelMusicPlaying = 3;
             }
 
-            if (creaturesCloseToPlayerCamp >= 20) {
+            if (creaturesCloseToPlayerCamp >= 25) {
                 if (tensionLevelMusicPlaying == 4) {
                     selectedAudioClip = currentAudioClipPlaying;
                 }
@@ -733,7 +749,7 @@ public class MusicManager : MonoBehaviour {
         return selectedAudioClip;
     }
 
-    private void CrossfadeToNextNightClip(AudioClip newClip) {
+    private void CrossfadeToNextNightClip(AudioClip newClip, bool syncClipTimes = true, float duration = 2f) {
         AudioSource activeSource = isUsingAudioSourceA ? audioSourceA : audioSourceB;
         AudioSource nextSource = isUsingAudioSourceA ? audioSourceB : audioSourceA;
 
@@ -741,12 +757,12 @@ public class MusicManager : MonoBehaviour {
         nextSource.volume = 0f;
         nextSource.Play();
 
-        StartCoroutine(CrossfadeCoroutine(activeSource, nextSource, 2f));
+        StartCoroutine(CrossfadeCoroutine(activeSource, nextSource, duration, syncClipTimes));
 
         isUsingAudioSourceA = !isUsingAudioSourceA;
     }
 
-    private IEnumerator CrossfadeCoroutine(AudioSource fromSource, AudioSource toSource, float duration) {
+    private IEnumerator CrossfadeCoroutine(AudioSource fromSource, AudioSource toSource, float duration, bool syncClipTimes = true) {
         float elapsedTime = 0f;
         float maxVolume = fromSource.volume;
 
@@ -754,7 +770,11 @@ public class MusicManager : MonoBehaviour {
         if (clipTime > fromSource.clip.length - 1f) {
             clipTime = 0;
         }
-        toSource.time = clipTime;
+
+        if(syncClipTimes) {
+            toSource.time = clipTime;
+        }
+
 
         while (elapsedTime < duration) {
             float t = elapsedTime / duration;

@@ -1853,6 +1853,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3026441740147584065}
+  - component: {fileID: 3014887475428675686}
   m_Layer: 5
   m_Name: UnlockTree
   m_TagString: Untagged
@@ -1908,6 +1909,36 @@ RectTransform:
   m_AnchoredPosition: {x: 801.0251, y: -1.5499878}
   m_SizeDelta: {x: 1602.0499, y: -503.1}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3014887475428675686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6649104612643112754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fb257e27a3826f498ef156582ea8142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ultraWidePanelOffsetMinX: 0
+  ultraWidePanelOffsetMinY: -350
+  ultraWidePanelOffsetMaxX: 0
+  ultraWidePanelOffsetMaxY: 150
+  ultraWidePanelPosX: 0
+  ultraWidePanelPosY: 0
+  ultraWidePanelWidth: 0
+  ultraWidePanelHeight: 0
+  verticalPanelOffsetMinX: 0
+  verticalPanelOffsetMinY: 0
+  verticalPanelOffsetMaxX: 0
+  verticalPanelOffsetMaxY: 0
+  verticalPanelPosX: 0
+  verticalPanelPosY: 0
+  verticalPanelWidth: 0
+  verticalPanelHeight: 0
+  onlyVerticalResize: 1
+  stretchedPanel: 1
 --- !u!1 &6665977660377495707
 GameObject:
   m_ObjectHideFlags: 0
@@ -2444,7 +2475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Content: {fileID: 3026441740147584065}
   m_Horizontal: 1
-  m_Vertical: 0
+  m_Vertical: 1
   m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
