@@ -34,6 +34,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnZoomLevelChanged;
     public event EventHandler OnUIDisplayChanged;
     public event EventHandler OnDifficultyChanged;
+    public event EventHandler OnPhotosensitivityChanged;
 
     public enum UIDisplayType {
         Adaptive,
@@ -66,6 +67,7 @@ public class SettingsManager : MonoBehaviour
     private bool autoReload;
     private bool streamerMode;
     private bool showDamageNumbers;
+    private bool photosensitivityMode;
     private bool waterReflections;
 
     private float settingsVersion;
@@ -106,6 +108,7 @@ public class SettingsManager : MonoBehaviour
         streamerMode = ES3.Load("steamerMode", false, settingsSaveFileSettings);
         showDamageNumbers = ES3.Load("showDamageNumbers", true, settingsSaveFileSettings);
         waterReflections = ES3.Load("waterReflections", true, settingsSaveFileSettings);
+        photosensitivityMode = ES3.Load("photosensitivityMode", false, settingsSaveFileSettings);
 
         Resolution defaultRes = Screen.currentResolution;
         resolution = ES3.Load("resolution", resolution, settingsSaveFileSettings);
@@ -126,6 +129,12 @@ public class SettingsManager : MonoBehaviour
     }
 
     #region SET SETTINGS
+    public void ChangePhotosensitivityMode() {
+        photosensitivityMode = !photosensitivityMode;
+        ES3.Save("photosensitivityMode", photosensitivityMode, settingsSaveFileSettings);
+        OnPhotosensitivityChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public void SetDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
         ES3.Save("difficulty", difficulty, settingsSaveFileSettings);
@@ -369,7 +378,11 @@ public class SettingsManager : MonoBehaviour
     }
 
     #endregion
+
     #region GET SETTINGS
+    public bool GetPhotosensitivityMode() {
+        return photosensitivityMode;
+    }
 
     public UIDisplayType GetCurrentUIDisplayType() {
         return currentUIDisplayType;

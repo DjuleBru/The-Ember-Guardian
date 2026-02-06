@@ -149,8 +149,6 @@ public class Barricade : Structure, IDamageable {
     }
 
     protected override void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
-        payCurrencyUI.SetPlayerInteracting(false);
-
         if (currentStructureInteractionType == StructureInteractionType.primaryFunction) {
             RepairBarricade();
             return;
@@ -160,9 +158,11 @@ public class Barricade : Structure, IDamageable {
             UpgradeStructure();
             return;
         }
+        payCurrencyUI.SetPlayerInteracting(false);
     }
 
     private void RepairBarricade() {
+        //Debug.Log("RepairBarricade");
         barricadeHealth = barricadeMaxHealth;
         OnBarricadeRepaired?.Invoke(this, EventArgs.Empty);
         OnAnyBarricadeRepaired?.Invoke(this, EventArgs.Empty);

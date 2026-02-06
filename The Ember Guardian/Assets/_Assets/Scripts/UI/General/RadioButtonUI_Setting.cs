@@ -22,6 +22,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         WaterReflections,
         UIDisplay,
         Difficulty,
+        Photosensitivity,
     }
 
     [SerializeField] private SettingType settingType;
@@ -54,9 +55,11 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnWaterReflectionsChanged += SettingsManager_OnWaterSimulationChanged;
         SettingsManager.Instance.OnUIDisplayChanged += SettingsManager_OnUIDisplayChanged;
         SettingsManager.Instance.OnDifficultyChanged += SettingsManager_OnDifficultyChanged;
+        SettingsManager.Instance.OnPhotosensitivityChanged += SettingsManager_OnPhotosensitivityChanged;
 
         RefreshVisual();
     }
+
 
     private void ChangeLinkedSetting() {
         if (settingType == SettingType.HoldToRun) {
@@ -104,8 +107,15 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.Difficulty) {
             SettingsManager.Instance.ChangeDifficulty();
         }
+        if (settingType == SettingType.Photosensitivity) {
+            SettingsManager.Instance.ChangePhotosensitivityMode();
+        }
     }
 
+    private void SettingsManager_OnPhotosensitivityChanged(object sender, System.EventArgs e) {
+        RefreshVisual();
+
+    }
     private void SettingsManager_OnWaterSimulationChanged(object sender, System.EventArgs e) {
         RefreshVisual();
     }
@@ -210,6 +220,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         }
         if (settingType == SettingType.WaterReflections) {
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetWaterReflectionsActive());
+        }
+        if (settingType == SettingType.Photosensitivity) {
+            toggledImageGameObject.SetActive(SettingsManager.Instance.GetPhotosensitivityMode());
         }
     }
 

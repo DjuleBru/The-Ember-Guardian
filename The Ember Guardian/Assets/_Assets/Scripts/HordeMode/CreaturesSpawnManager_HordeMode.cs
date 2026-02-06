@@ -37,6 +37,7 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
 
     [SerializeField] protected int minPeacefulInterval = 2;
     [SerializeField] protected int maxPeacefulInterval = 4;
+    private bool forcePeacefulNextWave = false;
 
     public event EventHandler OnExtremeWavePrepared;
     public event EventHandler OnPeacefulWavePrepared;
@@ -236,6 +237,15 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
     }
 
     protected void DetermineHordeWaveType() {
+        // FORCE PEACEFUL APRES BOSS
+        if (forcePeacefulNextWave) {
+            forcePeacefulNextWave = false;
+            currentHordeWaveType = HordeWaveType.Peaceful;
+            OnPeacefulWavePrepared?.Invoke(this, EventArgs.Empty);
+            StartCoroutine(IncrementIndexesAfterDelay(false, false, true));
+            return;
+        }
+
         bool bossWave = false;
 
         // Boss night : override
@@ -244,6 +254,7 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
             nightsSinceLastExtreme--;
             OnBossWavePrepared?.Invoke(this, EventArgs.Empty);
 
+            forcePeacefulNextWave = true;
             bossWave = true;
             StartCoroutine(IncrementIndexesAfterDelay(bossWave, false, false));
             return;
@@ -295,7 +306,6 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
         if(hitPeaceful) {
             nightsSinceLastPeaceful = 0;
             nextPeacefulAt = UnityEngine.Random.Range(minPeacefulInterval, maxPeacefulInterval + 1);
-
         } else {
             nightsSinceLastPeaceful++;
 

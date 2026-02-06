@@ -77,6 +77,17 @@ public class AchievementsProgressManager : MonoBehaviour
         StructureSO.StructureType.currencyStorage_SpecialAmmo,
     };
 
+    private bool firstPrimordialFireLitAchieved;
+    private bool firstNestDestroyedAchieved;
+    private bool firstKillDogAchieved;
+    private bool ricochetAchieved;
+    private bool firstPetDogAchieved;
+    private bool noShotFiredAchieved;
+    private bool surgeReloadAchieved;
+    private bool specialWaveAchieved;
+    private bool emberlingLateAchieved;
+    private bool loseRespawningAchieved;
+
 
     private void Awake() {
         mushroomMerchantUnlocked_ACHIEVEMENT = ES3.Load("mushroomMerchantUnlocked_ACHIEVEMENT", false);
@@ -146,6 +157,7 @@ public class AchievementsProgressManager : MonoBehaviour
             if(pettingDogTimer >= pettingDogTimerTreshold) {
                 pettingDog = false;
                 TryUnlockSuccess("PET_DOG");
+                ES3.Save("petDogAchieved", true);
             }
         }
 
@@ -202,6 +214,7 @@ public class AchievementsProgressManager : MonoBehaviour
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             if(dogInCampZoneArea && playerExploredWholeDay) {
                 TryUnlockSuccess("DOG_WAIT_CAMP");
+                ES3.Save("dogWaitCampAchieved", true);
             }
         } else {
             playerExploredWholeDay = false;
@@ -238,6 +251,7 @@ public class AchievementsProgressManager : MonoBehaviour
 
             if (tamerItem.GetDogTamerItemCategory() == HUBMerchantItem_DogTamerItem.DogTamerItemCategory.NewAbility) {
                 TryUnlockSuccess("FIRST_DOG_ABILITY");
+                ES3.Save("firstDogAbilityAchieved", true);
             }
         }
 
@@ -278,6 +292,7 @@ public class AchievementsProgressManager : MonoBehaviour
 
             if (gemItem.GetStructureType() == StructureSO.StructureType.merchant_skills) {
                 TryUnlockSuccess("ORB_ALCHEMIST");
+                ES3.Save("orbAlchemistAchieved", true);
             }
             if (gemItem.GetStructureType() == StructureSO.StructureType.merchant_traps) {
                 TryUnlockSuccess("TRAPS_MERCHANT");
@@ -293,12 +308,14 @@ public class AchievementsProgressManager : MonoBehaviour
 
         if (remainingFuelBeforeFuelled < StructureStats.Instance.GetInitialMaxFuelTreshold() / 100f && remainingFuelBeforeFuelled > 0) {
             TryUnlockSuccess("FUEL_FIRE_ALMOST_EMPTY");
+            ES3.Save("fuelFireAlmostEmpty", true);
         }
     }
 
 
     private void Fire_OnFireExtinguishedByPlayerRespawning(object sender, System.EventArgs e) {
         TryUnlockSuccess("LOOSE_RESPAWNING");
+        ES3.Save("loseRespawning", true);
     }
     private void Fire_OnAnySecondaryFireReset(object sender, System.EventArgs e) {
         if (AchievementsManager.Instance == null) return;
@@ -356,6 +373,7 @@ public class AchievementsProgressManager : MonoBehaviour
             if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night && nightJustStarted) {
                 if(!CampZoneManager.Instance.IsWithinCampZoneLimits(worker.transform.position)) {
                     TryUnlockSuccess("EMBERLING_LATE");
+                    ES3.Save("emberlingLateAchieved", true);
                 }
             }
         }
@@ -403,6 +421,7 @@ public class AchievementsProgressManager : MonoBehaviour
 
         if(currentWorkersAssignedJobs >= assignedJobsTreshold) {
             TryUnlockSuccess("EMBERLING_AMOUNT");
+            ES3.Save("emberlingAmountAchieved", true);
         }
 
         if(workerAI.GetJob() == WorkerAI.JobTypes.hunter) {
@@ -433,6 +452,7 @@ public class AchievementsProgressManager : MonoBehaviour
 
         if(successfulSurgeReloadsIndex >= successfulSurgeReloadTreshold) {
             TryUnlockSuccess("SURGE_RELOAD");
+            ES3.Save("surgeReloadAchieved", true);
         }
     }
 
@@ -458,6 +478,7 @@ public class AchievementsProgressManager : MonoBehaviour
 
         if (specialWave) {
             TryUnlockSuccess("SPECIAL_WAVE");
+            ES3.Save("specialWaveAchieved", true);
         }
 
         if(!playerShot) {
@@ -467,6 +488,7 @@ public class AchievementsProgressManager : MonoBehaviour
                 return;
             } 
             TryUnlockSuccess("NO_SHOT_FIRED");
+            ES3.Save("noShotFiredAchieved", true);
         }
     }
 
@@ -499,6 +521,7 @@ public class AchievementsProgressManager : MonoBehaviour
         if (AchievementsManager.Instance == null) return;
 
         TryUnlockSuccess("FIRST_KILL_DOG");
+        ES3.Save("firstKillDogAchieved", true);
 
         AchievementsManager.Instance.AddToSteamStat("CREATURES_KILLED_BY_DOG", 1);
         if (AchievementsManager.Instance.GetSteamStat("CREATURES_KILLED_BY_DOG") >= creaturesKilledByDogTreshold) {
@@ -517,11 +540,13 @@ public class AchievementsProgressManager : MonoBehaviour
             creaturesKilledWithoutMoving++;
             if (creaturesKilledWithoutMoving >= killCreaturesWithoutMovingTreshold) {
                 TryUnlockSuccess("KILL_CREATURES_WITHOUT_MOVING");
+                ES3.Save("killCreaturesWithoutMovingAchieved", true);
             }
         }
 
         if (bulletBouncedOff) {
             TryUnlockSuccess("RICOCHET");
+            ES3.Save("ricochetAchieved", true);
         }
 
         if (creature.GetCreatureSO() == finalBossCreatureSO) {
@@ -577,6 +602,7 @@ public class AchievementsProgressManager : MonoBehaviour
 
         if (environment == LevelSO.LevelEnvironment.TheVerdantGraveyard) {
             StartCoroutine(TryUnlockSuccessAfterDelay("VERDANT_GRAVEYARD", 3f));
+            ES3.Save("verdantGraveyardAchieved", true);
         }
 
         if (environment == LevelSO.LevelEnvironment.CorruptedCity) {
@@ -593,10 +619,12 @@ public class AchievementsProgressManager : MonoBehaviour
 
     private void Fire_OnPrimordialFireLit(object sender, System.EventArgs e) {
         TryUnlockSuccess("FIRST_PRIMORDIAL_FIRE_LIT");
+        ES3.Save("firstPrimordialFireLitAchieved", true);
     }
 
     private void EndLevelArea_OnEndLevelFireLit(object sender, System.EventArgs e) {
         TryUnlockSuccess("FIRST_NEST_DESTROYED");
+        ES3.Save("firstNestDestroyedAchieved", true);
     }
 
     private void TryUnlockSuccess(string id) {

@@ -30,6 +30,7 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player gunJamFailedFeedbacks;
     [SerializeField] private MMF_Player gunJamPerfectSequenceFeedbacks;
     [SerializeField] private MMF_Player blindedFeedbacks;
+    [SerializeField] private MMF_Player blindedPhotosensitiveFeedbacks;
 
     private float minDelayBetweenCritHitFeedbacks = 1f;
     private float critHitFeedbacksTimer;
@@ -229,7 +230,11 @@ public class PlayerFeedbacks : MonoBehaviour
     }
 
     private void Player_OnPlayerBlinded(object sender, System.EventArgs e) {
-        blindedFeedbacks.PlayFeedbacks();
+        if(SettingsManager.Instance.GetPhotosensitivityMode()) {
+            blindedPhotosensitiveFeedbacks.PlayFeedbacks();
+        } else {
+            blindedFeedbacks.PlayFeedbacks();
+        }
     }
 
     private bool isPlayingAnyZoomFeedback() {

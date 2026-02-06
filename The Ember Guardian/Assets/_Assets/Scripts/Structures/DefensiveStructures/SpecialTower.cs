@@ -202,6 +202,13 @@ public class SpecialTower : Structure {
         }
 
     }
+
+    protected override void RefreshMaxEngineersAssignedAndWorking() {
+        if (structureLevel == 2) {
+            maxEngineersAssignedWorking = level2TowerEngineerCapacity;
+        }
+    }
+
     public int GetCurrentAmmoClip() {
         return currentAmmoClip;
     }

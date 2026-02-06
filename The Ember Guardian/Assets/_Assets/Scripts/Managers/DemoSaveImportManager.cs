@@ -67,8 +67,18 @@ public class DemoSaveImportManager : MonoBehaviour {
             File.Copy(file, destinationFile, true);
         }
 
+        StartCoroutine(ImportAchievementsAfterDelay());
+
         Debug.Log("Demo save successfully imported.");
         return true;
+    }
+
+    private IEnumerator ImportAchievementsAfterDelay() {
+        yield return new WaitForSeconds(1f);
+
+
+        AchievementsManager.Instance.ImportAchievementsFromSave();
+
     }
 
     private string GetDemoSavePath() {

@@ -87,8 +87,11 @@ public class Structure : MonoBehaviour {
         if (!structureSO.upgradeableAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             ActivateStructureUpgradeInteraction(false);
         }
+
         maxEngineersAssignedRefilling = structureSO.maxEngineersAssignedRefilling;
         maxEngineersAssignedWorking = structureSO.maxEngineersAssignedWorking;
+
+        Debug.Log(this + " structureLevel " + structureLevel + " maxEngineersAssignedWorking " + maxEngineersAssignedWorking);
     }
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
@@ -121,7 +124,6 @@ public class Structure : MonoBehaviour {
     }
 
     protected virtual void UpgradeStructure() {
-        Debug.Log("Upgrade");
         structureLevel++;
         RefreshStructureUpgradeInteraction();
 
@@ -136,10 +138,15 @@ public class Structure : MonoBehaviour {
 
         this.structureLevel = structureLevel;
         RefreshStructureUpgradeInteraction();
+        RefreshMaxEngineersAssignedAndWorking();
 
         OnStructureUpgraded?.Invoke(this, new OnStructureUpgradedEventArgs {
             upgradedOnLoad = true
         });
+    }
+
+    protected virtual void RefreshMaxEngineersAssignedAndWorking() {
+
     }
 
     public bool GetUpgradableUnlocked() {
