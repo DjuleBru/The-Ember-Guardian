@@ -306,7 +306,8 @@ public class Structure : MonoBehaviour {
         OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = true;
 
-        if(playerCanInteract) {
+        Debug.Log("playerInTriggerArea " + playerInTriggerArea);
+        if (playerCanInteract) {
             Player.Instance.SetInPayCurrencyArea(true);
         }
     }

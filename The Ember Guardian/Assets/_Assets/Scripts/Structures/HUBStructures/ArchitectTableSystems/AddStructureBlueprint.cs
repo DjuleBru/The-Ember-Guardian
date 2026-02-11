@@ -264,6 +264,10 @@ public class AddStructureBlueprint : ButtonUI
     private void RefreshStructureAmounts() {
         currentBlueprintAmount = CampEditManager.Instance.GetPlacedStructureBlueprintAmountOfType(linkedStructureSO);
 
+        // SECURITE ANTI NULL REF
+        if (plusIcon.gameObject == null) return;
+        if (maxedOutStructureBlueprintText.gameObject == null) return;
+
         if (hordeMode) {
 
             if (ArchitectTable.Instance.GetHasEnoughBudget(linkedStructureSO.hordeModeGemBudget) && currentBlueprintAmount < maxBlueprintAmount_HordeMode) {

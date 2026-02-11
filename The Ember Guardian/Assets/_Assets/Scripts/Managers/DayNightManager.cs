@@ -98,7 +98,7 @@ public class DayNightManager : MonoBehaviour
     }
 
     private void HubMerchantUI_OnAnyHubMerchantCloseUIPanel(object sender, EventArgs e) {
-        Debug.Log("HubMerchantUI_OnAnyHubMerchantCloseUIPanel");
+        //Debug.Log("HubMerchantUI_OnAnyHubMerchantCloseUIPanel");
         SetCyclePaused(false, true);
     }
 

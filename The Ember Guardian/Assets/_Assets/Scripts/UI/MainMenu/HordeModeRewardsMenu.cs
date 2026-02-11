@@ -217,10 +217,12 @@ public class HordeModeRewardsMenu : MonoBehaviour
             pressAnyKeyToContinueGO.SetActive(true);
 
             // On attend UNE frame pour ne pas réutiliser le même input
-            yield return new WaitForEndOfFrame();
+            // Attendre que tous les inputs soient relâchés
+            yield return new WaitUntil(() => !Input.anyKey);
 
             // Et on attend UN NOUVEAU CLIC pour passer à la suite
-            yield return new WaitUntil(() => AnyInputPressed());
+            // Maintenant attendre un NOUVEL input
+            yield return new WaitUntil(() => Input.anyKeyDown);
 
             // Ajout officiel de l’unlock
             HordeModeProgressionManager.Instance.AddUnlocked(unlock);

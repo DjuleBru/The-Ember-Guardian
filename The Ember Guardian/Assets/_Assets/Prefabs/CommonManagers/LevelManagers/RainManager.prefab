@@ -181,6 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 629e5d8590054394da12bfeb080449d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   sparseRainAudioClip: {fileID: 8300000, guid: cf07e33fb1358454aacb59d1a89eb293, type: 3}
   mediumRainAudioClip: {fileID: 8300000, guid: 779f693772212d24dbd58967454a73ce, type: 3}
   strongRainAudioClip: {fileID: 8300000, guid: 5f14376d02de1864fbb9efc5a43cf057, type: 3}
@@ -203,7 +205,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

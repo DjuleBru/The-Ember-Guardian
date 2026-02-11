@@ -269,13 +269,13 @@ public class LevelManager : MonoBehaviour
     }
 
     public void SaveLevelCompletedProgression() {
+        SaveMerchantsAndTalkLines();
+
         MetaProgressionManager.Instance.SetLevelCompleted(GetLevelSO());
 
         if(!isTutorial) {
             MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber();
         }
-
-        SaveMerchantsAndTalkLines();
     }
 
     public void ShowNewLocationUI() {
@@ -367,6 +367,7 @@ public class LevelManager : MonoBehaviour
         LooseLevel();
     }
     private void SaveMerchantsAndTalkLines() {
+        if (MetaProgressionManager.Instance.GetLevelCompleted(levelSO)) return;
 
         for (int i = 0; i < levelSO.merchantsUnlockedInLevel.Count; i++) {
 

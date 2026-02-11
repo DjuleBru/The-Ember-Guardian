@@ -589,7 +589,6 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public bool GetHordeModeUnlocked() {
-
         ES3Settings hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
 
         bool hordeModeUnlocked = ES3.Load("HordeModeUnlocked", false, hordeModeSaveFileSettings);

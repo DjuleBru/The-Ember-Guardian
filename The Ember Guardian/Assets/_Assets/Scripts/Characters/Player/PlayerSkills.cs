@@ -89,6 +89,8 @@ public class PlayerSkills : MonoBehaviour
     private float workerAttackSpeedBuffTimer;
     private float workerAttackSpeedBuffAmount;
 
+    private bool isPaused;
+
     public event EventHandler OnPlayerInFireLightBuffedDmg;
     public event EventHandler OnPlayerInFireLightDebuffedDmg;
     public event EventHandler OnPlayerOutFireLightBuffedDmg;
@@ -126,10 +128,27 @@ public class PlayerSkills : MonoBehaviour
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
 
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+        if (DayNightManager.Instance != null) {
+            DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+            DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
+        }
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
             StartCoroutine(SetPlayerInitialSkills());
         }
+    }
+
+    private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
+        if (!LevelManager.Instance.IsHordeMode()) return;
+
+        isPaused = false;
+    }
+
+    private void DayNightManager_OnCyclePaused(object sender, EventArgs e) {
+        if (!LevelManager.Instance.IsHordeMode()) return;
+
+        isPaused = true;
     }
 
     private IEnumerator SetPlayerInitialSkills() {
@@ -175,6 +194,8 @@ public class PlayerSkills : MonoBehaviour
     }
 
     private void Update() {
+        if (isPaused) return;
+
         HandleActiveSkillsCooldowns();
         HandleActiveMoveSpeedBuff();
         HandleActiveShootCooldownBuff();

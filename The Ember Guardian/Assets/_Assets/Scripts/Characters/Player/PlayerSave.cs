@@ -178,7 +178,7 @@ public class PlayerSave : MonoBehaviour
         }
 
         foreach (SkillSO skillSO in allSkillsList) {
-            if (HordeModeProgressionManager.Instance.GetSkillUnlocked(skillSO)) {
+            if (HordeModeProgressionManager.Instance.GetSkillUnlocked(skillSO) && !skillsUnlockedList_HordeMode.Contains(skillSO)) {
                 skillsUnlockedList_HordeMode.Add(skillSO);
             }
         }

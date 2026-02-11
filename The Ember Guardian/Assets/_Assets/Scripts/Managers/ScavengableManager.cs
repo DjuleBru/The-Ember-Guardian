@@ -6,6 +6,7 @@ public class ScavengableManager : MonoBehaviour
 {
     public static ScavengableManager Instance;
 
+    [SerializeField] private bool unlockScavengablesInThisLevel;
     [SerializeField] private bool scavengablesUnlocked = true;
     private List<IScavengable> scavengablesInLevelList = new List<IScavengable>();
 
@@ -30,7 +31,7 @@ public class ScavengableManager : MonoBehaviour
     }
 
     private void Fire_OnInitialFireActivated(object sender, System.EventArgs e) {
-        if (!scavengablesUnlocked) {
+        if (!scavengablesUnlocked && unlockScavengablesInThisLevel) {
             foreach (IScavengable scavengable in scavengablesInLevelList) {
                 scavengable.SetScavengableUnlocked(true);
             }

@@ -99,7 +99,6 @@ public class MainMenuUI : MonoBehaviour {
 
     public void InitializeHordeModeButton() {
         hordeModeMenuGO.SetActive(false);
-        Debug.Log("InitializeHordeModeButton");
 
         // CHECK HORDE MODE UNLOCKED
         if (DebugManager.Instance.GetHordeModeActiveDebug()) return;

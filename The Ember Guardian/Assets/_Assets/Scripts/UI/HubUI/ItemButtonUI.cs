@@ -883,5 +883,12 @@ public class ItemButtonUI : ButtonUI {
         OnAnyOutputLinkUnlocked -= ItemButtonUI_OnAnyOutputLinkUnlocked;
         OnAnyButtonHovered -= ButtonUI_OnAnyButtonHovered;
         OnAnyButtonSelected -= ButtonUI_OnAnyButtonSelected;
+
+        if (hubMerchantItem is HUBMerchantItem_GunMerchantItem) {
+            HUBMerchantItem_GunMerchantItem gunItem = hubMerchantItem as HUBMerchantItem_GunMerchantItem;
+            if (gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.newGun) {
+                GameInput.Instance.OnRefundGunPerformed -= GameInput_OnRefundGunPerformed;
+            }
+        }
     }
 }

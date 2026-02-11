@@ -71,7 +71,7 @@ public class PlayerStats : MonoBehaviour
     private float flashlightRangeBuff_meta;
 
     private int meleeDamage;
-    private int initialMeleeDamage = 5;
+    private int initialMeleeDamage = 10;
     private int meleeDamageBuff_meta;
     #endregion
 

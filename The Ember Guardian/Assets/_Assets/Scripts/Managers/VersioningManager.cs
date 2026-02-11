@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -24,8 +25,9 @@ public class VersioningManager : MonoBehaviour
     [SerializeField] private int demoMajor = 9;
     [SerializeField] private int demoMinor = 0;
     [SerializeField] private int demoPatch = 1;
-
     [SerializeField] protected float latestCompatibleBuildVersion;
+
+    public event EventHandler OnSaveFileDeleted;
 
     private void Awake() {
         Instance = this;
@@ -59,7 +61,12 @@ public class VersioningManager : MonoBehaviour
     }
 
     public bool CheckIncompatibleSaveFile() {
-        float version = ReconstructFloatVersion(state, major, minor, patch);
+        int vMajor = (isDemo || isNewDemo) ? demoState : state;
+        int vMinor = (isDemo || isNewDemo) ? demoMajor : major;
+        int vPatch = (isDemo || isNewDemo) ? demoMinor : minor;
+        int vBuild = (isDemo || isNewDemo) ? demoPatch : patch;
+
+        float version = ReconstructFloatVersion(vMajor, vMinor, vPatch, vBuild);
         string key = "buildVersion_" + version + "_saveFileDeleted";
         string latestBuildSavedKey = "latestBuildSaved";
 
@@ -84,7 +91,13 @@ public class VersioningManager : MonoBehaviour
         MainMenuUI_StartupMessagePanel.Instance.OpenPanel();
         MainMenuUI_StartupMessagePanel.Instance.SetErasedSaveFilePanel();
         ES3.DeleteFile();
+
+        ES3Settings hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
+        ES3.DeleteFile(hordeModeSaveFileSettings);
+
+        OnSaveFileDeleted?.Invoke(this, EventArgs.Empty);
         ES3.Save(key, true);
+        MainMenuUI.Instance.InitializeHordeModeButton();
 
         return true;
     }
@@ -93,7 +106,7 @@ public class VersioningManager : MonoBehaviour
     }
 
     public bool CheckNewSaveFile() {
-
+        Debug.Log("CheckNewSaveFile " + ES3.FileExists());
         if (!ES3.FileExists()) {
             bool openAdjustGammaUIPanel = CheckOpenAdjustGammaUIPanel();
             if(openAdjustGammaUIPanel) {
@@ -112,15 +125,24 @@ public class VersioningManager : MonoBehaviour
     private bool CheckOpenAdjustGammaUIPanel() {
         ES3Settings settingsSaveFileSettings = new ES3Settings("Settings.es3");
 
-        if (!ES3.FileExists(settingsSaveFileSettings)) {
+        bool gammaAdjusted = ES3.Load("gammaAdjusted", false, settingsSaveFileSettings);
+
+        if (!ES3.FileExists(settingsSaveFileSettings) || !gammaAdjusted) {
 
             if (AdjustGammaUI.Instance != null) {
                 AdjustGammaUI.Instance.OpenPanel(true);
+                ES3.Save("gammaAdjusted", true, settingsSaveFileSettings);
             }
 
             MusicManager.Instance.PauseMusic();
             MainMenuUI.Instance.HideAllMenuUI();
-            string key = "buildVersion_" + ReconstructFloatVersion(state, major, minor, patch) + "_saveFileDeleted";
+
+            int vMajor = (isDemo || isNewDemo) ? demoState : state;
+            int vMinor = (isDemo || isNewDemo) ? demoMajor : major;
+            int vPatch = (isDemo || isNewDemo) ? demoMinor : minor;
+            int vBuild = (isDemo || isNewDemo) ? demoPatch : patch;
+
+            string key = "buildVersion_" + ReconstructFloatVersion(vMajor, vMinor, vPatch, vBuild) + "_saveFileDeleted";
             ES3.Save(key, true);
 
             return true;

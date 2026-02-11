@@ -140,13 +140,14 @@ public class Merchant : Structure {
             // Player is trying to buy an item
             if (currentSelectedItemAlreadyPurchased) return;
         }
+
         playerInteracting = true;
         playerHoldingDownInteract = true;
         payCurrencyUI.SetPlayerInteracting(true);
     }
 
     protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
-        if (!playerPayedToRefreshShop) return;
+        //if (!playerPayedToRefreshShop) return;
         if (!playerInTriggerArea) return;
         if (!playerInteracting) return;
         if (playerJustTriggeredInteraction) return;
@@ -157,6 +158,7 @@ public class Merchant : Structure {
             shopOpened = !shopOpened;
             OpenCloseShop(shopOpened);
         }
+
     }
 
     private void PlayerTabMenuUI_OnPlayerTabOpened(object sender, EventArgs e) {

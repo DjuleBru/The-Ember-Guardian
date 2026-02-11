@@ -7,9 +7,19 @@ public class NewGameButton_ShowDescription : MonoBehaviour, IPointerEnterHandler
 {
     [SerializeField] private Animator descriptionPanelAnimator;
     private bool savedOnce;
+    private bool saveFileDeleted;
+
+    private void Awake() {
+        VersioningManager.Instance.OnSaveFileDeleted += VersioningManager_OnSaveFileDeleted;
+    }
+
+    private void VersioningManager_OnSaveFileDeleted(object sender, System.EventArgs e) {
+        saveFileDeleted = true;
+    }
 
     private void Start() {
-        if (MetaProgressionManager.Instance.GetSavedOnce()) {
+        if (saveFileDeleted) return;
+        if (MetaProgressionManager.Instance.GetTutorialCompletedOrSkipped()) {
             savedOnce = true;
         }
     }
@@ -40,7 +50,5 @@ public class NewGameButton_ShowDescription : MonoBehaviour, IPointerEnterHandler
         if (savedOnce) return;
         descriptionPanelAnimator.gameObject.SetActive(false);
     }
-
-
 
 }

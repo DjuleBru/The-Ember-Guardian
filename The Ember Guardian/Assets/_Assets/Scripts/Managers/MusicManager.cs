@@ -64,7 +64,9 @@ public class MusicManager : MonoBehaviour {
     private float finalTrackVolume = 1f;
     private bool isFinalLoopPlaying;
     private bool finalOutroTriggered;
+    private bool levelDiscoveryTrackFadedOut;
     private Coroutine finalMusicCoroutine;
+    private Coroutine currentMusicEndCoroutine;
 
     private List<AudioClip> levelRandomBackgroundTracks;
     private List<AudioClip> levelRandomBackgroundTracksPooled;
@@ -394,13 +396,13 @@ public class MusicManager : MonoBehaviour {
 
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
-        if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource == NewLocationMusicInterruptionSource.buildFire) {
-            StopCurrentMusic(2f);
-        }
-
         if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource == NewLocationMusicInterruptionSource.none) {
             float startVolume = GetCurrentMusicVolume();
             StartCoroutine(FadeOutCoroutine(2f, startVolume/2f));
+        }
+
+        if (isPlayingLevelDiscoveryMusic && discoveryMusicInterruptionSource == NewLocationMusicInterruptionSource.buildFire) {
+            FadeOutMusic(2f);
         }
     }
 
@@ -417,7 +419,14 @@ public class MusicManager : MonoBehaviour {
         waitingToDiscoverLocation = false;
 
         SetAudioVolume(musicSettingVolume);
+        StartCoroutine(SetIsPlayingLevelDiscoveryMusicToFalseAfterTrack(audioSourceA.clip.length));
     }
+
+    private IEnumerator SetIsPlayingLevelDiscoveryMusicToFalseAfterTrack(float trackTime) {
+        yield return new WaitForSeconds(trackTime);
+        isPlayingLevelDiscoveryMusic = false;
+    }
+
 
     private void LevelManager_OnLevelFailed(object sender, EventArgs e) {
         StopCurrentMusic(5f);
@@ -460,9 +469,11 @@ public class MusicManager : MonoBehaviour {
         if (isPlayingExplorationMusic) return;
         if (isPlayingClearRubbleMusic) return;
 
-        peacefulTimer = 0;
-        playMusicAttemptTimer = 0;
-        FadeOutMusic(2f);
+        if (levelDiscoveryTrackFadedOut) return;
+        levelDiscoveryTrackFadedOut = true;
+
+        float startVolume = GetCurrentMusicVolume();
+        StartCoroutine(FadeOutCoroutine(2f, startVolume / 2.25f));
     }
 
     private bool CanPlayDayTrack() {
@@ -470,6 +481,7 @@ public class MusicManager : MonoBehaviour {
         if (isDuskOrNight) return false;
         if (isPlayingEndLevelAreaMusic) return false;
         if (isPlayingExplorationMusic) return false;
+        if (isPlayingLevelDiscoveryMusic) return false;
 
         return true;
     }
