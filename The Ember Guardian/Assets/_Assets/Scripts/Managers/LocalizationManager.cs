@@ -27,19 +27,24 @@ public class LocalizationManager : MonoBehaviour
     [SerializeField] private TMP_FontAsset standardFont;
     [SerializeField] private TMP_FontAsset japaneseFont;
     [SerializeField] private TMP_FontAsset chineseFont;
+    [SerializeField] private TMP_FontAsset koreanFont;
 
     [SerializeField] private Material standardMaterial;
     [SerializeField] private Material standardMaterial_JP;
     [SerializeField] private Material standardMaterial_CN;
+    [SerializeField] private Material standardMaterial_KR;
     [SerializeField] private Material blueGlowMaterial;
     [SerializeField] private Material blueGlowMaterial_JP;
     [SerializeField] private Material blueGlowMaterial_CN;
+    [SerializeField] private Material blueGlowMaterial_KR;
     [SerializeField] private Material greenGlowMaterial;
     [SerializeField] private Material greenGlowMaterial_JP;
     [SerializeField] private Material greenGlowMaterial_CN;
+    [SerializeField] private Material greenGlowMaterial_KR;
     [SerializeField] private Material redGlowMaterial;
     [SerializeField] private Material redGlowMaterial_JP;
     [SerializeField] private Material redGlowMaterial_CN;
+    [SerializeField] private Material redGlowMaterial_KR;
 
     public enum Language {
         English,
@@ -48,6 +53,7 @@ public class LocalizationManager : MonoBehaviour
         Spanish,
         Japanese,
         Chinese,
+        Korean,
     }
     [Serializable]
     public class LocalizationEntry {
@@ -58,6 +64,7 @@ public class LocalizationManager : MonoBehaviour
         public string Spanish;
         public string Japanese;
         public string Chinese;
+        public string Korean;
     }
     public class LocalizationData {
         public List<LocalizationEntry> entries;
@@ -102,6 +109,9 @@ public class LocalizationManager : MonoBehaviour
         else if (currentLanguage == Language.Chinese) {
             fontToUse = chineseFont;
         }
+        else if (currentLanguage == Language.Korean) {
+            fontToUse = koreanFont;
+        }
         else  {
             fontToUse = standardFont;
         }
@@ -124,6 +134,7 @@ public class LocalizationManager : MonoBehaviour
                     case "Spanish": translatedText = entry.Spanish; break;
                     case "Japanese": translatedText = entry.Japanese; break;
                     case "Chinese": translatedText = entry.Chinese; break;
+                    case "Korean": translatedText = entry.Korean; break;
                     default: translatedText = entry.English; break;
                 }
                 break;
@@ -153,6 +164,7 @@ public class LocalizationManager : MonoBehaviour
 
         if (currentLanguage == Language.Japanese) return japaneseFont;
         if (currentLanguage == Language.Chinese) return chineseFont;
+        if (currentLanguage == Language.Korean) return koreanFont;
         return standardFont;
     }
 
@@ -161,6 +173,7 @@ public class LocalizationManager : MonoBehaviour
 
         if (currentLanguage == Language.Japanese) return blueGlowMaterial_JP;
         if (currentLanguage == Language.Chinese) return blueGlowMaterial_CN;
+        if (currentLanguage == Language.Korean) return blueGlowMaterial_KR;
         return blueGlowMaterial;
     }
     public Material GetGreenGlowMaterial() {
@@ -168,6 +181,7 @@ public class LocalizationManager : MonoBehaviour
 
         if (currentLanguage == Language.Japanese) return greenGlowMaterial_JP;
         if (currentLanguage == Language.Chinese) return greenGlowMaterial_CN;
+        if (currentLanguage == Language.Korean) return greenGlowMaterial_KR;
         return greenGlowMaterial;
     }
     public Material GetRedGlowMaterial() {
@@ -175,6 +189,7 @@ public class LocalizationManager : MonoBehaviour
 
         if (currentLanguage == Language.Japanese) return redGlowMaterial_JP;
         if (currentLanguage == Language.Chinese) return redGlowMaterial_CN;
+        if (currentLanguage == Language.Korean) return redGlowMaterial_KR;
         return redGlowMaterial;
     }
 
@@ -183,6 +198,7 @@ public class LocalizationManager : MonoBehaviour
 
         if (currentLanguage == Language.Japanese) return standardMaterial_JP;
         if (currentLanguage == Language.Chinese) return standardMaterial_CN;
+        if (currentLanguage == Language.Korean) return standardMaterial_KR;
         return standardMaterial;
     }
 

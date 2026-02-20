@@ -292,7 +292,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void SetInOtherInteractableObjectTriggerArea(bool inOtherInteractableObjectArea) {
-        Debug.Log("SetInOtherInteractableObjectTriggerArea " + inOtherInteractableObjectArea);
+        //Debug.Log("SetInOtherInteractableObjectTriggerArea " + inOtherInteractableObjectArea);
         inOtherInteractableObjectTriggerArea = inOtherInteractableObjectArea;
 
         if (inOtherInteractableObjectArea) {

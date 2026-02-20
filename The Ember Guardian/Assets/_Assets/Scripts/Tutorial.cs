@@ -668,12 +668,14 @@ public class Tutorial : MonoBehaviour
         }
 
         if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember) {
-            if(!initialEmberGiven) {
+            Debug.Log("ember Collected");
+            if (!initialEmberGiven) {
                 initialEmberGiven = true;
                 return;
             }
 
             Debug.Log("ember Collected : endLevelAreaCollider.SetColliderTrigger()");
+            if (!dawnStarted) return;
             emberExtracted = true;
             endLevelAreaCollider.SetColliderTrigger();
             extractEmberCollider.SetColliderTrigger();

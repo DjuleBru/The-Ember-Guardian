@@ -546,14 +546,14 @@ public class PlayerMovement : MonoBehaviour {
     public void BuffMoveSpeed(string source, float buffAmount) {
         moveSpeed *= buffAmount;
         OnPlayerMovespeedChanged?.Invoke(this, EventArgs.Empty);
-        LogSpeedChange(source, buffAmount, true);
+        //LogSpeedChange(source, buffAmount, true);
     }
 
     public void DebuffMoveSpeed(string source, float buffAmount) {
         moveSpeed /= buffAmount;
         OnPlayerMovespeedChanged?.Invoke(this, EventArgs.Empty);
 
-        LogSpeedChange(source, buffAmount,false);
+        //LogSpeedChange(source, buffAmount,false);
     }
     private void LogSpeedChange(string source, float factor, bool added) {
         Debug.Log($"[MoveSpeed] {(added ? "Buff" : "Debuff")} {source} x{factor} => New speed: {moveSpeed}");

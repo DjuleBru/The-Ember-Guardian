@@ -100,6 +100,7 @@ public class TutorialCollider : MonoBehaviour
     }
 
     public void SetColliderTrigger() {
+        Debug.Log(this + " SetColliderTrigger ");
         tutorialCollider.isTrigger = true;
     }
 

@@ -91,7 +91,7 @@ public class Structure : MonoBehaviour {
         maxEngineersAssignedRefilling = structureSO.maxEngineersAssignedRefilling;
         maxEngineersAssignedWorking = structureSO.maxEngineersAssignedWorking;
 
-        Debug.Log(this + " structureLevel " + structureLevel + " maxEngineersAssignedWorking " + maxEngineersAssignedWorking);
+        //Debug.Log(this + " structureLevel " + structureLevel + " maxEngineersAssignedWorking " + maxEngineersAssignedWorking);
     }
 
     protected virtual void PayOrbsUI_OnOrbPaymentSuccess(object sender, EventArgs e) {
@@ -306,7 +306,7 @@ public class Structure : MonoBehaviour {
         OnAnyPlayerTriggeredIn?.Invoke(this, EventArgs.Empty);
         playerInTriggerArea = true;
 
-        Debug.Log("playerInTriggerArea " + playerInTriggerArea);
+        //Debug.Log("playerInTriggerArea " + playerInTriggerArea);
         if (playerCanInteract) {
             Player.Instance.SetInPayCurrencyArea(true);
         }

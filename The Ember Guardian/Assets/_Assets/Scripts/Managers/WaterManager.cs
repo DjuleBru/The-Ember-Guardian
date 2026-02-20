@@ -39,7 +39,7 @@ public class WaterManager : MonoBehaviour
 
     public void RefreshReflectionsActive() {
         reflectionsActive = SettingsManager.Instance.GetWaterReflectionsActive();
-        Debug.Log("RefreshReflectionsActive " + reflectionsActive);
+        //Debug.Log("RefreshReflectionsActive " + reflectionsActive);
 
         modernWater2D.enableReflections.value = reflectionsActive;
         modernWater2D.enableObstruction.value = reflectionsActive;
@@ -47,7 +47,7 @@ public class WaterManager : MonoBehaviour
     }
 
     private void RefreshReflectionsLevel() {
-        Debug.Log("RefreshReflectionsLevel");
+        //Debug.Log("RefreshReflectionsLevel");
 
         // Liste complète des layers disponibles
         List<int> allLayers = new List<int> { 0, 6, 11, 12, 13, 14, 15, 16, 17, 18, 19, 25, 28, 29, 30 };
