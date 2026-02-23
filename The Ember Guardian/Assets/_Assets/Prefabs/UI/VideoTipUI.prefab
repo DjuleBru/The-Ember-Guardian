@@ -1097,7 +1097,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8092972153247137310}
   m_HandleRect: {fileID: 5019738915690030307}
   m_Direction: 2
-  m_Value: 1.0000001
+  m_Value: 0.99999994
   m_Size: 0.31671122
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3333,7 +3333,6 @@ GameObject:
   - component: {fileID: 2115477506622256864}
   - component: {fileID: 7089914334109418786}
   - component: {fileID: 2048572827500916794}
-  - component: {fileID: 4498234073780945204}
   m_Layer: 5
   m_Name: TipNameText
   m_TagString: Untagged
@@ -3355,10 +3354,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3649704198833706280}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 7, y: -77}
-  m_SizeDelta: {x: 0, y: 79.79999}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -79.7}
+  m_SizeDelta: {x: -80, y: 79.79999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7089914334109418786
 CanvasRenderer:
@@ -3415,10 +3414,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
+  m_fontSize: 61.85
   m_fontSizeBase: 70
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -3457,20 +3456,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &4498234073780945204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5428310858422029965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 0
 --- !u!1 &5850477494746507584
 GameObject:
   m_ObjectHideFlags: 0

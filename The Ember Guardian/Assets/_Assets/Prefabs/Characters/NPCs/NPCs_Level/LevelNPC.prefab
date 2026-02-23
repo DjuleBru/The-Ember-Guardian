@@ -580,6 +580,9 @@ MonoBehaviour:
   continueInputImage: {fileID: 5110024098303773545}
   textLinesSO: {fileID: 0}
   merchantTalkLinesLocalizationKeys: []
+  talkPanelUIGameObject_EndGame: {fileID: 0}
+  talkText_EndGame: {fileID: 0}
+  creditsTextLines: {fileID: 0}
   DEBUGShowTextLines: 0
 --- !u!223 &7345381680610371633
 Canvas:
@@ -862,6 +865,7 @@ MonoBehaviour:
   hubMerchantItemParent: {fileID: 0}
   isHubMerchant: 0
   isLevelNPC: 0
+  isHordeModeMerchant: 0
   fadeOutAfterTalk: 0
   delayToFadeOutAfterTalk: 0
   isFunctionalDemoHubMerchant: 0
@@ -1363,6 +1367,7 @@ GameObject:
   - component: {fileID: 4962855372358962903}
   - component: {fileID: 3296390039765656520}
   - component: {fileID: 715216385964600479}
+  - component: {fileID: 3222642821232177960}
   m_Layer: 0
   m_Name: ContinueInstructionText
   m_TagString: Untagged
@@ -1486,3 +1491,16 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3222642821232177960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9154945532310807107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizationKey: menu_continue

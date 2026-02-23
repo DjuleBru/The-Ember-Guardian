@@ -140,6 +140,7 @@ public class Creature : Mob
     private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
         if (!creatureActive) return;
         if (!LevelManager.Instance.IsHordeMode()) return;
+        if (rb == null) return;
 
         isPaused = false;
         rb.simulated = true;
@@ -744,10 +745,8 @@ public class Creature : Mob
         PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded -= PlayerMovement_OnPlayerCrouchedEnded;
 
-        if(DayNightManager.Instance != null) {
-            DayNightManager.Instance.OnCyclePaused -= DayNightManager_OnCyclePaused;
-            DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
-        }
+        DayNightManager.Instance.OnCyclePaused -= DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
 
     }
 

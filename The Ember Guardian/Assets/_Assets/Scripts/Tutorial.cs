@@ -527,7 +527,7 @@ public class Tutorial : MonoBehaviour
 
         yield return new WaitForSeconds(4f);
 
-        StartCoroutine(ShowTooltipAfterDelay(0f, "Hold", "To run", InputControlIcons.Control.Run));
+        StartCoroutine(ShowTooltipAfterDelay(0f, LocalizationManager.Instance.GetLocalizedText("menu_hold"), LocalizationManager.Instance.GetLocalizedText("tooltip_toRun"), InputControlIcons.Control.Run));
         StartCoroutine(HideTooltipAfterDelay(4f));
     }
 
