@@ -208,7 +208,7 @@ public class StructureLocation : MonoBehaviour {
 
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
             bool structureUnlocked = HordeModeProgressionManager.Instance.GetStructureUnlocked(structureSOToBuild.structureType);
-            Debug.Log(structureSOToBuild + " structureUnlocked " + structureUnlocked);
+            //Debug.Log(structureSOToBuild + " structureUnlocked " + structureUnlocked);
             if (structureUnlocked) {
                 structureLocationBought = true;
                 //gameObject.SetActive(true);

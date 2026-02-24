@@ -28,6 +28,8 @@ public class DayNightVisualsManager : MonoBehaviour
     private float initialSunLightIntensity;
     [SerializeField] private float moonLightIntensity;
 
+    private float rainLightIntensityMultiplier = 75f;
+
     [SerializeField] private float transitionDuration;
 
     [SerializeField] private SpriteRenderer skySpriteRenderer;

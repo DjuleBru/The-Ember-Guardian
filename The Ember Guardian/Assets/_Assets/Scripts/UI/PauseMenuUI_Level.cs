@@ -42,20 +42,6 @@ public class PauseMenuUI_Level : PauseMenuUI {
         progressionSavedTextIndicator.SetTrigger("Hide");
     }
 
-    //private void SetButtonNavigations() {
-    //    Navigation manualButtonNav = manualButton.navigation;
-    //    Navigation backToHubButtonNav = backToHubButton.navigation;
-
-    //    if (VersioningManager.Instance.GetIsDemo()) {
-    //        restartGameButtonGO.SetActive(false);
-    //        manualButtonNav.selectOnDown = backToHubButton;
-    //        backToHubButtonNav.selectOnDown = manualButton;
-
-    //        manualButton.navigation = manualButtonNav;
-    //        backToHubButton.navigation = backToHubButtonNav;
-    //    }
-    //}
-
     private void ButtonConfirm_BackToHub_OnButtonDeselected(object sender, System.EventArgs e) {
         confirmBackToHub = false;
         backToHubText.text = LocalizationManager.Instance.GetLocalizedText("menu_backToHub");
@@ -129,7 +115,12 @@ public class PauseMenuUI_Level : PauseMenuUI {
 
     public override void ExitGameButton() {
         if (confirmExitGame) {
-            OpenFullGameDescriptionPanel();
+            if (VersioningManager.Instance.GetIsDemo()) {
+                OpenFullGameDescriptionPanel();
+            }
+            else {
+                ExitGameWithNoConfirmation();
+            }
         }
         else {
             confirmExitGame = true;

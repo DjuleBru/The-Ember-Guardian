@@ -101,7 +101,6 @@ public class LocalizationManager : MonoBehaviour
 
     public LocalizedResult GetLocalized(string key) {
         string translatedText = GetLocalizedText(key); // ton code existant
-        Debug.Log("key " + key  + " "+ translatedText);
         TMP_FontAsset fontToUse = null;
 
         if (currentLanguage == Language.Japanese) {

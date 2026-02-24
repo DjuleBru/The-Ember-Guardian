@@ -66,10 +66,12 @@ public class HordeModeRewardsMenu : MonoBehaviour
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnEscapePerformed += GameInput_OnEscapePerformed;
 
+        ES3Settings hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
+
         if (HordeModeProgressionManager.Instance.LastXPGainWasFromMainGame()) {
             nightsSurvivedAmountText.text = LocalizationManager.Instance.GetLocalizedText("menu_hordeModeXPBackFromMainGame");
         } else {
-            nightsSurvivedAmountText.text = LocalizationManager.Instance.GetLocalizedText("menu_nightsSurvived") + " " + ES3.Load("lastHordeModeNightsSurvived", 0);
+            nightsSurvivedAmountText.text = LocalizationManager.Instance.GetLocalizedText("menu_nightsSurvived") + " " + ES3.Load("lastHordeModeNightsSurvived", 0, hordeModeSaveFileSettings);
         }
 
         pressAnyKeyToContinueGO.SetActive(false);
@@ -114,10 +116,11 @@ public class HordeModeRewardsMenu : MonoBehaviour
         // Récupération des unlocks atteignables
         List<HordeModeProgressionManager.HordeModeUnlockables> pendingUnlocks = new List<HordeModeProgressionManager.HordeModeUnlockables>();
 
+        HordeModeProgressionManager.HordeModeUnlockables lastDemoUnlockable = HordeModeProgressionManager.HordeModeUnlockables.Revolver;
         foreach (var kvp in HordeModeProgressionManager.Instance.unlockThresholds) {
 
             if (HordeModeProgressionManager.Instance.CheckUnlockableLockedInDemo(kvp.Key)) {
-                reachedLockedInDemoUnlockable = true;
+                lastDemoUnlockable = kvp.Key;
                 break;
             };
             if (!HordeModeProgressionManager.Instance.GetUnlocked(kvp.Key) && totalXP >= kvp.Value) {
@@ -132,6 +135,10 @@ public class HordeModeRewardsMenu : MonoBehaviour
                 HordeModeProgressionManager.Instance.SetHasNoXPToCommit();
                 unlockSequenceCoroutineRunning = false;
                 yield break;
+            }
+
+            if(unlock == lastDemoUnlockable) {
+                reachedLockedInDemoUnlockable = true;
             }
   
             pressAnyKeyToContinueGO.SetActive(false);

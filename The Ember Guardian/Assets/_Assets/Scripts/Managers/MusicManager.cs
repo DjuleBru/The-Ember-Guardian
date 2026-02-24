@@ -208,11 +208,11 @@ public class MusicManager : MonoBehaviour {
 
     public void FadeInToMainMenuMusic() {
         StartCoroutine(FadeOutThenInCoroutine(1f, 1f, mainMenuMusic));
-        targetVolume = .75f;
+        targetVolume = mainMenuMusicAudioVolume * SettingsManager.Instance.GetMusicVolume() * SettingsManager.Instance.GetMasterVolume();
     }
     public void FadeInToHordeModeMusic() {
         StartCoroutine(FadeOutThenInCoroutine(1f, 1f, hordeModeMusic));
-        targetVolume = .5f;
+        targetVolume = 1f * SettingsManager.Instance.GetMusicVolume() * SettingsManager.Instance.GetMasterVolume();
     }
 
     public void SetHubMusic() {

@@ -740,7 +740,7 @@ public class Creature : Mob
         return inFireLightAmount;
     }
 
-    protected void OnDestroy() {
+    protected virtual void OnDestroy() {
         PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
         PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded -= PlayerMovement_OnPlayerCrouchedEnded;

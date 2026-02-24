@@ -126,7 +126,6 @@ public class HordeModeProgressionManager : MonoBehaviour
     // Called during run
     [Button]
     public void AddRunXP(int amount) {
-        Debug.Log("AddRunXP " + amount);
         pendingXP += amount;
         totalHordeModeXP += amount;
 

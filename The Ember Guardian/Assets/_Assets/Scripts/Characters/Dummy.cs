@@ -60,4 +60,11 @@ public class Dummy : Creature
     }
     protected override void OnEnable() {
     }
+
+    protected override void OnDestroy() {
+        PlayerShoot.Instance.OnPlayerShot -= PlayerShoot_OnPlayerShotProjectile;
+        PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;
+        PlayerMovement.Instance.OnPlayerCrouchedEnded -= PlayerMovement_OnPlayerCrouchedEnded;
+
+    }
 }

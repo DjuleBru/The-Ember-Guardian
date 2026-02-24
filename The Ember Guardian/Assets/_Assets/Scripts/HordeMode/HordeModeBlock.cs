@@ -161,16 +161,16 @@ public class HordeModeBlock : MonoBehaviour
 
             int animalAmountToSpawn = 0;
             if (randomAnimal == AnimalSO.AnimalType.Rat) {
-                animalAmountToSpawn = 12;
+                animalAmountToSpawn = 10;
             }
             if (randomAnimal == AnimalSO.AnimalType.Fox) {
-                animalAmountToSpawn = 8;
+                animalAmountToSpawn = 6;
             }
             if (randomAnimal == AnimalSO.AnimalType.Elk) {
-                animalAmountToSpawn = 5;
+                animalAmountToSpawn = 4;
             }
             if (randomAnimal == AnimalSO.AnimalType.Deer) {
-                animalAmountToSpawn = 4;
+                animalAmountToSpawn = 3;
             }
 
             animalAmountToSpawn = Mathf.RoundToInt(animalAmountToSpawn * GetSizeRewardMultiplier());

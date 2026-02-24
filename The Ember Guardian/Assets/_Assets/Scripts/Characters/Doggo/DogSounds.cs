@@ -39,7 +39,7 @@ public class DogSounds : SoundObject
     private float dogVolume;
 
     private float growlTimer;
-    private float growlRate = 2.5f;
+    private float growlRate = 3f;
 
     private float barkTimer;
     private float barkRateWhenRunningToAttack = .8f;

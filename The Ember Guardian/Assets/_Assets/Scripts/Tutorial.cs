@@ -369,7 +369,7 @@ public class Tutorial : MonoBehaviour
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.Build2Barricades);
             }
 
-            if(fireFuelled && towerNumberBuilt == 2) {
+            if(fireFuelled && towerNumberBuilt == 2 && barricadeNumberBuilt == 2) {
                 StartCoroutine(StartSurviveTheNightObjective());
             }
         }
@@ -389,7 +389,7 @@ public class Tutorial : MonoBehaviour
                 LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.Build2Towers);
             }
 
-            if (fireFuelled && barricadeNumberBuilt == 2) {
+            if (fireFuelled && barricadeNumberBuilt == 2 && towerNumberBuilt == 2) {
                 StartCoroutine(StartSurviveTheNightObjective());
             }
         }

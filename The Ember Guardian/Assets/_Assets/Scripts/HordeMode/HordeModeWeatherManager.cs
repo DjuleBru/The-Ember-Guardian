@@ -20,7 +20,7 @@ public class HordeModeWeatherManager : MonoBehaviour
     }
 
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
-        if(fogActive) {
+        if(fogActive && fogFront.GetAlpha() != 0) {
             EndFog();
         }
 

@@ -44,6 +44,9 @@ public class Fog_Front : MonoBehaviour
     public void SetAlpha(float alpha) {
         fogRenderer.color = new Color(fogRenderer.color.r, fogRenderer.color.g, fogRenderer.color.b, alpha);
     }
+    public float GetAlpha() {
+        return fogRenderer.color.a;
+    }
 
     public void SetInitialAlpha(float alpha) {
         initialAlpha = alpha;

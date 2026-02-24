@@ -54,7 +54,7 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
     int nextTrapChestThreshold;
 
     int distSinceLastWorkerSpawner = 0;
-    int nextWorkerSpawnerThreshold = 4;
+    int nextWorkerSpawnerThreshold = 5;
 
     private float lastFastTravelRightX = 0f;
     private float lastFastTravelLeftX = 0f;
@@ -243,8 +243,9 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
             return;
         }
 
-        // --- DISTANCE 2-4 ---
-        if (dist == 2 || dist == 3 || dist == 4) {
+        // --- DISTANCE 2-3
+        // ---
+        if (dist == 2 || dist == 3) {
             // si les deux existent
             if (left != null && right != null) {
                 HordeModeBlock forcedSimple = (Random.value < 0.5f ? left : right);
@@ -264,8 +265,8 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
             return;
         }
 
-        // --- DISTANCE 5 (spécial pour shop <-> mine) ---
-        if (dist == 5) {
+        // --- DISTANCE 4 (spécial pour shop <-> mine) ---
+        if (dist == 4) {
             // Si les deux existent et aucun shopBlock défini (cas : pas de shop prévu), on applique la logique far comme pour >5 (sûr)
             // Si shopBlock existe, on doit interdire la mine sur le même bloc (on ne fait pas de Remove; on évite d'ajouter une mine sur le même côté),
             // et on ajoute une Mine automatiquement sur l'autre côté (si l'autre existe) — en vérifiant le débloque minerShrine.
@@ -323,7 +324,7 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
             return;
         }
 
-        // --- DISTANCE > 5 (anciennement "distance > 5") ---
+        // --- DISTANCE > 4 (anciennement "distance > 5") ---
         if (left != null && right != null) {
             AssignFarDistanceTypes(left, right);
         }
@@ -386,17 +387,17 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
         }
 
         // --- Distance 2 : WorkerSpawner sur l'autre côté par rapport à dist=1
-        if (dist == 2) {
-            if (left != null && right != null) {
-                // Inversion du côté du dist=1
-                HordeModeBlock chosen = (Random.value < 0.5f) ? right : left;
-                chosen.AddBlockType(BlockType.WorkerSpawner);
-            }
-            else {
-                (left ?? right)?.AddBlockType(BlockType.WorkerSpawner);
-            }
-            return;
-        }
+        //if (dist == 2) {
+        //    if (left != null && right != null) {
+        //        // Inversion du côté du dist=1
+        //        HordeModeBlock chosen = (Random.value < 0.5f) ? right : left;
+        //        chosen.AddBlockType(BlockType.WorkerSpawner);
+        //    }
+        //    else {
+        //        (left ?? right)?.AddBlockType(BlockType.WorkerSpawner);
+        //    }
+        //    return;
+        //}
 
         // --- Distance > 2 : WorkerSpawner tous les 4 "de distance cumulée"
         // On utilise la sizeValue du bloc choisi

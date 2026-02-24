@@ -46,6 +46,9 @@ public class DogAnimatorManager : MonoBehaviour {
     private float sleepTrialRate = 4f;
     private float sleepProbability = .2f;
 
+    private float barkTimer;
+    private float barkDuration = 2f;
+
     public event EventHandler OnFootstepTriggered;
     public event EventHandler OnDogSniffed;
     public event EventHandler OnDogSniffedEnd;
@@ -137,6 +140,10 @@ public class DogAnimatorManager : MonoBehaviour {
 
         if (stateName == "Doggo_Sleep") {
             HandleSleepEnd();
+        }
+
+        if (stateName == "Doggo_Bark") {
+            HandleBarkEnd();
         }
     }
     private void DarkCompanionAI_OnStompAbilityEnded(object sender, EventArgs e) {
@@ -253,11 +260,14 @@ public class DogAnimatorManager : MonoBehaviour {
             animator.SetBool("Running", true);
             animator.SetBool("Barking", true);
             animator.SetBool("Growling", false);
+            barkTimer = barkDuration;
             return;
         }
 
         if (newState == DogAI.State.barking) {
             animator.SetBool("Barking", true);
+            animator.SetBool("Growling", false);
+            barkTimer = barkDuration;
         }
         else {
             animator.SetBool("Barking", false);
@@ -372,6 +382,16 @@ public class DogAnimatorManager : MonoBehaviour {
         }
     }
 
+    private void HandleBarkEnd() {
+        barkTimer -= Time.deltaTime;
+
+        if (barkTimer < 0) {
+            barkTimer = barkDuration;
+
+            animator.SetBool("Growling", true);
+            animator.SetBool("Barking", false);
+        }
+    }
 
     private void HandleAnimatorMovementBool() {
 
