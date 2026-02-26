@@ -61,6 +61,7 @@ public class MouseCursorManager : MonoBehaviour
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
             isMenuScene = true;
             ShowMouse(true);
+            SettingsManager.Instance.OnFullScreenChanged += SettingsManager_OnFullScreenChanged;
             return;
         };
 
@@ -74,6 +75,7 @@ public class MouseCursorManager : MonoBehaviour
         PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
         PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
         PauseMenuUI.Instance.OnPauseMenuOpened += PauseMenuUI_OnPauseMenuOpened;
+        SettingsManager.Instance.OnFullScreenChanged += SettingsManager_OnFullScreenChanged;
         PetDog.Instance.OnPlayerStartedPettingDog += PetDog_OnPlayerStartedPettingDog;
         PetDog.Instance.OnPlayerEndedPettingDog += PetDog_OnPlayerEndedPettingDog;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
@@ -104,7 +106,6 @@ public class MouseCursorManager : MonoBehaviour
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
         ShowMouse(false);
     }
-
 
     private void LateUpdate() {
         if (isMenuScene) return;
@@ -265,16 +266,29 @@ public class MouseCursorManager : MonoBehaviour
 
     }
 
+    private void SettingsManager_OnFullScreenChanged(object sender, System.EventArgs e) {
+        if (SettingsManager.Instance.GetCurrentScreenMode() == SettingsManager.ScreenMode.Windowed || SettingsManager.Instance.GetCurrentScreenMode() == SettingsManager.ScreenMode.MaximisedWindow) {
+            Cursor.lockState = CursorLockMode.None;
+        } else {
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+    }
+
     private void PauseMenuUI_OnPauseMenuOpened(object sender, System.EventArgs e) {
         pauseMenuOpen = true;
 
         if(!isUsingGamepad) {
             ShowMouse(true);
         }
+
+        if(SettingsManager.Instance.GetCurrentScreenMode() == SettingsManager.ScreenMode.Windowed || SettingsManager.Instance.GetCurrentScreenMode() == SettingsManager.ScreenMode.MaximisedWindow) {
+            Cursor.lockState = CursorLockMode.None;
+        }
     }
 
     private void PauseMenuUI_OnPauseMenuClosed(object sender, System.EventArgs e) {
         pauseMenuOpen = false;
+        Cursor.lockState = CursorLockMode.Confined;
 
         if (!isUsingGamepad) {
             ShowMouse(false);

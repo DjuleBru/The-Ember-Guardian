@@ -344,6 +344,7 @@ public class HordeModeUI : MonoBehaviour
     private void SetEnvironment(LevelSO.LevelEnvironment env) {
         currentSelectedEnvironment = env;
 
+        levelEnvironmentText.font = LocalizationManager.Instance.GetCurrentFont();
         levelEnvironmentText.text = LocalizationManager.Instance.GetLocalizedText(env.ToString());
 
         ES3Settings hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");

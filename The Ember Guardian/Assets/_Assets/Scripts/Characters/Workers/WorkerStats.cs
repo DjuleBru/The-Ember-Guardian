@@ -228,7 +228,11 @@ public class WorkerStats : MonoBehaviour
         return initialGuardHealth + guardHealthBuff;
     }
     public float GetHunterAccuracy() {
-        return initialHunterAccuracy - hunterAccuracyBuff/100f;
+        float accuracy = initialHunterAccuracy - hunterAccuracyBuff / 100f;
+        if(accuracy < 0) {
+            accuracy = 0;
+        }
+        return accuracy;
     }
     public float GetHunterAccuracyBuff() {
         return hunterAccuracyBuff;

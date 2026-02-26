@@ -40,7 +40,9 @@ public class PlayerAnimator : MonoBehaviour
 
 
     private void Start() {
-        bool isFemaleAnimator = ES3.Load("characterType", false);
+        ES3Settings settingsSaveFileSettings = new ES3Settings("Settings.es3");
+        bool isFemaleAnimator = ES3.Load("characterType", false, settingsSaveFileSettings);
+        Debug.Log("isFemale " + isFemaleAnimator);
         SetMaleOrFemaleAnimator(isFemaleAnimator);
 
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
