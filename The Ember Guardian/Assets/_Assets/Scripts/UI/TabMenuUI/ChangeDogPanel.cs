@@ -13,6 +13,7 @@ public class ChangeDogPanel : MonoBehaviour
 
     [SerializeField] protected Transform changeDogSlotContainer;
     [SerializeField] protected Transform changeDogSlotTemplate;
+
     [SerializeField] protected Transform emptyDogSlotTemplate;
     protected List<GameObject> changeDogButtons;
 
@@ -45,13 +46,14 @@ public class ChangeDogPanel : MonoBehaviour
         }
 
         foreach (Dog.DogType type in Enum.GetValues(typeof(Dog.DogType))) {
-            if (type == activeDogType) continue;
+            //if (type == activeDogType) continue;
 
             if(DogStats.Instance.GetDogUnlocked(type)) {
-                DogReplaceButton dogReplaceButton = Instantiate(changeDogSlotTemplate, changeDogSlotContainer).GetComponent<DogReplaceButton>();
 
-                dogReplaceButton.SetLinkedDog(type);
-                changeDogButtons.Add(dogReplaceButton.gameObject);
+                ChangeDogSlotAndSkinTemplate dogReplaceSlot = Instantiate(changeDogSlotTemplate, changeDogSlotContainer).GetComponent<ChangeDogSlotAndSkinTemplate>();
+                dogReplaceSlot.SetLinkedDog(type);
+                changeDogButtons.Add(dogReplaceSlot.GetDogReplaceButton().gameObject);
+
             } else {
                 Instantiate(emptyDogSlotTemplate, changeDogSlotContainer);
             }

@@ -152,6 +152,9 @@ public class SavingManager_Level : MonoBehaviour
         SavePlayer(tempPath);
         yield return new WaitForEndOfFrame();
 
+        SaveHuntingFlags(tempPath);
+        yield return new WaitForEndOfFrame();
+
         SaveStructures(tempPath);
         yield return new WaitForEndOfFrame();
 
@@ -507,11 +510,22 @@ public class SavingManager_Level : MonoBehaviour
         ES3.Save("Structures_CurrencyStorages", currencyStorageData, path);
     }
 
+    private void SaveHuntingFlags(string path) {
+        ES3.Save("HuntingFlag_Left_PlayerDefined", CampZoneManager.Instance.GetHuntingFlag_Left().GetPlayerDefinedHuntingLimit(), path);
+        ES3.Save("HuntingFlag_Left_Position", CampZoneManager.Instance.GetHuntingFlag_Left().GetPlayerDefinedHuntingFlagPosition(), path);
+
+        ES3.Save("HuntingFlag_Right_PlayerDefined", CampZoneManager.Instance.GetHuntingFlag_Right().GetPlayerDefinedHuntingLimit(), path);
+        ES3.Save("HuntingFlag_Right_Position", CampZoneManager.Instance.GetHuntingFlag_Right().GetPlayerDefinedHuntingFlagPosition(), path);
+
+        Debug.Log("SavedHuntingFlags");
+    }
+
     private void SaveTrapUpgrades(string path) {
 
         ES3.Save("TrapUpgrades", TrapManager.Instance.GetTrapUpgradesLevels(), path);
         
     }
+
     private void SaveTrapTypes(string path) {
         ES3.Save("TrapTypes", TrapManager.Instance.GetTrapTypesBoughtByPlayer(), path);
     }
@@ -662,6 +676,7 @@ public class SavingManager_Level : MonoBehaviour
         yield return StartCoroutine(LoadCollectibles(fileName));
         yield return StartCoroutine(LoadWorkers(fileName));
         yield return StartCoroutine(LoadSpawners(fileName));
+        yield return StartCoroutine(LoadHuntingFlags(fileName));
         yield return StartCoroutine(LoadStructures(fileName));
         yield return StartCoroutine(LoadTraps(fileName));
         yield return StartCoroutine(LoadObstacles(fileName));
@@ -684,6 +699,7 @@ public class SavingManager_Level : MonoBehaviour
         yield return StartCoroutine(LoadLevelState(fileName));
         yield return StartCoroutine(LoadCollectibles(fileName));
         yield return StartCoroutine(LoadWorkers(fileName));
+        yield return StartCoroutine(LoadHuntingFlags(fileName));
         yield return StartCoroutine(LoadStructures(fileName));
         yield return StartCoroutine(LoadTraps(fileName));
         yield return StartCoroutine(LoadObjectives(fileName));
@@ -1270,6 +1286,20 @@ public class SavingManager_Level : MonoBehaviour
             chest.SetChestPaid(data.chestPricePaid);
             chest.SetChestOpened(data.opened);
             chest.SetChestLocked(data.chestLocked);
+        }
+    }
+    private IEnumerator LoadHuntingFlags(string fileName) {
+        if (!ES3.KeyExists("HuntingFlag_Left_PlayerDefined", fileName)) yield break;
+
+        if(ES3.Load<bool>("HuntingFlag_Left_PlayerDefined", fileName)) {
+            Vector3 leftFlagPosition = ES3.Load<Vector3>("HuntingFlag_Left_Position", fileName);
+            CampZoneManager.Instance.GetHuntingFlag_Left().SetPlayerDefinedHuntingLimit(true);
+            CampZoneManager.Instance.GetHuntingFlag_Left().SetPlayerDefinedHuntingFlagPosition(leftFlagPosition);
+        }
+        if (ES3.Load<bool>("HuntingFlag_Right_PlayerDefined", fileName)) {
+            Vector3 rightFlagPosition = ES3.Load<Vector3>("HuntingFlag_Right_Position", fileName);
+            CampZoneManager.Instance.GetHuntingFlag_Right().SetPlayerDefinedHuntingLimit(true);
+            CampZoneManager.Instance.GetHuntingFlag_Right().SetPlayerDefinedHuntingFlagPosition(rightFlagPosition);
         }
     }
 

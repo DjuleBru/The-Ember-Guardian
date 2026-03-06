@@ -59,21 +59,17 @@ public class Worker : Mob {
 
         WorkerStats.Instance.OnMaxHealthChanged += WorkerStats_OnMaxHealthChanged;
 
-        DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCyclePausedByMerchantTalk += DayNightManager_OnCyclePausedByMerchantTalk;
         DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
     }
 
     private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
-        if (!LevelManager.Instance.IsHordeMode()) return;
-
         isPaused = false;
         rb.simulated = true;
         OnWorkerUnpaused?.Invoke(this, EventArgs.Empty);
     }
 
-    private void DayNightManager_OnCyclePaused(object sender, EventArgs e) {
-        if (!LevelManager.Instance.IsHordeMode()) return;
-
+    private void DayNightManager_OnCyclePausedByMerchantTalk(object sender, EventArgs e) {
         isPaused = true;
         rb.simulated = false;
         rb.velocity = Vector2.zero;
@@ -318,7 +314,7 @@ public class Worker : Mob {
     }
 
     private void OnDestroy() {
-        DayNightManager.Instance.OnCyclePaused -= DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCyclePausedByMerchantTalk -= DayNightManager_OnCyclePausedByMerchantTalk;
         DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
     }
 }

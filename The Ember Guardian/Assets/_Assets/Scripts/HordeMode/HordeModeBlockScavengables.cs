@@ -28,13 +28,13 @@ public class HordeModeBlockScavengables : MonoBehaviour
     [SerializeField] private Transform ammoScavengable_LH;
     [SerializeField] private Transform ammoScavengable_FD;
 
-    private int standardScavengableOrbsToCollect = 15;
-    private int standardScavengableSmallOrbsToCollect = 20;
-    private int standardScavengableAmmoToCollect = 12;
+    private int standardScavengableOrbsToCollect = 25;
+    private int standardScavengableSmallOrbsToCollect = 30;
+    private int standardScavengableAmmoToCollect = 16;
 
-    private int standardScavengableHitsToCollectOrb = 15;
-    private int standardScavengableHitsToCollectSmallOrb = 4;
-    private int standardScavengableHitsToCollectAmmo = 15;
+    private int standardScavengableHitsToCollectOrb = 12;
+    private int standardScavengableHitsToCollectSmallOrb = 3;
+    private int standardScavengableHitsToCollectAmmo = 12;
 
     private void Awake() {
         foreach(Transform transform in spawnPositions) {

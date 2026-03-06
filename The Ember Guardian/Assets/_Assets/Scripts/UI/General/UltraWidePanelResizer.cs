@@ -53,6 +53,7 @@ public class UltraWidePanelResizer : MonoBehaviour
             }
         }
 
+        return;
         if (aspectRatio <= 1.6f) {
             if (stretchedPanel) {
 

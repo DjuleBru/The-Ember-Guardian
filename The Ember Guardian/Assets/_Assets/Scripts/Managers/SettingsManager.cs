@@ -70,6 +70,8 @@ public class SettingsManager : MonoBehaviour
     private bool photosensitivityMode;
     private bool waterReflections;
 
+    private static bool displaySettingsAppliedThisSession = false;
+
     private float settingsVersion;
 
     private ES3Settings settingsSaveFileSettings;
@@ -117,8 +119,12 @@ public class SettingsManager : MonoBehaviour
             resolution = defaultRes;
         }
 
-        ApplyScreenMode(currentScreenMode);
-        SetResolution(resolution);
+        if(!displaySettingsAppliedThisSession) {
+            ApplyScreenMode(currentScreenMode);
+            SetResolution(resolution);
+
+            displaySettingsAppliedThisSession = true;
+        }
 
         if (settingsVersion < 0.9) {
             // Mise à jour vers la version 0.9 : autoReload passe à true
@@ -270,7 +276,6 @@ public class SettingsManager : MonoBehaviour
         }
 
         ApplyScreenMode(currentScreenMode);
-
         ES3.Save("currentScreenMode", currentScreenMode, settingsSaveFileSettings);
         OnFullScreenChanged?.Invoke(this, EventArgs.Empty);
     }
@@ -280,19 +285,16 @@ public class SettingsManager : MonoBehaviour
             case ScreenMode.Windowed:
                 Screen.fullScreenMode = FullScreenMode.Windowed;
                 Screen.fullScreen = false;
-                Screen.SetResolution(1280, 720, FullScreenMode.Windowed);
                 break;
 
             case ScreenMode.MaximisedWindow:
                 Screen.fullScreenMode = FullScreenMode.MaximizedWindow;
                 Screen.fullScreen = true;
-                Screen.SetResolution(Display.main.systemWidth, Display.main.systemHeight, FullScreenMode.MaximizedWindow);
                 break;
 
             case ScreenMode.Fullscreen:
                 Resolution native = Screen.currentResolution;
                 Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen;
-                Screen.SetResolution(native.width, native.height, FullScreenMode.ExclusiveFullScreen);
                 break;
         }
 
@@ -447,5 +449,6 @@ public class SettingsManager : MonoBehaviour
     public bool GetWaterReflectionsActive() {
         return waterReflections;
     }
+
     #endregion
 }

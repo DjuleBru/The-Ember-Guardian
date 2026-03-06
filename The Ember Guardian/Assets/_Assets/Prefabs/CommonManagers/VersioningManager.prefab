@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2490057826403758540}
   - component: {fileID: 2166850104548607339}
+  - component: {fileID: 135715288422897035}
   m_Layer: 0
   m_Name: VersioningManager
   m_TagString: Untagged
@@ -59,3 +60,18 @@ MonoBehaviour:
   demoMinor: 3
   demoPatch: 0
   latestCompatibleBuildVersion: 0.93
+--- !u!114 &135715288422897035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2736481497910515913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16b9c44b86a52e547a727c00b72c3405, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dlcDefinitions:
+  - type: 1
+    appId: 4501320

@@ -5,8 +5,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DogChangeButton : ButtonUI {
+
     private Dog.DogType linkedDogType;
     private Button button;
+
     [SerializeField] private Image dogIconImage;
 
     private void Awake() {

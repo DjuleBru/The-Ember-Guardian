@@ -63,6 +63,10 @@ public class FastTravelTP : Structure
     private void GameInput_OnPlayerJumpPerformed(object sender, EventArgs e) {
         if (!isSelectingReceiverTP) return;
 
+        DropFromTeleporter();
+    }
+
+    private void DropFromTeleporter() {
         isSelectingReceiverTP = false;
         floorCollider.enabled = false;
         OnPlayerCanceledTP?.Invoke(this, EventArgs.Empty);
@@ -96,6 +100,13 @@ public class FastTravelTP : Structure
     }
 
     private IEnumerator TeleportPlayerFromThisTP(FastTravelTP receiverTP) {
+
+        if (receiverTP == null) {
+            // Player didn't build the tent teleporter yet
+            DropFromTeleporter();
+            yield break;
+        }
+
         teleportingPlayer = true;
         isSelectingReceiverTP = false;
         OnPlayerWarpStarted?.Invoke(this, EventArgs.Empty);
@@ -110,6 +121,7 @@ public class FastTravelTP : Structure
         floorCollider.enabled = false;
         teleportingPlayer = false;
         OnPlayerWarpEnded?.Invoke(this, EventArgs.Empty);
+
         receiverTP.SetReceiverTP();
     }
 
@@ -181,7 +193,9 @@ public class FastTravelTP : Structure
 
         List<FastTravelTP> allTPs = PlayerCamp.Instance.GetAllFastTravelTPsBuilt();
         allTPs.Remove(this);
+
         receiverTP = GetClosestTP(allTPs);
+
         OnReceiverFastTravelTPChanged?.Invoke(this, EventArgs.Empty);
     }
 

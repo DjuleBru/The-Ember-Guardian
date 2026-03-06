@@ -63,6 +63,7 @@ public class EndLevelArea : MonoBehaviour
 
         if(endLevelAreaCleared) {
             endLevelAreaCleared = false;
+            endLevelAreaFire.SetActive(false);
             OnEndLevelAreaUnCleared?.Invoke(this, EventArgs.Empty);
         }
 

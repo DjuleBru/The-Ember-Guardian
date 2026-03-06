@@ -60,6 +60,14 @@ public class CampZoneManager : MonoBehaviour
         RefreshCampZoneLimits();
     }
 
+    public HuntingFlag GetHuntingFlag_Right() {
+        return huntingFlagMax;
+    }
+
+    public HuntingFlag GetHuntingFlag_Left() {
+        return huntingFlaxMin;
+    }
+
     private void Barricade_OnAnyBarricadeBuilt(object sender, EventArgs e) {
         Barricade barricade = sender as Barricade;
         if (barricade.GetIsWorldStructure()) return;

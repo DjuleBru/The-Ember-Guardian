@@ -129,7 +129,7 @@ public class PlayerSkills : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
 
         if (DayNightManager.Instance != null) {
-            DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+            DayNightManager.Instance.OnCyclePausedByMerchantTalk += DayNightManager_OnCyclePausedByMerchantTalk;
             DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
         }
 
@@ -140,14 +140,10 @@ public class PlayerSkills : MonoBehaviour
     }
 
     private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
-        if (!LevelManager.Instance.IsHordeMode()) return;
-
         isPaused = false;
     }
 
-    private void DayNightManager_OnCyclePaused(object sender, EventArgs e) {
-        if (!LevelManager.Instance.IsHordeMode()) return;
-
+    private void DayNightManager_OnCyclePausedByMerchantTalk(object sender, EventArgs e) {
         isPaused = true;
     }
 

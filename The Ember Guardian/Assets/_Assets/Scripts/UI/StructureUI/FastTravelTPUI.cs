@@ -89,6 +89,8 @@ public class FastTravelTPUI : MonoBehaviour
 
     private void FastTravelTP_OnReceiverFastTravelTPChanged(object sender, EventArgs e) {
         FastTravelTP receiver = fastTravelTP.GetReceiverFastTravelTP();
+        if (receiver == null) return;
+
         var availability = fastTravelTP.GetLeftRightAvailability();
 
         leftInputGO.SetActive(availability.canGoLeft);

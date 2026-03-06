@@ -25,9 +25,10 @@ public class GunSounds : SoundObject
         if (!gun.GetGunSO().triggersShootSFXOnEachBuller) return;
 
         if(gun.GetCurrentBullet() != 0) {
+
             bulletAudioSource.pitch = 1f;
             AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGun().GetComponent<GunSounds>().GetShootAudioClips();
-            float volume = PlayerShoot.Instance.GetHeldGunSO().shootGunVolumeMultiplier * sfxVolume;
+            float volume = PlayerShoot.Instance.GetHeldGunSO().shootGunVolumeMultiplier * sfxVolume * masterVolume * 2;
             AudioClip audioClip = audioClipArray[UnityEngine.Random.Range(0, audioClipArray.Length)];
 
             bulletAudioSource.PlayOneShot(audioClip, volume);

@@ -43,7 +43,8 @@ public class PlayerSounds : SoundObject
     protected override void Start() {
         base.Start();
 
-        bool isFemaleAnimator = ES3.Load("characterType", false);
+        ES3Settings settingsSaveFileSettings = new ES3Settings("Settings.es3");
+        bool isFemaleAnimator = ES3.Load("characterType", false, settingsSaveFileSettings);
         SetSelectedGenderAudioClips(isFemaleAnimator);
 
         playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;

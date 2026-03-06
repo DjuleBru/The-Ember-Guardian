@@ -50,6 +50,7 @@ public class DayNightManager : MonoBehaviour
     public event EventHandler OnNightStart;
 
     public event EventHandler OnCyclePaused;
+    public event EventHandler OnCyclePausedByMerchantTalk;
     public event EventHandler OnCycleUnpaused;
 
     private void Awake() {
@@ -64,6 +65,11 @@ public class DayNightManager : MonoBehaviour
         Fire.Instance.OnFireEmberExtractionStopped += Fire_OnFireEmberExtractionStopped;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
 
+        HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
+        HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+        HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
+
         initialDawnDuration = dawnDuration;
         initialDayDuration = dayDuration;
         initialDuskDuration = duskDuration;
@@ -72,8 +78,6 @@ public class DayNightManager : MonoBehaviour
 
         if (LevelManager.Instance.IsHordeMode()) {
             currentDifficulty = SettingsManager.Instance.GetHordeDifficulty();
-            HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
-            HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
         }
 
         if (currentDifficulty == SettingsManager.Difficulty.Easy) {
@@ -97,6 +101,17 @@ public class DayNightManager : MonoBehaviour
         OnDawnStart?.Invoke(this, EventArgs.Empty);
     }
 
+
+    private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
+        Debug.Log("HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant");
+        OnCycleUnpaused?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant(object sender, EventArgs e) {
+        SetCyclePaused(true, true);
+        OnCyclePausedByMerchantTalk?.Invoke(this, EventArgs.Empty);
+    }
+
     private void HubMerchantUI_OnAnyHubMerchantCloseUIPanel(object sender, EventArgs e) {
         //Debug.Log("HubMerchantUI_OnAnyHubMerchantCloseUIPanel");
         SetCyclePaused(false, true);
@@ -104,6 +119,7 @@ public class DayNightManager : MonoBehaviour
 
     private void HubMerchant_OnPlayerOpenedAnyHubMerchantShop(object sender, EventArgs e) {
         SetCyclePaused(true, true);
+        OnCyclePausedByMerchantTalk?.Invoke(this, EventArgs.Empty);
     }
 
 
@@ -243,7 +259,6 @@ public class DayNightManager : MonoBehaviour
 
     [Button]
     public void SetCyclePaused(bool paused, bool showCyclePauseUI = false) {
-
         // Don't unpause when closing Video Tip and fire has not been lit IF NOT IN HORDE MODE
         if (!Fire.Instance.GetInitialFireLit() && !paused && !LevelManager.Instance.IsHordeMode()) return;
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;
@@ -331,6 +346,8 @@ public class DayNightManager : MonoBehaviour
 
     private void OnDestroy() {
         HubMerchant.OnPlayerOpenedAnyHubMerchantShop -= HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
-        HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
+        HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant -= HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
+        HubMerchantUI.OnAnyHubMerchantCloseUIPanel -= HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
+        HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
 }

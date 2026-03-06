@@ -77,6 +77,7 @@ public class DogStats : MonoBehaviour {
     [SerializeField] private Sprite germanShepherdIcon;
     [SerializeField] private Sprite retreiverIcon;
     [SerializeField] private Sprite darkCompanionIcon;
+    [SerializeField] private Sprite huskyIcon;
 
     private void Awake() {
         Instance = this;
@@ -497,6 +498,26 @@ public class DogStats : MonoBehaviour {
         if(type == Dog.DogType.DarkCompanion) {
             return darkCompanionIcon;
         }
+        return germanShepherdIcon;
+    }
+
+    public Sprite GetDogIconSprite(Dog.DogSkin skin) {
+        if (skin == Dog.DogSkin.GermanShepherdSkin) {
+            return germanShepherdIcon;
+        }
+
+        if (skin == Dog.DogSkin.GoldenRetreiverSkin) {
+            return retreiverIcon;
+        }
+
+        if (skin == Dog.DogSkin.DarkCompanionSkin) {
+            return darkCompanionIcon;
+        }
+
+        if (skin == Dog.DogSkin.Husky) {
+            return huskyIcon;
+        }
+
         return germanShepherdIcon;
     }
 

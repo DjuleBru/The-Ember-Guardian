@@ -13,7 +13,28 @@ public class Dog : MonoBehaviour
         GoldenRetreiver,
         DarkCompanion,
     }
+
+    public enum DogSkin {
+        GermanShepherdSkin,
+        GoldenRetreiverSkin,
+        DarkCompanionSkin,
+        Husky,
+    }
+
+    [Serializable]
+    public class DogTypeSkins {
+        public Dog.DogType dogType;
+        public List<DogSkinDLCLink> dogTypeDLCSkins;
+    }
+
+    [Serializable]
+    public class DogSkinDLCLink {
+        public DogSkin dogSkin;
+        public DLCManager.DLCType linkedDLC;
+    }
+
     public DogType dogType;
+    public DogSkin dogSkin;
 
     public event EventHandler OnPlayerTriggeredIn;
     public event EventHandler OnPlayerTriggeredOut;
@@ -21,15 +42,20 @@ public class Dog : MonoBehaviour
     private List<DogAI> dogAIList = new List<DogAI>();
     private DogAI currentDogAI;
     [SerializeField] private bool useDebugDogType;
+    [SerializeField] private bool useDebugDogSkin;
     [SerializeField] private Dog.DogType debugDogType;
+    [SerializeField] private Dog.DogSkin debugDogSkin;
     [SerializeField] private DogAI.State initialIdleState;
     [SerializeField] private DogAI.State initialState;
+
+    [SerializeField] private List<DogTypeSkins> dogTypeSkins;
     private DogAI.State currentIdleState;
 
     public event EventHandler OnIdleStateChanged;
     public event EventHandler OnPlayerCalledDog;
     public event EventHandler OnPlayerStayDog;
     public event EventHandler<OnDogTypeChangedEventArgs> OnDogTypeChanged;
+    public event EventHandler OnDogSkinChanged;
 
     public class OnDogTypeChangedEventArgs:EventArgs {
         public bool selectedFromMenu;
@@ -44,6 +70,7 @@ public class Dog : MonoBehaviour
         }
 
         SetCurrentDogType();
+        SetCurrentDogSkin();
         SetCurrentDogAI();
     }
 
@@ -67,6 +94,23 @@ public class Dog : MonoBehaviour
         if (useDebugDogType) {
             dogType = debugDogType;
         }
+    }
+    private void SetCurrentDogSkin() {
+        dogSkin = LoadSkinForType(dogType);
+
+        if (useDebugDogSkin)
+            dogSkin = debugDogSkin;
+    }
+
+    private DogSkin LoadSkinForType(DogType type) {
+        DogSkin defaultSkin = GetDefaultSkinFromType(type);
+        DogSkin loadedSkin = ES3.Load(type + "_skin", defaultSkin);
+        bool manual = ES3.Load(type + "_skinManual", false);
+
+        if (!manual)
+            return defaultSkin;
+
+        return loadedSkin;
     }
 
     private void SetCurrentDogAI() {
@@ -147,12 +191,31 @@ public class Dog : MonoBehaviour
         return dogType;
     }
 
+    public DogSkin GetDogSkin() {
+        return dogSkin;
+    }
+
     public void SetDogType(DogType dogType, bool selectedFromMenu = false) {
         this.dogType = dogType;
+
+        dogSkin = LoadSkinForType(dogType);
+
+        ES3.Save("dogType", dogType);
+
         SetCurrentDogAI();
+
         OnDogTypeChanged?.Invoke(this, new OnDogTypeChangedEventArgs {
             selectedFromMenu = selectedFromMenu
         });
+    }
+
+    public void SetDogSkin(DogSkin skin) {
+        dogSkin = skin;
+
+        ES3.Save(dogType + "_skin", skin);
+        ES3.Save(dogType + "_skinManual", true);
+
+        OnDogSkinChanged?.Invoke(this, EventArgs.Empty);
     }
 
     [Button]
@@ -189,6 +252,19 @@ public class Dog : MonoBehaviour
 
     public DogAI GetCurrentDogAI() {
         return currentDogAI;
+    }
+
+    public List<DogTypeSkins> GetDogTypeSkins() {
+        return dogTypeSkins;
+    }
+
+    private DogSkin GetDefaultSkinFromType(DogType dogType) {
+        switch (dogType) {
+            default:
+            case DogType.GermanShepherd: return DogSkin.GermanShepherdSkin;
+            case DogType.GoldenRetreiver: return DogSkin.GoldenRetreiverSkin;
+            case DogType.DarkCompanion: return DogSkin.DarkCompanionSkin;
+        }
     }
 
     private void OnDestroy() {

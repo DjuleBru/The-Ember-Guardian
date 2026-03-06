@@ -15,6 +15,7 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
     protected float spawnTimer;
 
     private bool dead;
+    private bool isPaused;
     protected bool loaded = true;
 
     public event EventHandler OnSpawnerDamaged;
@@ -34,12 +35,16 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
         if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
             loaded = false;
         }
+
+        DayNightManager.Instance.OnCyclePausedByMerchantTalk += DayNightManager_OnCyclePausedByMerchantTalk;
+        DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
     }
 
 
     protected void Update() {
         if (!loaded) return;
         if (dead) return;
+        if (isPaused) return;
         if (blockAutoMobSpawn) return;
         if (!canSpawnMobsAtNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
 
@@ -51,6 +56,13 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
             spawnTimer = spawnRate;
             StartCoroutine(SpawnCreature());
         }
+    }
+    private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
+        isPaused = false;
+    }
+
+    private void DayNightManager_OnCyclePausedByMerchantTalk(object sender, EventArgs e) {
+        isPaused = true;
     }
 
     public bool SpawnedMaxMobs() {
@@ -183,5 +195,9 @@ public class CreatureSpawnerContinuous : MobSpawner, IDamageable {
 
     public bool GetDead() {
         return dead;
+    }
+    private void OnDestroy() {
+        DayNightManager.Instance.OnCyclePausedByMerchantTalk -= DayNightManager_OnCyclePausedByMerchantTalk;
+        DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
     }
 }

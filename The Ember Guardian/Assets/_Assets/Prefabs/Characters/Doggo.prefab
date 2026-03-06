@@ -770,7 +770,7 @@ Animator:
   m_GameObject: {fileID: 849184809638594990}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 958dbcf609019cf489be43d00b0f31b3, type: 2}
+  m_Controller: {fileID: 9100000, guid: e639b3b491590e74299071758e043363, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -797,6 +797,7 @@ MonoBehaviour:
   germanShepherdAnimator: {fileID: 9100000, guid: 6c69fb262f47f90439120bf9a6c99be2, type: 2}
   goldenAnimator: {fileID: 9100000, guid: 958dbcf609019cf489be43d00b0f31b3, type: 2}
   darkCompanionAnimator: {fileID: 9100000, guid: e639b3b491590e74299071758e043363, type: 2}
+  huskyAnimator: {fileID: 9100000, guid: 328950a9e41326849bc77eddeb0742e3, type: 2}
   petDog: {fileID: 7906990751673499060}
   darkCompanionAI: {fileID: 6964596691999979307}
   retreiverAI: {fileID: 7151654208442214634}
@@ -2400,10 +2401,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dogType: 0
+  dogSkin: 0
   useDebugDogType: 0
+  useDebugDogSkin: 0
   debugDogType: 0
+  debugDogSkin: 0
   initialIdleState: 7
   initialState: 3
+  dogTypeSkins:
+  - dogType: 0
+    dogTypeDLCSkins:
+    - dogSkin: 0
+      linkedDLC: 0
+    - dogSkin: 3
+      linkedDLC: 1
+  - dogType: 1
+    dogTypeDLCSkins:
+    - dogSkin: 0
+      linkedDLC: 0
+  - dogType: 2
+    dogTypeDLCSkins:
+    - dogSkin: 0
+      linkedDLC: 0
 --- !u!114 &6784152704645662438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2493,6 +2512,7 @@ MonoBehaviour:
   germanShepherdIcon: {fileID: 21300000, guid: 1f07936a3a623cb4791ac7e68cef338e, type: 3}
   retreiverIcon: {fileID: 21300000, guid: 1c185dffd2a4b6442b6f61ff8275f1c3, type: 3}
   darkCompanionIcon: {fileID: 21300000, guid: 9073bf5f678c1ef42af794e74cec0683, type: 3}
+  huskyIcon: {fileID: 21300000, guid: 53903685ee1e3574fa154868a2354f85, type: 3}
 --- !u!114 &1436243691899500231
 MonoBehaviour:
   m_ObjectHideFlags: 0

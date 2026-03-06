@@ -93,8 +93,16 @@ public class HuntingFlag : MonoBehaviour
         return campDefinedHuntingFlag.transform.position;
     }
 
+    public Vector3 GetPlayerDefinedHuntingFlagPosition() {
+        return playerDefinedHuntingFlag.transform.position;
+    }
+
     public bool SetPlayerDefinedHuntingLimit(bool defined) {
         return playerManuallySetFlagPosition = defined;
+    }
+
+    public void SetPlayerDefinedHuntingFlagPosition(Vector3 newPosition) {
+        playerDefinedHuntingFlag.transform.position = newPosition;
     }
 
     public bool GetPlayerCarryingFlag() {

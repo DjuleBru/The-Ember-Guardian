@@ -125,7 +125,7 @@ public class Creature : Mob
 
     protected virtual void Start() {
         if(DayNightManager.Instance != null) {
-            DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+            DayNightManager.Instance.OnCyclePausedByMerchantTalk += DayNightManager_OnCyclePausedByMerchantTalk;
             DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
         }
 
@@ -139,7 +139,6 @@ public class Creature : Mob
 
     private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
         if (!creatureActive) return;
-        if (!LevelManager.Instance.IsHordeMode()) return;
         if (rb == null) return;
 
         isPaused = false;
@@ -147,9 +146,8 @@ public class Creature : Mob
         OnCreatureUnpaused?.Invoke(this, EventArgs.Empty);
     }
 
-    private void DayNightManager_OnCyclePaused(object sender, EventArgs e) {
+    private void DayNightManager_OnCyclePausedByMerchantTalk(object sender, EventArgs e) {
         if (!creatureActive) return;
-        if (!LevelManager.Instance.IsHordeMode()) return;
 
         isPaused = true;
         rb.simulated = false;
@@ -745,7 +743,7 @@ public class Creature : Mob
         PlayerMovement.Instance.OnPlayerCrouched -= PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded -= PlayerMovement_OnPlayerCrouchedEnded;
 
-        DayNightManager.Instance.OnCyclePaused -= DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCyclePausedByMerchantTalk -= DayNightManager_OnCyclePausedByMerchantTalk;
         DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
 
     }

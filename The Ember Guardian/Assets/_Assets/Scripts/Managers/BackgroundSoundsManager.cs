@@ -106,10 +106,10 @@ public class BackgroundSoundsManager : MonoBehaviour
             return;
         }
 
-        cycleTransitionWhoosh.PlayOneShot(soundRefs.duskStartWhoosh);
-        cycleTransitionSounds.PlayOneShot(soundRefs.duskStart);
+        cycleTransitionWhoosh.PlayOneShot(soundRefs.duskStartWhoosh, masterVolume * 2f);
+        cycleTransitionSounds.PlayOneShot(soundRefs.duskStart, masterVolume * 2f);
 
-        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, 1f, .3f, 2f));
+        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, 1f, masterVolume * .6f, 2f));
     }
 
     private void DayNightManager_OnDayStart(object sender, System.EventArgs e) {
@@ -117,10 +117,10 @@ public class BackgroundSoundsManager : MonoBehaviour
             initialStateSet = true;
             return;
         }
-        cycleTransitionWhoosh.PlayOneShot(soundRefs.dayStartWhoosh);
-        cycleTransitionSounds.PlayOneShot(soundRefs.dayStart);
+        cycleTransitionWhoosh.PlayOneShot(soundRefs.dayStartWhoosh, masterVolume * 2f);
+        cycleTransitionSounds.PlayOneShot(soundRefs.dayStart, masterVolume * 2f);
 
-        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 2f));
+        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, masterVolume * .6f, 2f));
     }
 
     private void DayNightManager_OnNightStart(object sender, System.EventArgs e) {
@@ -129,12 +129,12 @@ public class BackgroundSoundsManager : MonoBehaviour
             return;
         }
 
-        cycleTransitionWhoosh.PlayOneShot(soundRefs.nightStartWhoosh);
-        cycleTransitionSounds.PlayOneShot(soundRefs.nightStart);
-        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 5f));
+        cycleTransitionWhoosh.PlayOneShot(soundRefs.nightStartWhoosh, masterVolume * 2f);
+        cycleTransitionSounds.PlayOneShot(soundRefs.nightStart, masterVolume * 2f);
+        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, masterVolume * .6f, 5f));
 
         if (isInCavern) return;
-        TransitionToClip(nightAudioClip, audioClipVolume_Night);
+        TransitionToClip(nightAudioClip, audioClipVolume_Night * masterVolume * 2f);
 
     }
 
@@ -144,12 +144,12 @@ public class BackgroundSoundsManager : MonoBehaviour
             return;
         }
 
-        cycleTransitionWhoosh.PlayOneShot(soundRefs.dawnStartWhoosh);
-        cycleTransitionSounds.PlayOneShot(soundRefs.dawnStart);
-        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, .3f, 2f));
+        cycleTransitionWhoosh.PlayOneShot(soundRefs.dawnStartWhoosh, masterVolume * 2f);
+        cycleTransitionSounds.PlayOneShot(soundRefs.dawnStart, masterVolume * 2f);
+        StartCoroutine(FadeInThenOutCoroutine(cycleTransitionSounds, .5f, masterVolume * .6f, 2f));
 
         if (isInCavern) return;
-        TransitionToClip(dayAudioClip, audioClipVolume_Day);
+        TransitionToClip(dayAudioClip, audioClipVolume_Day * masterVolume * 2f);
     }
 
     public void TransitionToClip(AudioClip newClip, float volumeToReach) {

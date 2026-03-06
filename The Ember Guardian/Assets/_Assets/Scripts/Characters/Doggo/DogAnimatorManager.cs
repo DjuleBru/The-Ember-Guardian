@@ -10,6 +10,7 @@ public class DogAnimatorManager : MonoBehaviour {
     [SerializeField] private RuntimeAnimatorController germanShepherdAnimator;
     [SerializeField] private RuntimeAnimatorController goldenAnimator;
     [SerializeField] private RuntimeAnimatorController darkCompanionAnimator;
+    [SerializeField] private RuntimeAnimatorController huskyAnimator;
     [SerializeField] private PetDog petDog;
     [SerializeField] private DogAI_DarkCompanion darkCompanionAI;
     [SerializeField] private DogAI_Retreiver retreiverAI;
@@ -70,6 +71,7 @@ public class DogAnimatorManager : MonoBehaviour {
         dogMovement = GetComponentInParent<MobMovement>();
 
         dog.OnDogTypeChanged += Dog_OnDogTypeChanged;
+        dog.OnDogSkinChanged += Dog_OnDogSkinChanged;
         petDog.OnPlayerStartedPettingDog += PetDog_OnPlayerStartedPettingDog;
         petDog.OnPlayerRefreshedPettingDog += PetDog_OnPlayerRefreshedPettingDog;
         petDog.OnPlayerStoppedPettingDog += PetDog_OnPlayerStoppedPettingDog;
@@ -102,7 +104,7 @@ public class DogAnimatorManager : MonoBehaviour {
         digAbilityUnlocked = DogStats.Instance.GetGermanShepherdDigResourceAbilityUnlocked();
         DogStats.Instance.OnNewAbilityUnlocked += DogStats_OnNewAbilityUnlocked;
 
-        SetDogTypeAnimator();
+        SetDogSkinAnimator();
     }
 
     private void DogStats_OnNewAbilityUnlocked(object sender, EventArgs e) {
@@ -166,20 +168,29 @@ public class DogAnimatorManager : MonoBehaviour {
     }
 
     private void Dog_OnDogTypeChanged(object sender, EventArgs e) {
-        SetDogTypeAnimator();
+        SetDogSkinAnimator();
         dogAI = Dog.Instance.GetCurrentDogAI();
     }
-    private void SetDogTypeAnimator() {
-        Dog.DogType dogType = Dog.Instance.GetDogType();
 
-        if(dogType == Dog.DogType.GermanShepherd) {
+    private void Dog_OnDogSkinChanged(object sender, EventArgs e) {
+        SetDogSkinAnimator();
+        dogAI = Dog.Instance.GetCurrentDogAI();
+    }
+
+    private void SetDogSkinAnimator() {
+        Dog.DogSkin dogSkin = Dog.Instance.GetDogSkin();
+
+        if(dogSkin == Dog.DogSkin.GermanShepherdSkin) {
             animator.runtimeAnimatorController = germanShepherdAnimator;
         }
-        if (dogType == Dog.DogType.GoldenRetreiver) {
+        if (dogSkin == Dog.DogSkin.GoldenRetreiverSkin) {
             animator.runtimeAnimatorController = goldenAnimator;
         }
-        if (dogType == Dog.DogType.DarkCompanion) {
+        if (dogSkin == Dog.DogSkin.DarkCompanionSkin) {
             animator.runtimeAnimatorController = darkCompanionAnimator;
+        }
+        if (dogSkin == Dog.DogSkin.Husky) {
+            animator.runtimeAnimatorController = huskyAnimator;
         }
     }
 
@@ -516,3 +527,4 @@ public class DogAnimatorManager : MonoBehaviour {
         FastTravelTP.OnAnyDogWarped -= FastTravelTP_OnAnyDogWarped;
     }
 }
+

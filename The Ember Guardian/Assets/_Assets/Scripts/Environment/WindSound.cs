@@ -11,13 +11,13 @@ public class WindSound : SoundObject
     [SerializeField] private AudioClip strongWindAudioClip;
     [SerializeField] private AudioClip extremeWindAudioClip;
 
-    private float audioSourceVolume = .2f;
+    private float audioSourceVolume = .4f;
 
     protected override void Start() {
         base.Start();
         WindManager.Instance.OnWindStrengthChanged += WindManager_OnWindStrengthChanged;
 
-        audioSource2D.volume = sfxVolume * audioSourceVolume;
+        audioSource2D.volume = sfxVolume * audioSourceVolume * masterVolume;
     }
 
     private void WindManager_OnWindStrengthChanged(object sender, EventArgs e) {
@@ -27,7 +27,7 @@ public class WindSound : SoundObject
             audioSource2D.clip = clip;
             audioSource2D.Play();
 
-            StartCoroutine(ChangeVolumeGradually(sfxVolume * audioSourceVolume));
+            StartCoroutine(ChangeVolumeGradually(sfxVolume * audioSourceVolume * masterVolume));
         }
         else {
 
@@ -39,7 +39,7 @@ public class WindSound : SoundObject
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         base.SettingsManager_OnSfxVolumeChanged(sender, e);
 
-        audioSource2D.volume = sfxVolume * audioSourceVolume;
+        audioSource2D.volume = sfxVolume * audioSourceVolume * masterVolume;
     }
 
     private AudioClip GetWindAudioClip(WindManager.WindStrength strength) {

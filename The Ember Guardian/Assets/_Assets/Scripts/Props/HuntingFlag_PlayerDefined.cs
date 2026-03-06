@@ -34,17 +34,26 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
         CampZoneManager.Instance.OnCampZoneLimitsChanged += CampZoneManager_OnCampZoneLimitsChanged;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         FastTravelTP.OnAnyPlayerPositionedOnTP += FastTravelTP_OnAnyPlayerPositionedOnTP;
+        FastTravelTP.OnAnyPlayerWarped += FastTravelTP_OnAnyPlayerWarped;
 
         RefreshMaxSecureDistance();
         huntingFlag.OnPlayerResetManualHuntingLimit += HuntingFlag_OnPlayerResetManualHuntingLimit;
     }
 
+    private void FastTravelTP_OnAnyPlayerWarped(object sender, EventArgs e) {
+        FastTravelTP fastTravelTP = (FastTravelTP)sender;
+
+        if(fastTravelTP.GetReceiverFastTravelTP().GetIsTentTP() || CampZoneManager.Instance.IsWithinCampZoneLimits(fastTravelTP.GetReceiverFastTravelTP().transform.position)) {
+
+            if (huntingFlag.GetPlayerCarryingFlag()) {
+                Vector3 currentPosition = new Vector3(Player.Instance.transform.position.x - 2f, 0f, 0f);
+                SetNewFlagPosition(currentPosition);
+            }
+        }
+    }
+
     private void FastTravelTP_OnAnyPlayerPositionedOnTP(object sender, EventArgs e) {
 
-        if (huntingFlag.GetPlayerCarryingFlag()) {
-            Vector3 currentPosition = new Vector3(Player.Instance.transform.position.x - 2f, 0f, 0f);
-            SetNewFlagPosition(currentPosition);
-        }
 
     }
 
@@ -221,5 +230,6 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     private void OnDestroy() {
         FastTravelTP.OnAnyFastTravelTPBuilt -= FastTravelTP_OnAnyFastTravelTPBuilt;
         FastTravelTP.OnAnyPlayerPositionedOnTP -= FastTravelTP_OnAnyPlayerPositionedOnTP;
+        FastTravelTP.OnAnyPlayerWarped -= FastTravelTP_OnAnyPlayerWarped;
     }
 }

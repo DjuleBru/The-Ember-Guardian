@@ -71,6 +71,7 @@ public class Gun : MonoBehaviour
     protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastAngle = .1f; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastDamageBuff;
+    protected float focusedBlastRangeBuff = 1.5f;
 
     protected int bulletDamageStatModifierLevel = -1;
     protected int shotsPerClipStatModifierLevel = -1;
@@ -151,6 +152,8 @@ public class Gun : MonoBehaviour
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = .2f;
 
+        bulletLifetime /= focusedBlastRangeBuff;
+        shootPSMainModule.startLifetime = bulletLifetime;
     }
 
     protected void PlayerShoot_OnPlayerFocusBlastStarted(object sender, System.EventArgs e) {
@@ -166,9 +169,13 @@ public class Gun : MonoBehaviour
 
         focusedBlastDamageBuff = pelletsPerBullet * PlayerShoot.Instance.GetCurrentBullets();
         BuffBulletDamage(focusedBlastDamageBuff, false);
+        
         pelletsPerBullet = 1;
         ParticleSystem.MainModule shootPSMainModule = shootPS.main;
         shootPSMainModule.startSize = totalBullerSize;
+
+        bulletLifetime *= focusedBlastRangeBuff;
+        shootPSMainModule.startLifetime = bulletLifetime;
     }
 
     protected void SetPSShootAngle(float angle) {

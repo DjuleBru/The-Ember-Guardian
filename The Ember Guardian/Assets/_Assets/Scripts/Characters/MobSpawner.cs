@@ -193,18 +193,21 @@ public class MobSpawner : MonoBehaviour
     }
 
     protected int GetAnimalAmountToSpawn_HordeMode() {
-        Debug.Log("GetAnimalAmountToSpawn_HordeMode initialmobAmountToSpawn" + mobAmountToSpawn);
-        int mobAmountToSpawnOnDawn = 0;
+        float mobAmountToSpawnOnDawn = 0;
 
         if (daysSinceSpawnerActive == 0) {
-            mobAmountToSpawnOnDawn = mobAmountToSpawn / 2;
-        }
-        if (daysSinceSpawnerActive == 1) {
-            mobAmountToSpawnOnDawn = mobAmountToSpawn / 4;
+            mobAmountToSpawnOnDawn = mobAmountToSpawn / 1.5f;
         }
 
-        Debug.Log("GetAnimalAmountToSpawn_HordeMode mobAmountToSpawnOnDawn" + mobAmountToSpawnOnDawn);
-        return mobAmountToSpawnOnDawn;
+        if (daysSinceSpawnerActive == 1) {
+            mobAmountToSpawnOnDawn = mobAmountToSpawn / 3f;
+        }
+
+        if (daysSinceSpawnerActive == 2) {
+            mobAmountToSpawnOnDawn = mobAmountToSpawn / 4.5f;
+        }
+
+        return Mathf.RoundToInt(mobAmountToSpawnOnDawn);
     }
 
     public virtual void SpawnMobs(int mobAmount) {

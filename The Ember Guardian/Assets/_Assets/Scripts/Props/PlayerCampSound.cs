@@ -24,13 +24,13 @@ public class PlayerCampSound : SoundObject {
     }
 
     private void PlayerCampVisual_OnCampBackgroundBuild_Start(object sender, System.EventArgs e) {
-        FadeIn(audioSource, .2f, sfxVolume);
+        FadeIn(audioSource, .2f, sfxVolume * masterVolume * 2f);
     }
 
 
     private void PlayerCampVIsual_OnCampBackgroundBuilt(object sender, System.EventArgs e) {
         FadeOut(audioSource, 1f);
-        buildAudioSource.PlayOneShot(buildAudioClips[Random.Range(0, buildAudioClips.Length)], .75f * sfxVolume);
+        buildAudioSource.PlayOneShot(buildAudioClips[Random.Range(0, buildAudioClips.Length)], 1.5f * sfxVolume * masterVolume);
     }
 
 
