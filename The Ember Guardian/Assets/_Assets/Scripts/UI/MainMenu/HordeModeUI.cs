@@ -46,6 +46,7 @@ public class HordeModeUI : MonoBehaviour
     private GunSO.GunType selectedGunType;
     public event EventHandler OnWeaponSelected;
     private Dog.DogType selectedDogType;
+    private Dog.DogSkin selectedDogSkin;
     public event EventHandler OnDogSelected;
     public event EventHandler OnHordeModePanelOpened;
 
@@ -74,9 +75,11 @@ public class HordeModeUI : MonoBehaviour
     private void MainMenuUI_OnHordeModeProgressionReset(object sender, EventArgs e) {
         RefreshUnlockedCustomizationOptions();
         selectedDogType = Dog.DogType.GermanShepherd;
+        selectedDogSkin = Dog.DogSkin.GermanShepherdSkin;
         selectedGunType = GunSO.GunType.Rifle;
         currentSelectedEnvironment = LevelSO.LevelEnvironment.TheLostGreens;
         HordeModeCustomizationManager.Instance.SetSelectedDog(selectedDogType);
+        HordeModeCustomizationManager.Instance.SetSelectedDogSkin(selectedDogSkin);
         HordeModeCustomizationManager.Instance.SetSelectedWeapon(selectedGunType);
         HordeModeCustomizationManager.Instance.SetSelectedEnvironment(currentSelectedEnvironment);
     }
@@ -234,7 +237,7 @@ public class HordeModeUI : MonoBehaviour
     }
 
     public void OpenCloseChangeDogPanel() {
-        if(changeWeaponPanelOpen) {
+        if (changeWeaponPanelOpen) {
             CloseChangeWeaponPanel();
         }
 
@@ -301,9 +304,20 @@ public class HordeModeUI : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(SwapDogButtonWorlUI);
         }
 
+
         HordeModeCustomizationManager.Instance.SetSelectedDog(dogType);
         OnDogSelected?.Invoke(this, EventArgs.Empty);
         CloseChangeDogPanel();
+    }
+
+    public void SetSelectedDogSkin(Dog.DogSkin dogSkin) {
+        selectedDogSkin = dogSkin;
+
+        if (GameInput.Instance.IsUsingGamepad()) {
+            EventSystem.current.SetSelectedGameObject(SwapDogButtonWorlUI);
+        }
+
+        HordeModeCustomizationManager.Instance.SetSelectedDogSkin(dogSkin);
     }
 
     public Dog.DogType GetSelectedDogType() {

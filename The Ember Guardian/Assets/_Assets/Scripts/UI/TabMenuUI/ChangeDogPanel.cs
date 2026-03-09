@@ -13,6 +13,7 @@ public class ChangeDogPanel : MonoBehaviour
 
     [SerializeField] protected Transform changeDogSlotContainer;
     [SerializeField] protected Transform changeDogSlotTemplate;
+    [SerializeField] protected GameObject dogChangeButton;
 
     [SerializeField] protected Transform emptyDogSlotTemplate;
     protected List<GameObject> changeDogButtons;
@@ -23,6 +24,7 @@ public class ChangeDogPanel : MonoBehaviour
     protected void Awake() {
         Instance = this;
     }
+
     protected virtual void Start() {
         PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
@@ -46,7 +48,6 @@ public class ChangeDogPanel : MonoBehaviour
         }
 
         foreach (Dog.DogType type in Enum.GetValues(typeof(Dog.DogType))) {
-            //if (type == activeDogType) continue;
 
             if(DogStats.Instance.GetDogUnlocked(type)) {
 
@@ -75,9 +76,7 @@ public class ChangeDogPanel : MonoBehaviour
             var selectable = go.GetComponent<Selectable>();
             if (selectable == null) continue;
 
-            Navigation nav = new Navigation {
-                mode = Navigation.Mode.Explicit
-            };
+            Navigation nav = selectable.navigation;
 
             // Up
             if (i == 0)
@@ -112,6 +111,7 @@ public class ChangeDogPanel : MonoBehaviour
     protected void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
         if (panelOpen) {
             OpenClosePanel();
+            EventSystem.current.SetSelectedGameObject(dogChangeButton);
         }
     }
 
@@ -122,6 +122,7 @@ public class ChangeDogPanel : MonoBehaviour
         if (!panelOpen) {
             OnChangeDogPanelClosed?.Invoke(this, EventArgs.Empty);
         }
+
         else {
             if (changeDogButtons.Count > 0) {
                 if(GameInput.Instance.IsUsingGamepad()) {

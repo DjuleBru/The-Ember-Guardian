@@ -37,12 +37,18 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         DarkCompanion_StompCooldown,
         DarkCompanion_StompStunDuration,
         DarkCompanion_StompDamage,
+
+        DogSkin_GermanSherpherLight,
+        DogSkin_Husky,
+        DogSkin_GoldenBrown,
+        DogSkin_DarkCompanionRed,
     }
 
     public enum DogTamerItemCategory {
         NewAbility,
         StatUpgrade,
         NewDog,
+        DogSkin,
     }
 
     [SerializeField] private DogTamerItemType itemType;
@@ -85,12 +91,10 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         }
 
         if (itemCategory == DogTamerItemCategory.NewDog) {
-            Debug.Log(itemType);
             if (itemType == DogTamerItemType.Dog_GoldenRetreiver) {
                 DogStats.Instance.UnlockRetreiver();
             }
             if (itemType == DogTamerItemType.Dog_DarkCompanion) {
-                Debug.Log("UnlockDarkCompanion");
                 DogStats.Instance.UnlockDarkCompanion();
             }
         }
@@ -98,7 +102,10 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         if (itemCategory == DogTamerItemCategory.StatUpgrade) {
             SetNewStatIncreaseStats();
         }
-        
+        if (itemCategory == DogTamerItemCategory.DogSkin) {
+            UnlockDogSkin();
+        }
+
 
         base.BuyItem();
 
@@ -121,7 +128,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         statModifiedBools.Clear();
         statValues.Clear();
 
-        if (itemCategory != DogTamerItemCategory.NewAbility && itemCategory != DogTamerItemCategory.NewDog) {
+        if (itemCategory != DogTamerItemCategory.NewAbility && itemCategory != DogTamerItemCategory.NewDog && itemCategory != DogTamerItemCategory.DogSkin) {
 
             maxItemLevel = linkedStatModifierSO.statModifierList.Count;
 
@@ -409,6 +416,25 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         }
     }
 
+    private void UnlockDogSkin() {
+        Dog.DogSkin skinType = Dog.DogSkin.GermanShepherdSkin;
+
+        if(itemType == DogTamerItemType.DogSkin_GermanSherpherLight) {
+            skinType = Dog.DogSkin.GermanShepherdLight;
+        }
+        if (itemType == DogTamerItemType.DogSkin_GoldenBrown) {
+            skinType = Dog.DogSkin.GoldenBrownSkin;
+        }
+        if (itemType == DogTamerItemType.DogSkin_DarkCompanionRed) {
+            skinType = Dog.DogSkin.DarkCompanionRed;
+        }
+        if (itemType == DogTamerItemType.DogSkin_Husky) {
+            skinType = Dog.DogSkin.Husky;
+        }
+
+        DogStats.Instance.SetDogSkinUnlocked(skinType);
+    }
+
     public override bool GetConstantUnlockDescription() {
         bool constantUnlockDescription = false;
 
@@ -418,6 +444,9 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         if (itemCategory == DogTamerItemCategory.NewAbility) {
             constantUnlockDescription = true;
         }
+        if (itemCategory == DogTamerItemCategory.DogSkin) {
+            constantUnlockDescription = true;
+        }
 
         return constantUnlockDescription;
     }
@@ -425,7 +454,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
     public override List<string> GetStatDescription() {
         List<string> statDescriptionList = new List<string>();
 
-        if (itemCategory == DogTamerItemCategory.NewAbility || itemCategory == DogTamerItemCategory.NewDog) {
+        if (itemCategory == DogTamerItemCategory.NewAbility || itemCategory == DogTamerItemCategory.NewDog || itemCategory == DogTamerItemCategory.DogSkin) {
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText(itemName + "_UnlockDescription"));
         }
 
@@ -483,7 +512,6 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newDetectAmbushProbability") + " ");
         }
-
 
         if (itemType == DogTamerItemType.Retreiver_BuffWorkersBuffAmount) {
             if (itemLevel < maxItemLevel) {

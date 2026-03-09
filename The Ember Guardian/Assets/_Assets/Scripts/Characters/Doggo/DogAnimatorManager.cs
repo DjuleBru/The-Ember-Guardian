@@ -8,8 +8,11 @@ public class DogAnimatorManager : MonoBehaviour {
 
     [SerializeField] private Animator dogBodyAnimator;
     [SerializeField] private RuntimeAnimatorController germanShepherdAnimator;
+    [SerializeField] private RuntimeAnimatorController germanShepherd_LightAnimator;
     [SerializeField] private RuntimeAnimatorController goldenAnimator;
+    [SerializeField] private RuntimeAnimatorController golden_BrownAnimator;
     [SerializeField] private RuntimeAnimatorController darkCompanionAnimator;
+    [SerializeField] private RuntimeAnimatorController darkCompanionRedAnimator;
     [SerializeField] private RuntimeAnimatorController huskyAnimator;
     [SerializeField] private PetDog petDog;
     [SerializeField] private DogAI_DarkCompanion darkCompanionAI;
@@ -183,11 +186,20 @@ public class DogAnimatorManager : MonoBehaviour {
         if(dogSkin == Dog.DogSkin.GermanShepherdSkin) {
             animator.runtimeAnimatorController = germanShepherdAnimator;
         }
+        if (dogSkin == Dog.DogSkin.GermanShepherdLight) {
+            animator.runtimeAnimatorController = germanShepherd_LightAnimator;
+        }
         if (dogSkin == Dog.DogSkin.GoldenRetreiverSkin) {
             animator.runtimeAnimatorController = goldenAnimator;
         }
+        if (dogSkin == Dog.DogSkin.GoldenBrownSkin) {
+            animator.runtimeAnimatorController = golden_BrownAnimator;
+        }
         if (dogSkin == Dog.DogSkin.DarkCompanionSkin) {
             animator.runtimeAnimatorController = darkCompanionAnimator;
+        }
+        if (dogSkin == Dog.DogSkin.DarkCompanionRed) {
+            animator.runtimeAnimatorController = darkCompanionRedAnimator;
         }
         if (dogSkin == Dog.DogSkin.Husky) {
             animator.runtimeAnimatorController = huskyAnimator;

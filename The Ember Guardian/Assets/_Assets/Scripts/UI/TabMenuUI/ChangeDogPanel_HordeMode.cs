@@ -23,10 +23,12 @@ public class ChangeDogPanel_HordeMode : ChangeDogPanel
         }
 
         foreach (Dog.DogType type in Enum.GetValues(typeof(Dog.DogType))) {
+
             bool unlocked = false;
             if (type == Dog.DogType.GermanShepherd) {
                 unlocked = true;
             }
+
             if (type == Dog.DogType.GoldenRetreiver) {
                 if(HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.GoldenRetreiver)) {
                     unlocked = true;
@@ -39,10 +41,9 @@ public class ChangeDogPanel_HordeMode : ChangeDogPanel
             }
 
             if (unlocked) {
-                DogReplaceButton dogReplaceButton = Instantiate(changeDogSlotTemplate, changeDogSlotContainer).GetComponent<DogReplaceButton>();
-
-                dogReplaceButton.SetLinkedDog(type);
-                changeDogButtons.Add(dogReplaceButton.gameObject);
+                ChangeDogSlotAndSkinTemplate dogReplaceSlot = Instantiate(changeDogSlotTemplate, changeDogSlotContainer).GetComponent<ChangeDogSlotAndSkinTemplate>();
+                dogReplaceSlot.SetLinkedDog(type);
+                changeDogButtons.Add(dogReplaceSlot.GetDogReplaceButton().gameObject);
             }
             else {
                 Instantiate(emptyDogSlotTemplate, changeDogSlotContainer);

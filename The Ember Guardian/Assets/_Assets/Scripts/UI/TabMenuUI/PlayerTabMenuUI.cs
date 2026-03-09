@@ -17,6 +17,7 @@ public class PlayerTabMenuUI : MonoBehaviour
     private bool tabMenuOpen;
     private bool changeWeaponPanelOpen;
     private bool skillDescriptionPanelOpen;
+    private bool changeDogPanelOpen;
 
     private CanvasGroup canvasGroup;
     private Animator panelAnimator;
@@ -37,13 +38,24 @@ public class PlayerTabMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;
         HubMerchantUI.OnAnyHubMerchantOpenUIPanel += HubMerchantUI_OnAnyHubMerchantOpenUIPanel;
         HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
+
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened += ChangeWeaponPanel_OnChangeWeaponPanelOpened;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed += ChangeWeaponPanel_OnChangeWeaponPanelClosed;
+
+        ChangeDogPanel.Instance.OnChangeDogPanelClosed += ChangeDogPanel_OnChangeDogPanelClosed;
+        ChangeDogPanel.Instance.OnChangeDogPanelOpened += ChangeDogPanel_OnChangeDogPanelOpened;
 
         SkillsDescriptionPanel.Instance.OnNewSkillsDescriptionPanelOpened += SkillsDescriptionPanel_OnNewSkillsDescriptionPanelOpened;
         SkillsDescriptionPanel.Instance.OnSkillsDescriptionPanelClosed += SkillsDescriptionPanel_OnSkillsDescriptionPanelClosed;
     }
 
+    private void ChangeDogPanel_OnChangeDogPanelOpened(object sender, EventArgs e) {
+        changeDogPanelOpen = true;
+    }
+
+    private void ChangeDogPanel_OnChangeDogPanelClosed(object sender, EventArgs e) {
+        changeDogPanelOpen = false;
+    }
 
     private void GameInput_OnPlayerPausePerformed(object sender, EventArgs e) {
         if (!tabMenuOpen) return;
@@ -55,6 +67,10 @@ public class PlayerTabMenuUI : MonoBehaviour
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
         if (!tabMenuOpen) return;
         if (!canCloseTab) return;
+
+        if (changeDogPanelOpen) return;
+        if (changeWeaponPanelOpen) return;
+        if (skillDescriptionPanelOpen) return;
 
         StartCoroutine(OpenCloseTabAfterFrame());
     }
@@ -170,5 +186,7 @@ public class PlayerTabMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelOpened -= ChangeWeaponPanel_OnChangeWeaponPanelOpened;
         ChangeWeaponPanel.Instance.OnChangeWeaponPanelClosed -= ChangeWeaponPanel_OnChangeWeaponPanelClosed;
+        ChangeDogPanel.Instance.OnChangeDogPanelClosed -= ChangeDogPanel_OnChangeDogPanelClosed;
+        ChangeDogPanel.Instance.OnChangeDogPanelOpened -= ChangeDogPanel_OnChangeDogPanelOpened;
     }
 }

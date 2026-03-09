@@ -66,7 +66,6 @@ public class ChangeWeaponPanel : MonoBehaviour
         }
     }
 
-
     protected void PlayerShoot_OnPlayerWeaponReplaced(object sender, EventArgs e) {
         UpdateWeaponSlots(PlayerShoot.Instance.GetGunSOInStock());
     }
@@ -176,6 +175,8 @@ public class ChangeWeaponPanel : MonoBehaviour
     public void ClosePanel() {
         panelOpen = false;
         gameObject.SetActive(panelOpen);
+
+        EventSystem.current.SetSelectedGameObject(lastChangeButtonThatOpenedThisPanel.gameObject);
 
         OnChangeWeaponPanelClosed?.Invoke(this, EventArgs.Empty);
     }

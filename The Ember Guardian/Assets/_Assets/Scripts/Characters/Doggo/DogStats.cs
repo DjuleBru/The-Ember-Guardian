@@ -40,6 +40,8 @@ public class DogStats : MonoBehaviour {
     private float darkCompanionStompCooldown;
     private float darkCompanionStompStunDuration;
 
+    [SerializeField] private List<Dog.DogTypeSkins> dogTypeSkins;
+
     [SerializeField] private int initialGermanShepherdBiteDamage;
     [SerializeField] private float initialGermanShepherdBiteCooldown;
     [SerializeField] private float initialGermanShepherdDigResourceCooldown;
@@ -71,12 +73,16 @@ public class DogStats : MonoBehaviour {
     [SerializeField] private bool debugUnlockStompAbility;
 
     public event EventHandler OnNewDogUnlocked;
+    public event EventHandler OnNewDogSkinUnlocked;
     public event EventHandler OnNewAbilityUnlocked;
     public event EventHandler OnAbilityUpgraded;
 
     [SerializeField] private Sprite germanShepherdIcon;
+    [SerializeField] private Sprite germanShepherdLightIcon;
     [SerializeField] private Sprite retreiverIcon;
+    [SerializeField] private Sprite retreiverBrownIcon;
     [SerializeField] private Sprite darkCompanionIcon;
+    [SerializeField] private Sprite darkCompanionRedIcon;
     [SerializeField] private Sprite huskyIcon;
 
     private void Awake() {
@@ -363,6 +369,7 @@ public class DogStats : MonoBehaviour {
         OnNewDogUnlocked?.Invoke(this, EventArgs.Empty);
         ES3.Save("retreiverUnlocked", retreiverUnlocked);
     }
+
     public void UnlockDarkCompanion() {
         darkCompanionUnlocked = true;
         Dog.Instance.SetDogType(Dog.DogType.DarkCompanion);
@@ -479,11 +486,46 @@ public class DogStats : MonoBehaviour {
     }
     #endregion
 
+
+    public List<Dog.DogTypeSkins> GetDogTypeSkins() {
+        return dogTypeSkins;
+    }
+
+    public Dog.DogSkin GetDefaultDogSkin(Dog.DogType dogType) {
+        Dog.DogSkin skin = Dog.DogSkin.GermanShepherdSkin;
+
+        if(dogType == Dog.DogType.DarkCompanion) {
+            skin = Dog.DogSkin.DarkCompanionSkin;
+        }
+
+        if (dogType == Dog.DogType.GoldenRetreiver) {
+            skin = Dog.DogSkin.GoldenRetreiverSkin;
+        }
+
+        return skin;
+    }
+
     public bool GetDogUnlocked(Dog.DogType dogType) {
         if (dogType == Dog.DogType.GermanShepherd) return true;
         if (dogType == Dog.DogType.GoldenRetreiver) return retreiverUnlocked;
         if (dogType == Dog.DogType.DarkCompanion) return darkCompanionUnlocked;
         return false;
+    }
+
+    public bool GetDogSkinUnlocked(Dog.DogSkin dogSkin) {
+        if (dogSkin == Dog.DogSkin.GermanShepherdSkin) return true;
+        if (dogSkin == Dog.DogSkin.GoldenRetreiverSkin) return retreiverUnlocked;
+        if (dogSkin == Dog.DogSkin.DarkCompanionSkin) return darkCompanionUnlocked;
+
+        string key = dogSkin + "_unlocked";
+        return ES3.Load(key, false);
+    }
+
+    public void SetDogSkinUnlocked(Dog.DogSkin dogSkin) {
+        string key = dogSkin + "_unlocked";
+
+        ES3.Save(key, true);
+        OnNewDogSkinUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
     public Sprite GetDogIconSprite(Dog.DogType type) {
@@ -505,13 +547,22 @@ public class DogStats : MonoBehaviour {
         if (skin == Dog.DogSkin.GermanShepherdSkin) {
             return germanShepherdIcon;
         }
+        if (skin == Dog.DogSkin.GermanShepherdLight) {
+            return germanShepherdLightIcon;
+        }
 
         if (skin == Dog.DogSkin.GoldenRetreiverSkin) {
             return retreiverIcon;
         }
+        if (skin == Dog.DogSkin.GoldenBrownSkin) {
+            return retreiverBrownIcon;
+        }
 
         if (skin == Dog.DogSkin.DarkCompanionSkin) {
             return darkCompanionIcon;
+        }
+        if (skin == Dog.DogSkin.DarkCompanionRed) {
+            return darkCompanionRedIcon;
         }
 
         if (skin == Dog.DogSkin.Husky) {

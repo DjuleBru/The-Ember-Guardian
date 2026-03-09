@@ -10244,6 +10244,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonPressable: 1
   dogIconImage: {fileID: 8351030902464233682}
+  lockedSkinMaterial: {fileID: 2100000, guid: f5d9b8944bf43f44aa71e72f8a861f30, type: 2}
+  emptyMaterial: {fileID: 2100000, guid: 6d5733fba9ae3cf49aa115c0e5b91cb0, type: 2}
 --- !u!114 &9162310306585465142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13184,7 +13186,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -30, y: 0}
+  m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1554459078411547155
 CanvasRenderer:
@@ -18451,7 +18453,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 187.45503, y: 2.4998956}
-  m_SizeDelta: {x: 360, y: 300}
+  m_SizeDelta: {x: 400, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1872906675907545524
 MonoBehaviour:
@@ -18467,6 +18469,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changeDogSlotContainer: {fileID: 7608747002096398894}
   changeDogSlotTemplate: {fileID: 4133929184839511709}
+  dogChangeButton: {fileID: 6163257188052499187}
   emptyDogSlotTemplate: {fileID: 969820334930766151}
 --- !u!1 &8238286292264476138
 GameObject:

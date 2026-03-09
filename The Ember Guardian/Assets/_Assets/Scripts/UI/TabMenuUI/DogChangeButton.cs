@@ -17,6 +17,7 @@ public class DogChangeButton : ButtonUI {
 
     protected override void Start() {
         Dog.Instance.OnDogTypeChanged += Dog_OnDogTypeChanged;
+        Dog.Instance.OnDogSkinChanged += Dog_OnDogSkinChanged;
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             //button.enabled = false;
@@ -31,11 +32,18 @@ public class DogChangeButton : ButtonUI {
                 DogButtonPressHub();
             });
         }
-        UpdateDogIconImage(Dog.Instance.GetDogType());
+        UpdateDogIconImage(Dog.Instance.GetDogSkin());
+    }
+
+    private void Dog_OnDogSkinChanged(object sender, Dog.OnDogTypeChangedEventArgs e) {
+        UpdateDogIconImage(Dog.Instance.GetDogSkin());
+
+        if (!e.selectedFromMenu) return;
+        EventSystem.current.SetSelectedGameObject(gameObject);
     }
 
     private void Dog_OnDogTypeChanged(object sender, Dog.OnDogTypeChangedEventArgs e) {
-        UpdateDogIconImage(Dog.Instance.GetDogType());
+        UpdateDogIconImage(Dog.Instance.GetDogSkin());
 
         if (!e.selectedFromMenu) return;
         EventSystem.current.SetSelectedGameObject(gameObject);
@@ -63,16 +71,16 @@ public class DogChangeButton : ButtonUI {
     }
 
 
-    private void UpdateDogIconImage(Dog.DogType dogType) {
+    private void UpdateDogIconImage(Dog.DogSkin dogType) {
         dogIconImage.sprite = DogStats.Instance.GetDogIconSprite(dogType);
         dogIconImage.color = Color.white;
     }
 
-    public void SetLinkedDog(Dog.DogType dogType) {
-        linkedDogType = dogType;
+    //public void SetLinkedDog(Dog.DogType dogType) {
+    //    linkedDogType = dogType;
 
-        UpdateDogIconImage(dogType);
-    }
+    //    UpdateDogIconImage(dogType);
+    //}
 
     public Dog.DogType GetLinkedDog() {
         return linkedDogType;

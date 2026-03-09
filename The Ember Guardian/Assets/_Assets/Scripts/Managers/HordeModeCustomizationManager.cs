@@ -8,6 +8,7 @@ public class HordeModeCustomizationManager : MonoBehaviour
 
     private GunSO.GunType selectedGunType;
     private Dog.DogType selectedDogType;
+    private Dog.DogSkin selectedDogSkin;
     private LevelSO.LevelEnvironment selectedEnvironmentType;
     [SerializeField] private LevelSO.LevelEnvironment debugEnvironmentType;
     [SerializeField] private bool useDebugEnv;
@@ -16,6 +17,7 @@ public class HordeModeCustomizationManager : MonoBehaviour
         Instance = this;
 
         selectedDogType = ES3.Load("hordeModeDogType", Dog.DogType.GermanShepherd);
+        selectedDogSkin = ES3.Load("hordeModeDogSkin", Dog.DogSkin.GermanShepherdSkin);
         selectedGunType = ES3.Load("hordeModeGunType", GunSO.GunType.Rifle);
         selectedEnvironmentType = ES3.Load("hordeModeEnvironment", LevelSO.LevelEnvironment.TheVerdantGraveyard);
 
@@ -28,6 +30,12 @@ public class HordeModeCustomizationManager : MonoBehaviour
         //Debug.Log("SetSelectedDog " + dogType);
         ES3.Save("hordeModeDogType", dogType);
         selectedDogType = dogType;
+    }
+
+    public void SetSelectedDogSkin(Dog.DogSkin dogSkin) {
+        //Debug.Log("SetSelectedDog " + dogType);
+        ES3.Save("hordeModeDogSkin", dogSkin);
+        selectedDogSkin = dogSkin;
     }
 
     public void SetSelectedWeapon(GunSO.GunType gunType) {
@@ -49,6 +57,11 @@ public class HordeModeCustomizationManager : MonoBehaviour
     public Dog.DogType GetSelectedDogType() {
         //Debug.Log("GetSelectedDogType " + selectedDogType);
         return selectedDogType;
+    }
+
+    public Dog.DogSkin GetSelectedDogSkin() {
+        //Debug.Log("GetSelectedDogType " + selectedDogType);
+        return selectedDogSkin;
     }
 
     public GunSO.GunType GetSelectedWeaponType() {

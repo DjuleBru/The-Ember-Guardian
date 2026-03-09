@@ -19,6 +19,9 @@ public class Dog : MonoBehaviour
         GoldenRetreiverSkin,
         DarkCompanionSkin,
         Husky,
+        GermanShepherdLight,
+        GoldenBrownSkin,
+        DarkCompanionRed,
     }
 
     [Serializable]
@@ -55,7 +58,7 @@ public class Dog : MonoBehaviour
     public event EventHandler OnPlayerCalledDog;
     public event EventHandler OnPlayerStayDog;
     public event EventHandler<OnDogTypeChangedEventArgs> OnDogTypeChanged;
-    public event EventHandler OnDogSkinChanged;
+    public event EventHandler<OnDogTypeChangedEventArgs> OnDogSkinChanged;
 
     public class OnDogTypeChangedEventArgs:EventArgs {
         public bool selectedFromMenu;
@@ -209,13 +212,15 @@ public class Dog : MonoBehaviour
         });
     }
 
-    public void SetDogSkin(DogSkin skin) {
+    public void SetDogSkin(DogSkin skin, bool selectedFromMenu = false) {
         dogSkin = skin;
 
         ES3.Save(dogType + "_skin", skin);
         ES3.Save(dogType + "_skinManual", true);
 
-        OnDogSkinChanged?.Invoke(this, EventArgs.Empty);
+        OnDogSkinChanged?.Invoke(this, new OnDogTypeChangedEventArgs {
+            selectedFromMenu = selectedFromMenu
+        });
     }
 
     [Button]
@@ -252,10 +257,6 @@ public class Dog : MonoBehaviour
 
     public DogAI GetCurrentDogAI() {
         return currentDogAI;
-    }
-
-    public List<DogTypeSkins> GetDogTypeSkins() {
-        return dogTypeSkins;
     }
 
     private DogSkin GetDefaultSkinFromType(DogType dogType) {

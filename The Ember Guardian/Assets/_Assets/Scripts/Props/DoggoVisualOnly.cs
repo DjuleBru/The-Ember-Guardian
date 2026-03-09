@@ -5,8 +5,12 @@ using UnityEngine;
 public class DoggoVisualOnly : MonoBehaviour
 {
     [SerializeField] private GameObject germanShepherdGO;
+    [SerializeField] private GameObject germanShepherdLightGO;
     [SerializeField] private GameObject retreiverGO;
+    [SerializeField] private GameObject retreiverBrownGO;
     [SerializeField] private GameObject darkCompanionGO;
+    [SerializeField] private GameObject darkCompanionRedGO;
+    [SerializeField] private GameObject huskyGO;
 
     private Dog.DogType dogType = Dog.DogType.GermanShepherd;
 
@@ -29,7 +33,7 @@ public class DoggoVisualOnly : MonoBehaviour
     }
 
     private void HordeModeUI_OnDogSelected(object sender, System.EventArgs e) {
-        RefreshActiveDog(HordeModeCustomizationManager.Instance.GetSelectedDogType());
+        RefreshActiveDogSkin(HordeModeCustomizationManager.Instance.GetSelectedDogSkin());
     }
 
     private void Dog_OnDogTypeChanged(object sender, Dog.OnDogTypeChangedEventArgs e) {
@@ -40,8 +44,12 @@ public class DoggoVisualOnly : MonoBehaviour
         germanShepherdGO.SetActive(false);
         retreiverGO.SetActive(false);
         darkCompanionGO.SetActive(false);
+        germanShepherdLightGO.SetActive(false);
+        retreiverBrownGO.SetActive(false);
+        darkCompanionRedGO.SetActive(false);
+        huskyGO.SetActive(false);
 
-        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
             if (dogType == Dog.DogType.GermanShepherd) {
                 germanShepherdGO.SetActive(true);
             }
@@ -80,6 +88,52 @@ public class DoggoVisualOnly : MonoBehaviour
         RandomizeAnimation(germanShepherdGO.GetComponent<Animator>());
         RandomizeAnimation(darkCompanionGO.GetComponent<Animator>());
         RandomizeAnimation(retreiverGO.GetComponent<Animator>());
+
+    }
+
+    private void RefreshActiveDogSkin(Dog.DogSkin dogSkin) {
+        Debug.Log("RefreshActiveDogSkin " + dogSkin);
+        germanShepherdGO.SetActive(false);
+        retreiverGO.SetActive(false);
+        darkCompanionGO.SetActive(false);
+        germanShepherdLightGO.SetActive(false);
+        retreiverBrownGO.SetActive(false);
+        darkCompanionRedGO.SetActive(false);
+        huskyGO.SetActive(false);
+
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+            if (dogSkin == Dog.DogSkin.GermanShepherdSkin) {
+                germanShepherdGO.SetActive(true);
+            }
+            if (dogSkin == Dog.DogSkin.GoldenRetreiverSkin) {
+                retreiverGO.SetActive(true);
+            }
+            if (dogSkin == Dog.DogSkin.DarkCompanionSkin) {
+                darkCompanionGO.SetActive(true);
+            }
+
+            if (dogSkin == Dog.DogSkin.GermanShepherdLight) {
+                germanShepherdLightGO.SetActive(true);
+            }
+            if (dogSkin == Dog.DogSkin.GoldenBrownSkin) {
+                retreiverBrownGO.SetActive(true);
+            }
+            if (dogSkin == Dog.DogSkin.DarkCompanionRed) {
+                darkCompanionRedGO.SetActive(true);
+            }
+            if (dogSkin == Dog.DogSkin.Husky) {
+                huskyGO.SetActive(true);
+            }
+
+        }
+
+        RandomizeAnimation(germanShepherdGO.GetComponent<Animator>());
+        RandomizeAnimation(darkCompanionGO.GetComponent<Animator>());
+        RandomizeAnimation(retreiverGO.GetComponent<Animator>());
+        RandomizeAnimation(germanShepherdLightGO.GetComponent<Animator>());
+        RandomizeAnimation(retreiverBrownGO.GetComponent<Animator>());
+        RandomizeAnimation(darkCompanionRedGO.GetComponent<Animator>());
+        RandomizeAnimation(huskyGO.GetComponent<Animator>());
 
     }
 

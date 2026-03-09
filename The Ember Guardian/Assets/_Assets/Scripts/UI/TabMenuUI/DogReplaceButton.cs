@@ -23,11 +23,17 @@ public class DogReplaceButton : ButtonUI
 
     private void SwapDog() {
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+
+            HordeModeUI.Instance.SetSelectedDogSkin(DogStats.Instance.GetDefaultDogSkin(linkedDogType));
             HordeModeUI.Instance.SetSelectedDog(linkedDogType);
+
         } else {
+
             Dog.Instance.SetDogType(linkedDogType, true);
+            Dog.Instance.SetDogSkin(DogStats.Instance.GetDefaultDogSkin(linkedDogType), true);
             OnDogSwapped?.Invoke(this, EventArgs.Empty);
             ChangeDogPanel.Instance.OpenClosePanel();
+
         }
 
     }
