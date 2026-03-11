@@ -28,7 +28,7 @@ public class GunProjectile : MonoBehaviour
     protected Gun parentGun;
     public event EventHandler OnProjectileExploded;
 
-    protected void Awake() {
+    protected virtual void Awake() {
         gunProjectile_BounceHandler.OnProjectileBouncedOnGround += GunProjectile_BounceHandler_OnProjectileBouncedOnGround;
     }
 

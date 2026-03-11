@@ -106,7 +106,7 @@ public class GunFeedbacks : MonoBehaviour
         meleeAttackFeedbacks.PlayFeedbacks();
     }
 
-    protected void PlayerShoot_OnShotStartedLoading(object sender, System.EventArgs e) {
+    protected virtual void PlayerShoot_OnShotStartedLoading(object sender, System.EventArgs e) {
         if(loadGunPS1 != null) {
             loadGunPS1.Play();
         }
@@ -114,7 +114,8 @@ public class GunFeedbacks : MonoBehaviour
             loadGunPS2.Play();
         }
     }
-    protected void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
+
+    protected virtual void PlayerShoot_OnPlayerShootStopped(object sender, System.EventArgs e) {
         if (loadGunPS1 != null) {
             if(loadGunPS1.isPlaying) {
                 loadGunPS1.Stop();
@@ -133,11 +134,12 @@ public class GunFeedbacks : MonoBehaviour
         shellOutPS.Emit(1);
     }
 
-    protected void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
+    protected virtual void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
         if (!gun.GetGunSO().triggersShootSFXOnEachBuller) return;
         mmfPlayer.PlayFeedbacks();
     }
+
     private void OnDestroy() {
         PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
         PlayerSkills.Instance.OnActiveSkillDeactivated -= PlayerSkills_OnActiveSkillDeactivated;

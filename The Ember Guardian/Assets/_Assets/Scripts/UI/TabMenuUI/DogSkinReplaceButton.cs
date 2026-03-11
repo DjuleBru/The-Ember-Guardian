@@ -13,6 +13,7 @@ public class DogSkinReplaceButton : ButtonUI {
     private Dog.DogType linkedDogType;
     private Dog.DogSkin linkedDogSkinType;
 
+    private bool dlcUnlocked;
     private bool skinUnlocked;
     public static event EventHandler OnDogSkinSwapped;
 
@@ -30,6 +31,7 @@ public class DogSkinReplaceButton : ButtonUI {
 
     private void SwapDogSkin() {
         if (!skinUnlocked) return;
+        if (!dlcUnlocked) return;
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
             HordeModeUI.Instance.SetSelectedDogSkin(linkedDogSkinType);
@@ -56,6 +58,9 @@ public class DogSkinReplaceButton : ButtonUI {
     public void SetLinkedDogSkin(Dog.DogSkin skin) {
         linkedDogSkinType = skin;
 
+        DLCManager.DLCType dlc = DogStats.Instance.GetDogSkinLinkedDLC(skin);
+        dlcUnlocked = DLCManager.Instance.HasDLC(dlc);
+
         RefreshSkinUnlocked();
         UpdateDogIconImage(skin);
     }
@@ -67,7 +72,7 @@ public class DogSkinReplaceButton : ButtonUI {
             skinUnlocked = true;
         }
 
-        if (!skinUnlocked) {
+        if (!skinUnlocked || !dlcUnlocked) {
             dogIconImage.material = lockedSkinMaterial;
         }
         else {

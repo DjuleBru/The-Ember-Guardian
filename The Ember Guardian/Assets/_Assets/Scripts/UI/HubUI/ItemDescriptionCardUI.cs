@@ -265,7 +265,7 @@ public class ItemDescriptionCardUI : MonoBehaviour
         itemStatDescriptionTemplate.gameObject.SetActive(false);
     }
 
-    public void ChestDescriptionCardFree(int greenGem, int redGem, int blueGem, int yellowGem, int purpleGem, int cyanGem) {
+    public void CheckDescriptionCardFree(int greenGem, int redGem, int blueGem, int yellowGem, int purpleGem, int cyanGem) {
         if (greenGem == 0 && redGem == 0 && blueGem == 0 && yellowGem == 0 && purpleGem == 0 && cyanGem == 0) {
             SetGreenFontMaterial(maxLevelText);
             maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("card_free");
@@ -281,6 +281,16 @@ public class ItemDescriptionCardUI : MonoBehaviour
         DisableGemCostGO();
 
         maxLevelText.gameObject.SetActive(true);
+    }
+
+    public void SetLockedByDLC() {
+        SetRedFontMaterial();
+        maxLevelText.text = LocalizationManager.Instance.GetLocalizedText("supporterEdition");
+
+        DisableGemCostGO();
+
+        maxLevelText.gameObject.SetActive(true);
+        foreGround.SetActive(true);
     }
 
     public void SetDescriptionCardItemLockedInDemo() {

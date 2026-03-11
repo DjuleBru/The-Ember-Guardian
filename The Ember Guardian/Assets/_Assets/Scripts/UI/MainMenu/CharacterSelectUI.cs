@@ -110,4 +110,8 @@ public class CharacterSelectUI : MonoBehaviour
     public bool GetChosenCharacterIsFemale() {
         return characterType;
     }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerInputChanged -= Instance_OnPlayerInputChanged;
+    }
 }

@@ -312,8 +312,12 @@ public class ItemButtonUI : ButtonUI {
         descriptionCard.SetDescriptionCardText(itemName, constantUnlockDescription, itemStatDescription, itemDescription, itemStatValues, itemStatModifierValues);
 
         descriptionCard.SetDescriptionCardCost(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
+        descriptionCard.CheckDescriptionCardFree(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
 
-        descriptionCard.ChestDescriptionCardFree(greenGemCost, redGemCost, blueGemCost, yellowGemCost, purpleGemCost, cyanGemCost);
+        if(hubMerchantItem.GetItemLockedByDLC()) {
+            descriptionCard.SetLockedByDLC();
+            return;
+        }
 
         if(itemLockedInDemo && HUBManager.Instance != null && HUBManager.Instance.GetIsDemo()) {
             descriptionCard.SetDescriptionCardItemLockedInDemo();

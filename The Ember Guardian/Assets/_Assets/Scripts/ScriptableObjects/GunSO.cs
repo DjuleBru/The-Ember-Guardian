@@ -282,8 +282,7 @@ public class GunSO : ScriptableObject
     public AudioClip[] shootGunSound;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
-    [ShowIf("shotNeedsLoading")]
-    public AudioClip startLoadingShotGunSound;
+    public AudioClip[] startLoadingShotGunSound;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
     public AudioClip[] reloadGunSound;

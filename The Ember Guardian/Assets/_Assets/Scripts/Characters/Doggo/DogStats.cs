@@ -85,6 +85,8 @@ public class DogStats : MonoBehaviour {
     [SerializeField] private Sprite darkCompanionRedIcon;
     [SerializeField] private Sprite huskyIcon;
 
+    private List<string> tempSaveStrings = new List<string>();
+
     private void Awake() {
         Instance = this;
         InitializeParameters();
@@ -491,6 +493,16 @@ public class DogStats : MonoBehaviour {
         return dogTypeSkins;
     }
 
+    public DLCManager.DLCType GetDogSkinLinkedDLC(Dog.DogSkin dogSkin) {
+        foreach(Dog.DogTypeSkins dogTypeSkin in dogTypeSkins) {
+            foreach(Dog.DogSkinDLCLink dogDLCLink in dogTypeSkin.dogTypeDLCSkins) {
+                if (dogDLCLink.dogSkin == dogSkin) return dogDLCLink.linkedDLC;
+            }
+        }
+
+        return DLCManager.DLCType.None;
+    }
+
     public Dog.DogSkin GetDefaultDogSkin(Dog.DogType dogType) {
         Dog.DogSkin skin = Dog.DogSkin.GermanShepherdSkin;
 
@@ -518,13 +530,17 @@ public class DogStats : MonoBehaviour {
         if (dogSkin == Dog.DogSkin.DarkCompanionSkin) return darkCompanionUnlocked;
 
         string key = dogSkin + "_unlocked";
+
+        if (tempSaveStrings.Contains(key)) return true;
+
         return ES3.Load(key, false);
     }
 
-    public void SetDogSkinUnlocked(Dog.DogSkin dogSkin) {
+    public void SetDogSkinUnlocked_Temp(Dog.DogSkin dogSkin) {
         string key = dogSkin + "_unlocked";
 
-        ES3.Save(key, true);
+        tempSaveStrings.Add(key);
+
         OnNewDogSkinUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
@@ -614,6 +630,10 @@ public class DogStats : MonoBehaviour {
         dogData["dogType"] = Dog.Instance.GetDogType();
 
         ES3.Save("DogStats", dogData);
+
+        foreach(string key in tempSaveStrings) {
+            ES3.Save(key, true);
+        }
     }
     public void SaveHordeDogStats() {
         var dogData = new Dictionary<string, object>();

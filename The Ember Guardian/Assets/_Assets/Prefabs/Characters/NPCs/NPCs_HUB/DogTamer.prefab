@@ -3644,8 +3644,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   germanShepherdGO: {fileID: 9107636598954445306}
+  germanShepherdLightGO: {fileID: 0}
   retreiverGO: {fileID: 6347244014266925760}
+  retreiverBrownGO: {fileID: 0}
   darkCompanionGO: {fileID: 9132132322337675283}
+  darkCompanionRedGO: {fileID: 0}
+  huskyGO: {fileID: 0}
 --- !u!1 &5158637727310133848
 GameObject:
   m_ObjectHideFlags: 0
@@ -7725,6 +7729,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 1
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 30
@@ -8102,6 +8107,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 22
@@ -8510,6 +8516,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 17da004460990ee44bb97095b956ab07, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 20
@@ -8887,6 +8894,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 12
@@ -9303,6 +9311,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 6009fee8dfe87d7469c331de2520cd00, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 5
@@ -9767,6 +9776,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 9
@@ -10201,6 +10211,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a8a54bd586e919e418e7b10750c0c75a, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 3
@@ -10586,6 +10597,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 1c18b17f50b3d9d4788672291240a6c0, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 23
@@ -10975,6 +10987,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 154726ecc8c038640adf44a091422af7, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 24
@@ -11382,6 +11395,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 1
@@ -11791,6 +11805,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 30883f4df3de1da40bfcdf4a4ca7628e, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 28
@@ -12179,6 +12194,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 0
@@ -12578,6 +12594,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 2507cdf9c49047f499effa4c84aa97ab, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 13
@@ -12987,6 +13004,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 02ab1a7964dfd6944ba4f648011097f0, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 8
@@ -13383,6 +13401,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 25
@@ -13795,6 +13814,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 7ddaa62f879a38242859ff03dfebacb0, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 21
@@ -14191,6 +14211,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 063b11696ce3db243b0eb7384c5b224f, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 6
@@ -14557,6 +14578,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 19
@@ -15004,6 +15026,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 10
@@ -15456,6 +15479,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 8e156eb15269193499406a359210a648, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 2
@@ -15907,6 +15931,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 11
@@ -16356,6 +16381,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 32
@@ -16764,6 +16790,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 7cd66d6dd8e41134c8eac20876deb474, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 26
@@ -17153,6 +17180,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: b05d5fcb7b8c47140a7f0454ffad59a7, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 16
@@ -17547,6 +17575,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: ba4f4009b3d2720489e90446b9cfff62, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 17
@@ -17932,6 +17961,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 7
@@ -18336,6 +18366,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a0e8c480676fe834dad837c24ee26f80, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 4
@@ -18748,6 +18779,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 29
@@ -19544,6 +19576,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 26a95837188742b4a882383de31d7cb9, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 14
@@ -19949,6 +19982,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 31
@@ -20356,6 +20390,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 15
@@ -20730,6 +20765,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 18
@@ -21135,6 +21171,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: b146ac2e47dabe3438407fc050984fd1, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   itemType: 27

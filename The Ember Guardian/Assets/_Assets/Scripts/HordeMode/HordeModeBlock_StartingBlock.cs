@@ -208,7 +208,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
     }
 
     public override void GenerateCreatureSpawners(List<CreatureSO> selectedCreatures, List<int> spawnAmounts, List<int> eliteAmounts, List<Vector3> positions = null) {
-        Debug.Log("Central Block GenerateCreatureSpawners " + spawnAmounts.Count);
+        //Debug.Log("Central Block GenerateCreatureSpawners " + spawnAmounts.Count);
 
         foreach (var creatureIndex in System.Linq.Enumerable.Range(0, selectedCreatures.Count)) {
 

@@ -71,6 +71,9 @@ public class Gun : MonoBehaviour
     protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastAngle = .1f; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastDamageBuff;
+    protected float loadingRifleShotDamageBuff = 2.5f;
+    protected float loadingRifleShotRangeDebuff = 1.5f;
+    protected float loadingRifleShotBulletKnockbackBuf = 15f;
     protected float focusedBlastRangeBuff = 1.5f;
 
     protected int bulletDamageStatModifierLevel = -1;
@@ -110,6 +113,7 @@ public class Gun : MonoBehaviour
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
 
         PlayerSkills.Instance.OnPlayerInFireLightBuffedDmg += PlayerSkills_OnPlayerInFireLightBuffedDmg;
         PlayerSkills.Instance.OnPlayerInFireLightDebuffedDmg += PlayerSkills_OnPlayerInFireLightDebuffedDmg;
@@ -135,6 +139,40 @@ public class Gun : MonoBehaviour
     protected void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         if (!gunActive) return;
         RecalculateDamage();
+    }
+
+    private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, EventArgs e) {
+        if (gunSO.gunType == GunSO.GunType.Rifle) {
+
+            if (PlayerShoot.Instance.GetRifleLoadShotModeActive()) {
+                BuffBulletDamage(loadingRifleShotDamageBuff, false);
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+                shootPSMainModule.startSize = .3f;
+
+                bulletSpeed *= loadingRifleShotRangeDebuff;
+                shootPSMainModule.startSpeed = bulletSpeed;
+
+                bulletLifetime /= loadingRifleShotRangeDebuff;
+                shootPSMainModule.startLifetime = bulletLifetime;
+
+                bulletKnockback *= loadingRifleShotBulletKnockbackBuf;
+                
+            }
+
+            else {
+                DebuffBulletDamage(loadingRifleShotDamageBuff, false);
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+                shootPSMainModule.startSize = .2f;
+
+                bulletSpeed /= loadingRifleShotRangeDebuff;
+                shootPSMainModule.startSpeed = bulletSpeed;
+
+                bulletLifetime *= loadingRifleShotRangeDebuff;
+                shootPSMainModule.startLifetime = bulletLifetime;
+
+                bulletKnockback /= loadingRifleShotBulletKnockbackBuf;
+            }
+        }
     }
 
     protected void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
@@ -359,7 +397,6 @@ public class Gun : MonoBehaviour
 
         //Check Passive SKills
         CheckPassiveSkillEffectsOnBullet();
-        //HandleGunJams();
 
         Shoot();
     }
@@ -399,8 +436,6 @@ public class Gun : MonoBehaviour
             Vector2 initialForce = loadingShotMultiplier * PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed;
 
             // --- Force minimale ---
-
-
             gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
         }
 
@@ -949,7 +984,6 @@ public class Gun : MonoBehaviour
 
         ES3.Save(key, gunData);
     }
-
 
     public void LoadGunStatModifierLevels() {
         string key = gunSO.gunType + "_metaData";

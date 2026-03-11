@@ -102,6 +102,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         if (itemCategory == DogTamerItemCategory.StatUpgrade) {
             SetNewStatIncreaseStats();
         }
+
         if (itemCategory == DogTamerItemCategory.DogSkin) {
             UnlockDogSkin();
         }
@@ -432,7 +433,7 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             skinType = Dog.DogSkin.Husky;
         }
 
-        DogStats.Instance.SetDogSkinUnlocked(skinType);
+        DogStats.Instance.SetDogSkinUnlocked_Temp(skinType);
     }
 
     public override bool GetConstantUnlockDescription() {

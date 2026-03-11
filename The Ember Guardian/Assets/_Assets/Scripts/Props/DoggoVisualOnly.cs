@@ -16,12 +16,23 @@ public class DoggoVisualOnly : MonoBehaviour
 
     private void Start() {
 
+        Dog.DogSkin dogSkin = Dog.DogSkin.GermanShepherdSkin;
+
         if (ES3.KeyExists("DogStats")) {
             var dogData = ES3.Load<Dictionary<string, object>>("DogStats");
+
             dogType = GetValue(dogData, "dogType", Dog.DogType.GermanShepherd);
+
+            string skinKey = dogType.ToString() + "_skin";
+            dogSkin = ES3.Load(skinKey, Dog.DogSkin.GermanShepherdSkin);
         }
 
-        RefreshActiveDog(dogType);
+        // Security if people change save file manually
+        if (!DLCManager.Instance.HasDLC(DogStats.Instance.GetDogSkinLinkedDLC(dogSkin))) {
+            dogSkin = DogStats.Instance.GetDefaultDogSkin(dogType);
+        };
+
+        RefreshActiveDogSkin(dogSkin);
 
        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             Dog.Instance.OnDogTypeChanged += Dog_OnDogTypeChanged;
@@ -44,12 +55,14 @@ public class DoggoVisualOnly : MonoBehaviour
         germanShepherdGO.SetActive(false);
         retreiverGO.SetActive(false);
         darkCompanionGO.SetActive(false);
-        germanShepherdLightGO.SetActive(false);
-        retreiverBrownGO.SetActive(false);
-        darkCompanionRedGO.SetActive(false);
-        huskyGO.SetActive(false);
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+
+            germanShepherdLightGO.SetActive(false);
+            retreiverBrownGO.SetActive(false);
+            darkCompanionRedGO.SetActive(false);
+            huskyGO.SetActive(false);
+
             if (dogType == Dog.DogType.GermanShepherd) {
                 germanShepherdGO.SetActive(true);
             }
@@ -59,6 +72,10 @@ public class DoggoVisualOnly : MonoBehaviour
             if (dogType == Dog.DogType.DarkCompanion) {
                 darkCompanionGO.SetActive(true);
             }
+            RandomizeAnimation(germanShepherdLightGO.GetComponent<Animator>());
+            RandomizeAnimation(retreiverBrownGO.GetComponent<Animator>());
+            RandomizeAnimation(darkCompanionRedGO.GetComponent<Animator>());
+            RandomizeAnimation(huskyGO.GetComponent<Animator>());
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
@@ -92,16 +109,17 @@ public class DoggoVisualOnly : MonoBehaviour
     }
 
     private void RefreshActiveDogSkin(Dog.DogSkin dogSkin) {
-        Debug.Log("RefreshActiveDogSkin " + dogSkin);
         germanShepherdGO.SetActive(false);
         retreiverGO.SetActive(false);
         darkCompanionGO.SetActive(false);
-        germanShepherdLightGO.SetActive(false);
-        retreiverBrownGO.SetActive(false);
-        darkCompanionRedGO.SetActive(false);
-        huskyGO.SetActive(false);
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+
+            germanShepherdLightGO.SetActive(false);
+            retreiverBrownGO.SetActive(false);
+            darkCompanionRedGO.SetActive(false);
+            huskyGO.SetActive(false);
+
             if (dogSkin == Dog.DogSkin.GermanShepherdSkin) {
                 germanShepherdGO.SetActive(true);
             }
@@ -125,15 +143,15 @@ public class DoggoVisualOnly : MonoBehaviour
                 huskyGO.SetActive(true);
             }
 
+            RandomizeAnimation(germanShepherdLightGO.GetComponent<Animator>());
+            RandomizeAnimation(retreiverBrownGO.GetComponent<Animator>());
+            RandomizeAnimation(darkCompanionRedGO.GetComponent<Animator>());
+            RandomizeAnimation(huskyGO.GetComponent<Animator>());
         }
 
         RandomizeAnimation(germanShepherdGO.GetComponent<Animator>());
         RandomizeAnimation(darkCompanionGO.GetComponent<Animator>());
         RandomizeAnimation(retreiverGO.GetComponent<Animator>());
-        RandomizeAnimation(germanShepherdLightGO.GetComponent<Animator>());
-        RandomizeAnimation(retreiverBrownGO.GetComponent<Animator>());
-        RandomizeAnimation(darkCompanionRedGO.GetComponent<Animator>());
-        RandomizeAnimation(huskyGO.GetComponent<Animator>());
 
     }
 

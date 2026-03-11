@@ -24,6 +24,8 @@ public class HubMerchantItem : MonoBehaviour
     [SerializeField] protected bool itemUpgradeable;
     [SerializeField] protected bool unlockRequiresAllPrerequisited;
 
+    [SerializeField] protected DLCManager.DLCType linkedDLCType = DLCManager.DLCType.None;
+
     [SerializeField] protected HubMerchantItemStatModifierSO linkedStatModifierSO;
 
     [SerializeField] private HubMerchant parentHubMerchant;
@@ -148,6 +150,8 @@ public class HubMerchantItem : MonoBehaviour
     }
 
     public bool CanBuyItem() {
+        if(!DLCManager.Instance.HasDLC(linkedDLCType)) return false;
+
         int playerGreenGems = 0;
         int playerRedGems = 0;
         int playerCyanGems = 0; 
@@ -442,6 +446,10 @@ public class HubMerchantItem : MonoBehaviour
 
     public bool GetItemUpgradeable() {
         return itemUpgradeable;
+    }
+
+    public bool GetItemLockedByDLC() {
+        return !DLCManager.Instance.HasDLC(linkedDLCType);
     }
 
     public bool GetItemBought() {
