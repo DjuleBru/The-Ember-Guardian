@@ -653,8 +653,16 @@ public class PlayerAim : MonoBehaviour
         smoothSpeed = 1f;
         noiseAmount = 0;
 
+        bool firstPrimaryAbilityEquipped = PlayerShoot.Instance.GetFirstSecondaryAbilityEquipped();
+        bool secondPrimaryAbilityEquipped = PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped();
+
         float secondaryAbilityBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryAbilityPrecisionFactor;
         float recoilBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondaryRecoilReductionFactor;
+
+        if (secondPrimaryAbilityEquipped) {
+            secondaryAbilityBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondSecondaryAbilityPrecisionFactor;
+            recoilBuff = PlayerShoot.Instance.GetHeldGunSO().weaponSecondSecondaryRecoilReductionFactor;
+        }
 
         crouchPrecisionBuff = gunSO.crouchPrecisionBuff;
         crouchRecoilReductionFactor = gunSO.crouchRecoilReductionFactor;

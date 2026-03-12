@@ -211,6 +211,12 @@ public class GunSO : ScriptableObject
     public float weaponSecondaryRecoilReductionFactor = 1f;
     [BoxGroup("Stats/Precision")]
     [LabelWidth(300)]
+    public float weaponSecondSecondaryAbilityPrecisionFactor = 1f;
+    [BoxGroup("Stats/Precision")]
+    [LabelWidth(300)]
+    public float weaponSecondSecondaryRecoilReductionFactor = 1f;
+    [BoxGroup("Stats/Precision")]
+    [LabelWidth(300)]
     public float weaponMaxRecoilImpactOnMouseReticle = .25f;
     [BoxGroup("Stats/Precision")]
     [LabelWidth(300)]

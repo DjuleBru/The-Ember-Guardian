@@ -67,14 +67,22 @@ public class Gun : MonoBehaviour
     protected int subExplosivesAmount;
     protected int subExplosivesDamage;
 
+    protected float loadingRifleShotDamageBuff = 2.5f;
+    protected float loadingRifleShotRangeDebuff = 1.5f;
+    protected float loadingRifleShotBulletKnockbackBuf = 20f;
+
     protected float currentAngle; // L'angle actuel du cône
     protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastAngle = .1f; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastDamageBuff;
-    protected float loadingRifleShotDamageBuff = 2.5f;
-    protected float loadingRifleShotRangeDebuff = 1.5f;
-    protected float loadingRifleShotBulletKnockbackBuf = 15f;
     protected float focusedBlastRangeBuff = 1.5f;
+    protected int pelletsPerBulletBeforeShotgunSemiAutoMode;
+    protected float shotgunSemiAutoModeRangeBuff = 1.5f;
+    protected float shotgunSemiAutoModeSpreadBuff = 2f;
+    protected float shotgunSemiAutoModeCooldownBuff = 1.5f;
+    protected int shotgunSemiAutoModeDamageDebuff = 2;
+
+    protected float smgPoisonRoundsDamageDebuff = 1.25f;
 
     protected int bulletDamageStatModifierLevel = -1;
     protected int shotsPerClipStatModifierLevel = -1;
@@ -121,7 +129,6 @@ public class Gun : MonoBehaviour
         PlayerSkills.Instance.OnPlayerOutFireLightDebuffedDmg += PlayerSkills_OnPlayerOutFireLightDebuffedDmg;
     }
 
-
     protected virtual void Update() {
         if (!gunJamInCooldown) return;
 
@@ -142,12 +149,13 @@ public class Gun : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, EventArgs e) {
+        if (!gunActive) return;
         if (gunSO.gunType == GunSO.GunType.Rifle) {
+            ParticleSystem.MainModule shootPSMainModule = shootPS.main;
 
             if (PlayerShoot.Instance.GetRifleLoadShotModeActive()) {
                 BuffBulletDamage(loadingRifleShotDamageBuff, false);
-                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
-                shootPSMainModule.startSize = .3f;
+                shootPSMainModule.startSize = .35f;
 
                 bulletSpeed *= loadingRifleShotRangeDebuff;
                 shootPSMainModule.startSpeed = bulletSpeed;
@@ -161,7 +169,6 @@ public class Gun : MonoBehaviour
 
             else {
                 DebuffBulletDamage(loadingRifleShotDamageBuff, false);
-                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
                 shootPSMainModule.startSize = .2f;
 
                 bulletSpeed /= loadingRifleShotRangeDebuff;
@@ -172,6 +179,49 @@ public class Gun : MonoBehaviour
 
                 bulletKnockback /= loadingRifleShotBulletKnockbackBuf;
             }
+        }
+
+        if(gunSO.gunType == GunSO.GunType.Shotgun) {
+            ParticleSystem.ShapeModule shootPSShapeModule = shootPS.shape;
+            ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+            float currentPSAngle = shootPSShapeModule.angle;
+
+            if (PlayerShoot.Instance.GetShotgunSemiAutoModeActive()) {
+
+                currentPSAngle /= shotgunSemiAutoModeSpreadBuff;
+                bulletLifetime *= shotgunSemiAutoModeRangeBuff;
+                PlayerStats.Instance.BuffShootCooldown(shotgunSemiAutoModeCooldownBuff);
+                damagePerBullet /= shotgunSemiAutoModeDamageDebuff;
+                shootPSMainModule.startSize = .1f;
+
+            } else {
+
+                currentPSAngle *= shotgunSemiAutoModeSpreadBuff;
+                bulletLifetime /= shotgunSemiAutoModeRangeBuff;
+                PlayerStats.Instance.DebuffShootCooldown(shotgunSemiAutoModeCooldownBuff);
+
+                damagePerBullet *= shotgunSemiAutoModeDamageDebuff;
+                shootPSMainModule.startSize = .2f;
+            }
+
+            SetPSShootAngle(currentPSAngle);
+            shootPSMainModule.startLifetime = bulletLifetime;
+        }
+
+        if (gunSO.gunType == GunSO.GunType.SMG) {
+            ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+
+            if (PlayerShoot.Instance.GetSMGPoisonRoundsActive()) {
+
+                DebuffBulletDamage(smgPoisonRoundsDamageDebuff);
+            }
+            else {
+
+                BuffBulletDamage(smgPoisonRoundsDamageDebuff);
+
+            }
+
+            shootPSMainModule.startLifetime = bulletLifetime;
         }
     }
 
