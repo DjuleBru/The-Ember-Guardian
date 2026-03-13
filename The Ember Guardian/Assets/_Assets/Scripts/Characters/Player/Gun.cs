@@ -44,6 +44,9 @@ public class Gun : MonoBehaviour
     protected float swapToWeaponTimeMultiplier;
     protected float shootCreatureHearMultiplier;
 
+    protected float bulletSizeMultiplier = 1f;
+    protected float delayBetweenSubShots = .2f;
+
     protected int jamRepairHitAmount;
     protected float surgeReloadProbability;
     protected bool damageSurgeBuffed;
@@ -70,6 +73,13 @@ public class Gun : MonoBehaviour
     protected float loadingRifleShotDamageBuff = 2.5f;
     protected float loadingRifleShotRangeDebuff = 1.5f;
     protected float loadingRifleShotBulletKnockbackBuf = 20f;
+
+    protected float sniperPiercingRoundsRangeDebuff = 2.5f;
+    protected float sniperPiercingRoundsCooldownTimeDebuff = 1.75f;
+    protected int sniperPiercingRoundsPierceAmount = 3;
+
+    protected int pierceAmount = 1;
+    protected int projectilesShotAmount = 1;
 
     protected float currentAngle; // L'angle actuel du cône
     protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
@@ -150,6 +160,7 @@ public class Gun : MonoBehaviour
 
     private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, EventArgs e) {
         if (!gunActive) return;
+
         if (gunSO.gunType == GunSO.GunType.Rifle) {
             ParticleSystem.MainModule shootPSMainModule = shootPS.main;
 
@@ -223,6 +234,49 @@ public class Gun : MonoBehaviour
 
             shootPSMainModule.startLifetime = bulletLifetime;
         }
+
+        if (gunSO.gunType == GunSO.GunType.Sniper) {
+
+            if (PlayerShoot.Instance.GetSniperPiercingRoundsActive()) {
+
+                bulletSizeMultiplier *= 2f;
+
+                bulletLifetime /= sniperPiercingRoundsRangeDebuff;
+
+                cooldownTime /= sniperPiercingRoundsCooldownTimeDebuff;
+                pierceAmount = sniperPiercingRoundsPierceAmount;
+
+            }
+            else {
+
+                bulletSizeMultiplier /= 2f;
+                bulletLifetime *= sniperPiercingRoundsRangeDebuff;
+
+                cooldownTime *= sniperPiercingRoundsCooldownTimeDebuff;
+                pierceAmount = 1;
+
+            }
+        }
+
+        if (gunSO.gunType == GunSO.GunType.GrenadeLauncher) {
+
+            if (PlayerShoot.Instance.GetGrenadeLauncherMultipleGrenadesActive()) {
+
+                bulletSizeMultiplier /= 1.5f;
+                DebuffBulletDamage(3f);
+                projectilesShotAmount = 3;
+
+            }
+            else {
+
+                bulletSizeMultiplier *= 1.5f;
+                projectilesShotAmount = 1;
+
+                BuffBulletDamage(3f);
+
+            }
+        }
+
     }
 
     protected void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
@@ -470,23 +524,13 @@ public class Gun : MonoBehaviour
         }
 
         if (gunSO.bulletIsProjectile) {
-            GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
-            gunProjectile.gameObject.SetActive(true);
 
-
-            float loadingShotMultiplier = 1f;
-            if (gunSO.gunType == GunSO.GunType.GrenadeLauncher) {
-                float loadingShotTimer = PlayerShoot.Instance.GetLoadingShotTimerNormalized(); // 0 -> 1
-                float minLoadShotForceNormalized = PlayerShoot.Instance.GetHeldGunSO().minLoadShotForceNormalized;
-                // Remapper pour que 0 -> minForce, 1 -> 1
-                loadingShotMultiplier = Mathf.Lerp(minLoadShotForceNormalized, 1f, loadingShotTimer);
+            if(projectilesShotAmount == 1) {
+                ShootProjectile();
+            } else {
+                ShootMultipleProjectiles();
             }
-         
 
-            Vector2 initialForce = loadingShotMultiplier * PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed;
-
-            // --- Force minimale ---
-            gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
         }
 
         if (damageSurgeBuffedLastBullet) {
@@ -507,6 +551,34 @@ public class Gun : MonoBehaviour
                 OnAnyGunJamBuffedDamageShot?.Invoke(this, EventArgs.Empty);
             }
         }
+    }
+
+    private void ShootMultipleProjectiles() {
+        float randomizedBulletLifetimeMultiplier = UnityEngine.Random.Range(.85f, 1.15f);
+        float randomizedBulletForceMultiplier = UnityEngine.Random.Range(.9f, 1.1f);
+
+        ShootProjectile(randomizedBulletLifetimeMultiplier, randomizedBulletForceMultiplier);
+    }
+
+    private void ShootProjectile(float bulletLifetimeMultiplier = 1f, float forceMultiplier = 1f) {
+
+        GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
+        gunProjectile.gameObject.SetActive(true);
+
+
+        float loadingShotMultiplier = 1f;
+
+        if (gunSO.gunType == GunSO.GunType.GrenadeLauncher) {
+            float loadingShotTimer = PlayerShoot.Instance.GetLoadingShotTimerNormalized(); // 0 -> 1
+            float minLoadShotForceNormalized = PlayerShoot.Instance.GetHeldGunSO().minLoadShotForceNormalized;
+            // Remapper pour que 0 -> minForce, 1 -> 1
+            loadingShotMultiplier = Mathf.Lerp(minLoadShotForceNormalized, 1f, loadingShotTimer);
+        }
+
+        Vector2 initialForce = loadingShotMultiplier * PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed * forceMultiplier;
+
+        // --- Force minimale ---
+        gunProjectile.InitializeProjectile(this, bulletLifetime * bulletLifetimeMultiplier, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier, pierceAmount, bulletSizeMultiplier);
     }
 
     protected void HandleGunJams() {
@@ -698,6 +770,14 @@ public class Gun : MonoBehaviour
     }
     public bool GetDamageSurgeBuffedLastBullet() {
         return damageSurgeBuffed || damageSurgeBuffedLastBullet;
+    }
+
+    public float GetDelayBetweenSubShots() {
+        return delayBetweenSubShots;
+    }
+
+    public int GetProjectilesShotAmount() {
+        return projectilesShotAmount;
     }
 
     #endregion

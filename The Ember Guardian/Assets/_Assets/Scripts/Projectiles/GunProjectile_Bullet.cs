@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GunProjectile_Bullet : GunProjectile {
-    [SerializeField] private int penetrationMaxAmount = 1;
     [SerializeField] private LayerMask raycastMask;
     [SerializeField] private float circleCastRadius = 0.15f;
     [SerializeField] private GameObject explosionPrefab;
@@ -13,14 +12,19 @@ public class GunProjectile_Bullet : GunProjectile {
     public static event EventHandler<OnBulletHitEventArgs> OnAnyBulletHitEnemy;
     public static event EventHandler<OnBulletHitEventArgs> OnAnyPlayerBulletHitEnemyCrit;
     public static event EventHandler OnAnyParticleBouncedOff;
+    public static event EventHandler<OnBulletPierceCreatureEventArgs> OnAnyBulletPierceCreature;
 
     public class OnBulletHitEventArgs {
         public Vector3 bulletHitPosition;
         public Mob mobHit;
     }
+    public class OnBulletPierceCreatureEventArgs {
+        public Creature creatureHit;
+    }
 
     private Vector2 previousPosition;
 
+    private float penetrationSlowDownFactor = 1.5f;
     private int penetrationIndex;
     private bool projectileFadedOut;
 
@@ -165,19 +169,11 @@ public class GunProjectile_Bullet : GunProjectile {
 
             creatureHit.TakeDamage(projectileExplosionDamage, bulletSource, critHit, false, hitWeakSpot);
 
-            creatureHit.InstantiateHitPS(
-                angle,
-                collisionPosition.y,
-                critHit,
-                projectileExplosionDamage,
-                collisionPosition.x
-            );
+            creatureHit.InstantiateHitPS(angle,collisionPosition.y,critHit,projectileExplosionDamage,collisionPosition.x);
 
             if (critHit) {
 
-                OnAnyPlayerBulletHitEnemyCrit?.Invoke(
-                    this,
-                    new OnBulletHitEventArgs {
+                OnAnyPlayerBulletHitEnemyCrit?.Invoke(this,new OnBulletHitEventArgs {
                         bulletHitPosition = collisionPosition,
                         mobHit = creatureHit as Mob
                     }
@@ -186,9 +182,7 @@ public class GunProjectile_Bullet : GunProjectile {
             }
             else {
 
-                OnAnyBulletHitEnemy?.Invoke(
-                    this,
-                    new OnBulletHitEventArgs {
+                OnAnyBulletHitEnemy?.Invoke(this,new OnBulletHitEventArgs {
                         bulletHitPosition = collisionPosition,
                         mobHit = creatureHit as Mob
                     }
@@ -200,8 +194,7 @@ public class GunProjectile_Bullet : GunProjectile {
 
             creatureHit.TakeKnockback(knockBackForce, bulletDirNormalized);
 
-            penetrationIndex++;
-
+            PierceEnemy(creatureHit);
         }
 
         if (spawnerHit != null) {
@@ -216,7 +209,7 @@ public class GunProjectile_Bullet : GunProjectile {
 
             spawnerHit.InstantiateHitPS(angle, collisionPosition.y, false);
 
-            penetrationIndex++;
+            PierceEnemy(null);
 
         }
 
@@ -260,5 +253,14 @@ public class GunProjectile_Bullet : GunProjectile {
 
         StartCoroutine(DestroyGameObjectAfterDelay(1f));
 
+    }
+
+    private void PierceEnemy(Creature creatureHit) {
+        penetrationIndex++;
+        rb.velocity /= penetrationSlowDownFactor;
+
+        OnAnyBulletPierceCreature?.Invoke(this, new OnBulletPierceCreatureEventArgs {
+            creatureHit = creatureHit
+        });
     }
 }

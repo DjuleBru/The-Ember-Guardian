@@ -23,7 +23,7 @@ public class Gun_RocketLauncher : Gun
                 float miniRocketSpeed = miniRocketBulletSpeed + i * miniRocketBulletSpeedIncrementer;
                 Vector2 initialForce = PlayerAim.Instance.GetEffectiveAimDir().normalized * miniRocketSpeed;
 
-                gunProjectile.InitializeProjectile(this, miniRocketBulletLifetime, damagePerBullet / miniRocketAmount, bulletKnockback, initialForce, explosionRadiusMultiplier);
+                gunProjectile.InitializeProjectile(this, miniRocketBulletLifetime, damagePerBullet / miniRocketAmount, bulletKnockback, initialForce, explosionRadiusMultiplier, 1, 1);
 
             }
 
@@ -34,7 +34,7 @@ public class Gun_RocketLauncher : Gun
 
             Vector2 initialForce = PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed;
 
-            gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
+            gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier, 1, 1);
 
         }
 

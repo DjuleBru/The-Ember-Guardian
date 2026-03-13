@@ -106,6 +106,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip switchGunFireMode;
     public AudioClip switchGunFireMode_shotgun;
     public AudioClip switchGunFireMode_smg;
+    public AudioClip switchGunFireMode_sniper;
     public AudioClip aimSightStart;
     public AudioClip aimSightEnd;
     public AudioClip smgOverclockStart;

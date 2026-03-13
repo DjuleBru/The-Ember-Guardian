@@ -185,6 +185,7 @@ public class SoundManager : MonoBehaviour
         GunProjectile_Bullet.OnAnyBulletHitGround += GunProjectile_Bullet_OnAnyBulletHitGround;
         GunProjectile_Bullet.OnAnyPlayerBulletHitEnemyCrit += GunProjectile_Bullet_OnAnyPlayerBulletHitEnemyCrit;
         GunProjectile_Bullet.OnAnyParticleBouncedOff += GunProjectile_Bullet_OnAnyParticleBouncedOff;
+        GunProjectile_Bullet.OnAnyBulletPierceCreature += GunProjectile_Bullet_OnAnyBulletPierceCreature;
 
         Collectible.OnAnyCollectibleTouchedFloor += Collectible_OnAnyCollectibleTouchedFloor;
         Collectible.OnAnyCollectiblePickedUpByWorker += Collectible_OnAnyCollectiblePickedUpByWorker;
@@ -224,6 +225,7 @@ public class SoundManager : MonoBehaviour
         DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
     }
+
 
     private void Update() {
         if(criticalFireTickJustRemoved) {
@@ -768,6 +770,15 @@ public class SoundManager : MonoBehaviour
         PlaySound3D(audioClipArray, e.bulletHitPosition, creatureHit.GetCreatureSO().bulletHitVolumeMultiplier);
     }
 
+    private void GunProjectile_Bullet_OnAnyBulletPierceCreature(object sender, GunProjectile_Bullet.OnBulletPierceCreatureEventArgs e) {
+        Creature creatureHit = e.creatureHit;
+
+        if (creatureHit == null) return;
+
+        AudioClip[] audioClipArray = creatureHit.GetCreatureSO().bulletHitAudioClips;
+        PlaySound2D(audioClipArray, creatureHit.GetCreatureSO().bulletHitVolumeMultiplier * 1.5f);
+    }
+
     private void PlayerShoot_OnPlayerSwappedGun(object sender, PlayerShoot.OnPlayerSwappedGunEventArgs e) {
         if (!e.triggerSFX) return;
 
@@ -822,7 +833,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
-        if(PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Rifle) {
+        if(PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Rifle || PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
             PlaySound2D(soundRefsSO.switchGunFireMode);
         }
 
@@ -832,6 +843,9 @@ public class SoundManager : MonoBehaviour
 
         if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.SMG) {
             PlaySound2D(soundRefsSO.switchGunFireMode_smg, .8f);
+        }
+        if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Sniper) {
+            PlaySound2D(soundRefsSO.switchGunFireMode_sniper, .8f);
         }
 
     }
@@ -1302,6 +1316,7 @@ public class SoundManager : MonoBehaviour
         GunProjectile_Bullet.OnAnyBulletHitGround -= GunProjectile_Bullet_OnAnyBulletHitGround;
         GunProjectile_Bullet.OnAnyPlayerBulletHitEnemyCrit -= GunProjectile_Bullet_OnAnyPlayerBulletHitEnemyCrit;
         GunProjectile_Bullet.OnAnyParticleBouncedOff -= GunProjectile_Bullet_OnAnyParticleBouncedOff;
+        GunProjectile_Bullet.OnAnyBulletPierceCreature -= GunProjectile_Bullet_OnAnyBulletPierceCreature;
 
         Collectible.OnAnyCollectibleTouchedFloor -= Collectible_OnAnyCollectibleTouchedFloor;
         Collectible.OnAnyCollectiblePickedUpByWorker -= Collectible_OnAnyCollectiblePickedUpByWorker;

@@ -6,16 +6,16 @@ using UnityEngine;
 public class GunFeedbacks_Rifle : GunFeedbacks
 {
 
-    [SerializeField] protected MMF_Player rifleLoadShotFeedbacks;
-    [SerializeField] protected MMF_Player rifleLoadShot_ShootFeedbacks;
+    [SerializeField] protected MMF_Player loadShotFeedbacks;
+    [SerializeField] protected MMF_Player loadShot_ShootFeedbacks;
 
 
     protected override void PlayerShoot_OnPlayerShotProjectile(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
         if (!gun.GetGunSO().triggersShootSFXOnEachBuller) return;
 
-        if(PlayerShoot.Instance.GetRifleLoadShotModeActive()) {
-            rifleLoadShot_ShootFeedbacks.PlayFeedbacks();
+        if(PlayerShoot.Instance.GetRifleLoadShotModeActive() || PlayerShoot.Instance.GetSniperPiercingRoundsActive()) {
+            loadShot_ShootFeedbacks.PlayFeedbacks();
         } else {
             mmfPlayer.PlayFeedbacks();
         }
@@ -31,8 +31,8 @@ public class GunFeedbacks_Rifle : GunFeedbacks
             loadGunPS2.Play();
         }
 
-        if (rifleLoadShotFeedbacks != null) {
-            rifleLoadShotFeedbacks.PlayFeedbacks();
+        if (loadShotFeedbacks != null) {
+            loadShotFeedbacks.PlayFeedbacks();
         }
     }
 
@@ -48,8 +48,8 @@ public class GunFeedbacks_Rifle : GunFeedbacks
             }
         }
 
-        if (rifleLoadShotFeedbacks != null) {
-            rifleLoadShotFeedbacks.StopFeedbacks();
+        if (loadShotFeedbacks != null) {
+            loadShotFeedbacks.StopFeedbacks();
         }
     }
 }

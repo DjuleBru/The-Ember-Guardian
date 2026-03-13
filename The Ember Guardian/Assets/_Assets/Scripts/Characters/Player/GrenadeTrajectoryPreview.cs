@@ -17,8 +17,9 @@ public class GrenadeTrajectoryPreview : MonoBehaviour
     public float bounciness = 0.5f;
     public float mass = 1f;
 
-    private float fadeDuration = 0.3f;
+    private float fadeDuration = 0.15f;
     private Coroutine fadeCoroutine;
+    private Coroutine hidingCoroutine;
     private Gradient baseGradient;
 
     private void Awake() {
@@ -30,8 +31,21 @@ public class GrenadeTrajectoryPreview : MonoBehaviour
         PlayerShoot.Instance.OnPlayerReloadEnded += Instance_OnPlayerReloadEnded;
         PlayerShoot.Instance.OnPlayerSwappedGunStarted += Instance_OnPlayerSwappedGunStarted;
         PlayerShoot.Instance.OnPlayerSwappedGunEnded += Instance_OnPlayerSwappedGunEnded;
+        PlayerShoot.Instance.OnPlayerStartedShot += Instance_OnPlayerStartedShot;
         PlayerMovement.Instance.OnPlayerRoll += Instance_OnPlayerRoll;
         PlayerMovement.Instance.OnPlayerRollEnded += Instance_OnPlayerRollEnded;
+    }
+
+    private void Instance_OnPlayerStartedShot(object sender, System.EventArgs e) {
+        HideLine();
+        hidingCoroutine = StartCoroutine(ShowLineAfterDelay(gun.GetCooldownTime()-.1f));
+    }
+
+    private IEnumerator ShowLineAfterDelay(float delay) {
+        yield return new WaitForSeconds(delay);
+
+        ShowLine();
+        hidingCoroutine = null;
     }
 
     private void Instance_OnPlayerRollEnded(object sender, System.EventArgs e) {
@@ -128,6 +142,11 @@ public class GrenadeTrajectoryPreview : MonoBehaviour
 
     public void HideLine() {
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+
+        if (hidingCoroutine != null) {
+            StopCoroutine(hidingCoroutine);
+        }
+
         fadeCoroutine = StartCoroutine(FadeLine(0f));
     }
 

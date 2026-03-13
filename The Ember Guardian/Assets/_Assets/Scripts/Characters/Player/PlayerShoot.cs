@@ -120,6 +120,8 @@ public class PlayerShoot : MonoBehaviour
     private bool shotgunSemiAutoModeActive;
     private bool rifleLoadShotModeActive;
     private bool smgPoisonRoundsActive;
+    private bool sniperPiercingRoundsActive;
+    private bool grenadeLauncherMultipleGrenadesActive;
     private bool projectileExplodesOnPlayerClickModeActive;
     private bool projectileExplodesOnPlayerClick;
     private bool aaGunSpawnsChildProjectiles;
@@ -418,6 +420,7 @@ public class PlayerShoot : MonoBehaviour
 
     private void Shoot(bool shootOnReload = false) {
         //Debug.Log("Shoot " + loadingShot);
+
         StartCoroutine(ShootAfterDelay(heldGunSO.delayBetweenClickAndShot, shootOnReload));
     }
 
@@ -436,8 +439,21 @@ public class PlayerShoot : MonoBehaviour
 
         yield return new WaitForSeconds(delay);
 
-        PlayerAim.Instance.AddRecoil(gunRecoil, heldGunSO.gunRecoilDamping);
+        for(int i = 0; i < heldGun.GetProjectilesShotAmount(); i++) {
+            ShootSingleProjectile();
 
+            yield return new WaitForSeconds(heldGun.GetDelayBetweenSubShots());
+        }
+
+         OnBulletsChanged?.Invoke(this, EventArgs.Empty);
+        if (shotNeedsLoading) {
+            loadingShotTimer = 0;
+        }
+
+    }
+
+    private void ShootSingleProjectile() {
+        PlayerAim.Instance.AddRecoil(gunRecoil, heldGunSO.gunRecoilDamping);
         float aimDir = 1f;
         if (PlayerAim.Instance.GetAimDir().x < 0) {
             aimDir = -1f;
@@ -446,13 +462,7 @@ public class PlayerShoot : MonoBehaviour
         Vector2 gunKnockbackForce = new Vector2(aimDir * gunKnockback * -1, 0);
         Player.Instance.AddKnockBack(gunKnockbackForce);
 
-        OnBulletsChanged?.Invoke(this, EventArgs.Empty);
-
         OnPlayerShot?.Invoke(this, EventArgs.Empty);
-
-        if (shotNeedsLoading) {
-            loadingShotTimer = 0;
-        }
     }
 
     private void CooldownFinished() {
@@ -934,9 +944,29 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
-            OnPlayerAimedSightStarted?.Invoke(this, EventArgs.Empty);
-            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
-            secondaryAbilityActive = true;
+            if(primarySecondaryAbilityEquipped) {
+                OnPlayerAimedSightStarted?.Invoke(this, EventArgs.Empty);
+                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                secondaryAbilityActive = true;
+            }
+
+            if(secondarySecondaryAbilityEquipped) {
+                sniperPiercingRoundsActive = !sniperPiercingRoundsActive;
+
+                if (sniperPiercingRoundsActive) {
+                    shotNeedsLoading = true;
+                    loadingShotHeldGunTime = 1.025f;
+                    loadingShotTime = 1.025f;
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    shotNeedsLoading = false;
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            }
+
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.LMG)
@@ -1002,17 +1032,34 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
-            projectileExplodesOnPlayerClickModeActive = !projectileExplodesOnPlayerClickModeActive;
-            projectileExplodesOnPlayerClick = true;
 
-            if (projectileExplodesOnPlayerClickModeActive) {
-                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+            if(primarySecondaryAbilityEquipped) {
+                projectileExplodesOnPlayerClickModeActive = !projectileExplodesOnPlayerClickModeActive;
+                projectileExplodesOnPlayerClick = true;
+
+                if (projectileExplodesOnPlayerClickModeActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
             }
-            else {
-                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            
+            if(secondarySecondaryAbilityEquipped) {
+                grenadeLauncherMultipleGrenadesActive = !grenadeLauncherMultipleGrenadesActive;
+
+                if (grenadeLauncherMultipleGrenadesActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
             }
 
-            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.AAGun) {
@@ -1150,6 +1197,13 @@ public class PlayerShoot : MonoBehaviour
     public bool GetSMGPoisonRoundsActive() {
         return smgPoisonRoundsActive;
     }
+    public bool GetSniperPiercingRoundsActive() {
+        return sniperPiercingRoundsActive;
+    }
+
+    public bool GetGrenadeLauncherMultipleGrenadesActive() {
+        return grenadeLauncherMultipleGrenadesActive;
+    }
 
     public void CheckWeaponStatusFX(Mob mobHit) {
         Creature creatureHit = mobHit as Creature;
@@ -1167,6 +1221,7 @@ public class PlayerShoot : MonoBehaviour
     public bool GetSecondSecondaryAbilityEquipped() {
         return debugUseSecondSecondaryAbility;
     }
+
 
     #endregion
 
@@ -1315,6 +1370,22 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
 
+        if (sniperPiercingRoundsActive) {
+            sniperPiercingRoundsActive = false;
+
+            shotNeedsLoading = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if(grenadeLauncherMultipleGrenadesActive) {
+            grenadeLauncherMultipleGrenadesActive = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
         if (aaGunSpawnsChildProjectiles) {
             aaGunSpawnsChildProjectiles = false;
             OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
@@ -1370,7 +1441,6 @@ public class PlayerShoot : MonoBehaviour
 
     #endregion
 
-
     private void PlayerStats_OnPlayerAmmoRegenTimeChanged(object sender, EventArgs e) {
         hasAmmoRegen = true;
         ammoRegenTime = PlayerStats.Instance.GetAmmoRegenTime();
@@ -1417,6 +1487,8 @@ public class PlayerShoot : MonoBehaviour
 
 
     #region GET PARAMETERS
+
+
     public Gun GetGun(GunSO gunSO) {
         Gun returnGun = null;
         foreach (Gun gun in allGunsList) {

@@ -13,6 +13,7 @@ public class GunVisual : MonoBehaviour
     [SerializeField] protected SpriteRenderer gunLightsSpriteRenderer;
     [SerializeField] protected SpriteRenderer gunCooldownLightsSpriteRenderer;
     [SerializeField] protected Color outOfAmmoCooldownLightsColor;
+    [SerializeField] protected Color orangeColor;
     [SerializeField] protected Material initalLightsSpriteRendererMaterial;
     [SerializeField] protected Material weaponSurgeLightsSpriteRendererMaterial;
 
@@ -106,6 +107,12 @@ public class GunVisual : MonoBehaviour
             gunSecondaryFireModeActive = !gunSecondaryFireModeActive;
             gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
         }
+
+        if(PlayerShoot.Instance.GetSniperPiercingRoundsActive()) {
+            gunCooldownLightsSpriteRenderer.color = orangeColor;
+        } else {
+            gunCooldownLightsSpriteRenderer.color = cooldownLightsColor;
+        }
     }
 
     private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
@@ -144,7 +151,13 @@ public class GunVisual : MonoBehaviour
         if (!gun.GetGunActive()) return;
 
         if (gunCooldownLightsSpriteRenderer != null) {
-            gunCooldownLightsSpriteRenderer.color = cooldownLightsColor;
+
+            if (PlayerShoot.Instance.GetSniperPiercingRoundsActive()) {
+                gunCooldownLightsSpriteRenderer.color = orangeColor;
+            }
+            else {
+                gunCooldownLightsSpriteRenderer.color = cooldownLightsColor;
+            }
         };
 
         gunLightsSpriteRenderer.color = initialLightsColor;
