@@ -161,6 +161,10 @@ PrefabInstance:
       propertyPath: bullet
       value: 
       objectReference: {fileID: 2070242641735824822}
+    - target: {fileID: 491328814913778914, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
+      propertyPath: explodeVariantCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 497713366661671481, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
       propertyPath: m_Interpolate
       value: 1
@@ -368,7 +372,6 @@ MonoBehaviour:
   explodeOnContact: 0
   damagesPlayer: 0
   maxDistanceToDamagePlayer: 1
-  penetrationMaxAmount: 1
   raycastMask:
     serializedVersion: 2
     m_Bits: 33718336

@@ -100,7 +100,7 @@ public class GunVisual : MonoBehaviour
         StartCoroutine(ResetGunAmmoSprite(currentSprite));
     }
 
-    private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
+    protected virtual void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
 
         if(gunSecondaryAbilityActiveSpriteRenderer != null) {
@@ -108,11 +108,15 @@ public class GunVisual : MonoBehaviour
             gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
         }
 
-        if(PlayerShoot.Instance.GetSniperPiercingRoundsActive()) {
-            gunCooldownLightsSpriteRenderer.color = orangeColor;
-        } else {
-            gunCooldownLightsSpriteRenderer.color = cooldownLightsColor;
+        if (gunCooldownLightsSpriteRenderer != null) {
+            if (PlayerShoot.Instance.GetSniperPiercingRoundsActive() || PlayerShoot.Instance.GetRevolverBouncingBulletsActive() || PlayerShoot.Instance.GetPistolExplosiveBulletsActive()) {
+                gunCooldownLightsSpriteRenderer.color = orangeColor;
+            }
+            else {
+                gunCooldownLightsSpriteRenderer.color = cooldownLightsColor;
+            }
         }
+      
     }
 
     private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
@@ -151,8 +155,7 @@ public class GunVisual : MonoBehaviour
         if (!gun.GetGunActive()) return;
 
         if (gunCooldownLightsSpriteRenderer != null) {
-
-            if (PlayerShoot.Instance.GetSniperPiercingRoundsActive()) {
+            if (PlayerShoot.Instance.GetSniperPiercingRoundsActive() || PlayerShoot.Instance.GetRevolverBouncingBulletsActive() || PlayerShoot.Instance.GetPistolExplosiveBulletsActive()) {
                 gunCooldownLightsSpriteRenderer.color = orangeColor;
             }
             else {

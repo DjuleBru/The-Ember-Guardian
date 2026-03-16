@@ -34,7 +34,6 @@ public class GunProjectile : MonoBehaviour
         gunProjectile_BounceHandler.OnProjectileBouncedOnGround += GunProjectile_BounceHandler_OnProjectileBouncedOnGround;
     }
 
-
     protected void GunProjectile_BounceHandler_OnProjectileBouncedOnGround(object sender, EventArgs e) {
         projectileBouncedOnGround = true;
     }
@@ -81,6 +80,7 @@ public class GunProjectile : MonoBehaviour
             if (explodeOnContact) {
                 if (!projectileExploded) {
                     Explode();
+                    return;
                 };
 
                 if(creatureHit != null) {

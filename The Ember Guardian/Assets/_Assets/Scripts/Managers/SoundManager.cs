@@ -847,6 +847,12 @@ public class SoundManager : MonoBehaviour
         if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Sniper) {
             PlaySound2D(soundRefsSO.switchGunFireMode_sniper, .8f);
         }
+        if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Revolver) {
+            PlaySound2D(soundRefsSO.switchGunFireMode_revolver, 1);
+        }
+        if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Pistol) {
+            PlaySound2D(soundRefsSO.switchGunFireMode_pistol, 1);
+        }
 
     }
 

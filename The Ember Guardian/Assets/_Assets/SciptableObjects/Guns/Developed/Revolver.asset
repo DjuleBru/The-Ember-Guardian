@@ -33,8 +33,8 @@ MonoBehaviour:
   initialMouseCursorWidth: 55
   initialMouseCursorHeight: 55
   ammoTypeUsed: 16
-  bulletIsParticle: 1
-  bulletIsProjectile: 0
+  bulletIsParticle: 0
+  bulletIsProjectile: 1
   bulletIsSprite: 0
   canUseMeleeAttack: 1
   automaticWeapon: 0
@@ -42,6 +42,7 @@ MonoBehaviour:
   loadedShotFiredIfNotFullyLoaded: 0
   loadShotTime: 0
   minLoadShotTime: 0
+  minLoadShotForceNormalized: 0
   delayBetweenClickAndShot: 0
   useAngleInPS: 0
   damagePerBullet: 25
@@ -76,6 +77,8 @@ MonoBehaviour:
   runPrecisionDebuff: 1.5
   weaponSecondaryAbilityPrecisionFactor: 0.5
   weaponSecondaryRecoilReductionFactor: 0.5
+  weaponSecondSecondaryAbilityPrecisionFactor: 1
+  weaponSecondSecondaryRecoilReductionFactor: 1
   weaponMaxRecoilImpactOnMouseReticle: 1
   crouchPrecisionBuff: 1
   crouchRecoilReductionFactor: 1
@@ -105,7 +108,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 69229f8725cae404bbe385b346c63b0e, type: 3}
   - {fileID: 8300000, guid: fe313ba0f91f40e47832b99f1df35019, type: 3}
   - {fileID: 8300000, guid: 524b9d488513790428d105b58db6a6f7, type: 3}
-  startLoadingShotGunSound: {fileID: 0}
+  startLoadingShotGunSound:
+  - {fileID: 0}
   reloadGunSound:
   - {fileID: 8300000, guid: c2e075609b1c32549926f159902b94fc, type: 3}
   cooldownGunSound:

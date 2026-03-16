@@ -78,6 +78,10 @@ public class Gun : MonoBehaviour
     protected float sniperPiercingRoundsCooldownTimeDebuff = 1.75f;
     protected int sniperPiercingRoundsPierceAmount = 3;
 
+    protected float revolverBouncingBulletsDamageDebuff = 2f;
+    protected float pistolExplosiveBulletsDamageDebuff = 2f;
+    protected int revolverBouncingBulletsPierceAmount = 3;
+
     protected int pierceAmount = 1;
     protected int projectilesShotAmount = 1;
 
@@ -162,119 +166,161 @@ public class Gun : MonoBehaviour
         if (!gunActive) return;
 
         if (gunSO.gunType == GunSO.GunType.Rifle) {
-            ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+            if(PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
 
-            if (PlayerShoot.Instance.GetRifleLoadShotModeActive()) {
-                BuffBulletDamage(loadingRifleShotDamageBuff, false);
-                shootPSMainModule.startSize = .35f;
+                if (PlayerShoot.Instance.GetRifleLoadShotModeActive()) {
+                    BuffBulletDamage(loadingRifleShotDamageBuff, false);
+                    shootPSMainModule.startSize = .35f;
 
-                bulletSpeed *= loadingRifleShotRangeDebuff;
-                shootPSMainModule.startSpeed = bulletSpeed;
+                    bulletSpeed *= loadingRifleShotRangeDebuff;
+                    shootPSMainModule.startSpeed = bulletSpeed;
 
-                bulletLifetime /= loadingRifleShotRangeDebuff;
-                shootPSMainModule.startLifetime = bulletLifetime;
+                    bulletLifetime /= loadingRifleShotRangeDebuff;
+                    shootPSMainModule.startLifetime = bulletLifetime;
 
-                bulletKnockback *= loadingRifleShotBulletKnockbackBuf;
-                
-            }
+                    bulletKnockback *= loadingRifleShotBulletKnockbackBuf;
 
-            else {
-                DebuffBulletDamage(loadingRifleShotDamageBuff, false);
-                shootPSMainModule.startSize = .2f;
+                }
 
-                bulletSpeed /= loadingRifleShotRangeDebuff;
-                shootPSMainModule.startSpeed = bulletSpeed;
+                else {
+                    DebuffBulletDamage(loadingRifleShotDamageBuff, false);
+                    shootPSMainModule.startSize = .2f;
 
-                bulletLifetime *= loadingRifleShotRangeDebuff;
-                shootPSMainModule.startLifetime = bulletLifetime;
+                    bulletSpeed /= loadingRifleShotRangeDebuff;
+                    shootPSMainModule.startSpeed = bulletSpeed;
 
-                bulletKnockback /= loadingRifleShotBulletKnockbackBuf;
+                    bulletLifetime *= loadingRifleShotRangeDebuff;
+                    shootPSMainModule.startLifetime = bulletLifetime;
+
+                    bulletKnockback /= loadingRifleShotBulletKnockbackBuf;
+                }
             }
         }
 
         if(gunSO.gunType == GunSO.GunType.Shotgun) {
-            ParticleSystem.ShapeModule shootPSShapeModule = shootPS.shape;
-            ParticleSystem.MainModule shootPSMainModule = shootPS.main;
-            float currentPSAngle = shootPSShapeModule.angle;
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                ParticleSystem.ShapeModule shootPSShapeModule = shootPS.shape;
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+                float currentPSAngle = shootPSShapeModule.angle;
 
-            if (PlayerShoot.Instance.GetShotgunSemiAutoModeActive()) {
+                if (PlayerShoot.Instance.GetShotgunSemiAutoModeActive()) {
 
-                currentPSAngle /= shotgunSemiAutoModeSpreadBuff;
-                bulletLifetime *= shotgunSemiAutoModeRangeBuff;
-                PlayerStats.Instance.BuffShootCooldown(shotgunSemiAutoModeCooldownBuff);
-                damagePerBullet /= shotgunSemiAutoModeDamageDebuff;
-                shootPSMainModule.startSize = .1f;
+                    currentPSAngle /= shotgunSemiAutoModeSpreadBuff;
+                    bulletLifetime *= shotgunSemiAutoModeRangeBuff;
+                    PlayerStats.Instance.BuffShootCooldown(shotgunSemiAutoModeCooldownBuff);
+                    damagePerBullet /= shotgunSemiAutoModeDamageDebuff;
+                    shootPSMainModule.startSize = .1f;
 
-            } else {
+                }
+                else {
 
-                currentPSAngle *= shotgunSemiAutoModeSpreadBuff;
-                bulletLifetime /= shotgunSemiAutoModeRangeBuff;
-                PlayerStats.Instance.DebuffShootCooldown(shotgunSemiAutoModeCooldownBuff);
+                    currentPSAngle *= shotgunSemiAutoModeSpreadBuff;
+                    bulletLifetime /= shotgunSemiAutoModeRangeBuff;
+                    PlayerStats.Instance.DebuffShootCooldown(shotgunSemiAutoModeCooldownBuff);
 
-                damagePerBullet *= shotgunSemiAutoModeDamageDebuff;
-                shootPSMainModule.startSize = .2f;
+                    damagePerBullet *= shotgunSemiAutoModeDamageDebuff;
+                    shootPSMainModule.startSize = .2f;
+                }
+
+                SetPSShootAngle(currentPSAngle);
+                shootPSMainModule.startLifetime = bulletLifetime;
             }
 
-            SetPSShootAngle(currentPSAngle);
-            shootPSMainModule.startLifetime = bulletLifetime;
+           
         }
 
         if (gunSO.gunType == GunSO.GunType.SMG) {
-            ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
 
-            if (PlayerShoot.Instance.GetSMGPoisonRoundsActive()) {
+                if (PlayerShoot.Instance.GetSMGPoisonRoundsActive()) {
 
-                DebuffBulletDamage(smgPoisonRoundsDamageDebuff);
+                    DebuffBulletDamage(smgPoisonRoundsDamageDebuff);
+                }
+                else {
+
+                    BuffBulletDamage(smgPoisonRoundsDamageDebuff);
+
+                }
+
+                shootPSMainModule.startLifetime = bulletLifetime;
             }
-            else {
-
-                BuffBulletDamage(smgPoisonRoundsDamageDebuff);
-
-            }
-
-            shootPSMainModule.startLifetime = bulletLifetime;
+           
         }
 
         if (gunSO.gunType == GunSO.GunType.Sniper) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetSniperPiercingRoundsActive()) {
 
-            if (PlayerShoot.Instance.GetSniperPiercingRoundsActive()) {
+                    bulletSizeMultiplier *= 2f;
 
-                bulletSizeMultiplier *= 2f;
+                    bulletLifetime /= sniperPiercingRoundsRangeDebuff;
 
-                bulletLifetime /= sniperPiercingRoundsRangeDebuff;
+                    cooldownTime /= sniperPiercingRoundsCooldownTimeDebuff;
+                    pierceAmount = sniperPiercingRoundsPierceAmount;
 
-                cooldownTime /= sniperPiercingRoundsCooldownTimeDebuff;
-                pierceAmount = sniperPiercingRoundsPierceAmount;
+                }
+                else {
 
+                    bulletSizeMultiplier /= 2f;
+                    bulletLifetime *= sniperPiercingRoundsRangeDebuff;
+
+                    cooldownTime *= sniperPiercingRoundsCooldownTimeDebuff;
+                    pierceAmount = 1;
+
+                }
             }
-            else {
 
-                bulletSizeMultiplier /= 2f;
-                bulletLifetime *= sniperPiercingRoundsRangeDebuff;
+           
+        }
 
-                cooldownTime *= sniperPiercingRoundsCooldownTimeDebuff;
-                pierceAmount = 1;
+        if (gunSO.gunType == GunSO.GunType.Revolver) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetRevolverBouncingBulletsActive()) {
+                    DebuffBulletDamage(revolverBouncingBulletsDamageDebuff);
+                    pierceAmount = revolverBouncingBulletsPierceAmount;
 
+                }
+                else {
+                    BuffBulletDamage(revolverBouncingBulletsDamageDebuff);
+                    pierceAmount = 1;
+                }
+            }
+
+           
+        }
+
+        if (gunSO.gunType == GunSO.GunType.Pistol) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetPistolExplosiveBulletsActive()) {
+                    DebuffBulletDamage(pistolExplosiveBulletsDamageDebuff);
+                }
+                else {
+                    BuffBulletDamage(pistolExplosiveBulletsDamageDebuff);
+                }
             }
         }
 
         if (gunSO.gunType == GunSO.GunType.GrenadeLauncher) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetGrenadeLauncherMultipleGrenadesActive()) {
 
-            if (PlayerShoot.Instance.GetGrenadeLauncherMultipleGrenadesActive()) {
+                    bulletSizeMultiplier /= 1.5f;
+                    DebuffBulletDamage(3f);
+                    projectilesShotAmount = 3;
 
-                bulletSizeMultiplier /= 1.5f;
-                DebuffBulletDamage(3f);
-                projectilesShotAmount = 3;
+                }
+                else {
 
+                    bulletSizeMultiplier *= 1.5f;
+                    projectilesShotAmount = 1;
+
+                    BuffBulletDamage(3f);
+
+                }
             }
-            else {
-
-                bulletSizeMultiplier *= 1.5f;
-                projectilesShotAmount = 1;
-
-                BuffBulletDamage(3f);
-
-            }
+           
         }
 
     }

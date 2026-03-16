@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GunProjectile_Bullet : GunProjectile {
-    [SerializeField] private LayerMask raycastMask;
-    [SerializeField] private float circleCastRadius = 0.15f;
-    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] protected LayerMask raycastMask;
+    [SerializeField] protected float circleCastRadius = 0.15f;
+    [SerializeField] protected GameObject explosionPrefab;
 
     public static event EventHandler<OnBulletHitEventArgs> OnAnyBulletHitGround;
     public static event EventHandler<OnBulletHitEventArgs> OnAnyBulletHitEnemy;
@@ -22,18 +22,18 @@ public class GunProjectile_Bullet : GunProjectile {
         public Creature creatureHit;
     }
 
-    private Vector2 previousPosition;
+    protected Vector2 previousPosition;
 
-    private float penetrationSlowDownFactor = 1.5f;
-    private int penetrationIndex;
-    private bool projectileFadedOut;
+    protected float penetrationSlowDownFactor = 1.5f;
+    protected int penetrationIndex;
+    protected bool projectileFadedOut;
 
-    private bool critHit;
-    private bool boucedOffCreatureShell;
-    private Transform bulletSource;
+    protected bool critHit;
+    protected bool boucedOffCreatureShell;
+    protected Transform bulletSource;
 
-    private HashSet<Creature> creaturesHit = new HashSet<Creature>();
-    private HashSet<CreatureSpawnerContinuous> spawnersHit = new HashSet<CreatureSpawnerContinuous>();
+    protected HashSet<Creature> creaturesHit = new HashSet<Creature>();
+    protected HashSet<CreatureSpawnerContinuous> spawnersHit = new HashSet<CreatureSpawnerContinuous>();
 
     public event EventHandler OnProjectileFadedOut;
 
@@ -215,6 +215,9 @@ public class GunProjectile_Bullet : GunProjectile {
 
         if (penetrationIndex >= penetrationMaxAmount) {
 
+            transform.position = collisionPosition;
+            previousPosition = collisionPosition;
+
             rb.velocity = Vector2.zero;
 
             FadeOutProjectile();
@@ -255,7 +258,7 @@ public class GunProjectile_Bullet : GunProjectile {
 
     }
 
-    private void PierceEnemy(Creature creatureHit) {
+    protected virtual void PierceEnemy(Creature creatureHit) {
         penetrationIndex++;
         rb.velocity /= penetrationSlowDownFactor;
 

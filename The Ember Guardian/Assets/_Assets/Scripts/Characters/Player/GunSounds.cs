@@ -45,8 +45,6 @@ public class GunSounds : SoundObject
             AudioClip audioClip = audioClipArray[UnityEngine.Random.Range(0, audioClipArray.Length)];
 
             bulletAudioSource.PlayOneShot(audioClip, volume);
-            Debug.Log("PlayerShoot_OnPlayerStartedShot");
-
         } else {
 
             PlayLastBulletEffect();

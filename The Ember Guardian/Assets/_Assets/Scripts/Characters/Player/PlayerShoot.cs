@@ -122,6 +122,8 @@ public class PlayerShoot : MonoBehaviour
     private bool smgPoisonRoundsActive;
     private bool sniperPiercingRoundsActive;
     private bool grenadeLauncherMultipleGrenadesActive;
+    private bool revolverBouncingBulletsActive;
+    private bool pistolExplosiveBulletsActive;
     private bool projectileExplodesOnPlayerClickModeActive;
     private bool projectileExplodesOnPlayerClick;
     private bool aaGunSpawnsChildProjectiles;
@@ -1008,26 +1010,42 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Revolver) {
-            if (heldGun.GetCurrentBullet() == 0) {
-                TryAutoReload();
-                return;
-            }
-            if (heldGun.GetCurrentAmmoClip() < 0) {
-                OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
-                return;
-            }
-            if (!secondaryAbilityActive) {
-                gunRecoil = .25f;
-                gunKnockback = 1f;
+            if(primarySecondaryAbilityEquipped) {
+                if (heldGun.GetCurrentBullet() == 0) {
+                    TryAutoReload();
+                    return;
+                }
+                if (heldGun.GetCurrentAmmoClip() < 0) {
+                    OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
+                if (!secondaryAbilityActive) {
+                    gunRecoil = .25f;
+                    gunKnockback = 1f;
 
-                OnPlayerEmptyRevolverMagStart?.Invoke(this, EventArgs.Empty);
-                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                    OnPlayerEmptyRevolverMagStart?.Invoke(this, EventArgs.Empty);
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
 
-                secondaryAbilityActive = true;
-                emptyingRevolverMag = true;
+                    secondaryAbilityActive = true;
+                    emptyingRevolverMag = true;
 
-                StartCoroutine(EmptyRevolverMag());
+                    StartCoroutine(EmptyRevolverMag());
+                }
             }
+
+            if(secondarySecondaryAbilityEquipped) {
+                revolverBouncingBulletsActive = !revolverBouncingBulletsActive;
+
+                if (revolverBouncingBulletsActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            }
+          
 
         }
 
@@ -1089,16 +1107,32 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Pistol) {
-            silencerActive = !silencerActive;
+            if(primarySecondaryAbilityEquipped) {
+                silencerActive = !silencerActive;
 
-            if (silencerActive) {
-                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
-            }
-            else {
-                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
-            }
+                if (silencerActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
 
-            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            } 
+
+            if(secondarySecondaryAbilityEquipped) {
+                pistolExplosiveBulletsActive = !pistolExplosiveBulletsActive;
+
+                if (pistolExplosiveBulletsActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            }
+           
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.MiniGun) {
@@ -1204,7 +1238,12 @@ public class PlayerShoot : MonoBehaviour
     public bool GetGrenadeLauncherMultipleGrenadesActive() {
         return grenadeLauncherMultipleGrenadesActive;
     }
-
+    public bool GetRevolverBouncingBulletsActive() {
+        return revolverBouncingBulletsActive;
+    }
+    public bool GetPistolExplosiveBulletsActive() {
+        return pistolExplosiveBulletsActive;
+    }
     public void CheckWeaponStatusFX(Mob mobHit) {
         Creature creatureHit = mobHit as Creature;
         if(creatureHit != null) {
@@ -1379,7 +1418,21 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
 
-        if(grenadeLauncherMultipleGrenadesActive) {
+        if (revolverBouncingBulletsActive) {
+            revolverBouncingBulletsActive = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (pistolExplosiveBulletsActive) {
+            pistolExplosiveBulletsActive = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (grenadeLauncherMultipleGrenadesActive) {
             grenadeLauncherMultipleGrenadesActive = false;
 
             OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
