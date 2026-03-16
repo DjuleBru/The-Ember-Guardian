@@ -3644,8 +3644,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   germanShepherdGO: {fileID: 9107636598954445306}
+  germanShepherdLightGO: {fileID: 0}
   retreiverGO: {fileID: 6347244014266925760}
+  retreiverBrownGO: {fileID: 0}
   darkCompanionGO: {fileID: 9132132322337675283}
+  darkCompanionRedGO: {fileID: 0}
+  huskyGO: {fileID: 0}
 --- !u!1 &5158637727310133848
 GameObject:
   m_ObjectHideFlags: 0
@@ -7354,7 +7358,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 1f07936a3a623cb4791ac7e68cef338e, type: 3}
+      objectReference: {fileID: 21300000, guid: 53903685ee1e3574fa154868a2354f85, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.77254903
@@ -15986,7 +15990,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 9073bf5f678c1ef42af794e74cec0683, type: 3}
+      objectReference: {fileID: 21300000, guid: 38a316f7455967e47a141e3d44268f63, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -18371,7 +18375,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 1f07936a3a623cb4791ac7e68cef338e, type: 3}
+      objectReference: {fileID: 21300000, guid: 188fea72c9cc0f14d99afdc99a46a00f, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.77254903
@@ -19568,7 +19572,7 @@ PrefabInstance:
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 1c185dffd2a4b6442b6f61ff8275f1c3, type: 3}
+      objectReference: {fileID: 21300000, guid: 81ee45ba2f05d794fbd6f98a6085030e, type: 3}
     - target: {fileID: 248107096060527135, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Color.a
       value: 0.19607843
