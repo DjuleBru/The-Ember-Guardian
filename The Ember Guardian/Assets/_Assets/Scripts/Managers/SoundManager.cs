@@ -853,7 +853,9 @@ public class SoundManager : MonoBehaviour
         if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Pistol) {
             PlaySound2D(soundRefsSO.switchGunFireMode_pistol, 1);
         }
-
+        if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.LMG && PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            PlaySound2D(soundRefsSO.switchGunFireMode_LMG, 1);
+        }
     }
 
     private void PlayerShoot_OnPlayerOverclockedSMGStarted(object sender, System.EventArgs e) {

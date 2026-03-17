@@ -71,6 +71,7 @@ public class PlayerShoot : MonoBehaviour
     private bool holdingStationaryGun;
     private bool emptyingRevolverMag;
     private bool silencerActive;
+    private bool blastingLMGModeActive;
     private bool rightClickHeldDown;
 
     public class OnAmmoRefilledEventArgs : EventArgs {
@@ -332,6 +333,7 @@ public class PlayerShoot : MonoBehaviour
             }
 
         }
+
     }
 
     #region INITIALIZATION
@@ -971,44 +973,6 @@ public class PlayerShoot : MonoBehaviour
 
         }
 
-        if (heldGun.GetGunSO().gunType == GunSO.GunType.LMG)
-        {
-            if (settingUpLMG) return;
-            if(!secondaryAbilityActive)
-            {
-                gunKnockback = 0f;
-
-                PlayerAim.Instance.SetGunStraight();
-                PlayerAim.Instance.SetLimitAimAngle(true, lmgBipodAimAngleLimit);
-                OnPlayerSetupLMGStarted?.Invoke(this, EventArgs.Empty);
-                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-
-                settingUpLMG = true;
-                setupLMGTimer = 0f;
-                canShoot = false;
-
-                secondaryAbilityActive = true;
-                holdingStationaryGun = true;
-
-            } else
-            {
-                gunKnockback = heldGunSO.gunKnockback;
-
-                OnPlayerSetupLMGStopped?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
-                    removeBecauseDied = false
-                });
-                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-
-                settingUpLMG = true;
-                setupLMGTimer = 0f;
-                canShoot = false;
-
-                secondaryAbilityActive = false;
-
-            }
-
-        }
-
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Revolver) {
             if(primarySecondaryAbilityEquipped) {
                 if (heldGun.GetCurrentBullet() == 0) {
@@ -1076,6 +1040,58 @@ public class PlayerShoot : MonoBehaviour
                 }
 
                 OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            }
+
+        }
+
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.LMG) {
+            if (primarySecondaryAbilityEquipped) {
+                if (settingUpLMG) return;
+                if (!secondaryAbilityActive) {
+                    gunKnockback = 0f;
+
+                    PlayerAim.Instance.SetGunStraight();
+                    PlayerAim.Instance.SetLimitAimAngle(true, lmgBipodAimAngleLimit);
+                    OnPlayerSetupLMGStarted?.Invoke(this, EventArgs.Empty);
+                    OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+
+                    settingUpLMG = true;
+                    setupLMGTimer = 0f;
+                    canShoot = false;
+
+                    secondaryAbilityActive = true;
+                    holdingStationaryGun = true;
+
+                }
+                else {
+                    gunKnockback = heldGunSO.gunKnockback;
+
+                    OnPlayerSetupLMGStopped?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
+                        removeBecauseDied = false
+                    });
+                    OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+
+                    settingUpLMG = true;
+                    setupLMGTimer = 0f;
+                    canShoot = false;
+
+                    secondaryAbilityActive = false;
+
+                }
+            }
+
+            if (secondarySecondaryAbilityEquipped) {
+                blastingLMGModeActive = !blastingLMGModeActive;
+
+                if (blastingLMGModeActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+
             }
 
         }
@@ -1176,11 +1192,11 @@ public class PlayerShoot : MonoBehaviour
                 }
 
             }
+
             if (heldGun.GetGunSO().gunType == GunSO.GunType.MiniGun) {
                 OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = false;
             }
-
         }
     }
    
@@ -1244,6 +1260,11 @@ public class PlayerShoot : MonoBehaviour
     public bool GetPistolExplosiveBulletsActive() {
         return pistolExplosiveBulletsActive;
     }
+
+    public bool GetBlastingLMGModeActive() {
+        return blastingLMGModeActive;
+    }
+
     public void CheckWeaponStatusFX(Mob mobHit) {
         Creature creatureHit = mobHit as Creature;
         if(creatureHit != null) {
@@ -1434,6 +1455,13 @@ public class PlayerShoot : MonoBehaviour
 
         if (grenadeLauncherMultipleGrenadesActive) {
             grenadeLauncherMultipleGrenadesActive = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (blastingLMGModeActive) {
+            blastingLMGModeActive = false;
 
             OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);

@@ -75,12 +75,15 @@ public class Gun : MonoBehaviour
     protected float loadingRifleShotBulletKnockbackBuf = 20f;
 
     protected float sniperPiercingRoundsRangeDebuff = 2.5f;
-    protected float sniperPiercingRoundsCooldownTimeDebuff = 1.75f;
+    protected float sniperPiercingRoundsCooldownTimeDebuff = 1.25f;
     protected int sniperPiercingRoundsPierceAmount = 3;
 
     protected float revolverBouncingBulletsDamageDebuff = 2f;
     protected float pistolExplosiveBulletsDamageDebuff = 2f;
     protected int revolverBouncingBulletsPierceAmount = 3;
+
+    protected float lmgBlastModeCooldownBuff = 1.4f;
+    protected float lmgBlastModeCooldownRangeDebuff = 1.6f;
 
     protected int pierceAmount = 1;
     protected int projectilesShotAmount = 1;
@@ -257,7 +260,7 @@ public class Gun : MonoBehaviour
 
                     bulletLifetime /= sniperPiercingRoundsRangeDebuff;
 
-                    cooldownTime /= sniperPiercingRoundsCooldownTimeDebuff;
+                    PlayerStats.Instance.DebuffShootCooldown(sniperPiercingRoundsCooldownTimeDebuff);
                     pierceAmount = sniperPiercingRoundsPierceAmount;
 
                 }
@@ -266,7 +269,7 @@ public class Gun : MonoBehaviour
                     bulletSizeMultiplier /= 2f;
                     bulletLifetime *= sniperPiercingRoundsRangeDebuff;
 
-                    cooldownTime *= sniperPiercingRoundsCooldownTimeDebuff;
+                    PlayerStats.Instance.BuffShootCooldown(sniperPiercingRoundsCooldownTimeDebuff);
                     pierceAmount = 1;
 
                 }
@@ -321,6 +324,26 @@ public class Gun : MonoBehaviour
                 }
             }
            
+        }
+
+        if(gunSO.gunType == GunSO.GunType.LMG) {
+
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+                if (PlayerShoot.Instance.GetBlastingLMGModeActive()) {
+
+                    PlayerStats.Instance.BuffShootCooldown(lmgBlastModeCooldownBuff);
+                    bulletLifetime /= lmgBlastModeCooldownRangeDebuff;
+
+                }
+                else {
+
+                    PlayerStats.Instance.DebuffShootCooldown(lmgBlastModeCooldownBuff);
+                    bulletLifetime *= lmgBlastModeCooldownRangeDebuff;
+
+                }
+                shootPSMainModule.startLifetime = bulletLifetime;
+            }
         }
 
     }

@@ -547,12 +547,12 @@ public class PlayerStats : MonoBehaviour
     }
 
     public void BuffShootCooldown(float buffAmount) {
-        Debug.Log("BuffShootCooldown " + buffAmount);
+        //Debug.Log("BuffShootCooldown " + buffAmount);
         shootCooldownTime /= buffAmount;
     }
 
     public void DebuffShootCooldown(float buffAmount) {
-        Debug.Log("DebuffShootCooldown " + buffAmount);
+        //Debug.Log("DebuffShootCooldown " + buffAmount);
         shootCooldownTime *= buffAmount;
     }
 
