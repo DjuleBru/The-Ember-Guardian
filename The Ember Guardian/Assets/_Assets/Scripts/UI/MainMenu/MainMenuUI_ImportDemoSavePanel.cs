@@ -59,6 +59,9 @@ public class MainMenuUI_ImportDemoSavePanel : MonoBehaviour {
         }
 
         MainMenuUI.Instance.InitializeHordeModeButton();
+        HordeModeProgressionManager.Instance.InitializeLoadedParameters();
+        HordeModeProgressionManager.Instance.CheckResettedHordeModeOnce();
+        HordeModeRewardsMenu.Instance.InitializeMenu();
     }
 
     public void ImportDemoSave() {

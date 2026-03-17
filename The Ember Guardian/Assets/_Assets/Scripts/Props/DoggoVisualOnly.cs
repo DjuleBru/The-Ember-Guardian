@@ -44,10 +44,23 @@ public class DoggoVisualOnly : MonoBehaviour
         germanShepherdGO.SetActive(false);
         retreiverGO.SetActive(false);
         darkCompanionGO.SetActive(false);
-        germanShepherdLightGO.SetActive(false);
-        retreiverBrownGO.SetActive(false);
-        darkCompanionRedGO.SetActive(false);
-        huskyGO.SetActive(false);
+
+        if(germanShepherdLightGO != null) {
+            germanShepherdLightGO.SetActive(false);
+        }
+
+        if(retreiverBrownGO != null) {
+            retreiverBrownGO.SetActive(false);
+        }
+
+        if(darkCompanionRedGO != null) {
+            darkCompanionRedGO.SetActive(false);
+        }
+
+        if(huskyGO != null) {
+            huskyGO.SetActive(false);
+        }
+
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
             if (dogType == Dog.DogType.GermanShepherd) {

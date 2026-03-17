@@ -84,6 +84,14 @@ public class HordeModeProgressionManager : MonoBehaviour
     private void Awake() {
         Instance = this;
 
+        InitializeLoadedParameters();
+    }
+
+    private void Start() {
+        CheckResettedHordeModeOnce();
+    }
+
+    public void InitializeLoadedParameters() {
         hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
         totalHordeModeXP = ES3.Load("HordeModeXP", 0, hordeModeSaveFileSettings);
         pendingXP = ES3.Load("HordeModeXP_pending", 0, hordeModeSaveFileSettings);
@@ -93,13 +101,12 @@ public class HordeModeProgressionManager : MonoBehaviour
         unlockedSet = ES3.Load("HordeModeUnlocks", new List<HordeModeUnlockables>(), hordeModeSaveFileSettings);
     }
 
-    private void Start() {
-        bool resettedHordeModeOnce = ES3.Load("ResettedHordeMode", false , hordeModeSaveFileSettings);
+    public void CheckResettedHordeModeOnce() {
+        bool resettedHordeModeOnce = ES3.Load("ResettedHordeMode", false, hordeModeSaveFileSettings);
 
-        if(!resettedHordeModeOnce) {
+        if (!resettedHordeModeOnce) {
             CheckLastMainGameLevelCompleted();
         }
-
     }
 
     private Dictionary<HordeModeUnlockables, int> GenerateUnlockThresholds() {

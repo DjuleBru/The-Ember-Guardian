@@ -82,20 +82,28 @@ public class MainMenuUI : MonoBehaviour {
         }
 
         CheckBackFromHordeMode();
-        RefreshHordeModeContinueVsNewGameButtonEnabledAndFonts();
 
         if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
-
             HandleMenuStartup();
-
-        } else {
+        }
+        else {
             continueButton.interactable = false;
         }
 
+        RefreshHordeModeContinueVsNewGameButtonEnabledAndFonts();
         RefreshFonts();
         InitializeHordeModeButton();
     }
 
+    public void RefreshEnabledButtons() {
+        if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
+            continueButton.interactable = true;
+        }
+        else {
+            continueButton.interactable = false;
+        }
+        RefreshHordeModeContinueVsNewGameButtonEnabledAndFonts();
+    }
 
     public void InitializeHordeModeButton() {
         hordeModeMenuGO.SetActive(false);
@@ -152,7 +160,7 @@ public class MainMenuUI : MonoBehaviour {
         RefreshFonts();
     }
 
-    private void RefreshFonts() {
+    public void RefreshFonts() {
         ctaText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
         RefreshHordeModeContinueVsNewGameButtonEnabledAndFonts();
     }
@@ -386,10 +394,13 @@ public class MainMenuUI : MonoBehaviour {
 
         MusicManager.Instance.FadeOutMusic(1f);
     }
-    private IEnumerator FadeInMainMenu(float delay) {
 
+    private IEnumerator FadeInMainMenu(float delay) {
+        Debug.Log("FadeInMainMenu " + MetaProgressionManager.Instance.GetSavedOnce());
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
             continueButton.interactable = false;
+        } else {
+            continueButton.interactable = true;
         }
 
         yield return new WaitForSeconds(delay);
@@ -424,7 +435,7 @@ public class MainMenuUI : MonoBehaviour {
         Navigation discordButtonNav = discordButton.navigation;
         Navigation settingsButtonNav = settingsButton.navigation;
 
-
+        Debug.Log("MetaProgressionManager.Instance.GetSavedOnce() " + MetaProgressionManager.Instance.GetSavedOnce());
         if (!MetaProgressionManager.Instance.GetSavedOnce()) {
             discordButtonNav.selectOnLeft = newGameButton;
             discordButton.navigation = discordButtonNav;

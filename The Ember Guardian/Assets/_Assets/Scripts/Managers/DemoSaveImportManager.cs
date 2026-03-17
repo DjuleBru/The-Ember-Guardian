@@ -15,16 +15,27 @@ public class DemoSaveImportManager : MonoBehaviour {
     private void Awake() {
         Instance = this;
 
-        hasDemoSaveToImport = HasDemoSave() && !HasFullGameSave();
+        hasDemoSaveToImport = HasCompatibleDemoSave() && !HasFullGameSave();
     }
 
-    public bool HasDemoSave() {
+    public bool HasCompatibleDemoSave() {
         string demoPath = GetDemoSavePath();
         if (string.IsNullOrEmpty(demoPath)) return false;
 
         string demoSaveFile = Path.Combine(demoPath, "SaveFile.es3");
-        return File.Exists(demoSaveFile);
+
+        float latestCompatibleDemoBuild = 0.0904f;
+
+        if (!File.Exists(demoSaveFile)) {
+            return false;
+        }
+
+        float latestDemoBuildSaved = ES3.Load("latestBuildSaved", demoSaveFile, 0f);
+
+        if (latestDemoBuildSaved >= latestCompatibleDemoBuild) return true;
+        return false;
     }
+
 
     public bool HasFullGameSave() {
         string fullPath = Application.persistentDataPath;

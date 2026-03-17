@@ -52,15 +52,18 @@ public class HordeModeRewardsMenu : MonoBehaviour
         Instance = this;
         panelGO.SetActive(false);
 
-
         xpProgressionBar.fillAmount = ES3.Load("lastProgressionBarFillAmount", 0f);
     }
 
     private void Start() {
+        InitializeMenu();
+    }
+
+    public void InitializeMenu() {
         nextUnlockText.font = LocalizationManager.Instance.GetCurrentFont();
         nextUnlockText.text = LocalizationManager.Instance.GetLocalizedText("Next Unlock");
         nextUnlockDescriptionText.font = LocalizationManager.Instance.GetCurrentFont();
-        nextUnlockDescriptionText.text ="";
+        nextUnlockDescriptionText.text = "";
         nightsSurvivedAmountText.font = LocalizationManager.Instance.GetCurrentFont();
 
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
@@ -70,16 +73,15 @@ public class HordeModeRewardsMenu : MonoBehaviour
 
         if (HordeModeProgressionManager.Instance.LastXPGainWasFromMainGame()) {
             nightsSurvivedAmountText.text = LocalizationManager.Instance.GetLocalizedText("menu_hordeModeXPBackFromMainGame");
-        } else {
+        }
+        else {
             nightsSurvivedAmountText.text = LocalizationManager.Instance.GetLocalizedText("menu_nightsSurvived") + " " + ES3.Load("lastHordeModeNightsSurvived", 0, hordeModeSaveFileSettings);
         }
 
         pressAnyKeyToContinueGO.SetActive(false);
-        //lockedInDemoDescriptionGO.SetActive(false);
         SetNextUnlockParameters(HordeModeProgressionManager.Instance.GetNextUnlockable());
         SetNextUnlockMaterialAndText();
     }
-
 
     private void Update() {
         if (!panelOpen) return;
