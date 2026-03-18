@@ -106,6 +106,7 @@ public class PlayerAim : MonoBehaviour
     private float maxWeaponRangeForGamepadAim = 13.5f;
     private float cursorLerpSpeed = 15f;
 
+    private Transform currentAutoAimTarget;
     private RaycastHit2D closestHit;
     private bool hasClosestHit = false;
 
@@ -505,6 +506,13 @@ public class PlayerAim : MonoBehaviour
                     //closestEnemyAutoAimColliderPosition = autoAimPos;
                     closestEnemyAutoAimColliderPosition = predictedPos;
                 }
+            }
+
+            if (target != null) {
+                currentAutoAimTarget = target;
+            }
+            else {
+                currentAutoAimTarget = null;
             }
         }
 
@@ -990,6 +998,9 @@ public class PlayerAim : MonoBehaviour
 
     public Vector3 GetPreviousAimDir() {
         return previousAimDir;
+    }
+    public Transform GetCurrentAutoAimTarget() {
+        return currentAutoAimTarget;
     }
 
     private void OnDestroy() {

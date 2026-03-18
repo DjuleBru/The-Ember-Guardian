@@ -65365,7 +65365,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5600287817303019930
 Transform:
   m_ObjectHideFlags: 0
@@ -97083,7 +97083,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7420501803251000376
 Transform:
   m_ObjectHideFlags: 0
@@ -97148,8 +97148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootPS: {fileID: 2319999289191864364}
-  projectilePrefab: {fileID: 0}
-  projectileSpawnPosition: {fileID: 0}
+  projectilePrefab: {fileID: 384540400868386599, guid: 632b8daa68ec4d04c9f35627f9c1f2e2, type: 3}
+  projectileSpawnPosition: {fileID: 1547559551900962137}
   gunSO: {fileID: 11400000, guid: 55135fe3b43f06749a4f36d2faead620, type: 2}
   gunBodyAnimator: {fileID: 4220737400355167230}
   armBodyAnimator: {fileID: 2104361788904326074}
@@ -223096,7 +223096,7 @@ Transform:
   m_GameObject: {fileID: 8019393595212902175}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.1300001, y: 0, z: 0}
+  m_LocalPosition: {x: 1.243, y: 0.038, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

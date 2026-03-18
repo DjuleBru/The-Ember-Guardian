@@ -1452,7 +1452,6 @@ public class PlayerShoot : MonoBehaviour
             OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
-
         if (grenadeLauncherMultipleGrenadesActive) {
             grenadeLauncherMultipleGrenadesActive = false;
 
