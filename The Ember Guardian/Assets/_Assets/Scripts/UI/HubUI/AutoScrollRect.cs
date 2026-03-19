@@ -8,6 +8,7 @@ public class AutoScrollRect : MonoBehaviour {
 
     [SerializeField] protected bool autoScrollWithMouse = false;
     [SerializeField] protected bool doNotLerp = false;
+    [SerializeField] protected bool dropdownMenuAutoScroll = false;
 
     protected ScrollRect scrollRect;
     protected RectTransform hoveredButtonUI;
@@ -45,10 +46,11 @@ public class AutoScrollRect : MonoBehaviour {
 
         // Button is not in scroll rect
         if (selected == null) return;
-        if (!IsChildOfScrollContent(selected))  return;
-        
 
-        if (selected != null && selected.GetComponent<Button>() != null) {
+        if (!IsChildOfScrollContent(selected))  return;
+
+
+        if (selected != null && (selected.GetComponent<Button>() != null || selected.GetComponent<ButtonUI>() != null)) {
             hoveredButtonUI = selected.GetComponent<RectTransform>();
             previousSelectedButtonUI = hoveredButtonUI;
         }
@@ -69,13 +71,26 @@ public class AutoScrollRect : MonoBehaviour {
         if (itemButtonUI != null) {
             buttonLocalPosition.x = itemButtonUI.GetLocalPosition().x;
         }
-
         float centeredPositionX = buttonLocalPosition.x - viewportWidth / 2f;
         float centeredPositionY = buttonLocalPosition.y - viewportHeight / 2f;
 
         float normalizedPositionX = Mathf.Clamp01((centeredPositionX + contentWidth / 2f) / (contentWidth - viewportWidth));
         float normalizedPositionY = Mathf.Clamp01((centeredPositionY + contentHeight / 2f) / (contentHeight - viewportHeight));
-        if(doNotLerp) {
+
+        if(dropdownMenuAutoScroll) {
+            // position Y réelle dans le content (top = 0, down = positif)
+            float itemY = -buttonLocalPosition.y;
+
+            // centre de l’item
+            float centeredY = itemY - viewportHeight / 2f;
+
+            // normalisation (0 bas : 1 haut)
+            normalizedPositionY = Mathf.Clamp01(
+                1f - (centeredY / (contentHeight - viewportHeight))
+            );
+        }
+
+        if (doNotLerp) {
             scrollRect.verticalNormalizedPosition = normalizedPositionY;
         } else {
             scrollRect.horizontalNormalizedPosition = Mathf.Lerp(

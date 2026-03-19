@@ -50,6 +50,7 @@ public class PauseMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerInputChanged += GameInput_OnPlayerInputChanged;
+        GameInput.Instance.OnGamepadDisconnected += GameInput_OnGamepadDisconnected;
         SettingsManager.Instance.OnLanguageChanged += SettingsManager_OnLanguageChanged;
 
         buttonConfirm_ExitGame.OnButtonDeselected += ButtonConfirm_ExitGame_OnButtonDeselected;
@@ -86,6 +87,7 @@ public class PauseMenuUI : MonoBehaviour
         RefreshFonts();
     }
 
+
     protected void LateUpdate() {
         if (menuOpen && !CameraManager.Instance.IsChangingCameraOrthographicSize()) {
             Time.timeScale = 0f;
@@ -109,6 +111,9 @@ public class PauseMenuUI : MonoBehaviour
         }
     }
 
+    private void GameInput_OnGamepadDisconnected(object sender, EventArgs e) {
+        ShowPauseMenu(true);
+    }
 
     private void HubInventoryUI_OnCurrencyRemovedFromBag(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
         SetProgressionSaved(false);
@@ -337,6 +342,7 @@ public class PauseMenuUI : MonoBehaviour
         GameInput.Instance.OnPlayerPausePerformed -= GameInput_OnPlayerPausePerformed;
         GameInput.Instance.OnPlayerBackPerformed -= GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerInputChanged -= GameInput_OnPlayerInputChanged;
+        GameInput.Instance.OnGamepadDisconnected -= GameInput_OnGamepadDisconnected;
     }
 
    

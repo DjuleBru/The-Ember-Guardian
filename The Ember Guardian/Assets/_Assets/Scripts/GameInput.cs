@@ -47,6 +47,7 @@ public class GameInput : MonoBehaviour
     private ES3Settings settingsSaveFileSettings;
 
     public event EventHandler OnPlayerInputChanged;
+    public event EventHandler OnGamepadDisconnected;
 
     public event EventHandler OnPlayerRunPerformed;
     public event EventHandler OnPlayerRunCanceled;
@@ -248,6 +249,17 @@ public class GameInput : MonoBehaviour
 
         if (change == InputUserChange.ControlSchemeChanged) {
             currentControlScheme = user.controlScheme.Value.name;
+        }
+
+        if (change == InputUserChange.DeviceLost) {
+
+            if (arg3 is Gamepad) {
+
+                Debug.Log("Gamepad disconnected");
+
+                OnGamepadDisconnected?.Invoke(this, EventArgs.Empty);
+                return;
+            }
         }
 
         OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
