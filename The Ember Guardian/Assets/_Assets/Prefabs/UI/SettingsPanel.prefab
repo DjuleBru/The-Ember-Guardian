@@ -7778,7 +7778,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000047683716}
+  m_AnchoredPosition: {x: 0, y: -0.000038146973}
   m_SizeDelta: {x: 0, y: 28}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1078079858355610131
@@ -11759,7 +11759,7 @@ MonoBehaviour:
     m_SelectOnUp: {fileID: 1938987011912836836}
     m_SelectOnDown: {fileID: 8021817897738923776}
     m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 5012033382236811615}
+    m_SelectOnRight: {fileID: 180571881544403775}
   m_Transition: 3
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -19214,7 +19214,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9210155911213970278}
   - component: {fileID: 1132215308672103009}
-  - component: {fileID: 2101709312740915254}
   m_Layer: 5
   m_Name: Item
   m_TagString: Untagged
@@ -19292,19 +19291,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
---- !u!114 &2101709312740915254
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2692001523100637003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 322ee3145fab8b243ad77f26b27be5cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonPressable: 1
 --- !u!1 &2704751482125687597
 GameObject:
   m_ObjectHideFlags: 0
@@ -27118,7 +27104,7 @@ GameObject:
   - component: {fileID: 7930162328666396710}
   - component: {fileID: 3957177401073685413}
   - component: {fileID: 6519225839591103325}
-  - component: {fileID: 2982272509303368550}
+  - component: {fileID: 915491925080110167}
   m_Layer: 5
   m_Name: Template
   m_TagString: Untagged
@@ -27215,7 +27201,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2982272509303368550
+--- !u!114 &915491925080110167
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -27228,7 +27214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoScrollWithMouse: 0
-  doNotLerp: 0
+  doNotLerp: 1
   dropdownMenuAutoScroll: 1
 --- !u!1 &3740106898771485603
 GameObject:
@@ -33430,7 +33416,7 @@ MonoBehaviour:
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 4856749524798641080}
     m_SelectOnDown: {fileID: 3532554279560549605}
-    m_SelectOnLeft: {fileID: 4201856775409075932}
+    m_SelectOnLeft: {fileID: 8021817897738923776}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 3
   m_Colors:
@@ -43726,7 +43712,7 @@ MonoBehaviour:
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 180571881544403775}
     m_SelectOnDown: {fileID: 3630104933171113349}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnLeft: {fileID: 3561810583674549379}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 3
   m_Colors:

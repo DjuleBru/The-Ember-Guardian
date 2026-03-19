@@ -5288,6 +5288,7 @@ GameObject:
   - component: {fileID: 6929092909655158739}
   - component: {fileID: 491328814913778914}
   - component: {fileID: 1252862630601345471}
+  - component: {fileID: 3969428264612211028}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -5384,6 +5385,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explodeVariantCount: 1
+  bullet: {fileID: 0}
+  trailRenderer: {fileID: 0}
+  bulletRenderer: {fileID: 6361463109365268746}
 --- !u!70 &1252862630601345471
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -5419,6 +5423,63 @@ CapsuleCollider2D:
   m_Offset: {x: -0.000005245209, y: 6.252776e-13}
   m_Size: {x: 2.8554494, y: 1.0000242}
   m_Direction: 1
+--- !u!114 &3969428264612211028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2533754195716459879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a218cab597f4f6449d1b8c0915e62ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gun: {fileID: 0}
+  bulletPS: {fileID: 0}
+  bulletSR: {fileID: 6361463109365268746}
+  trailPS: {fileID: 7141904463228551422}
+  trailRenderer: {fileID: 0}
+  fireLightBuffedBulletDmg: {r: 1, g: 0.43618035, b: 0, a: 1}
+  fireLightBuffedBulletDmgStartColor: {r: 1, g: 0.8518007, b: 0, a: 1}
+  outFireLightBuffedBulletDmg: {r: 1, g: 0.11814082, b: 0, a: 1}
+  outFireLightBuffedBulletDmgStartColor: {r: 0.6981132, g: 0, b: 0.08600351, a: 1}
+  initialBulletPSColor: {r: 0.5686275, g: 0.85490197, b: 0.85882354, a: 1}
+  poisonedPSColor: {r: 0, g: 0, b: 0, a: 0}
+  initialTrailRendererGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  greenHueShift: 55
+  redHueShift: 55
+  yellowHueShift: 55
+  isOnProjectileVisual: 1
 --- !u!1 &3544158763880737185
 GameObject:
   m_ObjectHideFlags: 0

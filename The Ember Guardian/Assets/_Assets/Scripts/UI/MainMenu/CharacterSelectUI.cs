@@ -15,6 +15,7 @@ public class CharacterSelectUI : MonoBehaviour
     [SerializeField] private Button maleCharacterButton;
     [SerializeField] private Button femaleCharacterButton;
 
+    private bool panelOpen;
     private bool characterType;
     private bool hasChosenCharacter;
 
@@ -68,10 +69,11 @@ public class CharacterSelectUI : MonoBehaviour
             MainMenuUI.Instance.HideAllMenuUI();
             MainMenuUI.Instance.HideMainMenuButtons();
         }
-
+        panelOpen = true;
     }
 
     private void Instance_OnPlayerInputChanged(object sender, EventArgs e) {
+        if (!panelOpen) return;
         if(GameInput.Instance.IsUsingGamepad()) {
             EventSystem.current.SetSelectedGameObject(maleCharacterButton.gameObject);
         }
@@ -80,6 +82,7 @@ public class CharacterSelectUI : MonoBehaviour
 
     public void ClosePanel() {
         panel.gameObject.SetActive(false);
+        panelOpen = false;
         swapCharacter_WorldCanvas.gameObject.SetActive(false);
 
         if (MainMenuUI.Instance != null) {

@@ -82,6 +82,7 @@ public class Gun : MonoBehaviour
     protected float pistolExplosiveBulletsDamageDebuff = 2f;
     protected int revolverBouncingBulletsPierceAmount = 3;
 
+    protected float lmgBipodRangeBuff = 1.3f;
     protected float lmgBlastModeCooldownBuff = 1.4f;
     protected float lmgBlastModeCooldownRangeDebuff = 1.6f;
 
@@ -329,6 +330,16 @@ public class Gun : MonoBehaviour
         }
 
         if(gunSO.gunType == GunSO.GunType.LMG) {
+
+            if(PlayerShoot.Instance.GetFirstSecondaryAbilityEquipped()) {
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+                if (PlayerShoot.Instance.GetHoldingStationaryGun()) {
+                    bulletLifetime /= lmgBipodRangeBuff;
+                } else {
+                    bulletLifetime *= lmgBipodRangeBuff;
+                }
+                shootPSMainModule.startLifetime = bulletLifetime;
+            }
 
             if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
                 ParticleSystem.MainModule shootPSMainModule = shootPS.main;
@@ -852,6 +863,10 @@ public class Gun : MonoBehaviour
     public bool GetDamageSurgeBuffedLastBullet() {
         return damageSurgeBuffed || damageSurgeBuffedLastBullet;
     }
+    public bool GetLastBulletShot() {
+        return lastBulletShot;
+    }
+
 
     public float GetDelayBetweenSubShots() {
         return delayBetweenSubShots;

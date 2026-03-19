@@ -49,8 +49,7 @@ public class AutoScrollRect : MonoBehaviour {
 
         if (!IsChildOfScrollContent(selected))  return;
 
-
-        if (selected != null && (selected.GetComponent<Button>() != null || selected.GetComponent<ButtonUI>() != null)) {
+        if (selected != null && (selected.GetComponent<Button>() != null || selected.GetComponent<ButtonUI>() != null || selected.GetComponent<Toggle>() != null)) {
             hoveredButtonUI = selected.GetComponent<RectTransform>();
             previousSelectedButtonUI = hoveredButtonUI;
         }

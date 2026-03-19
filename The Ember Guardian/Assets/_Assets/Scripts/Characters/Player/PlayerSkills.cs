@@ -953,7 +953,7 @@ public class PlayerSkills : MonoBehaviour
     public int GetShootOnReloadShotAmount() {
         return shootOnReloadShotAmount;
     }
-    public bool GetMagmaBullet() {
+    public bool GetMagmaBulletActive() {
         return magmaShotBulletActive;
     }
     public bool GetMeleeAttackMagmaShot() {

@@ -64,9 +64,11 @@ public class PlayerShoot : MonoBehaviour
         public bool triggerSFX;
     }
 
-    private float setupLMGTime = 1.8f;
+    private float handlingLMGTime = .9f;
+    private float setupLMGTime = .9f;
+    private float removeLMGTime = .5f;
     private float setupLMGTimer;
-    private float lmgBipodAimAngleLimit = 25f;
+    private float lmgBipodAimAngleLimit = 40f;
     private bool settingUpLMG;
     private bool holdingStationaryGun;
     private bool emptyingRevolverMag;
@@ -319,7 +321,7 @@ public class PlayerShoot : MonoBehaviour
         if (settingUpLMG) {
             setupLMGTimer += Time.deltaTime;
 
-            if (setupLMGTimer > setupLMGTime) {
+            if (setupLMGTimer > handlingLMGTime) {
                 settingUpLMG = false;
                 canShoot = true;
 
@@ -1057,6 +1059,7 @@ public class PlayerShoot : MonoBehaviour
 
                     settingUpLMG = true;
                     setupLMGTimer = 0f;
+                    handlingLMGTime = setupLMGTime;
                     canShoot = false;
 
                     secondaryAbilityActive = true;
@@ -1073,6 +1076,7 @@ public class PlayerShoot : MonoBehaviour
 
                     settingUpLMG = true;
                     setupLMGTimer = 0f;
+                    handlingLMGTime = removeLMGTime;
                     canShoot = false;
 
                     secondaryAbilityActive = false;

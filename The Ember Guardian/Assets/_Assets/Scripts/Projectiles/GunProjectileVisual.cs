@@ -8,6 +8,8 @@ public class GunProjectileVisual : MonoBehaviour
     protected Animator animator;
     [SerializeField] protected int explodeVariantCount = 1;
     [SerializeField] protected GunProjectile_Bullet bullet;
+    [SerializeField] protected TrailRenderer trailRenderer;
+    [SerializeField] protected SpriteRenderer bulletRenderer;
 
     protected void Awake() {
         animator = GetComponent<Animator>();
