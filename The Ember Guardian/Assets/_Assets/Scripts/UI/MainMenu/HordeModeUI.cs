@@ -130,9 +130,11 @@ public class HordeModeUI : MonoBehaviour
 
         if(panelOpen) {
             if (weaponCustomizationUnlocked) {
+                if (swapWeaponButtonWorlUI == null) return;
                 EventSystem.current.SetSelectedGameObject(swapWeaponButtonWorlUI);
             }
             else {
+                if (startGameGO == null) return;
                 EventSystem.current.SetSelectedGameObject(startGameGO);
             }
         }
@@ -170,26 +172,29 @@ public class HordeModeUI : MonoBehaviour
 
     private void BackOrEscape() {
         if (customizeCampPanelOpen) {
-            CloseCustomizeCampPanel();
+            Debug.Log("CloseCustomizeCampPanel " + GameInput.Instance.IsUsingGamepad());
             if (GameInput.Instance.IsUsingGamepad()) {
                 EventSystem.current.SetSelectedGameObject(customizeCampButtonWorlUI);
             }
+            CloseCustomizeCampPanel();
             return;
         }
 
         if (changeDogPanelOpen) {
-            CloseChangeDogPanel();
+            Debug.Log("CloseChangeDogPanel " + GameInput.Instance.IsUsingGamepad());
             if (GameInput.Instance.IsUsingGamepad()) {
                 EventSystem.current.SetSelectedGameObject(SwapDogButtonWorlUI);
             }
+            CloseChangeDogPanel();
             return;
         }
 
         if (changeWeaponPanelOpen) {
-            CloseChangeWeaponPanel();
+            Debug.Log("CloseChangeWeaponPanel " + GameInput.Instance.IsUsingGamepad());
             if (GameInput.Instance.IsUsingGamepad()) {
                 EventSystem.current.SetSelectedGameObject(swapWeaponButtonWorlUI);
             }
+            CloseChangeWeaponPanel();
             return;
         }
 

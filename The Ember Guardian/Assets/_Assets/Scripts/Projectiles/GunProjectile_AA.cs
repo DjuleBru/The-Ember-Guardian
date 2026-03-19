@@ -50,7 +50,7 @@ public class GunProjectile_AA : GunProjectile
                 Vector2 initialForce = new Vector2(UnityEngine.Random.Range(-10f,10f),UnityEngine.Random.Range(-10f, 10f));
 
                 float childBulletLifetimeRandomized = UnityEngine.Random.Range(childBulletLifetime - childBulletLifetime / 10, childBulletLifetime + childBulletLifetime / 10);
-                gunProjectile.InitializeProjectile(parentGun, childBulletLifetimeRandomized, childDamagePerBullet, childBulletKnockback, initialForce, explosionRadiusMultiplier);
+                gunProjectile.InitializeProjectile(parentGun, childBulletLifetimeRandomized, childDamagePerBullet, childBulletKnockback, initialForce, explosionRadiusMultiplier, 1, 1);
             }
         } else {
             for (int i = 0; i < childGunProjectilesInstantiated; ++i) {
@@ -60,7 +60,7 @@ public class GunProjectile_AA : GunProjectile
                 Vector2 initialForce = new Vector2(UnityEngine.Random.Range(-10f, 10f), UnityEngine.Random.Range(-10f, 10f));
 
                 float lifeTimeRandomized = childBulletAirLifetime + UnityEngine.Random.Range(-childBulletAirLifetime/1.5f, childBulletAirLifetime / 1.5f);
-                gunProjectile.InitializeProjectile(parentGun, lifeTimeRandomized, childDamagePerBullet, childBulletKnockback, initialForce, explosionRadiusMultiplier);
+                gunProjectile.InitializeProjectile(parentGun, lifeTimeRandomized, childDamagePerBullet, childBulletKnockback, initialForce, explosionRadiusMultiplier, 1, 1);
             }
         }
     }

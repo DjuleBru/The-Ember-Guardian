@@ -31,6 +31,7 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player gunJamPerfectSequenceFeedbacks;
     [SerializeField] private MMF_Player blindedFeedbacks;
     [SerializeField] private MMF_Player blindedPhotosensitiveFeedbacks;
+    [SerializeField] private MMF_Player bulletPierceCreatureFeedbacks;
 
     private float minDelayBetweenCritHitFeedbacks = 1f;
     private float critHitFeedbacksTimer;
@@ -66,6 +67,8 @@ public class PlayerFeedbacks : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceRestarted += GunJamHandler_OnAnyJamSequenceRestarted;
         GunJamHandler.OnAnyPerfectJamSequenceCompleted += GunJamHandler_OnAnyPerfectJamSequenceCompleted;
         Gun.OnAnySurgeReloadSuccess += Gun_OnAnyGunJamRepaired;
+
+        GunProjectile_Bullet.OnAnyBulletPierceCreature += GunProjectile_Bullet_OnAnyBulletPierceCreature;
     }
 
 
@@ -76,6 +79,10 @@ public class PlayerFeedbacks : MonoBehaviour
                 critHitFeedbackRecentlyActivated = false;
             }
         }
+    }
+
+    private void GunProjectile_Bullet_OnAnyBulletPierceCreature(object sender, GunProjectile_Bullet.OnBulletPierceCreatureEventArgs e) {
+        bulletPierceCreatureFeedbacks.PlayFeedbacks();
     }
 
     private void GunJamHandler_OnAnyJamSequenceFailed(object sender, GunJamHandler.OnAnyJamSequenceProgressedEventArgs e) {
@@ -250,6 +257,8 @@ public class PlayerFeedbacks : MonoBehaviour
         GunJamHandler.OnAnyJamSequenceRestarted -= GunJamHandler_OnAnyJamSequenceRestarted;
         GunJamHandler.OnAnyPerfectJamSequenceCompleted -= GunJamHandler_OnAnyPerfectJamSequenceCompleted;
         Gun.OnAnySurgeReloadSuccess -= Gun_OnAnyGunJamRepaired;
+
+        GunProjectile_Bullet.OnAnyBulletPierceCreature -= GunProjectile_Bullet_OnAnyBulletPierceCreature;
 
         PassiveShield.OnAnyPassiveShieldDied -= PassiveShield_OnAnyPassiveShieldDied;
         PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;

@@ -51,6 +51,7 @@ MonoBehaviour:
   loadedShotFiredIfNotFullyLoaded: 0
   loadShotTime: 0
   minLoadShotTime: 0
+  minLoadShotForceNormalized: 0
   delayBetweenClickAndShot: 0
   useAngleInPS: 0
   damagePerBullet: 10
@@ -85,6 +86,8 @@ MonoBehaviour:
   runPrecisionDebuff: 1.5
   weaponSecondaryAbilityPrecisionFactor: 0.5
   weaponSecondaryRecoilReductionFactor: 1
+  weaponSecondSecondaryAbilityPrecisionFactor: 0.75
+  weaponSecondSecondaryRecoilReductionFactor: 0.1
   weaponMaxRecoilImpactOnMouseReticle: 0.25
   crouchPrecisionBuff: 2
   crouchRecoilReductionFactor: 2
@@ -114,7 +117,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 82082d9f03022b545bb13e43cf4c867e, type: 3}
   - {fileID: 8300000, guid: 502fddbd75e0aca41973f6ac1a9f4094, type: 3}
   - {fileID: 8300000, guid: cbec75c991d218c4b9b2fe1abe554495, type: 3}
-  startLoadingShotGunSound: {fileID: 0}
+  startLoadingShotGunSound:
+  - {fileID: 8300000, guid: 136ebcfc084c07d40bb457c5ba63d74b, type: 3}
   reloadGunSound:
   - {fileID: 8300000, guid: 424960b7103131841868fb50af25771b, type: 3}
   cooldownGunSound:

@@ -19,14 +19,17 @@ public class Gun_Pistol : Gun
     protected void CheckPlayerHasSilencer() {
         if (!gunActive) return;
 
-        if (PlayerShoot.Instance.GetSilencerActive()) {
-            shootCreatureHearMultiplier = 1.15f;
-            DebuffBulletDamage(gunSilencerDamageReduction, false);
+        if(PlayerShoot.Instance.GetFirstSecondaryAbilityEquipped()) {
+            if (PlayerShoot.Instance.GetSilencerActive()) {
+                shootCreatureHearMultiplier = 1.15f;
+                DebuffBulletDamage(gunSilencerDamageReduction, false);
+            }
+            else {
+                shootCreatureHearMultiplier = gunSO.shootCreatureHearMultiplier;
+                BuffBulletDamage(gunSilencerDamageReduction, false);
+            }
         }
-        else {
-            shootCreatureHearMultiplier = gunSO.shootCreatureHearMultiplier;
-            BuffBulletDamage(gunSilencerDamageReduction, false);
-        }
+       
     }
 
 }

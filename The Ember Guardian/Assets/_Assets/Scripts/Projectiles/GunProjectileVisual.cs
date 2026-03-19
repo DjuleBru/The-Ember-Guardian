@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class GunProjectileVisual : MonoBehaviour
 {
-    private GunProjectile gunProjectile;
-    private Animator animator;
-    [SerializeField] private int explodeVariantCount = 1;
+    protected GunProjectile gunProjectile;
+    protected Animator animator;
+    [SerializeField] protected int explodeVariantCount = 1;
+    [SerializeField] protected GunProjectile_Bullet bullet;
 
-    private void Awake() {
+    protected void Awake() {
         animator = GetComponent<Animator>();
         gunProjectile = GetComponentInParent<GunProjectile>();
         gunProjectile.OnProjectileExploded += GunProjectile_OnProjectileExploded;
+
+        if(bullet != null) {
+            bullet.OnProjectileFadedOut += Bullet_OnProjectileFadedOut;
+        }
     }
 
-    private void GunProjectile_OnProjectileExploded(object sender, System.EventArgs e) {
+    protected void Bullet_OnProjectileFadedOut(object sender, System.EventArgs e) {
+        animator.SetTrigger("Explode");
+    }
+
+    protected void GunProjectile_OnProjectileExploded(object sender, System.EventArgs e) {
         int randomIndex = Random.Range(0, explodeVariantCount);
         animator.SetInteger("ExplodeIndex", randomIndex);
         animator.SetTrigger("Explode");

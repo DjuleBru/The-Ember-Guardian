@@ -44,6 +44,9 @@ public class Gun : MonoBehaviour
     protected float swapToWeaponTimeMultiplier;
     protected float shootCreatureHearMultiplier;
 
+    protected float bulletSizeMultiplier = 1f;
+    protected float delayBetweenSubShots = .2f;
+
     protected int jamRepairHitAmount;
     protected float surgeReloadProbability;
     protected bool damageSurgeBuffed;
@@ -67,11 +70,38 @@ public class Gun : MonoBehaviour
     protected int subExplosivesAmount;
     protected int subExplosivesDamage;
 
+    protected float loadingRifleShotDamageBuff = 2.5f;
+    protected float loadingRifleShotRangeDebuff = 1.5f;
+    protected float loadingRifleShotBulletKnockbackBuf = 20f;
+
+    protected float sniperPiercingRoundsRangeDebuff = 2.5f;
+    protected float sniperPiercingRoundsCooldownTimeDebuff = 1.25f;
+    protected int sniperPiercingRoundsPierceAmount = 3;
+
+    protected float revolverBouncingBulletsDamageDebuff = 2f;
+    protected float pistolExplosiveBulletsDamageDebuff = 2f;
+    protected int revolverBouncingBulletsPierceAmount = 3;
+
+    protected float lmgBlastModeCooldownBuff = 1.4f;
+    protected float lmgBlastModeCooldownRangeDebuff = 1.6f;
+
+    protected float assaultRifleHomingBulletsDebuff = 1.5f;
+
+    protected int pierceAmount = 1;
+    protected int projectilesShotAmount = 1;
+
     protected float currentAngle; // L'angle actuel du cône
     protected float targetAngle; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastAngle = .1f; // L'angle cible vers lequel le cône doit se diriger
     protected float focusedBlastDamageBuff;
     protected float focusedBlastRangeBuff = 1.5f;
+    protected int pelletsPerBulletBeforeShotgunSemiAutoMode;
+    protected float shotgunSemiAutoModeRangeBuff = 1.5f;
+    protected float shotgunSemiAutoModeSpreadBuff = 2f;
+    protected float shotgunSemiAutoModeCooldownBuff = 1.5f;
+    protected int shotgunSemiAutoModeDamageDebuff = 2;
+
+    protected float smgPoisonRoundsDamageDebuff = 1.25f;
 
     protected int bulletDamageStatModifierLevel = -1;
     protected int shotsPerClipStatModifierLevel = -1;
@@ -110,13 +140,13 @@ public class Gun : MonoBehaviour
         PlayerShoot.Instance.OnPlayerFocusBlastStarted += PlayerShoot_OnPlayerFocusBlastStarted;
         PlayerShoot.Instance.OnPlayerFocusBlastStopped += PlayerShoot_OnPlayerFocusBlastStopped;
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
+        PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
 
         PlayerSkills.Instance.OnPlayerInFireLightBuffedDmg += PlayerSkills_OnPlayerInFireLightBuffedDmg;
         PlayerSkills.Instance.OnPlayerInFireLightDebuffedDmg += PlayerSkills_OnPlayerInFireLightDebuffedDmg;
         PlayerSkills.Instance.OnPlayerOutFireLightBuffedDmg += PlayerSkills_OnPlayerOutFireLightBuffed;
         PlayerSkills.Instance.OnPlayerOutFireLightDebuffedDmg += PlayerSkills_OnPlayerOutFireLightDebuffedDmg;
     }
-
 
     protected virtual void Update() {
         if (!gunJamInCooldown) return;
@@ -135,6 +165,199 @@ public class Gun : MonoBehaviour
     protected void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         if (!gunActive) return;
         RecalculateDamage();
+    }
+
+    private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, EventArgs e) {
+        if (!gunActive) return;
+
+        if (gunSO.gunType == GunSO.GunType.Rifle) {
+            if(PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+
+                if (PlayerShoot.Instance.GetRifleLoadShotModeActive()) {
+                    BuffBulletDamage(loadingRifleShotDamageBuff, false);
+                    shootPSMainModule.startSize = .35f;
+
+                    bulletSpeed *= loadingRifleShotRangeDebuff;
+                    shootPSMainModule.startSpeed = bulletSpeed;
+
+                    bulletLifetime /= loadingRifleShotRangeDebuff;
+                    shootPSMainModule.startLifetime = bulletLifetime;
+
+                    bulletKnockback *= loadingRifleShotBulletKnockbackBuf;
+
+                }
+
+                else {
+                    DebuffBulletDamage(loadingRifleShotDamageBuff, false);
+                    shootPSMainModule.startSize = .2f;
+
+                    bulletSpeed /= loadingRifleShotRangeDebuff;
+                    shootPSMainModule.startSpeed = bulletSpeed;
+
+                    bulletLifetime *= loadingRifleShotRangeDebuff;
+                    shootPSMainModule.startLifetime = bulletLifetime;
+
+                    bulletKnockback /= loadingRifleShotBulletKnockbackBuf;
+                }
+            }
+        }
+
+        if(gunSO.gunType == GunSO.GunType.Shotgun) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                ParticleSystem.ShapeModule shootPSShapeModule = shootPS.shape;
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+                float currentPSAngle = shootPSShapeModule.angle;
+
+                if (PlayerShoot.Instance.GetShotgunSemiAutoModeActive()) {
+
+                    currentPSAngle /= shotgunSemiAutoModeSpreadBuff;
+                    bulletLifetime *= shotgunSemiAutoModeRangeBuff;
+                    PlayerStats.Instance.BuffShootCooldown(shotgunSemiAutoModeCooldownBuff);
+                    damagePerBullet /= shotgunSemiAutoModeDamageDebuff;
+                    shootPSMainModule.startSize = .1f;
+
+                }
+                else {
+
+                    currentPSAngle *= shotgunSemiAutoModeSpreadBuff;
+                    bulletLifetime /= shotgunSemiAutoModeRangeBuff;
+                    PlayerStats.Instance.DebuffShootCooldown(shotgunSemiAutoModeCooldownBuff);
+
+                    damagePerBullet *= shotgunSemiAutoModeDamageDebuff;
+                    shootPSMainModule.startSize = .2f;
+                }
+
+                SetPSShootAngle(currentPSAngle);
+                shootPSMainModule.startLifetime = bulletLifetime;
+            }
+
+           
+        }
+
+        if (gunSO.gunType == GunSO.GunType.SMG) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+
+                if (PlayerShoot.Instance.GetSMGPoisonRoundsActive()) {
+
+                    DebuffBulletDamage(smgPoisonRoundsDamageDebuff);
+                }
+                else {
+
+                    BuffBulletDamage(smgPoisonRoundsDamageDebuff);
+
+                }
+
+                shootPSMainModule.startLifetime = bulletLifetime;
+            }
+           
+        }
+
+        if (gunSO.gunType == GunSO.GunType.Sniper) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetSniperPiercingRoundsActive()) {
+
+                    bulletSizeMultiplier *= 2f;
+
+                    bulletLifetime /= sniperPiercingRoundsRangeDebuff;
+
+                    PlayerStats.Instance.DebuffShootCooldown(sniperPiercingRoundsCooldownTimeDebuff);
+                    pierceAmount = sniperPiercingRoundsPierceAmount;
+
+                }
+                else {
+
+                    bulletSizeMultiplier /= 2f;
+                    bulletLifetime *= sniperPiercingRoundsRangeDebuff;
+
+                    PlayerStats.Instance.BuffShootCooldown(sniperPiercingRoundsCooldownTimeDebuff);
+                    pierceAmount = 1;
+
+                }
+            }
+
+           
+        }
+
+        if (gunSO.gunType == GunSO.GunType.Revolver) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetRevolverBouncingBulletsActive()) {
+                    DebuffBulletDamage(revolverBouncingBulletsDamageDebuff);
+                    pierceAmount = revolverBouncingBulletsPierceAmount;
+
+                }
+                else {
+                    BuffBulletDamage(revolverBouncingBulletsDamageDebuff);
+                    pierceAmount = 1;
+                }
+            }
+
+           
+        }
+
+        if (gunSO.gunType == GunSO.GunType.Pistol) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetPistolExplosiveBulletsActive()) {
+                    DebuffBulletDamage(pistolExplosiveBulletsDamageDebuff);
+                }
+                else {
+                    BuffBulletDamage(pistolExplosiveBulletsDamageDebuff);
+                }
+            }
+        }
+
+        if (gunSO.gunType == GunSO.GunType.GrenadeLauncher) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetGrenadeLauncherMultipleGrenadesActive()) {
+
+                    bulletSizeMultiplier /= 1.5f;
+                    DebuffBulletDamage(3f);
+                    projectilesShotAmount = 3;
+
+                }
+                else {
+
+                    bulletSizeMultiplier *= 1.5f;
+                    projectilesShotAmount = 1;
+
+                    BuffBulletDamage(3f);
+
+                }
+            }
+           
+        }
+
+        if(gunSO.gunType == GunSO.GunType.LMG) {
+
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                ParticleSystem.MainModule shootPSMainModule = shootPS.main;
+                if (PlayerShoot.Instance.GetBlastingLMGModeActive()) {
+
+                    PlayerStats.Instance.BuffShootCooldown(lmgBlastModeCooldownBuff);
+                    bulletLifetime /= lmgBlastModeCooldownRangeDebuff;
+
+                }
+                else {
+
+                    PlayerStats.Instance.DebuffShootCooldown(lmgBlastModeCooldownBuff);
+                    bulletLifetime *= lmgBlastModeCooldownRangeDebuff;
+
+                }
+                shootPSMainModule.startLifetime = bulletLifetime;
+            }
+        }
+
+        if(gunSO.gunType == GunSO.GunType.AssaultRifle) {
+            if(PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if(AssaultRifleSecondaryAbility.Instance.GetHomingBulletsActive()) {
+                    bulletLifetime *= assaultRifleHomingBulletsDebuff;
+                } else {
+                    bulletLifetime /= assaultRifleHomingBulletsDebuff;
+                }
+            }
+        }
+
     }
 
     protected void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
@@ -359,7 +582,6 @@ public class Gun : MonoBehaviour
 
         //Check Passive SKills
         CheckPassiveSkillEffectsOnBullet();
-        //HandleGunJams();
 
         Shoot();
     }
@@ -383,25 +605,13 @@ public class Gun : MonoBehaviour
         }
 
         if (gunSO.bulletIsProjectile) {
-            GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
-            gunProjectile.gameObject.SetActive(true);
 
-
-            float loadingShotMultiplier = 1f;
-            if (gunSO.gunType == GunSO.GunType.GrenadeLauncher) {
-                float loadingShotTimer = PlayerShoot.Instance.GetLoadingShotTimerNormalized(); // 0 -> 1
-                float minLoadShotForceNormalized = PlayerShoot.Instance.GetHeldGunSO().minLoadShotForceNormalized;
-                // Remapper pour que 0 -> minForce, 1 -> 1
-                loadingShotMultiplier = Mathf.Lerp(minLoadShotForceNormalized, 1f, loadingShotTimer);
+            if(projectilesShotAmount == 1) {
+                ShootProjectile();
+            } else {
+                ShootMultipleProjectiles();
             }
-         
 
-            Vector2 initialForce = loadingShotMultiplier * PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed;
-
-            // --- Force minimale ---
-
-
-            gunProjectile.InitializeProjectile(this, bulletLifetime, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier);
         }
 
         if (damageSurgeBuffedLastBullet) {
@@ -422,6 +632,34 @@ public class Gun : MonoBehaviour
                 OnAnyGunJamBuffedDamageShot?.Invoke(this, EventArgs.Empty);
             }
         }
+    }
+
+    private void ShootMultipleProjectiles() {
+        float randomizedBulletLifetimeMultiplier = UnityEngine.Random.Range(.85f, 1.15f);
+        float randomizedBulletForceMultiplier = UnityEngine.Random.Range(.9f, 1.1f);
+
+        ShootProjectile(randomizedBulletLifetimeMultiplier, randomizedBulletForceMultiplier);
+    }
+
+    private void ShootProjectile(float bulletLifetimeMultiplier = 1f, float forceMultiplier = 1f) {
+
+        GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
+        gunProjectile.gameObject.SetActive(true);
+
+
+        float loadingShotMultiplier = 1f;
+
+        if (gunSO.gunType == GunSO.GunType.GrenadeLauncher) {
+            float loadingShotTimer = PlayerShoot.Instance.GetLoadingShotTimerNormalized(); // 0 -> 1
+            float minLoadShotForceNormalized = PlayerShoot.Instance.GetHeldGunSO().minLoadShotForceNormalized;
+            // Remapper pour que 0 -> minForce, 1 -> 1
+            loadingShotMultiplier = Mathf.Lerp(minLoadShotForceNormalized, 1f, loadingShotTimer);
+        }
+
+        Vector2 initialForce = loadingShotMultiplier * PlayerAim.Instance.GetEffectiveAimDir().normalized * bulletSpeed * forceMultiplier;
+
+        // --- Force minimale ---
+        gunProjectile.InitializeProjectile(this, bulletLifetime * bulletLifetimeMultiplier, damagePerBullet, bulletKnockback, initialForce, explosionRadiusMultiplier, pierceAmount, bulletSizeMultiplier);
     }
 
     protected void HandleGunJams() {
@@ -613,6 +851,14 @@ public class Gun : MonoBehaviour
     }
     public bool GetDamageSurgeBuffedLastBullet() {
         return damageSurgeBuffed || damageSurgeBuffedLastBullet;
+    }
+
+    public float GetDelayBetweenSubShots() {
+        return delayBetweenSubShots;
+    }
+
+    public int GetProjectilesShotAmount() {
+        return projectilesShotAmount;
     }
 
     #endregion
@@ -949,7 +1195,6 @@ public class Gun : MonoBehaviour
 
         ES3.Save(key, gunData);
     }
-
 
     public void LoadGunStatModifierLevels() {
         string key = gunSO.gunType + "_metaData";

@@ -75,7 +75,7 @@ public class Creature : Mob
     protected bool poisonImmune;
     protected int poisonAmount;
     protected float poisonedTimer;
-    protected float poisonRate = 1.5f;
+    protected float poisonRate = 1f;
     protected float poisonRateTimer;
     protected float poisonedDuration = 10f;
 
@@ -621,6 +621,7 @@ public class Creature : Mob
 
         OnCreatureImmobilizedStarted?.Invoke(this, EventArgs.Empty);
     }
+
     public void ApplyStunEffect(float stunDuration, Vector3 immobilizePosition) {
         if (dead) return;
         if (stunImmune) return;
@@ -633,9 +634,11 @@ public class Creature : Mob
 
         OnCreatureStunStarted?.Invoke(this, EventArgs.Empty);
     }
+
     public void ApplyPoisonEffect(int poisonAmount) {
         if (dead) return;
         if (poisonImmune) return;
+
         poisoned = true;
         this.poisonAmount = poisonAmount;
         poisonedTimer = poisonedDuration;
@@ -647,6 +650,7 @@ public class Creature : Mob
         if (dead) return;
         if (shockedImmune) return;
         if (shocked) return;
+
         shocked = true;
         this.shockedSlowAmount = slowAmount;
         shockedTimer = shockedDuration;

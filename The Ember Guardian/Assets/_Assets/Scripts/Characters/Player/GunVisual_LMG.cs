@@ -26,4 +26,23 @@ public class GunVisual_LMG : GunVisual
         bipodRenderer.enabled = bipodEnabled;
     }
 
+    protected override void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
+        if (!gun.GetGunActive()) return;
+
+        if (gunSecondaryAbilityActiveSpriteRenderer != null && PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            gunSecondaryFireModeActive = !gunSecondaryFireModeActive;
+            gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
+        }
+
+        if (gunCooldownLightsSpriteRenderer != null) {
+            if (PlayerShoot.Instance.GetSniperPiercingRoundsActive() || PlayerShoot.Instance.GetRevolverBouncingBulletsActive() || PlayerShoot.Instance.GetPistolExplosiveBulletsActive()) {
+                gunCooldownLightsSpriteRenderer.color = orangeColor;
+            }
+            else {
+                gunCooldownLightsSpriteRenderer.color = cooldownLightsColor;
+            }
+        }
+
+    }
+
 }

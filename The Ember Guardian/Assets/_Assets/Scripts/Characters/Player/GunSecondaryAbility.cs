@@ -20,9 +20,6 @@ public class GunSecondaryAbility : MonoBehaviour
     protected void GameInput_OnWeaponSecondaryAbilityPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         bool secondaryAbilityUnlocked = gun.GetSecondaryAbilityUnlocked();
-        if (PlayerShoot.Instance.GetDebugSecondaryAbilityUnlocked()) {
-            secondaryAbilityUnlocked = true;
-        }
 
         if (!secondaryAbilityUnlocked) return;
         if (!PlayerShoot.Instance.GetCanShoot()) return;

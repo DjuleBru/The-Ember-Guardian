@@ -211,6 +211,12 @@ public class GunSO : ScriptableObject
     public float weaponSecondaryRecoilReductionFactor = 1f;
     [BoxGroup("Stats/Precision")]
     [LabelWidth(300)]
+    public float weaponSecondSecondaryAbilityPrecisionFactor = 1f;
+    [BoxGroup("Stats/Precision")]
+    [LabelWidth(300)]
+    public float weaponSecondSecondaryRecoilReductionFactor = 1f;
+    [BoxGroup("Stats/Precision")]
+    [LabelWidth(300)]
     public float weaponMaxRecoilImpactOnMouseReticle = .25f;
     [BoxGroup("Stats/Precision")]
     [LabelWidth(300)]
@@ -282,8 +288,7 @@ public class GunSO : ScriptableObject
     public AudioClip[] shootGunSound;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
-    [ShowIf("shotNeedsLoading")]
-    public AudioClip startLoadingShotGunSound;
+    public AudioClip[] startLoadingShotGunSound;
     [BoxGroup("Sound")]
     [LabelWidth(300)]
     public AudioClip[] reloadGunSound;

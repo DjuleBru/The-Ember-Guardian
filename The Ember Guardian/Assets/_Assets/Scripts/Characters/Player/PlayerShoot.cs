@@ -71,6 +71,7 @@ public class PlayerShoot : MonoBehaviour
     private bool holdingStationaryGun;
     private bool emptyingRevolverMag;
     private bool silencerActive;
+    private bool blastingLMGModeActive;
     private bool rightClickHeldDown;
 
     public class OnAmmoRefilledEventArgs : EventArgs {
@@ -117,6 +118,13 @@ public class PlayerShoot : MonoBehaviour
 
     private bool secondaryAbilityActive;
     private bool rifleSemiAutoModeActive;
+    private bool shotgunSemiAutoModeActive;
+    private bool rifleLoadShotModeActive;
+    private bool smgPoisonRoundsActive;
+    private bool sniperPiercingRoundsActive;
+    private bool grenadeLauncherMultipleGrenadesActive;
+    private bool revolverBouncingBulletsActive;
+    private bool pistolExplosiveBulletsActive;
     private bool projectileExplodesOnPlayerClickModeActive;
     private bool projectileExplodesOnPlayerClick;
     private bool aaGunSpawnsChildProjectiles;
@@ -137,6 +145,7 @@ public class PlayerShoot : MonoBehaviour
     protected bool shotLoaded;
     protected float loadingShotTimer;
     protected float loadingShotTime;
+    protected float loadingShotHeldGunTime;
     protected float gunRecoil;
     protected float gunKnockback;
 
@@ -153,7 +162,8 @@ public class PlayerShoot : MonoBehaviour
     private bool useDebugGun;
     [SerializeField] private GunSO debugGun;
     [SerializeField] private GunSO debugSecondaryGun;
-    [SerializeField] private bool debugSecondaryAbilityUnlocked;
+    [SerializeField] private bool debugUseFirstSecondaryAbility;
+    [SerializeField] private bool debugUseSecondSecondaryAbility;
 
     private Coroutine swappingGunCoroutine;
 
@@ -213,12 +223,7 @@ public class PlayerShoot : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRollEnded += PlayerMovement_OnPlayerRollEnded;
         Player.Instance.OnPlayerDied += Player_OnPlayerDied;
         Gun.OnAnyGunStatsUpgraded += Gun_OnAnyGunStatsUpgraded;
-
-        if(UICurrencyManager.PlayerInventoryUI != null) {
-            UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped += UIOrbManager_OnCurrencyDropped;
-        }
     }
-
 
     private void SettingsManager_OnAutoReloadChanged(object sender, EventArgs e) {
         autoReload = SettingsManager.Instance.GetAutoReload();
@@ -328,32 +333,224 @@ public class PlayerShoot : MonoBehaviour
             }
 
         }
-    }
-    private void StartTransferringAmmoFromBagInGun() {
-        transferringAmmoFromBagTimer = 0;
-        transferringAmmoFromBag = true;
-        TransferNextAmmoFromBag(false);
+
     }
 
-    private void HandleSurgeBulletSpinningInput() {
-        if (surgeBulletSpinning) {
-            if (surgeBulletSpinningInWindow) {
+    #region INITIALIZATION
 
-                // Success
-                OnSpinningBulletSuccess?.Invoke(this, EventArgs.Empty);
-                surgeBulletSpinningInWindow = false;
+    public void SetGunSOInStock(GunSO gunSO) {
+        if (!replacedGunSOList.Contains(gunSO)) {
+            replacedGunSOList.Add(gunSO);
+        }
 
+        OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetActiveGun(GunSO.GunType gunType, bool primaryGun = true, bool triggerSFX = true) {
+        Gun activeGun = null;
+        GunSO activeGunSO = null;
+
+        foreach (Gun gun in allGunsList) {
+            gun.gameObject.SetActive(false);
+            gun.SetGunActive(false);
+
+            if (gun.GetGunSO().gunType == gunType) {
+                activeGun = gun;
+                activeGunSO = gun.GetGunSO();
             }
-            else {
 
-                if (surgeBulletSpinningTimer > surgeBulletSpinningStartWindow) {
-                    // Fail
-                    EndBulletSpinning();
-                }
+        }
 
+
+
+        activeGun.gameObject.SetActive(true);
+        heldGunSO = activeGunSO;
+        heldGun = activeGun;
+        heldGun.SetGunActive(true);
+
+        if (heldGunSO.shotNeedsLoading) {
+            loadingShotHeldGunTime = heldGunSO.loadShotTime;
+            loadingShotTime = loadingShotHeldGunTime;
+            loadingShotTimer = 0;
+        }
+
+        shootCooldownSFXTriggerTime = heldGunSO.shootCooldownSFXTriggerTime;
+        gunRecoil = heldGunSO.gunRecoil;
+        gunKnockback = heldGunSO.gunKnockback;
+        automaticWeapon = activeGunSO.automaticWeapon;
+        shotNeedsLoading = activeGunSO.shotNeedsLoading;
+        loadedShotFiredIfNotFullyLoaded = activeGunSO.loadedShotFiredIfNotFullyLoaded;
+
+        PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
+        PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
+        PlayerStats.Instance.SetHandsReloadTime(heldGun.GetHandsReloadTime());
+
+        if (primaryGun) {
+            primaryGunSO = activeGunSO;
+        }
+        else {
+            secondayGunSO = activeGunSO;
+        }
+
+        OnPlayerSwappedGun?.Invoke(this, new OnPlayerSwappedGunEventArgs {
+            triggerSFX = triggerSFX
+        });
+    }
+
+    public GunSO GetGunSO(GunSO.GunType gunType) {
+        GunSO gunSO = null;
+
+        foreach (Gun gun in allGunsList) {
+            if (gun.GetGunSO().gunType == gunType) {
+                gunSO = gun.GetGunSO();
             }
+
+        }
+        return gunSO;
+    }
+
+    private void InitializeGuns() {
+        foreach (Gun gun in allGunsList) {
+            gun.LoadGunStatModifierLevels();
+            gun.gameObject.SetActive(false);
+
+            allGunSOList.Add(gun.GetGunSO());
         }
     }
+
+    #endregion
+
+    #region SHOOT
+
+    private void Shoot(bool shootOnReload = false) {
+        //Debug.Log("Shoot " + loadingShot);
+
+        StartCoroutine(ShootAfterDelay(heldGunSO.delayBetweenClickAndShot, shootOnReload));
+    }
+
+    private IEnumerator ShootAfterDelay(float delay, bool shootOnReload = false) {
+
+        heldGun.SetCurrentBullet(heldGun.GetCurrentBullet() - 1);
+        OnPlayerStartedShot?.Invoke(this, EventArgs.Empty);
+
+        // Handle cooldown
+        if (PlayerStats.Instance.GetShootCooldownTime() != 0 && !shootOnReload) {
+            coolDownSFXTriggered = false;
+            coolDownAnimationTriggered = false;
+            coolingDown = true;
+            shootCooldownTimer = PlayerStats.Instance.GetShootCooldownTime() + delay;
+        };
+
+        yield return new WaitForSeconds(delay);
+
+        for(int i = 0; i < heldGun.GetProjectilesShotAmount(); i++) {
+            ShootSingleProjectile();
+
+            yield return new WaitForSeconds(heldGun.GetDelayBetweenSubShots());
+        }
+
+         OnBulletsChanged?.Invoke(this, EventArgs.Empty);
+        if (shotNeedsLoading) {
+            loadingShotTimer = 0;
+        }
+
+    }
+
+    private void ShootSingleProjectile() {
+        PlayerAim.Instance.AddRecoil(gunRecoil, heldGunSO.gunRecoilDamping);
+        float aimDir = 1f;
+        if (PlayerAim.Instance.GetAimDir().x < 0) {
+            aimDir = -1f;
+        }
+
+        Vector2 gunKnockbackForce = new Vector2(aimDir * gunKnockback * -1, 0);
+        Player.Instance.AddKnockBack(gunKnockbackForce);
+
+        OnPlayerShot?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void CooldownFinished() {
+        coolingDown = false;
+        OnCooldownEnded?.Invoke(this, EventArgs.Empty);
+        // Handle reload
+        if (heldGun.GetCurrentBullet() > 0) {
+            if (automaticWeapon && playerIsHoldingDownShoot && !Player.Instance.GetDead()) {
+                Shoot();
+            }
+            else {
+                OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
+            }
+        }
+        else {
+            OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
+        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
+        HandleSurgeBulletSpinningInput();
+
+        // Grenade Launcher Secondary
+        if (projectileExplodesOnPlayerClickModeActive && projectileExplodesOnPlayerClick && heldGun.GetGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
+            OnPlayerTriggersProjectileExplosion?.Invoke(this, EventArgs.Empty);
+            projectileExplodesOnPlayerClick = false;
+            return;
+        }
+
+        if (!canShoot) return;
+        if (coolingDown) return;
+        if (reloading) return;
+        if (emptyingRevolverMag) return;
+        if (swappingGun) return;
+        if (loadingShot && !shotLoaded) return;
+        if (Player.Instance.GetHP() == 0) return;
+
+        if (heldGun.GetCurrentBullet() <= 0) {
+            TryAutoReload();
+            return;
+        }
+
+        if (shotNeedsLoading) {
+            loadingShot = true;
+            shotLoaded = false;
+            loadingShotTime = loadingShotHeldGunTime;
+            loadingShotTimer = 0;
+            OnShotStartedLoading?.Invoke(this, EventArgs.Empty);
+        }
+        else {
+            Shoot();
+        }
+
+        playerIsHoldingDownShoot = true;
+
+        if (projectileExplodesOnPlayerClickModeActive && !projectileExplodesOnPlayerClick) {
+            projectileExplodesOnPlayerClick = true;
+            return;
+        }
+    }
+
+    private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
+        if (loadingShot && shotNeedsLoading && loadedShotFiredIfNotFullyLoaded) {
+            if (loadingShotTimer > heldGunSO.minLoadShotTime) {
+                if (heldGun.GetCurrentBullet() > 0) {
+                    Shoot();
+                }
+            };
+        }
+
+        if (!rightClickHeldDown) {
+            loadingShot = false;
+            shotLoaded = false;
+
+            OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
+        }
+
+        playerIsHoldingDownShoot = false;
+    }
+
+    #endregion
+
+    #region AMMO AND RELOAD
 
     private void GameInput_OnPlayerReloadPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
@@ -369,7 +566,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void GameInput_OnPlayerReloadCanceled(object sender, EventArgs e) {
-        if(playerJustPressedReload) {
+        if (playerJustPressedReload) {
             playerJustPressedReload = false;
         }
 
@@ -391,195 +588,6 @@ public class PlayerShoot : MonoBehaviour
             }
 
         }
-    }
-
-    private void EndBulletSpinning() {
-        surgeBulletSpinning = false;
-        surgeBulletSpinningInWindow = false;
-        OnSpinningBulletFail?.Invoke(this, EventArgs.Empty);
-    }
-
-    private bool CanReloadGun() {
-
-        if (heldGun.GetCurrentBullet() == heldGun.GetBulletsPerAmmoClip()) return false;
-        if (reloading) return false;
-        if (coolingDown) return false;
-
-        if (heldGun.GetCurrentAmmoClip() > 0) {
-            // Gun has ammo in belt
-            return true;
-
-        } else {
-            // Gun has no ammo in belt
-            PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
-
-            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count > 0) {
-                // There is ammo in bag
-                return true;
-            }
-            else {
-                // There is no ammo in bag
-                OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
-                return false;
-            }
-        };
-    }
-
-    private bool CanReloadGunFromBelt() {
-        if (heldGun.GetCurrentAmmoClip() == 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-
-    public void RemoveLMGBipod(bool removeBecauseDied) {
-        if (!holdingStationaryGun) return;
-
-        //OnPlayerSetupLMGStopped?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
-        //    removeBecauseDied = removeBecauseDied
-        //});
-
-        secondaryAbilityActive = false;
-
-        holdingStationaryGun = false;
-        PlayerAim.Instance.SetLimitAimAngle(false);
-        OnPlayerResetLMGBipod?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
-            removeBecauseDied = removeBecauseDied
-        });
-        OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void SetPrimaryWeaponSO(GunSO gunSO, bool setGunActive = true) {
-
-        primaryGunSO = gunSO;
-        if(setGunActive) {
-            SetActiveGun(gunSO.gunType, true);
-        }
-
-
-        OnPrimaryWeaponChanged?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void SetSecondaryWeaponSO(GunSO gunSO, bool setGunActive = true) {
-        secondayGunSO = gunSO;
-
-        if (setGunActive) {
-            SetActiveGun(gunSO.gunType, false);
-        }
-
-        OnSecondaryWeaponChanged?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void PickUpWeapon(GunSO gunSO) {
-        if(canHold2Guns && secondayGunSO == null) {
-            SetSecondaryWeaponSO(gunSO);
-        } else {
-            ReplaceHeldWeaponSO(gunSO);
-        }
-    }
-
-    private void ReplaceHeldWeaponSO(GunSO gunSO) {
-        if (replacedGunSOList.Contains(gunSO)) {
-            replacedGunSOList.Remove(gunSO);
-        }
-
-        if (heldGunSO == primaryGunSO) {
-            replacedGunSOList.Add(primaryGunSO);
-            SetPrimaryWeaponSO(gunSO);
-        } else {
-            replacedGunSOList.Add(secondayGunSO);
-            SetSecondaryWeaponSO(gunSO);
-        }
-
-        OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void ReplaceWeaponSO(GunSO gunSO, bool replacePrimaryWeapon) {
-        if(replacedGunSOList.Contains(gunSO)) {
-            replacedGunSOList.Remove(gunSO);
-        }
-
-        if (replacePrimaryWeapon) {
-            replacedGunSOList.Add(primaryGunSO);
-            SetPrimaryWeaponSO(gunSO);
-        }
-        else {
-            replacedGunSOList.Add(secondayGunSO);
-            SetSecondaryWeaponSO(gunSO);
-        }
-
-        OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void SetGunSOInStock(GunSO gunSO) {
-        if (!replacedGunSOList.Contains(gunSO)) {
-            replacedGunSOList.Add(gunSO);
-        }
-
-        OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void SetActiveGun(GunSO.GunType gunType, bool primaryGun = true, bool triggerSFX=true) {
-        Gun activeGun = null;
-        GunSO activeGunSO = null;
-
-        foreach(Gun gun in allGunsList) {
-            gun.gameObject.SetActive(false);
-            gun.SetGunActive(false);
-
-            if(gun.GetGunSO().gunType == gunType) {
-                activeGun = gun;
-                activeGunSO = gun.GetGunSO();
-            }
-
-        }
-
-       
-
-        activeGun.gameObject.SetActive(true);
-        heldGunSO = activeGunSO;
-        heldGun = activeGun;
-        heldGun.SetGunActive(true);
-
-        if (heldGunSO.shotNeedsLoading) {
-            loadingShotTime = heldGunSO.loadShotTime;
-            loadingShotTimer = 0;
-        }
-
-        shootCooldownSFXTriggerTime = heldGunSO.shootCooldownSFXTriggerTime;
-        gunRecoil = heldGunSO.gunRecoil;
-        gunKnockback = heldGunSO.gunKnockback; 
-        automaticWeapon = activeGunSO.automaticWeapon;
-        shotNeedsLoading = activeGunSO.shotNeedsLoading;
-        loadedShotFiredIfNotFullyLoaded = activeGunSO.loadedShotFiredIfNotFullyLoaded;
-
-        PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
-        PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
-        PlayerStats.Instance.SetHandsReloadTime(heldGun.GetHandsReloadTime());
-
-        if(primaryGun) {
-            primaryGunSO = activeGunSO;
-        } else {
-            secondayGunSO = activeGunSO;
-        }
-
-        OnPlayerSwappedGun?.Invoke(this, new OnPlayerSwappedGunEventArgs {
-            triggerSFX = triggerSFX
-        });
-    }
-
-    public GunSO GetGunSO(GunSO.GunType gunType) {
-        GunSO gunSO = null;
-
-        foreach (Gun gun in allGunsList) {
-            if (gun.GetGunSO().gunType == gunType) {
-                gunSO = gun.GetGunSO();
-            }
-
-        }
-        return gunSO;
     }
 
     public void SetGunAmmo(GunSO gunSO, int ammoCount, int currentBullet) {
@@ -606,79 +614,62 @@ public class PlayerShoot : MonoBehaviour
         });
     }
 
-    private void InitializeGuns() {
-        foreach (Gun gun in allGunsList) {
-            gun.LoadGunStatModifierLevels();
-            gun.gameObject.SetActive(false);
-
-            allGunSOList.Add(gun.GetGunSO());
-        }
+    private void EndHandReload() {
+        reloadingHands = false;
+        OnPlayerReloadHandEnded?.Invoke(this, EventArgs.Empty);
     }
 
-    private void Shoot(bool shootOnReload = false) {
-        //Debug.Log("Shoot " + loadingShot);
-        StartCoroutine(ShootAfterDelay(heldGunSO.delayBetweenClickAndShot, shootOnReload));
+    private void StartTransferringAmmoFromBagInGun() {
+        transferringAmmoFromBagTimer = 0;
+        transferringAmmoFromBag = true;
+        TransferNextAmmoFromBag(false);
     }
 
-    private IEnumerator ShootAfterDelay(float delay, bool shootOnReload = false) {
+    private bool CanReloadGun() {
 
-        heldGun.SetCurrentBullet(heldGun.GetCurrentBullet() - 1);
-        OnPlayerStartedShot?.Invoke(this, EventArgs.Empty);
+        if (heldGun.GetCurrentBullet() == heldGun.GetBulletsPerAmmoClip()) return false;
+        if (reloading) return false;
+        if (coolingDown) return false;
 
-        // Handle cooldown
-        if (PlayerStats.Instance.GetShootCooldownTime() != 0 && !shootOnReload) {
-            coolDownSFXTriggered = false;
-            coolDownAnimationTriggered = false;
-            coolingDown = true;
-            shootCooldownTimer = PlayerStats.Instance.GetShootCooldownTime() + delay;
-        };
+        if (heldGun.GetCurrentAmmoClip() > 0) {
+            // Gun has ammo in belt
+            return true;
 
-        yield return new WaitForSeconds(delay);
-
-        PlayerAim.Instance.AddRecoil(gunRecoil, heldGunSO.gunRecoilDamping);
-
-        float aimDir = 1f;
-        if (PlayerAim.Instance.GetAimDir().x < 0) {
-            aimDir = -1f;
         }
+        else {
+            // Gun has no ammo in belt
+            PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
 
-        Vector2 gunKnockbackForce = new Vector2(aimDir * gunKnockback * -1, 0);
-        Player.Instance.AddKnockBack(gunKnockbackForce);
-
-        OnBulletsChanged?.Invoke(this, EventArgs.Empty);
-
-        OnPlayerShot?.Invoke(this, EventArgs.Empty);
-
-        if (shotNeedsLoading) {
-            loadingShotTimer = 0;
-        }
-    }
-
-    private void CooldownFinished() {
-        coolingDown = false;
-        OnCooldownEnded?.Invoke(this, EventArgs.Empty);
-        // Handle reload
-        if (heldGun.GetCurrentBullet() > 0) {
-            if (automaticWeapon && playerIsHoldingDownShoot && !Player.Instance.GetDead()) {
-                Shoot();
+            if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(ammoType).Count > 0) {
+                // There is ammo in bag
+                return true;
             }
             else {
-                OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
+                // There is no ammo in bag
+                OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+                return false;
             }
-        } else {
-            OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
-        }
+        };
     }
 
+    private bool CanReloadGunFromBelt() {
+        if (heldGun.GetCurrentAmmoClip() == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
     private IEnumerator ReloadGunCoroutine(bool reloadDirectlyFromBag) {
         PlayerCurrencies.CurrencyType ammoType = heldGunSO.ammoTypeUsed;
 
         float handsReloadTimeModified = heldGun.GetHandsReloadTime();
         float reloadTimeModified = heldGun.GetReloadTime();
-        if(reloadDirectlyFromBag) {
+        if (reloadDirectlyFromBag) {
             handsReloadTimeModified *= reloadingFromBagReloadDebuff;
             reloadTimeModified *= reloadingFromBagReloadDebuff;
-        } else {
+        }
+        else {
             handsReloadTimeModified *= reloadingFromBeltReloadBuff;
             reloadTimeModified *= reloadingFromBeltReloadBuff;
         }
@@ -698,7 +689,7 @@ public class PlayerShoot : MonoBehaviour
         if (PlayerSkills.Instance.GetShootOnReload()) {
 
             int shotAmount = PlayerSkills.Instance.GetShootOnReloadShotAmount();
-            if(heldGunSO.gunType == GunSO.GunType.RocketLauncher || heldGunSO.gunType == GunSO.GunType.GrenadeLauncher || heldGunSO.gunType == GunSO.GunType.AAGun) {
+            if (heldGunSO.gunType == GunSO.GunType.RocketLauncher || heldGunSO.gunType == GunSO.GunType.GrenadeLauncher || heldGunSO.gunType == GunSO.GunType.AAGun) {
                 shotAmount = 1;
             }
 
@@ -737,15 +728,16 @@ public class PlayerShoot : MonoBehaviour
                 AddAmmoClip(1);
             }
 
-        } else {
+        }
+        else {
             OnPlayerTryReloadAmmoBelt_NoAmmoInBag?.Invoke(this, EventArgs.Empty);
         }
-        
+
     }
 
     public void AddAmmoClip(int ammoCount) {
         int ammoRefilled = ammoCount;
-        if(heldGun.GetCurrentAmmoClip() + ammoRefilled > heldGun.GetMaxAmmo()) {
+        if (heldGun.GetCurrentAmmoClip() + ammoRefilled > heldGun.GetMaxAmmo()) {
             ammoRefilled = heldGun.GetMaxAmmo() - heldGun.GetCurrentAmmoClip();
         }
 
@@ -757,80 +749,6 @@ public class PlayerShoot : MonoBehaviour
         });
     }
 
-    private void UIOrbManager_OnCurrencyDropped(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
-        //if(e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo) {
-        //    Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
-        //    collectible.SetMovingForPayment(true, 5f, ammoDestinationPoint, true);
-        //    collectible.SetScale(.5f);
-        //}
-        //if (e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ammo_special) {
-        //    Collectible collectible = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(PlayerCurrencies.CurrencyType.ammo_special), ammoSpawnPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
-        //    collectible.SetMovingForPayment(true, 5f, ammoDestinationPoint, true);
-        //    collectible.SetScale(.5f);
-        //}
-    }
-
-    private void GameInput_OnPlayerShootStarted(object sender, System.EventArgs e) {
-        if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
-        HandleSurgeBulletSpinningInput();
-
-        // Grenade Launcher Secondary
-        if (projectileExplodesOnPlayerClickModeActive && projectileExplodesOnPlayerClick && heldGun.GetGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
-            OnPlayerTriggersProjectileExplosion?.Invoke(this, EventArgs.Empty);
-            projectileExplodesOnPlayerClick = false;
-            return;
-        }
-
-        if (!canShoot) return;
-        if (coolingDown) return;
-        if (reloading) return;
-        if (emptyingRevolverMag) return;
-        if (swappingGun) return;
-        if (loadingShot && !shotLoaded) return;
-        if (Player.Instance.GetHP() == 0) return;
-
-        if (heldGun.GetCurrentBullet() <= 0) {
-            TryAutoReload();
-            return;
-        }
-
-        if(shotNeedsLoading) {
-            loadingShot = true;
-            shotLoaded = false;
-            loadingShotTime = heldGunSO.loadShotTime;
-            loadingShotTimer = 0;
-            OnShotStartedLoading?.Invoke(this, EventArgs.Empty);
-        } else {
-            Shoot();
-        }
-
-        playerIsHoldingDownShoot = true;
-
-        if (projectileExplodesOnPlayerClickModeActive && !projectileExplodesOnPlayerClick) {
-            projectileExplodesOnPlayerClick = true;
-            return;
-        }
-    }
-
-    private void GameInput_OnPlayerShootCanceled(object sender, System.EventArgs e) {
-        if (loadingShot && shotNeedsLoading && loadedShotFiredIfNotFullyLoaded) {
-            if (loadingShotTimer > heldGunSO.minLoadShotTime) {
-                if (heldGun.GetCurrentBullet() > 0) {
-                    Shoot();
-                }
-            };
-        }
-
-        if(!rightClickHeldDown) {
-            loadingShot = false;
-            shotLoaded = false;
-
-            OnPlayerShootStopped?.Invoke(this, EventArgs.Empty);
-        }
-
-        playerIsHoldingDownShoot = false;
-    }
-
     private void TryAutoReload() {
         if (!autoReload) return;
         if (CanReloadGun()) {
@@ -840,6 +758,67 @@ public class PlayerShoot : MonoBehaviour
 
     }
 
+    #endregion
+
+    #region SURGE RELOAD
+
+    private bool TrySurgeReload(bool reloadFromBelt) {
+        if (!reloadFromBelt) return false;
+
+        float surgeReloadProbability = heldGun.GetSurgeReloadProbability();
+
+        bool surgeReload = UnityEngine.Random.Range(0f, 1f) < surgeReloadProbability;
+
+        if (!canStartSurgeWindow) {
+            return false;
+        }
+        surgeReload = surgeReload || nextBulletSurgeWindow || DebugManager.Instance.GetDebugSurgeReload();
+        if (surgeReload) {
+            surgeBulletSpinning = true;
+            nextBulletSurgeWindow = false;
+            surgeBulletSpinningTimer = 0f;
+            OnSurgeReloadStart?.Invoke(this, EventArgs.Empty);
+        }
+
+        return surgeReload;
+    }
+
+    private void HandleSurgeBulletSpinningInput() {
+        if (surgeBulletSpinning) {
+            if (surgeBulletSpinningInWindow) {
+
+                // Success
+                OnSpinningBulletSuccess?.Invoke(this, EventArgs.Empty);
+                surgeBulletSpinningInWindow = false;
+
+            }
+            else {
+
+                if (surgeBulletSpinningTimer > surgeBulletSpinningStartWindow) {
+                    // Fail
+                    EndBulletSpinning();
+                }
+
+            }
+        }
+    }
+
+    private void EndBulletSpinning() {
+        surgeBulletSpinning = false;
+        surgeBulletSpinningInWindow = false;
+        OnSpinningBulletFail?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetCanStartSurgeWindow(bool canStartSurgeWindow) {
+        this.canStartSurgeWindow = canStartSurgeWindow;
+    }
+
+    public void SurgeWindowNextBullet(bool nextBulletSurgeWindow) {
+        this.nextBulletSurgeWindow = nextBulletSurgeWindow;
+    }
+    #endregion
+
+    #region SECONDARY ABILITIES
     private void GameInput_OnWeaponSecondaryAbilitytPerformed(object sender, EventArgs e) {
         rightClickHeldDown = true;
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
@@ -850,6 +829,9 @@ public class PlayerShoot : MonoBehaviour
         }
 
         bool secondaryAbilityUnlocked = heldGun.GetSecondaryAbilityUnlocked();
+        bool primarySecondaryAbilityEquipped = debugUseFirstSecondaryAbility;
+        bool secondarySecondaryAbilityEquipped = debugUseSecondSecondaryAbility;
+
         if (useDebugGun) {
             secondaryAbilityUnlocked = true;
         }
@@ -859,133 +841,259 @@ public class PlayerShoot : MonoBehaviour
         if (reloading) return;
         if (swappingGun) return;
 
-        if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
-            OnPlayerAimedSightStarted?.Invoke(this, EventArgs.Empty);
-            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
-            secondaryAbilityActive = true;
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.Rifle) {
+
+            if (primarySecondaryAbilityEquipped) {
+                rifleSemiAutoModeActive = !rifleSemiAutoModeActive;
+
+                if (rifleSemiAutoModeActive) {
+                    automaticWeapon = true;
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    automaticWeapon = false;
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            }
+
+            if (debugUseSecondSecondaryAbility) {
+
+                rifleLoadShotModeActive = !rifleLoadShotModeActive;
+                if (rifleLoadShotModeActive) {
+                    shotNeedsLoading = true;
+                    loadingShotHeldGunTime = .5f;
+                    loadingShotTime = loadingShotHeldGunTime;
+                    loadingShotTimer = 0;
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    shotNeedsLoading = false;
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            }
+
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Shotgun) {
-            if (coolingDown) return;
-            if (!canShoot) return;
+            if(primarySecondaryAbilityEquipped) {
+                if (coolingDown) return;
+                if (!canShoot) return;
 
-            if (heldGun.GetCurrentBullet() == 0) {
-                TryAutoReload();
-                return;
+                if (heldGun.GetCurrentBullet() == 0) {
+                    TryAutoReload();
+                    return;
+                }
+                if (heldGun.GetCurrentAmmoClip() < 0) {
+                    OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
+
+                loadingShot = true;
+                loadingShotTime = 1.75f;
+                loadingShotTimer = 0f;
+                shotLoaded = false;
+
+                OnPlayerFocusBlastStarted?.Invoke(this, EventArgs.Empty);
+                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                secondaryAbilityActive = true;
             }
-            if (heldGun.GetCurrentAmmoClip() < 0) {
-                OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
-                return;
+
+            if(secondarySecondaryAbilityEquipped) {
+
+                shotgunSemiAutoModeActive = !shotgunSemiAutoModeActive;
+
+                if (shotgunSemiAutoModeActive) {
+                    automaticWeapon = true;
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    automaticWeapon = false;
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+
             }
-            
-
-            loadingShot = true;
-            loadingShotTime = 1.75f;
-            loadingShotTimer = 0f;
-            shotLoaded = false;
-
-            OnPlayerFocusBlastStarted?.Invoke(this, EventArgs.Empty);
-            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
-            secondaryAbilityActive = true;
+          
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.SMG) {
-            float shootCooldownBuffValue = 1.4f;
-            PlayerStats.Instance.BuffShootCooldown(shootCooldownBuffValue);
 
-            OnPlayerOverclockedSMGStarted?.Invoke(this, EventArgs.Empty);
-            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
-            secondaryAbilityActive = true;
-        }
+            if(primarySecondaryAbilityEquipped) {
+                float shootCooldownBuffValue = 1.4f;
+                PlayerStats.Instance.BuffShootCooldown(shootCooldownBuffValue);
 
-        if (heldGun.GetGunSO().gunType == GunSO.GunType.Rifle) {
-            rifleSemiAutoModeActive = !rifleSemiAutoModeActive;
-
-            if (rifleSemiAutoModeActive) {
-                automaticWeapon = true;
+                OnPlayerOverclockedSMGStarted?.Invoke(this, EventArgs.Empty);
                 OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
-            } else {
-                automaticWeapon = false;
-                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                secondaryAbilityActive = true;
             }
 
-            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            if(secondarySecondaryAbilityEquipped) {
+                smgPoisonRoundsActive = !smgPoisonRoundsActive;
+
+                if (smgPoisonRoundsActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            }
+            
         }
 
-        if (heldGun.GetGunSO().gunType == GunSO.GunType.LMG)
-        {
-            if (settingUpLMG) return;
-            if(!secondaryAbilityActive)
-            {
-                gunKnockback = 0f;
-
-                PlayerAim.Instance.SetGunStraight();
-                PlayerAim.Instance.SetLimitAimAngle(true, lmgBipodAimAngleLimit);
-                OnPlayerSetupLMGStarted?.Invoke(this, EventArgs.Empty);
-                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-
-                settingUpLMG = true;
-                setupLMGTimer = 0f;
-                canShoot = false;
-
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
+            if(primarySecondaryAbilityEquipped) {
+                OnPlayerAimedSightStarted?.Invoke(this, EventArgs.Empty);
+                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = true;
-                holdingStationaryGun = true;
+            }
 
-            } else
-            {
-                gunKnockback = heldGunSO.gunKnockback;
+            if(secondarySecondaryAbilityEquipped) {
+                sniperPiercingRoundsActive = !sniperPiercingRoundsActive;
 
-                OnPlayerSetupLMGStopped?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
-                    removeBecauseDied = false
-                });
+                if (sniperPiercingRoundsActive) {
+                    shotNeedsLoading = true;
+                    loadingShotHeldGunTime = 1.025f;
+                    loadingShotTime = 1.025f;
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    shotNeedsLoading = false;
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
                 OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-
-                settingUpLMG = true;
-                setupLMGTimer = 0f;
-                canShoot = false;
-
-                secondaryAbilityActive = false;
-
             }
 
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Revolver) {
-            if (heldGun.GetCurrentBullet() == 0) {
-                TryAutoReload();
-                return;
-            }
-            if (heldGun.GetCurrentAmmoClip() < 0) {
-                OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
-                return;
-            }
-            if (!secondaryAbilityActive) {
-                gunRecoil = .25f;
-                gunKnockback = 1f;
+            if(primarySecondaryAbilityEquipped) {
+                if (heldGun.GetCurrentBullet() == 0) {
+                    TryAutoReload();
+                    return;
+                }
+                if (heldGun.GetCurrentAmmoClip() < 0) {
+                    OnPlayerTryShoot_OutOfAmmo?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
+                if (!secondaryAbilityActive) {
+                    gunRecoil = .25f;
+                    gunKnockback = 1f;
 
-                OnPlayerEmptyRevolverMagStart?.Invoke(this, EventArgs.Empty);
-                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                    OnPlayerEmptyRevolverMagStart?.Invoke(this, EventArgs.Empty);
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
 
-                secondaryAbilityActive = true;
-                emptyingRevolverMag = true;
+                    secondaryAbilityActive = true;
+                    emptyingRevolverMag = true;
 
-                StartCoroutine(EmptyRevolverMag());
+                    StartCoroutine(EmptyRevolverMag());
+                }
             }
+
+            if(secondarySecondaryAbilityEquipped) {
+                revolverBouncingBulletsActive = !revolverBouncingBulletsActive;
+
+                if (revolverBouncingBulletsActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            }
+          
 
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
-            projectileExplodesOnPlayerClickModeActive = !projectileExplodesOnPlayerClickModeActive;
-            projectileExplodesOnPlayerClick = true;
 
-            if (projectileExplodesOnPlayerClickModeActive) {
-                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+            if(primarySecondaryAbilityEquipped) {
+                projectileExplodesOnPlayerClickModeActive = !projectileExplodesOnPlayerClickModeActive;
+                projectileExplodesOnPlayerClick = true;
+
+                if (projectileExplodesOnPlayerClickModeActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
             }
-            else {
-                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            
+            if(secondarySecondaryAbilityEquipped) {
+                grenadeLauncherMultipleGrenadesActive = !grenadeLauncherMultipleGrenadesActive;
+
+                if (grenadeLauncherMultipleGrenadesActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
             }
 
-            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (heldGun.GetGunSO().gunType == GunSO.GunType.LMG) {
+            if (primarySecondaryAbilityEquipped) {
+                if (settingUpLMG) return;
+                if (!secondaryAbilityActive) {
+                    gunKnockback = 0f;
+
+                    PlayerAim.Instance.SetGunStraight();
+                    PlayerAim.Instance.SetLimitAimAngle(true, lmgBipodAimAngleLimit);
+                    OnPlayerSetupLMGStarted?.Invoke(this, EventArgs.Empty);
+                    OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+
+                    settingUpLMG = true;
+                    setupLMGTimer = 0f;
+                    canShoot = false;
+
+                    secondaryAbilityActive = true;
+                    holdingStationaryGun = true;
+
+                }
+                else {
+                    gunKnockback = heldGunSO.gunKnockback;
+
+                    OnPlayerSetupLMGStopped?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
+                        removeBecauseDied = false
+                    });
+                    OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+
+                    settingUpLMG = true;
+                    setupLMGTimer = 0f;
+                    canShoot = false;
+
+                    secondaryAbilityActive = false;
+
+                }
+            }
+
+            if (secondarySecondaryAbilityEquipped) {
+                blastingLMGModeActive = !blastingLMGModeActive;
+
+                if (blastingLMGModeActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+
+            }
+
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.AAGun) {
@@ -1015,17 +1123,34 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Pistol) {
-            silencerActive = !silencerActive;
+            if(primarySecondaryAbilityEquipped) {
+                silencerActive = !silencerActive;
 
-            if (silencerActive) {
-                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
-            }
-            else {
-                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
-            }
+                if (silencerActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
 
-            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            } 
+
+            if(secondarySecondaryAbilityEquipped) {
+                pistolExplosiveBulletsActive = !pistolExplosiveBulletsActive;
+
+                if (pistolExplosiveBulletsActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            }
+           
         }
+
         if (heldGun.GetGunSO().gunType == GunSO.GunType.MiniGun) {
             OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
             secondaryAbilityActive = true;
@@ -1034,6 +1159,8 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
         rightClickHeldDown = false;
+        bool primarySecondaryAbilityEquipped = debugUseFirstSecondaryAbility;
+        bool secondarySecondaryAbilityEquipped = debugUseSecondSecondaryAbility;
 
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (secondaryAbilityActive) {
@@ -1045,27 +1172,120 @@ public class PlayerShoot : MonoBehaviour
             }
 
             if (heldGun.GetGunSO().gunType == GunSO.GunType.Shotgun) {
-                loadingShot = false;
-                OnPlayerFocusBlastStopped?.Invoke(this, EventArgs.Empty);
-                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
-                secondaryAbilityActive = false;
+
+                if(primarySecondaryAbilityEquipped) {
+                    loadingShot = false;
+                    OnPlayerFocusBlastStopped?.Invoke(this, EventArgs.Empty);
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                    secondaryAbilityActive = false;
+                }
+              
             }
 
             if (heldGun.GetGunSO().gunType == GunSO.GunType.SMG) {
-                float shootCooldownBuffValue = 1.4f;
-                PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
-                OnPlayerOverclockedSMGStopped?.Invoke(this, EventArgs.Empty);
-                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
-                secondaryAbilityActive = false;
+                if (primarySecondaryAbilityEquipped) {
+                    float shootCooldownBuffValue = 1.4f;
+                    PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
+                    OnPlayerOverclockedSMGStopped?.Invoke(this, EventArgs.Empty);
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                    secondaryAbilityActive = false;
+                }
+
             }
+
             if (heldGun.GetGunSO().gunType == GunSO.GunType.MiniGun) {
                 OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = false;
             }
-
         }
     }
+   
+    public void RemoveLMGBipod(bool removeBecauseDied) {
+        if (!holdingStationaryGun) return;
 
+        secondaryAbilityActive = false;
+
+        holdingStationaryGun = false;
+        PlayerAim.Instance.SetLimitAimAngle(false);
+        OnPlayerResetLMGBipod?.Invoke(this, new OnPlayerResetLMGBipodEventArgs {
+            removeBecauseDied = removeBecauseDied
+        });
+        OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+    }
+
+    private IEnumerator EmptyRevolverMag() {
+        int remainingBullets = GetCurrentBullets();
+        float delayBetweenBullets = .155f;
+
+        for (int i = 0; i < remainingBullets; i++) {
+            Shoot();
+            if (i < remainingBullets - 1) {
+                yield return new WaitForSeconds(delayBetweenBullets);
+            }
+        }
+
+        OnPlayerEmptyRevolverMagEnd?.Invoke(this, EventArgs.Empty);
+        OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+        secondaryAbilityActive = false;
+
+        gunRecoil = heldGunSO.gunRecoil;
+        gunKnockback = heldGunSO.gunKnockback;
+
+        float cooldownDelay = 2f;
+        yield return new WaitForSeconds(cooldownDelay);
+
+        emptyingRevolverMag = false;
+    }
+
+    public bool GetRifleLoadShotModeActive() {
+        return rifleLoadShotModeActive;
+    }
+    public bool GetShotgunSemiAutoModeActive() {
+        return shotgunSemiAutoModeActive;
+    }
+
+    public bool GetSMGPoisonRoundsActive() {
+        return smgPoisonRoundsActive;
+    }
+    public bool GetSniperPiercingRoundsActive() {
+        return sniperPiercingRoundsActive;
+    }
+
+    public bool GetGrenadeLauncherMultipleGrenadesActive() {
+        return grenadeLauncherMultipleGrenadesActive;
+    }
+    public bool GetRevolverBouncingBulletsActive() {
+        return revolverBouncingBulletsActive;
+    }
+    public bool GetPistolExplosiveBulletsActive() {
+        return pistolExplosiveBulletsActive;
+    }
+
+    public bool GetBlastingLMGModeActive() {
+        return blastingLMGModeActive;
+    }
+
+    public void CheckWeaponStatusFX(Mob mobHit) {
+        Creature creatureHit = mobHit as Creature;
+        if(creatureHit != null) {
+            if (smgPoisonRoundsActive) {
+                creatureHit.ApplyPoisonEffect(5);
+            }
+        }    
+    }
+
+    public bool GetFirstSecondaryAbilityEquipped() {
+        return debugUseFirstSecondaryAbility;
+    }
+
+    public bool GetSecondSecondaryAbilityEquipped() {
+        return debugUseSecondSecondaryAbility;
+    }
+
+
+    #endregion
+
+    #region SWAP GUNS
     private void GameInput_OnPlayerSwapGunPerformed(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (secondayGunSO != null) {
@@ -1105,6 +1325,70 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
+    public void SetPrimaryWeaponSO(GunSO gunSO, bool setGunActive = true) {
+
+        primaryGunSO = gunSO;
+        if (setGunActive) {
+            SetActiveGun(gunSO.gunType, true);
+        }
+
+
+        OnPrimaryWeaponChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void SetSecondaryWeaponSO(GunSO gunSO, bool setGunActive = true) {
+        secondayGunSO = gunSO;
+
+        if (setGunActive) {
+            SetActiveGun(gunSO.gunType, false);
+        }
+
+        OnSecondaryWeaponChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void PickUpWeapon(GunSO gunSO) {
+        if (canHold2Guns && secondayGunSO == null) {
+            SetSecondaryWeaponSO(gunSO);
+        }
+        else {
+            ReplaceHeldWeaponSO(gunSO);
+        }
+    }
+
+    private void ReplaceHeldWeaponSO(GunSO gunSO) {
+        if (replacedGunSOList.Contains(gunSO)) {
+            replacedGunSOList.Remove(gunSO);
+        }
+
+        if (heldGunSO == primaryGunSO) {
+            replacedGunSOList.Add(primaryGunSO);
+            SetPrimaryWeaponSO(gunSO);
+        }
+        else {
+            replacedGunSOList.Add(secondayGunSO);
+            SetSecondaryWeaponSO(gunSO);
+        }
+
+        OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ReplaceWeaponSO(GunSO gunSO, bool replacePrimaryWeapon) {
+        if (replacedGunSOList.Contains(gunSO)) {
+            replacedGunSOList.Remove(gunSO);
+        }
+
+        if (replacePrimaryWeapon) {
+            replacedGunSOList.Add(primaryGunSO);
+            SetPrimaryWeaponSO(gunSO);
+        }
+        else {
+            replacedGunSOList.Add(secondayGunSO);
+            SetSecondaryWeaponSO(gunSO);
+        }
+
+        OnPlayerWeaponReplaced?.Invoke(this, EventArgs.Empty);
+    }
+
     private void SwapGun() {
         if (!CanSwapGun()) return;
 
@@ -1126,6 +1410,62 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
 
+        if (rifleLoadShotModeActive) {
+            shotNeedsLoading = false;
+            rifleLoadShotModeActive = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (shotgunSemiAutoModeActive) {
+            automaticWeapon = false;
+            shotgunSemiAutoModeActive = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (smgPoisonRoundsActive) {
+            smgPoisonRoundsActive = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (sniperPiercingRoundsActive) {
+            sniperPiercingRoundsActive = false;
+
+            shotNeedsLoading = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (revolverBouncingBulletsActive) {
+            revolverBouncingBulletsActive = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (pistolExplosiveBulletsActive) {
+            pistolExplosiveBulletsActive = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+        if (grenadeLauncherMultipleGrenadesActive) {
+            grenadeLauncherMultipleGrenadesActive = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (blastingLMGModeActive) {
+            blastingLMGModeActive = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
         if (aaGunSpawnsChildProjectiles) {
             aaGunSpawnsChildProjectiles = false;
             OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
@@ -1140,12 +1480,6 @@ public class PlayerShoot : MonoBehaviour
 
         if (projectileExplodesOnPlayerClickModeActive) {
             projectileExplodesOnPlayerClickModeActive = false;
-            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
-            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
-        }
-
-        if (silencerActive) {
-            silencerActive = false;
             OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
@@ -1185,55 +1519,7 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
-    private void EndHandReload() {
-        reloadingHands = false;
-        OnPlayerReloadHandEnded?.Invoke(this, EventArgs.Empty);
-    }
-
-    private bool TrySurgeReload(bool reloadFromBelt) {
-        if (!reloadFromBelt) return false;
-
-        float surgeReloadProbability = heldGun.GetSurgeReloadProbability();
-
-        bool surgeReload = UnityEngine.Random.Range(0f, 1f) < surgeReloadProbability;
-
-        if (!canStartSurgeWindow) {
-            return false;
-        }
-        surgeReload = surgeReload || nextBulletSurgeWindow || DebugManager.Instance.GetDebugSurgeReload();
-        if (surgeReload) {
-            surgeBulletSpinning = true;
-            nextBulletSurgeWindow = false;
-            surgeBulletSpinningTimer = 0f;
-            OnSurgeReloadStart?.Invoke(this, EventArgs.Empty);
-        }
-
-        return surgeReload;
-    }
-
-    private IEnumerator EmptyRevolverMag() {
-        int remainingBullets = GetCurrentBullets();
-        float delayBetweenBullets = .155f;
-
-        for (int i = 0; i < remainingBullets; i++) {
-            Shoot();
-            if(i < remainingBullets-1) {
-                yield return new WaitForSeconds(delayBetweenBullets);
-            }
-        }
-
-        OnPlayerEmptyRevolverMagEnd?.Invoke(this, EventArgs.Empty);
-        OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
-        secondaryAbilityActive = false;
-
-        gunRecoil = heldGunSO.gunRecoil;
-        gunKnockback = heldGunSO.gunKnockback;
-
-        float cooldownDelay = 2f;
-        yield return new WaitForSeconds(cooldownDelay);
-
-        emptyingRevolverMag = false;
-    }
+    #endregion
 
     private void PlayerStats_OnPlayerAmmoRegenTimeChanged(object sender, EventArgs e) {
         hasAmmoRegen = true;
@@ -1260,7 +1546,6 @@ public class PlayerShoot : MonoBehaviour
 
     }
 
-
     private void PlayerMovement_OnPlayerRoll(object sender, EventArgs e) {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (reloadingHands) {
@@ -1270,27 +1555,20 @@ public class PlayerShoot : MonoBehaviour
         canShoot = false;
     }
 
-
     private void Gun_OnAnyGunStatsUpgraded(object sender, EventArgs e) {
         PlayerStats.Instance.SetShootCooldownTime(heldGun.GetCooldownTime());
         PlayerStats.Instance.SetReloadTime(heldGun.GetReloadTime());
         PlayerStats.Instance.SetHandsReloadTime(heldGun.GetHandsReloadTime());
     }
 
-
     public void SetCanShoot(bool canShoot) {
         this.canShoot = canShoot;
     }
 
-    public void SetCanStartSurgeWindow(bool canStartSurgeWindow) {
-        this.canStartSurgeWindow = canStartSurgeWindow;
-    }
-
-    public void SurgeWindowNextBullet(bool nextBulletSurgeWindow) {
-        this.nextBulletSurgeWindow = nextBulletSurgeWindow;
-    }
 
     #region GET PARAMETERS
+
+
     public Gun GetGun(GunSO gunSO) {
         Gun returnGun = null;
         foreach (Gun gun in allGunsList) {
@@ -1423,9 +1701,6 @@ public class PlayerShoot : MonoBehaviour
         return silencerActive;
     }
 
-    public bool GetDebugSecondaryAbilityUnlocked() {
-        return debugSecondaryAbilityUnlocked;
-    }
     public bool GetCanShoot() {
         return canShoot;
     }
@@ -1486,7 +1761,6 @@ public class PlayerShoot : MonoBehaviour
         return hasBothAmmo;
     }
 
-
     private void OnDestroy() {
         GameInput.Instance.OnPlayerShootCanceled -= GameInput_OnPlayerShootCanceled;
         GameInput.Instance.OnPlayerShootPerformed -= GameInput_OnPlayerShootStarted;
@@ -1504,10 +1778,6 @@ public class PlayerShoot : MonoBehaviour
         PlayerMovement.Instance.OnPlayerRollEnded -= PlayerMovement_OnPlayerRollEnded;
 
         Gun.OnAnyGunStatsUpgraded -= Gun_OnAnyGunStatsUpgraded;
-
-        if (UICurrencyManager.PlayerInventoryUI != null) {
-            UICurrencyManager.PlayerInventoryUI.OnCurrencyDropped -= UIOrbManager_OnCurrencyDropped;
-        }
     }
 
 }

@@ -137,6 +137,8 @@ public class ParticleCollision : MonoBehaviour
                 mobHit.TakeDamage(damage, bulletSource, critHit, false, hitWeakSpot);
                 mobHit.InstantiateHitPS(angle, collisionPosition.y, critHit, damage, collisionPosition.x);
 
+                PlayerShoot.Instance.CheckWeaponStatusFX(mobHit);
+
                 if (critHit) {
                     OnAnyPlayerBulletHitEnemyCrit?.Invoke(this, new OnBulletHitEventArgs {
                         bulletHitPosition = collisionPosition,

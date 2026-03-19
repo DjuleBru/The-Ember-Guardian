@@ -69,7 +69,7 @@ public class GunProjectile_RocketLauncher : GunProjectile
 
                 float currentChildBulletLifetime = (i+1) * childBulletLifetime;
 
-                gunProjectile.InitializeProjectile(parentGun, currentChildBulletLifetime, projectileExplosionDamage, childBulletKnockback, initialForce* childGunProjectilesForceMultiplier, explosionRadiusMultiplier);
+                gunProjectile.InitializeProjectile(parentGun, currentChildBulletLifetime, projectileExplosionDamage, childBulletKnockback, initialForce* childGunProjectilesForceMultiplier, explosionRadiusMultiplier, 1, 1);
             }
 
         }
@@ -77,8 +77,8 @@ public class GunProjectile_RocketLauncher : GunProjectile
         base.Explode();
     }
 
-    public override void InitializeProjectile(Gun parentGun, float projectileLifetime, int projectileDamage, float knockbackForce, Vector2 initialForce, float explosionRadiusMultiplier) {
-        base.InitializeProjectile(parentGun, projectileLifetime, projectileDamage, knockbackForce, initialForce, explosionRadiusMultiplier);
+    public override void InitializeProjectile(Gun parentGun, float projectileLifetime, int projectileDamage, float knockbackForce, Vector2 initialForce, float explosionRadiusMultiplier, int pierceAmount, float bulletSizeMultiplier) {
+        base.InitializeProjectile(parentGun, projectileLifetime, projectileDamage, knockbackForce, initialForce, explosionRadiusMultiplier, pierceAmount, 1);
 
         accelerationDirection = initialForce.normalized;
         accelerationTimer = accelerationDuration;

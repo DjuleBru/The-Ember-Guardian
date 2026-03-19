@@ -137,6 +137,7 @@ public class MainMenuUI : MonoBehaviour {
     }
 
     private void GameInput_OnPlayerBackPerformed(object sender, EventArgs e) {
+        if (!mainMenuPanelOpen) return;
         if(selectingHordeModeContinueOrNewGame) {
             OpenCloseHordeModeSelectButtons(false);
         }
@@ -403,6 +404,7 @@ public class MainMenuUI : MonoBehaviour {
             continueButton.interactable = true;
         }
 
+        mainMenuPanelOpen = true;
         yield return new WaitForSeconds(delay);
         mainMenuPanelAnimator.SetTrigger("FadeIn");
         yield return new WaitForSeconds(1.5f);
@@ -513,10 +515,12 @@ public class MainMenuUI : MonoBehaviour {
 
     public void HideAllMenuUI() {
         mainMenuPanel.gameObject.SetActive(false);
+        mainMenuPanelOpen = false;
     }
 
     public void ShowAllMenuUI() {
         mainMenuPanel.gameObject.SetActive(true);
+        mainMenuPanelOpen = true;
     }
 
     private void OnDestroy() {

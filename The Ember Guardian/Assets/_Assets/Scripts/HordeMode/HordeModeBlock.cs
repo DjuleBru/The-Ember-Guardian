@@ -346,7 +346,7 @@ public class HordeModeBlock : MonoBehaviour
     }
 
     public void SetShopType(ShopType shopType) {
-        Debug.Log("SetShopType " + shopType);
+        //Debug.Log("SetShopType " + shopType);
         this.shopType = shopType;
 
         GameObject shop = HordeModeMapGenerationManager.Instance.GetShopGO(shopType);

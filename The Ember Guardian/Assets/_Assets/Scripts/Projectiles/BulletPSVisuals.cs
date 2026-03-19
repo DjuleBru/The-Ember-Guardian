@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,11 @@ public class BulletPSVisuals : MonoBehaviour
     [SerializeField] private Color outFireLightBuffedBulletDmg;
     [SerializeField] private Color outFireLightBuffedBulletDmgStartColor;
     [SerializeField] private Color initialBulletPSColor;
+    [SerializeField] private Color poisonedPSColor;
+
+    [SerializeField] private float greenHueShift = 55;
+    [SerializeField] private float redHueShift = 55;
+    [SerializeField] private float yellowHueShift = 55;
 
     private bool outLightDamageBuffed;
     private bool lastBulletShotDamageBuffed;
@@ -81,6 +87,7 @@ public class BulletPSVisuals : MonoBehaviour
         ActivateBuffedDamageFeedbacks();
     }
 
+    [Button]
     private void ActivateBuffedDamageFeedbacks() {
         ParticleSystem.MainModule trailMainModule = trailPS.main;
         trailMainModule.startColor = Color.red;
@@ -90,6 +97,7 @@ public class BulletPSVisuals : MonoBehaviour
         bulletModule.startColor = new ParticleSystem.MinMaxGradient(outFireLightBuffedBulletDmgStartColor, outFireLightBuffedBulletDmg);
     }
 
+    [Button]
     private void DeActivateBuffedDamageFeedbacks() {
         if (lastBulletShotDamageBuffed || outLightDamageBuffed) return;
 
@@ -101,6 +109,7 @@ public class BulletPSVisuals : MonoBehaviour
         bulletModule.startColor = new ParticleSystem.MinMaxGradient(initialBulletPSColor, initialBulletPSColor);
     }
 
+    [Button]
     private void ActivateFireBulletFeedbacks() {
         ParticleSystem.MainModule trailMainModule = trailPS.main;
         trailMainModule.startColor = fireLightBuffedBulletDmg;
@@ -109,6 +118,8 @@ public class BulletPSVisuals : MonoBehaviour
         ParticleSystem.MainModule bulletModule = bulletPS.main;
         bulletModule.startColor = new ParticleSystem.MinMaxGradient(fireLightBuffedBulletDmgStartColor, fireLightBuffedBulletDmg);
     }
+
+    [Button]
     private void DeActivateFireBulletFeedbacks() {
         ParticleSystem.MainModule trailMainModule = trailPS.main;
         trailMainModule.startColor = Color.white;

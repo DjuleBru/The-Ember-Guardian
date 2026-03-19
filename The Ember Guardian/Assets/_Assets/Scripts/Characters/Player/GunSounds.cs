@@ -20,27 +20,6 @@ public class GunSounds : SoundObject
         gun.OnPerfectQTEDamageBuffEnded += Gun_OnPerfectQTEDamageBuffEnded;
     }
 
-    private void PlayerShoot_OnPlayerStartedShot(object sender, System.EventArgs e) {
-        if (PlayerShoot.Instance.GetHeldGunSO() != gun.GetGunSO()) return;
-        if (!gun.GetGunSO().triggersShootSFXOnEachBuller) return;
-
-        if(gun.GetCurrentBullet() != 0) {
-
-            bulletAudioSource.pitch = 1f;
-            AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGun().GetComponent<GunSounds>().GetShootAudioClips();
-            float volume = PlayerShoot.Instance.GetHeldGunSO().shootGunVolumeMultiplier * sfxVolume * masterVolume * 2;
-            AudioClip audioClip = audioClipArray[UnityEngine.Random.Range(0, audioClipArray.Length)];
-
-            bulletAudioSource.PlayOneShot(audioClip, volume);
-
-        } else {
-
-            PlayLastBulletEffect();
-
-        }
-
-    }
-
     protected override void Start() {
         base.Start();
         PlayerShoot.Instance.OnPlayerSwappedGun += PlayerShoot_OnPlayerSwappedGun;
@@ -54,6 +33,25 @@ public class GunSounds : SoundObject
     }
 
 
+    protected virtual void PlayerShoot_OnPlayerStartedShot(object sender, System.EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGunSO() != gun.GetGunSO()) return;
+        if (!gun.GetGunSO().triggersShootSFXOnEachBuller) return;
+
+        if(gun.GetCurrentBullet() != 0) {
+
+            bulletAudioSource.pitch = 1f;
+            AudioClip[] audioClipArray = PlayerShoot.Instance.GetHeldGun().GetComponent<GunSounds>().GetShootAudioClips();
+            float volume = PlayerShoot.Instance.GetHeldGunSO().shootGunVolumeMultiplier * sfxVolume * masterVolume * 2;
+            AudioClip audioClip = audioClipArray[UnityEngine.Random.Range(0, audioClipArray.Length)];
+
+            bulletAudioSource.PlayOneShot(audioClip, volume);
+        } else {
+
+            PlayLastBulletEffect();
+
+        }
+
+    }
     protected void PlayerShoot_OnPlayerReloadEnded(object sender, System.EventArgs e) {
         if (gun.GetGunActive() && gun.GetDamageSurgeBuffed()) {
             surgeAudioSource.Play();
@@ -87,7 +85,8 @@ public class GunSounds : SoundObject
     public virtual AudioClip[] GetShootAudioClips() {
         return gun.GetGunSO().shootGunSound;
     }
-    private void PlayLastBulletEffect() {
+
+    protected void PlayLastBulletEffect() {
         if (bulletAudioSource == null || gun == null) return;
 
         // Modifie pour la dernière balle

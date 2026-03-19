@@ -12,6 +12,7 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
     [SerializeField] private ParticleSystem secondaryBulletPS;
 
     private bool ammoClipInfusedWithOrb;
+    private bool homingBulletsActive;
     private bool playerJustActivatedSecondary;
     private float playerJustActivatedSecondaryTimer;
 
@@ -48,11 +49,18 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
 
     private void PlayerShoot_OnPlayerShot(object sender, EventArgs e) {
         if(ammoClipInfusedWithOrb) {
-            secondaryBulletPS.Emit(1);
+            if(PlayerShoot.Instance.GetFirstSecondaryAbilityEquipped()) {
+                secondaryBulletPS.Emit(1);
+            }
+
+            if(PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                homingBulletsActive = true;
+            }
         }
 
         if(PlayerShoot.Instance.GetCurrentBullets() == 0) {
             ammoClipInfusedWithOrb = false;
+            homingBulletsActive = false;
             OnInfusedOrbAmmoClipEmpty?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -79,7 +87,6 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
     }
 
     protected void OnBlueOrbInsertedInGun() {
-
         OnPlayerInfusedOrbInAmmoClip?.Invoke(this, EventArgs.Empty);
         ammoClipInfusedWithOrb = true;
         smallOrbIsBeingTransferred = false;
@@ -101,7 +108,6 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
     }
 
     protected override void PerformSecondaryAbility() {
-
         playerJustActivatedSecondary = true;
         playerJustActivatedSecondaryTimer = 0;
 
@@ -110,7 +116,6 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
         if (UICurrencyManager.PlayerInventoryUI.GetCurrenciesInBagOfType(PlayerCurrencies.CurrencyType.smallBlueOrb).Count > 0) {
             UICurrencyManager.PlayerInventoryUI.DropNextCurrencyInBag(PlayerCurrencies.CurrencyType.smallBlueOrb);
         }
-
     }
 
     protected override void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
@@ -127,6 +132,10 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
 
         }
 
+    }
+
+    public bool GetHomingBulletsActive() {
+        return homingBulletsActive;
     }
 
 }

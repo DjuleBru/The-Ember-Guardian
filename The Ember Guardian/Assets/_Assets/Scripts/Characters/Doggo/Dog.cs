@@ -75,11 +75,18 @@ public class Dog : MonoBehaviour
         SetCurrentDogType();
         SetCurrentDogSkin();
         SetCurrentDogAI();
+
     }
 
     private void Start() {
         GameInput.Instance.OnPlayerCallDogPerformed += GameInput_OnPlayerCallDogPerformed;
         currentIdleState = initialIdleState;
+
+        // Security if people change save file manually
+        if (!DLCManager.Instance.HasDLC(DogStats.Instance.GetDogSkinLinkedDLC(dogSkin))) {
+            dogSkin = GetDefaultSkinFromType(dogType);
+            SetDogSkin(dogSkin);
+        };
 
         OnDogTypeChanged?.Invoke(this, new OnDogTypeChangedEventArgs {
             selectedFromMenu = false
@@ -108,10 +115,10 @@ public class Dog : MonoBehaviour
     private DogSkin LoadSkinForType(DogType type) {
         DogSkin defaultSkin = GetDefaultSkinFromType(type);
         DogSkin loadedSkin = ES3.Load(type + "_skin", defaultSkin);
-        bool manual = ES3.Load(type + "_skinManual", false);
 
-        if (!manual)
-            return defaultSkin;
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level && LevelManager.Instance.IsHordeMode()) {
+            loadedSkin = ES3.Load("hordeModeDogSkin", defaultSkin);
+        }
 
         return loadedSkin;
     }
