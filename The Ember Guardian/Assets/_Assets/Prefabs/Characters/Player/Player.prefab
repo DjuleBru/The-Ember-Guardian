@@ -65497,7 +65497,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5600287817303019930
 Transform:
   m_ObjectHideFlags: 0
@@ -133251,7 +133251,7 @@ MonoBehaviour:
   allGunSOList: []
   debugGun: {fileID: 11400000, guid: 4e1036612c2de2a48bbbbfbde01193e6, type: 2}
   debugSecondaryGun: {fileID: 0}
-  debugUseFirstSecondaryAbility: 0
+  debugUseFirstSecondaryAbility: 1
   debugUseSecondSecondaryAbility: 0
 --- !u!114 &4867755861844520892
 MonoBehaviour:
@@ -218666,8 +218666,8 @@ MonoBehaviour:
   gunPoweringDownClip: {fileID: 8300000, guid: 5c95e06662bbb314aa8569be37262094, type: 3}
   gunPoweredClip: {fileID: 8300000, guid: 3a4efa3bcc013a443b9ee9f9033d978a, type: 3}
   poweringAudioSource: {fileID: 7163602008624779846}
-  powerUpDelay: 0.5
-  powerSourceVolumeMultiplier: 3
+  powerUpDelay: 0.1
+  powerSourceVolumeMultiplier: 1.3
   minigun: {fileID: 3123144109648013029}
   gunPoweringUpClip: {fileID: 8300000, guid: d85dd8c8949bd594f93092c811dfc08d, type: 3}
 --- !u!1 &7961093759729346700

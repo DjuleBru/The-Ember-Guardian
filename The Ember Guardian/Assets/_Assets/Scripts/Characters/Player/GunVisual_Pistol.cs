@@ -22,14 +22,14 @@ public class GunVisual_Pistol : GunVisual
                 gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
 
             } else {
-                gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
+                gunSecondaryAbilityActiveSpriteRenderer.enabled = false;
             }
 
             if(PlayerShoot.Instance.GetSilencerActive()) {
                 silencerSpriteRenderer.enabled = gunSecondaryFireModeActive;
             }
             else {
-                gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
+                silencerSpriteRenderer.enabled = gunSecondaryFireModeActive;
             }
         }
 

@@ -14,7 +14,7 @@ public class PlayerTooltipManager : MonoBehaviour
     private string preparedText2ToShow;
     private float preparedDisplayTime;
 
-    private List<GunSO> gunSOAbilityPreparedList;
+    private List<GunSO.GunType> gunTypesAbilityPreparedList;
     private bool prepareSwapGunTooltip;
     private bool selectOtherGunTooltipShown;
     private bool selectOtherGunTooltipBeingShown;
@@ -71,7 +71,8 @@ public class PlayerTooltipManager : MonoBehaviour
         ParticleCollision.OnAnyParticleHitBarricade += ParticleCollision_OnAnyParticleHitBarricade;
         Dog.Instance.OnDogTypeChanged += Dog_OnDogTypeChanged;
 
-        gunSOAbilityPreparedList = ES3.Load("gunSOAbilityPreparedList", new List<GunSO>());
+        //gunSOAbilityPreparedList = ES3.Load("gunSOAbilityPreparedList", new List<GunSO>());
+        gunTypesAbilityPreparedList = ES3.Load("gunTypesAbilityPreparedList", new List<GunSO.GunType>());
         selectOtherGunTooltipShown = ES3.Load("selectOtherGunTooltipShown", false);
         huntingFlagTooFarShown = ES3.Load("huntingFlagTooFarShown", false);
         shootBarricadeShown = ES3.Load("shootBarricadeShown", false);
@@ -172,7 +173,9 @@ public class PlayerTooltipManager : MonoBehaviour
     }
 
     private void TryShowGunSecondaryAbilityTooltip() {
-        if (gunSOAbilityPreparedList.Contains(PlayerShoot.Instance.GetHeldGunSO())) {
+        //if (gunSOAbilityPreparedList == null) return;
+
+        if (gunTypesAbilityPreparedList.Contains(PlayerShoot.Instance.GetHeldGunSO().gunType)) {
 
             if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Rifle) {
                 PrepareTooltipInstruction(rifleText1, rifleText2, InputControlIcons.Control.SecondaryGunAbility);
@@ -215,10 +218,11 @@ public class PlayerTooltipManager : MonoBehaviour
 
             preparedDisplayTime = 10f;
             StartCoroutine(ShowPreparedTooltipInstructionAfterDelay(1.5f));
-            gunSOAbilityPreparedList.Remove(PlayerShoot.Instance.GetHeldGunSO());
+            //gunSOAbilityPreparedList.Remove(PlayerShoot.Instance.GetHeldGunSO());
+            gunTypesAbilityPreparedList.Remove(PlayerShoot.Instance.GetHeldGunSO().gunType);
             secondaryWeaponAbilityShown = true;
 
-            ES3.Save("gunSOAbilityPreparedList", gunSOAbilityPreparedList);
+            ES3.Save("gunTypesAbilityPreparedList", gunTypesAbilityPreparedList);
         }
 
     }
@@ -290,8 +294,8 @@ public class PlayerTooltipManager : MonoBehaviour
     }
 
     public void SetGunSOAbilityPrepared(GunSO gunSO) {
-        gunSOAbilityPreparedList.Add(gunSO);
-        ES3.Save("gunSOAbilityPreparedList", gunSOAbilityPreparedList);
+        gunTypesAbilityPreparedList.Add(gunSO.gunType);
+        ES3.Save("gunTypesAbilityPreparedList", gunTypesAbilityPreparedList);
     }
 
     public PlayerWorldUITooltip GetTooltipLeft() {

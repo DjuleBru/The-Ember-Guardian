@@ -46,6 +46,7 @@ public class GunProjectile_RocketLauncher : GunProjectile
 
     protected override void DamageCreatureHit(Creature creatureHit, Collider2D collision) {
         int damage = projectileExplosionDamage;
+        Debug.Log("damage " + damage);
         if (creatureHit.GetCreatureSO().flying) {
             damage *= damageToFlyingMultiplier;
         }

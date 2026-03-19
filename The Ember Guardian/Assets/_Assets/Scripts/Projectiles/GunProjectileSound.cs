@@ -28,7 +28,6 @@ public class GunProjectileSound : SoundObject
     }
 
     private void GunProjectile_OnProjectileExploded(object sender, System.EventArgs e) {
-        Debug.Log("GunProjectile_OnProjectileExploded");
         PlaySound2D(explosionAudioClips, explosionVolumeMultiplier);
     }
 

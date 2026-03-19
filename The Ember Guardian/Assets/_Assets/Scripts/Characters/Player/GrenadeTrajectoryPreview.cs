@@ -37,6 +37,8 @@ public class GrenadeTrajectoryPreview : MonoBehaviour
     }
 
     private void Instance_OnPlayerStartedShot(object sender, System.EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
+
         HideLine();
         hidingCoroutine = StartCoroutine(ShowLineAfterDelay(gun.GetCooldownTime()-.1f));
     }

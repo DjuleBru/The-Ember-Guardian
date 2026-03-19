@@ -20,7 +20,7 @@ public class AssaultRifleSecondaryAbilitySounds : SoundObject
     }
 
     private void PlayerShoot_OnPlayerShot(object sender, System.EventArgs e) {
-        if (orbInfused) {
+        if (orbInfused && PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.AssaultRifle) {
             PlaySound2D(shootWithInfusedOrbAudioClip);
         }
     }

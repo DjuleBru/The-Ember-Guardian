@@ -80,6 +80,7 @@ public class GunProjectile : MonoBehaviour
             if (explodeOnContact) {
                 if (!projectileExploded) {
                     Explode();
+                    DamageCreatureHit(creatureHit, collision);
                     return;
                 };
 
