@@ -17,20 +17,28 @@ public class GunVisual_Pistol : GunVisual
         if (gunSecondaryAbilityActiveSpriteRenderer != null) {
             gunSecondaryFireModeActive = !gunSecondaryFireModeActive;
 
-            if(PlayerShoot.Instance.GetPistolExplosiveBulletsActive()) {
-
-                gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
-
-            } else {
-                gunSecondaryAbilityActiveSpriteRenderer.enabled = false;
+            if(PlayerShoot.Instance.GetFirstSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetSilencerActive()) {
+                    silencerSpriteRenderer.enabled = gunSecondaryFireModeActive;
+                }
+                else {
+                    silencerSpriteRenderer.enabled = gunSecondaryFireModeActive;
+                }
             }
 
-            if(PlayerShoot.Instance.GetSilencerActive()) {
-                silencerSpriteRenderer.enabled = gunSecondaryFireModeActive;
+            if(PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetPistolExplosiveBulletsActive()) {
+
+                    gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
+
+                }
+                else {
+                    gunSecondaryAbilityActiveSpriteRenderer.enabled = false;
+                }
             }
-            else {
-                silencerSpriteRenderer.enabled = gunSecondaryFireModeActive;
-            }
+           
+
+          
         }
 
         if (gunCooldownLightsSpriteRenderer != null) {

@@ -4,6 +4,8 @@ using System.Collections;
 public class GunSounds_Minigun : GunSounds {
     [SerializeField] private AudioClip gunPoweringDownClip;
     [SerializeField] private AudioClip gunPoweredClip;
+    [SerializeField] private AudioClip[] secondaryFireModeAudioClips;
+    [SerializeField] private float secondaryFireModeVolumeMultiplier;
     [SerializeField] protected AudioSource poweringAudioSource;
     [SerializeField] private float powerUpDelay = 0.5f; // Délai avant de commencer le powering up
     [SerializeField] private float powerSourceVolumeMultiplier = 1f;
@@ -21,10 +23,35 @@ public class GunSounds_Minigun : GunSounds {
 
     protected override void Start() {
         base.Start();
+
         minigun.OnMinigunStartedSpinning += Minigun_OnMinigunStartedSpinning;
         minigun.OnMinigunStoppedSpinning += Minigun_OnMinigunStoppedSpinning;
 
-        poweringAudioSource.volume = sfxVolume * powerSourceVolumeMultiplier;
+        poweringAudioSource.volume = sfxVolume * powerSourceVolumeMultiplier * masterVolume;
+    }
+    protected override void PlayerShoot_OnPlayerStartedShot(object sender, System.EventArgs e) {
+        if (PlayerShoot.Instance.GetHeldGunSO() != gun.GetGunSO()) return;
+        if (!gun.GetGunSO().triggersShootSFXOnEachBuller) return;
+
+        if(PlayerShoot.Instance.GetMinigunExplosiveBulletsActive()) {
+            if (gun.GetCurrentBullet() != 0) {
+
+                bulletAudioSource.pitch = 1f;
+                AudioClip[] audioClipArray = secondaryFireModeAudioClips;
+                float volume = secondaryFireModeVolumeMultiplier * sfxVolume * masterVolume * 2;
+                AudioClip audioClip = audioClipArray[UnityEngine.Random.Range(0, audioClipArray.Length)];
+
+                bulletAudioSource.PlayOneShot(audioClip, volume);
+            }
+            else {
+
+                PlayLastBulletEffect();
+
+            }
+        } else {
+            base.PlayerShoot_OnPlayerStartedShot(sender, e);
+        }
+
     }
 
     private void Minigun_OnMinigunStoppedSpinning(object sender, System.EventArgs e) {
@@ -113,7 +140,13 @@ public class GunSounds_Minigun : GunSounds {
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {
         base.SettingsManager_OnSfxVolumeChanged (sender, e);
 
-        poweringAudioSource.volume = sfxVolume * powerSourceVolumeMultiplier;
+        poweringAudioSource.volume = sfxVolume * powerSourceVolumeMultiplier * masterVolume;
+    }
+    protected override void SettingsManager_OnMasterVolumeChanged(object sender, System.EventArgs e) {
+        base.SettingsManager_OnMasterVolumeChanged(sender, e);
+
+        poweringAudioSource.volume = sfxVolume * powerSourceVolumeMultiplier * masterVolume;
+
     }
 
 }

@@ -19,6 +19,10 @@ public class Gun_Minigun : Gun {
     private float secondaryAmmoConsumptionTimer;
     private float secondaryAmmoConsumptionTime = .35f;
 
+    private float minigunPrewarmSpinUpDurationBuff = 1.4f;
+    private float minigunExplosiveBulletsShootCooldownDebuff = 1.7f;
+    private float minigunExplosiveBulletsRangeBuff = 1.35f;
+
     public event EventHandler OnMinigunStartedSpinning;
     public event EventHandler OnMinigunStoppedSpinning;
     public event EventHandler OnMinigunConsumeAmmoWhileSpinning;
@@ -27,14 +31,37 @@ public class Gun_Minigun : Gun {
         PlayerShoot.Instance.OnPlayerShootStopped += PlayerShoot_OnPlayerShootStopped;
         PlayerShoot.Instance.OnWeaponSecondaryAbilityStarted += PlayerShoot_OnWeaponSecondaryAbilityStarted;
         PlayerShoot.Instance.OnWeaponSecondaryAbilityEnded += PlayerShoot_OnWeaponSecondaryAbilityEnded;
+        PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
 
         base.Start();
+    }
+
+    private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, EventArgs e) {
+        if (!gunActive) return;
+
+        if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if(PlayerShoot.Instance.GetMinigunExplosiveBulletsActive()) {
+
+                maxSpinRate *= minigunExplosiveBulletsShootCooldownDebuff;
+                bulletLifetime *= minigunExplosiveBulletsRangeBuff;
+
+            } else {
+
+                maxSpinRate /= minigunExplosiveBulletsShootCooldownDebuff;
+                bulletLifetime /= minigunExplosiveBulletsRangeBuff;
+
+            }
+        }
     }
 
     private void PlayerShoot_OnWeaponSecondaryAbilityEnded(object sender, EventArgs e) {
         if (!gunActive) return;
 
-        StopSecondary();
+        if(PlayerShoot.Instance.GetFirstSecondaryAbilityEquipped()) {
+            StopSecondary();
+            spinUpDuration *= minigunPrewarmSpinUpDurationBuff;
+        }
+
     }
 
     private void StopSecondary() {
@@ -54,6 +81,7 @@ public class Gun_Minigun : Gun {
         currentSpinCooldown = spinStartCooldown;
         PlayerStats.Instance.SetShootCooldownTime(currentSpinCooldown);
     }
+
     private void StartSpinning() {
         isSpinning = true;
         spinTimer = 0;
@@ -65,10 +93,15 @@ public class Gun_Minigun : Gun {
         if (!gunActive) return;
         if (secondaryActive) return;
 
-        secondaryActive = true;
-        secondaryAmmoConsumptionTimer = 0;
-        if (!isSpinning) {
-            StartSpinning();
+        if (PlayerShoot.Instance.GetFirstSecondaryAbilityEquipped()) {
+            secondaryActive = true;
+            secondaryAmmoConsumptionTimer = 0;
+
+            spinUpDuration /= minigunPrewarmSpinUpDurationBuff;
+
+            if (!isSpinning) {
+                StartSpinning();
+            }
         }
     }
 

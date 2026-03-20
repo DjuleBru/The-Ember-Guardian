@@ -127,6 +127,7 @@ public class PlayerShoot : MonoBehaviour
     private bool grenadeLauncherMultipleGrenadesActive;
     private bool revolverBouncingBulletsActive;
     private bool pistolExplosiveBulletsActive;
+    private bool minigunExplosiveBulletsActive;
     private bool projectileExplodesOnPlayerClickModeActive;
     private bool projectileExplodesOnPlayerClick;
     private bool aaGunSpawnsChildProjectiles;
@@ -1156,8 +1157,24 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.MiniGun) {
-            OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
-            secondaryAbilityActive = true;
+            if(primarySecondaryAbilityEquipped) {
+                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                secondaryAbilityActive = true;
+            }
+
+            if(secondarySecondaryAbilityEquipped) {
+                minigunExplosiveBulletsActive = !minigunExplosiveBulletsActive;
+
+                if (minigunExplosiveBulletsActive) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+            }
+
         }
     }
 
@@ -1263,6 +1280,9 @@ public class PlayerShoot : MonoBehaviour
     }
     public bool GetPistolExplosiveBulletsActive() {
         return pistolExplosiveBulletsActive;
+    }
+    public bool GetMinigunExplosiveBulletsActive() {
+        return minigunExplosiveBulletsActive;
     }
 
     public bool GetBlastingLMGModeActive() {
@@ -1456,6 +1476,14 @@ public class PlayerShoot : MonoBehaviour
             OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
+
+        if (minigunExplosiveBulletsActive) {
+            minigunExplosiveBulletsActive = false;
+
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
         if (grenadeLauncherMultipleGrenadesActive) {
             grenadeLauncherMultipleGrenadesActive = false;
 

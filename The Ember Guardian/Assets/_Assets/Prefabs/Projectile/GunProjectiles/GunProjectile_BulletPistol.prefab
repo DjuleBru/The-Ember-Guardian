@@ -65,6 +65,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6334019459852369413, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
+      propertyPath: explosionVolumeMultiplier
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334019459852369413, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
       propertyPath: explosionAudioClips.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -141,8 +145,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explodeVariantCount: 1
   bullet: {fileID: 6147517173412539647}
+  trailRenderer: {fileID: 5073400398666023131}
+  bulletRenderer: {fileID: 7796078492629667724}
   explosiveAnimator: {fileID: 22100000, guid: aac57591ea8068046be7d054048768b9, type: 2}
-  standardAnimator: {fileID: 22100000, guid: 907ea7e23a9d2114f92978c0c90387a7, type: 2}
 --- !u!58 &8954903604553811023
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -178,3 +183,13 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!96 &5073400398666023131 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 7677551440477656000, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
+  m_PrefabInstance: {fileID: 3234836411394151195}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &7796078492629667724 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 4671726528816798871, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
+  m_PrefabInstance: {fileID: 3234836411394151195}
+  m_PrefabAsset: {fileID: 0}

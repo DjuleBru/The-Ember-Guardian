@@ -55,7 +55,12 @@ public class GunProjectile_Bullet : GunProjectile {
         lifetimeTimer -= Time.deltaTime;
 
         if (lifetimeTimer < 0) {
-            FadeOutProjectile();
+            if(explodeOnContact && !projectileExploded) {
+                Explode();
+            } else {
+                FadeOutProjectile();
+            }
+
         }
     }
 

@@ -5,7 +5,6 @@ using UnityEngine;
 public class GunProjectileVisual_Pistol : GunProjectileVisual {
 
     [SerializeField] protected AnimatorOverrideController explosiveAnimator;
-    [SerializeField] protected AnimatorOverrideController standardAnimator;
 
     private void Start() {
         if(PlayerShoot.Instance.GetPistolExplosiveBulletsActive()) {

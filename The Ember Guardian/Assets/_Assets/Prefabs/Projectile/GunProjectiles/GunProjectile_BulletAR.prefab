@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2183320635005315455, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 673462895032226709}
+    - target: {fileID: 2183320635005315455, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
+      propertyPath: trailRenderer
+      value: 
+      objectReference: {fileID: 5073400398666023131}
     - target: {fileID: 3004564948235727932, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
       propertyPath: m_Name
       value: GunProjectile_BulletAR
@@ -81,7 +89,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 339aadc2a3b0b824098ab1ce005fa95c, type: 3}
     m_RemovedComponents:
-    - {fileID: 2183320635005315455, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
     - {fileID: 2070242641735824822, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -89,9 +96,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3004564948235727932, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
       insertIndex: -1
       addedObject: {fileID: 673462895032226709}
-    - targetCorrespondingSourceObject: {fileID: 4302220210616209658, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4426588867907512666}
     - targetCorrespondingSourceObject: {fileID: 4302220210616209658, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8954903604553811023}
@@ -132,22 +136,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4302220210616209658, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
   m_PrefabInstance: {fileID: 3234836411394151195}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4426588867907512666
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1680120764452094945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72dacf767b0211f4f89b57cc96f07fc9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  explodeVariantCount: 1
-  bullet: {fileID: 673462895032226709}
-  explosiveAnimator: {fileID: 22100000, guid: aac57591ea8068046be7d054048768b9, type: 2}
-  standardAnimator: {fileID: 22100000, guid: 907ea7e23a9d2114f92978c0c90387a7, type: 2}
 --- !u!58 &8954903604553811023
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -183,3 +171,8 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!96 &5073400398666023131 stripped
+TrailRenderer:
+  m_CorrespondingSourceObject: {fileID: 7677551440477656000, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
+  m_PrefabInstance: {fileID: 3234836411394151195}
+  m_PrefabAsset: {fileID: 0}
