@@ -22,13 +22,21 @@ public class GunProjectile_RocketLauncher : GunProjectile
     private float accelerationTimer;
 
     private bool instantiateChildGunGroundProjectile;
+    private bool nukeProjectile;
 
     protected void Start() {
         instantiateChildGunGroundProjectile = PlayerShoot.Instance.GetRocketLauncherMiniRockets();
+        nukeProjectile = PlayerShoot.Instance.GetRocketLauncherNukeMode();
 
-        if(instantiateChildGunGroundProjectile && childGunProjectilesInstantiated != 0) {
+        if (instantiateChildGunGroundProjectile && childGunProjectilesInstantiated != 0) {
             projectileLifetime = .5f;
             projectileExplosionDamage /= (childGunProjectilesInstantiated + 1);
+        }
+
+        if(nukeProjectile) {
+            accelerationForce = 0;
+            accelerationDuration = 0;
+            rb.gravityScale = 4f;
         }
     }
     protected override void Update() {
@@ -46,7 +54,6 @@ public class GunProjectile_RocketLauncher : GunProjectile
 
     protected override void DamageCreatureHit(Creature creatureHit, Collider2D collision) {
         int damage = projectileExplosionDamage;
-        Debug.Log("damage " + damage);
         if (creatureHit.GetCreatureSO().flying) {
             damage *= damageToFlyingMultiplier;
         }
@@ -75,7 +82,14 @@ public class GunProjectile_RocketLauncher : GunProjectile
 
         }
 
+      
         base.Explode();
+
+        if (nukeProjectile) {
+
+            transform.localScale = Vector3.one * 1.5f * explosionRadiusMultiplier;
+        }
+
     }
 
     public override void InitializeProjectile(Gun parentGun, float projectileLifetime, int projectileDamage, float knockbackForce, Vector2 initialForce, float explosionRadiusMultiplier, int pierceAmount, float bulletSizeMultiplier) {
@@ -83,6 +97,7 @@ public class GunProjectile_RocketLauncher : GunProjectile
 
         accelerationDirection = initialForce.normalized;
         accelerationTimer = accelerationDuration;
+
     }
 
     public void SetExplodeOnContact(bool explodeOnContact) {

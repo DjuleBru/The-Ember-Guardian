@@ -251,7 +251,7 @@ MonoBehaviour:
   accelerationDuration: 1
   spawnChildBullets: 1
   damageToFlyingMultiplier: 1
-  childGunProjectilePrefab: {fileID: 6959852132509442362}
+  childGunProjectilePrefab: {fileID: 6959852132509442362, guid: c00186443476b8a47a9fffcbefb124dd, type: 3}
   childGunProjectilesInstantiated: 0
   childGunProjectilesForceMultiplier: 5
   childBulletLifetime: 0.15
@@ -268,8 +268,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42da5e8baed4fed40bcbdcc0ed85dbe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &6959852132509442362 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5834909706332022908, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
-  m_PrefabInstance: {fileID: 3490183974102124870}
-  m_PrefabAsset: {fileID: 0}

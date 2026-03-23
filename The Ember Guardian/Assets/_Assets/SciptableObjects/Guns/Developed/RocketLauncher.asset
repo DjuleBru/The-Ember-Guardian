@@ -79,6 +79,8 @@ MonoBehaviour:
   runPrecisionDebuff: 1.5
   weaponSecondaryAbilityPrecisionFactor: 1
   weaponSecondaryRecoilReductionFactor: 1
+  weaponSecondSecondaryAbilityPrecisionFactor: 1
+  weaponSecondSecondaryRecoilReductionFactor: 1
   weaponMaxRecoilImpactOnMouseReticle: 2
   crouchPrecisionBuff: 2
   crouchRecoilReductionFactor: 2
@@ -104,7 +106,8 @@ MonoBehaviour:
   shootGunSound:
   - {fileID: 8300000, guid: b483daecadd690946b158d90f7a9f950, type: 3}
   - {fileID: 8300000, guid: 6980f477f8dcb8c46b1d41cac93e4af3, type: 3}
-  startLoadingShotGunSound: {fileID: 0}
+  startLoadingShotGunSound:
+  - {fileID: 8300000, guid: 8556ead75017eac40a1917dbed72fd7e, type: 3}
   reloadGunSound:
   - {fileID: 8300000, guid: 951b062a7964d5a41b90e974b8aa6c9d, type: 3}
   cooldownGunSound:

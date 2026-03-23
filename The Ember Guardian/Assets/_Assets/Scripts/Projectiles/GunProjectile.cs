@@ -63,7 +63,7 @@ public class GunProjectile : MonoBehaviour
             }
         }
 
-        StartCoroutine(DestroyGameObjectAfterDelay(3f));
+        StartCoroutine(DestroyGameObjectAfterDelay(4f));
     }
 
     protected IEnumerator DestroyGameObjectAfterDelay(float delay) {

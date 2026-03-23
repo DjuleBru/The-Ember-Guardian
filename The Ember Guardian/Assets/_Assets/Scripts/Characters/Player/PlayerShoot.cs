@@ -128,6 +128,7 @@ public class PlayerShoot : MonoBehaviour
     private bool revolverBouncingBulletsActive;
     private bool pistolExplosiveBulletsActive;
     private bool minigunExplosiveBulletsActive;
+    private bool rocketLauncherNukeModeActive;
     private bool projectileExplodesOnPlayerClickModeActive;
     private bool projectileExplodesOnPlayerClick;
     private bool aaGunSpawnsChildProjectiles;
@@ -1115,16 +1116,38 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.RocketLauncher) {
-            rocketLauncherSpawnsMiniRockets = !rocketLauncherSpawnsMiniRockets;
+            if(primarySecondaryAbilityEquipped) {
+                rocketLauncherSpawnsMiniRockets = !rocketLauncherSpawnsMiniRockets;
 
-            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
 
-            if (rocketLauncherSpawnsMiniRockets) {
-                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                if (rocketLauncherSpawnsMiniRockets) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
             }
-            else {
-                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+           
+            if(secondarySecondaryAbilityEquipped) {
+                rocketLauncherNukeModeActive = !rocketLauncherNukeModeActive;
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+
+                if (rocketLauncherNukeModeActive) {
+                    shotNeedsLoading = true;
+                    loadingShotHeldGunTime = 1.5f;
+                    loadingShotTime = 1.5f;
+                    loadedShotFiredIfNotFullyLoaded = true;
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    shotNeedsLoading = false;
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
+
             }
+
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Pistol) {
@@ -1176,6 +1199,7 @@ public class PlayerShoot : MonoBehaviour
             }
 
         }
+
     }
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
@@ -1510,6 +1534,12 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
 
+        if (rocketLauncherNukeModeActive) {
+            rocketLauncherNukeModeActive = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
         if (projectileExplodesOnPlayerClickModeActive) {
             projectileExplodesOnPlayerClickModeActive = false;
             OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
@@ -1728,6 +1758,10 @@ public class PlayerShoot : MonoBehaviour
     }
     public bool GetRocketLauncherMiniRockets() {
         return rocketLauncherSpawnsMiniRockets;
+    }
+
+    public bool GetRocketLauncherNukeMode() {
+        return rocketLauncherNukeModeActive;
     }
     public bool GetSilencerActive() {
         return silencerActive;

@@ -91,7 +91,7 @@ public class GunSounds : SoundObject
 
         // Modifie pour la dernière balle
         bulletAudioSource.pitch = lastBulletPitch;
-        float volume = lastBulletVolume * gun.GetGunSO().shootGunVolumeMultiplier * sfxVolume;
+        float volume = lastBulletVolume * gun.GetGunSO().shootGunVolumeMultiplier * sfxVolume * masterVolume;
 
         // Joue le même clip de tir
         var clips = GetShootAudioClips();

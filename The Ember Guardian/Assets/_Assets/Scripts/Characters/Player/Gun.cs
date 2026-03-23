@@ -168,7 +168,7 @@ public class Gun : MonoBehaviour
         RecalculateDamage();
     }
 
-    private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, EventArgs e) {
+    protected virtual void PlayerShoot_OnPlayerSwitchedFireMode(object sender, EventArgs e) {
         if (!gunActive) return;
 
         if (gunSO.gunType == GunSO.GunType.Rifle) {
@@ -652,7 +652,7 @@ public class Gun : MonoBehaviour
         ShootProjectile(randomizedBulletLifetimeMultiplier, randomizedBulletForceMultiplier);
     }
 
-    private void ShootProjectile(float bulletLifetimeMultiplier = 1f, float forceMultiplier = 1f) {
+    protected virtual void ShootProjectile(float bulletLifetimeMultiplier = 1f, float forceMultiplier = 1f) {
 
         GunProjectile gunProjectile = Instantiate(projectilePrefab, projectileSpawnPosition.position, Quaternion.identity).GetComponent<GunProjectile>();
         gunProjectile.gameObject.SetActive(true);
