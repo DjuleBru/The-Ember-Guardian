@@ -148,7 +148,7 @@ public class HubMerchant : MonoBehaviour
             }
         }
         else {
-            if(!DEBUGActivateMerchant) {
+            if(!DEBUGActivateMerchant && !DebugManager.Instance.GetDebugMode_Credits()) {
                 merchantHasTalkLinesToShow = MetaProgressionManager.Instance.GetMerchantHasTalkLinesToShow(hubMerchantType);
             }
         }
@@ -372,6 +372,7 @@ public class HubMerchant : MonoBehaviour
     #region SET PARAMETERS
 
     public void SetPlayerFinishedTalkingWithMerchant(bool openShopPanel) {
+        Debug.Log(this + " SetPlayerFinishedTalkingWithMerchant ");
         merchantHasTalkLinesToShow = false;
 
         if (openShopPanel && isHubMerchant) {
@@ -383,6 +384,7 @@ public class HubMerchant : MonoBehaviour
     }
 
     public void SetHasTalkLinesToShow(bool hasTalkLinesToShow, bool showExclamationMark = true, bool loadingFromLevelSave = false) {
+        Debug.Log(this + " SetHasTalkLinesToShow " + hasTalkLinesToShow);
         merchantHasTalkLinesToShow = hasTalkLinesToShow;
 
         if (hasTalkLinesToShow && showExclamationMark) {
@@ -397,6 +399,7 @@ public class HubMerchant : MonoBehaviour
     }
 
     public void SetHasTalkLinesToShowAfterDelay(bool hasTalkLinesToShow, bool showExclamationMark = true, float delay = 0f) {
+        Debug.Log(this + " SetHasTalkLinesToShowAfterDelay " + hasTalkLinesToShow);
         StartCoroutine(SetHasTalkLinesToShowAfterDelayCoroutine(hasTalkLinesToShow, showExclamationMark, delay));   
         
     }

@@ -132,6 +132,7 @@ public class PlayerShoot : MonoBehaviour
     private bool projectileExplodesOnPlayerClickModeActive;
     private bool projectileExplodesOnPlayerClick;
     private bool aaGunSpawnsChildProjectiles;
+    private bool aaGunSpawnsMines;
     private bool rocketLauncherSpawnsMiniRockets;
 
     private bool canHold2Guns;
@@ -1103,16 +1104,32 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.AAGun) {
-            aaGunSpawnsChildProjectiles = !aaGunSpawnsChildProjectiles;
+            if(primarySecondaryAbilityEquipped) {
+                aaGunSpawnsChildProjectiles = !aaGunSpawnsChildProjectiles;
 
-            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
 
-            if (aaGunSpawnsChildProjectiles) {
-                OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                if (aaGunSpawnsChildProjectiles) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
             }
-            else {
-                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+           
+            if(secondarySecondaryAbilityEquipped) {
+                aaGunSpawnsMines = !aaGunSpawnsMines;
+
+                OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+
+                if (aaGunSpawnsMines) {
+                    OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                }
             }
+
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.RocketLauncher) {
@@ -1528,7 +1545,13 @@ public class PlayerShoot : MonoBehaviour
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
         }
 
-        if(rocketLauncherSpawnsMiniRockets) {
+        if (aaGunSpawnsMines) {
+            aaGunSpawnsMines = false;
+            OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+            OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (rocketLauncherSpawnsMiniRockets) {
             rocketLauncherSpawnsMiniRockets = false;
             OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
             OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
@@ -1755,6 +1778,9 @@ public class PlayerShoot : MonoBehaviour
 
     public bool GetAAGunSpawnsChildBullets() {
         return aaGunSpawnsChildProjectiles;
+    }
+    public bool GetAAGunSpawnsMines() {
+        return aaGunSpawnsMines;
     }
     public bool GetRocketLauncherMiniRockets() {
         return rocketLauncherSpawnsMiniRockets;

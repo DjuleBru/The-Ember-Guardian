@@ -18,6 +18,9 @@ public class GunProjectile_RocketLauncher : GunProjectile
     [SerializeField] private int childInitialForceMultiplier;
     [SerializeField] private int childBulletKnockback = 0;
 
+    [SerializeField] private Collider2D detectionCollider2D;
+    [SerializeField] private LayerMask creatureLayerMask;
+
     private Vector2 accelerationDirection;
     private float accelerationTimer;
 
@@ -37,6 +40,7 @@ public class GunProjectile_RocketLauncher : GunProjectile
             accelerationForce = 0;
             accelerationDuration = 0;
             rb.gravityScale = 4f;
+            detectionCollider2D.excludeLayers = creatureLayerMask;
         }
     }
     protected override void Update() {
@@ -66,6 +70,7 @@ public class GunProjectile_RocketLauncher : GunProjectile
     }
 
     protected override void Explode() {
+        detectionCollider2D.excludeLayers = 0;
 
         if (instantiateChildGunGroundProjectile) {;
 

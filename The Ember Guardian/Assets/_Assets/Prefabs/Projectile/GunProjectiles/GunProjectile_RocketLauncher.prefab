@@ -261,6 +261,10 @@ MonoBehaviour:
   childBulletLifetime: 0.1
   childInitialForceMultiplier: 0
   childBulletKnockback: 0
+  detectionCollider2D: {fileID: 5784463187960276629}
+  creatureLayerMask:
+    serializedVersion: 2
+    m_Bits: 32768
 --- !u!114 &1529635003993342330 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2690273212303444028, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
@@ -272,3 +276,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42da5e8baed4fed40bcbdcc0ed85dbe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!58 &5784463187960276629 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6929092909655158739, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
+  m_PrefabInstance: {fileID: 3490183974102124870}
+  m_PrefabAsset: {fileID: 0}

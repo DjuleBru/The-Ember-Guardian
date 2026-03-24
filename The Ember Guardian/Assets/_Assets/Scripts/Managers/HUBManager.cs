@@ -389,6 +389,7 @@ public class HUBManager : MonoBehaviour
                     // No other parallel level : activate next level(s)
 
                     if (hasShownParallelTextLinesSO) return;
+                    if (DebugManager.Instance.GetDebugMode_Credits()) return;
                     Debug.Log("levelSOToUnlockList " + levelSOToUnlockList.Count);
                     StartCoroutine(ActivateTeleportersCoroutine(levelSOToUnlockList));
                 }
@@ -682,13 +683,19 @@ public class HUBManager : MonoBehaviour
         return endGameSequenceStarted;
     }
 
+    [Button]
+    public void DebugEndGameCinematic() {
+        StartCoroutine(EndGameCinematicCoroutine());
+    }
+
     private IEnumerator EndGameCinematicCoroutine() {
         SceneLoader.Instance.StartFadeIn(1.5f, true);
         CameraManager.Instance.ZoomIn(false, 1.5f, 2f);
         CameraManager.Instance.ChangeCameraTarget(gemMerchant.GetCameraFocusTransform());
-        MusicManager.Instance.SetAudioVolume(.5f);
+        MusicManager.Instance.SetAudioVolume(1f);
         gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().StartTalkingToMerchantCoroutine_EndGame();
         gemMerchant.SetHasTalkLinesToShow(false);
+        MusicManager.Instance.PlayCreditsMusic();
 
         yield return new WaitForSeconds(3f);
         // Black screen
@@ -698,9 +705,7 @@ public class HUBManager : MonoBehaviour
 
         float scrollTimeInEachEnvironment = 6f;
 
-        yield return new WaitForSeconds(2f);
-        MusicManager.Instance.PlayCreditsMusic();
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(4.5f);
         gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().ShowNextTextLine(true);
         yield return new WaitForSeconds(scrollTimeInEachEnvironment);
         gemMerchant.GetComponentInChildren<HubMerchantTalkUI>().ShowNextTextLine(true);
@@ -731,7 +736,11 @@ public class HUBManager : MonoBehaviour
             if(creditsMode) {
                 merchant.SetDemoMerchantDecorational();
                 merchant.SetHasTalkLinesToShow(true, false);
-                merchant.GetComponentInChildren<HubMerchantTalkUI>().SetCreditsTextLinesSO();
+
+                if(merchant.GetComponentInChildren<HubMerchantTalkUI>() != null) {
+                    merchant.GetComponentInChildren<HubMerchantTalkUI>().SetCreditsTextLinesSO();
+                }
+
             } else {
                 merchant.SetDemoMerchantFunctional();
                 merchant.SetHasTalkLinesToShow(false, false);

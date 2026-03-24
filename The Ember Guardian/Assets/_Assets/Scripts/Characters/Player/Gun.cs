@@ -87,6 +87,7 @@ public class Gun : MonoBehaviour
     protected float lmgBlastModeCooldownRangeDebuff = 1.6f;
 
     protected float assaultRifleHomingBulletsDebuff = 1.5f;
+    protected float aaGunSpawnsMinesBulletSpeedDebuff = 1.5f;
 
     protected int pierceAmount = 1;
     protected int projectilesShotAmount = 1;
@@ -369,6 +370,16 @@ public class Gun : MonoBehaviour
             }
         }
 
+        if (gunSO.gunType == GunSO.GunType.AAGun) {
+            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+                if (PlayerShoot.Instance.GetAAGunSpawnsMines()) {
+                    bulletSpeed /= aaGunSpawnsMinesBulletSpeedDebuff;
+                }
+                else {
+                    bulletSpeed *= aaGunSpawnsMinesBulletSpeedDebuff;
+                }
+            }
+        }
     }
 
     protected void PlayerShoot_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {

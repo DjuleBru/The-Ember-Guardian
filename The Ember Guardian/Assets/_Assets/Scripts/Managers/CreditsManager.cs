@@ -87,7 +87,9 @@ public class CreditsManager : MonoBehaviour
         isShowingCredits = true;
         RefreshFonts();
 
-        MusicManager.Instance.SetAudioVolume(.8f);
+        if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            MusicManager.Instance.SetAudioVolume(1.5f);
+        }
         creditsCoroutine = StartCoroutine(ShowCredits());
     }
     private void OnTypewriterStart() {
@@ -102,7 +104,7 @@ public class CreditsManager : MonoBehaviour
             HUBManager.Instance.SetHubMerchantsCreditsMode(true);
             HUBManager.Instance.SetHubFireAndChestInteractable(false);
             HubChest.Instance.SetCanOpenChest(false);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
@@ -121,7 +123,7 @@ public class CreditsManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         creditNamesTypeWriter.ShowText("Julien Taconet");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3.5f);
         creditTitleTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(.5f);
         creditNamesTypeWriter.StartDisappearingText();
@@ -131,7 +133,7 @@ public class CreditsManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         creditNamesTypeWriter.ShowText("Slug Disco");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3.5f);
         creditTitleTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(.5f);
         creditNamesTypeWriter.StartDisappearingText();
@@ -143,7 +145,7 @@ public class CreditsManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         creditNamesTypeWriter2.ShowText("Krishna Palacio");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3.5f);
         creditTitleTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(.5f);
         creditNamesTypeWriter.StartDisappearingText();
@@ -157,7 +159,7 @@ public class CreditsManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         creditNamesTypeWriter2.ShowText("Nico Square");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3.5f);
         creditTitleTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(.5f);
         creditNamesTypeWriter.StartDisappearingText();
@@ -173,7 +175,7 @@ public class CreditsManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         creditNamesTypeWriter3.ShowText("Matryoshka");
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(3.5f);
         creditTitleTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(.5f);
         creditNamesTypeWriter.StartDisappearingText();
@@ -196,28 +198,51 @@ public class CreditsManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         creditNamesTypeWriter2.ShowText("Javingor");
         yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter3.ShowText("TheRoyalTiger");
+        creditNamesTypeWriter3.ShowText("Verneveyel");
         creditNamesTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(1f);
 
-        creditNamesTypeWriter.ShowText("Verneveyel");
+        creditNamesTypeWriter.ShowText("Pepital");
         creditNamesTypeWriter2.StartDisappearingText();
         yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter2.ShowText("Reuhnarr");
+        creditNamesTypeWriter2.ShowText("TheRoyalTiger");
         creditNamesTypeWriter3.StartDisappearingText();
         yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter3.ShowText("CodeMonkey");
+        creditNamesTypeWriter3.ShowText("Reuhnarr");
+        creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter.ShowText("Hekter");
+        creditNamesTypeWriter2.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter2.ShowText("Cornbread");
+        creditNamesTypeWriter3.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter3.ShowText("Sarix");
+        creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter.ShowText("Belgold");
+        creditNamesTypeWriter2.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter2.ShowText("Burly");
+        creditNamesTypeWriter3.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter3.ShowText("SirQuani");
+        creditNamesTypeWriter.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter.ShowText("Eruvanos");
+        creditNamesTypeWriter2.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
+        creditNamesTypeWriter2.ShowText("Zaldair");
+        creditNamesTypeWriter3.StartDisappearingText();
+        yield return new WaitForSeconds(1f);
         creditNamesTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(1f);
         creditNamesTypeWriter2.StartDisappearingText();
-        yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter3.StartDisappearingText();
 
         yield return new WaitForSeconds(1f);
         creditNamesTypeWriter2.ShowText("Romane, pour ta confiance depuis le premier jour. Merci <3");
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(5f);
 
-        yield return new WaitForSeconds(2f);
         creditTitleTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(2f);
         creditNamesTypeWriter2.StartDisappearingText();

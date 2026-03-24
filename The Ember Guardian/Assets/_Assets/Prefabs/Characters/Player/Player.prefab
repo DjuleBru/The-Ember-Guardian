@@ -25299,7 +25299,7 @@ GameObject:
   - component: {fileID: 7434450212659423376}
   - component: {fileID: 6052701152597997281}
   - component: {fileID: 3482212332294706136}
-  - component: {fileID: 406572666641683844}
+  - component: {fileID: 2517584996942569001}
   m_Layer: 12
   m_Name: AAGun
   m_TagString: Untagged
@@ -25457,7 +25457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useDebugJam: 0
   debugJamQTEType: 0
---- !u!114 &406572666641683844
+--- !u!114 &2517584996942569001
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -25466,7 +25466,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 783028778376710330}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cdc6f419beb27f4db9dac289a2303ef, type: 3}
+  m_Script: {fileID: 11500000, guid: 6cb2cd33672e4504bb5cbdf75c8c0c83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   minIntervalBetweenSameClip: 0.1
@@ -25477,6 +25477,10 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.75
   lastBulletVolume: 1.2
+  layMinesShootAudioClips:
+  - {fileID: 8300000, guid: b2a8d76a89a66a84db849af5a2d69599, type: 3}
+  - {fileID: 8300000, guid: b595fc1c8910252439ad13d62bf6abec, type: 3}
+  - {fileID: 8300000, guid: e38b934fe7dc0d043bfc7c70e9d4be90, type: 3}
 --- !u!1 &791928386114633328
 GameObject:
   m_ObjectHideFlags: 0

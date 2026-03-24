@@ -65,6 +65,10 @@ PrefabInstance:
       value: GunProjectile_AAGun
       objectReference: {fileID: 0}
     - target: {fileID: 5727399341827924888, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
+      propertyPath: explosionVolumeMultiplier
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5727399341827924888, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
       propertyPath: bounce1AudioClips.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -227,6 +231,12 @@ MonoBehaviour:
   damageToFlyingMultiplier: 4
   childGunAirProjectilePrefab: {fileID: 2727138796013701904, guid: 12b5d16bc7b60884ead6197d0d5b0955, type: 3}
   childGunProjectilePrefab: {fileID: 2727138796013701904, guid: fa5714a89893bdd42870cebb1d16fffa, type: 3}
+  projectileAnimator: {fileID: 2084934962032023392}
+  mineAnimator: {fileID: 22100000, guid: afa276622a230f642849cc1a52c0b7bd, type: 2}
+  detectionCollider: {fileID: 5784463187960276629}
+  creatureLayerMask:
+    serializedVersion: 2
+    m_Bits: 32768
   childBulletLifetime: 10
   childBulletAirLifetime: 0.5
   childBulletKnockback: 0
@@ -241,3 +251,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42da5e8baed4fed40bcbdcc0ed85dbe4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &2084934962032023392 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3206759300704263718, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
+  m_PrefabInstance: {fileID: 3490183974102124870}
+  m_PrefabAsset: {fileID: 0}
+--- !u!58 &5784463187960276629 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 6929092909655158739, guid: 536c1e5e297258a459e47d9ff303276b, type: 3}
+  m_PrefabInstance: {fileID: 3490183974102124870}
+  m_PrefabAsset: {fileID: 0}
