@@ -214,7 +214,7 @@ public class CreditsManager : MonoBehaviour
         creditNamesTypeWriter.ShowText("Hekter");
         creditNamesTypeWriter2.StartDisappearingText();
         yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter2.ShowText("Cornbread");
+        creditNamesTypeWriter2.ShowText("Corbin");
         creditNamesTypeWriter3.StartDisappearingText();
         yield return new WaitForSeconds(1f);
         creditNamesTypeWriter3.ShowText("Sarix");
