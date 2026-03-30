@@ -223,7 +223,12 @@ public class LevelManager : MonoBehaviour
         Vector3 endLevelPortalPosition = endLevelPortal.transform.position; 
 
         if (setEndLevelPositionRelativeToPlayer) {
-            endLevelPortalPosition = new Vector3(Player.Instance.transform.position.x + 10f, 0, 0);
+            Vector3 newPosition = new Vector3(Player.Instance.transform.position.x + 10f, 0, 0);
+            if(newPosition.x > maxLevelLimit) {
+                newPosition.x = (Player.Instance.transform.position.x - 10f);
+            }
+
+            endLevelPortalPosition = newPosition;
         }
 
         if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.SurviveNights) {
@@ -355,11 +360,18 @@ public class LevelManager : MonoBehaviour
     }
 
     private IEnumerator EnableEndLevelPortalCoroutine(float delayToEnable) {
-        yield return new WaitForSeconds(delayToEnable);
+        yield return new WaitForSeconds(delayToEnable - 1f);
+
+        CameraManager.Instance.ChangeCameraTarget(endLevelPortal.transform);
+
+        yield return new WaitForSeconds(1f);
         endLevelPortal.gameObject.SetActive(true);
         OnEndLevelPortalEnabled?.Invoke(this, new OnEndLevelPortalEnabledEventArgs {
             endLevelPortalPosition = endLevelPortal.transform.position
         });
+
+        yield return new WaitForSeconds(2f);
+        CameraManager.Instance.ResetCameraTargetToPlayer();
     }
 
     [Button]

@@ -243,7 +243,12 @@ public class Creature : Mob
             MetaProgressionManager.Instance.SetCreatureUnlocked(creatureSO);
         }
 
-        dropRedOrbs = MetaProgressionManager.Instance.GetDropRedOrbsUnlocked() && PlayerCamp.Instance.GetHasSkillMerchantInLayoutAndUnlocked();
+        bool isHordeMode = LevelManager.Instance != null && LevelManager.Instance.IsHordeMode();
+        if (isHordeMode) {
+            dropRedOrbs = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.OrbAlchemist);
+        } else {
+            dropRedOrbs = MetaProgressionManager.Instance.GetDropRedOrbsUnlocked() && PlayerCamp.Instance.GetHasSkillMerchantInLayoutAndUnlocked();
+        }
 
         if (dropRedOrbs) {
             float randomValue = UnityEngine.Random.value;
@@ -263,7 +268,7 @@ public class Creature : Mob
             DemoDropGems();
         }
 
-        if (LevelManager.Instance != null && LevelManager.Instance.IsHordeMode()) {
+        if (isHordeMode) {
 
             HordeModeDropGems();
 

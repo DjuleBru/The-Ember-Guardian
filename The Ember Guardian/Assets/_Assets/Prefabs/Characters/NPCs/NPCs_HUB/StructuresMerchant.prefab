@@ -2700,6 +2700,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoScrollWithMouse: 0
   doNotLerp: 0
+  dropdownMenuAutoScroll: 0
 --- !u!114 &3838485462143979392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3478,6 +3479,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 0f338339418401d42aa13d5d4e18fb66, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 11
@@ -3901,6 +3903,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: f2294d71d61fd4749aa94cd4edb1177a, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 9
@@ -4280,6 +4283,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 13
@@ -4684,6 +4688,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 2673c1d73eba146448a0069caf19330d, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 22
@@ -5099,6 +5104,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 7c892d89dacdb4749b5f6c2998419d87, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 7
@@ -5480,6 +5486,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 14
@@ -5873,6 +5880,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 12
@@ -6273,6 +6281,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 12ae614a7b7c5eb4cbb909a2313df0a4, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 10
@@ -6672,6 +6681,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 7c892d89dacdb4749b5f6c2998419d87, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 6
@@ -6806,7 +6816,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -116
+      value: 135
       objectReference: {fileID: 0}
     - target: {fileID: 3162550493512327587, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
@@ -6846,7 +6856,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 125
+      value: 127.5
       objectReference: {fileID: 0}
     - target: {fileID: 3628902914885096712, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -6879,6 +6889,22 @@ PrefabInstance:
     - target: {fileID: 4275334315943472678, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 9.900002
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 407.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4446599287728712335, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -7112,6 +7138,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 0
@@ -7504,6 +7531,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: af9204d65ce90ae468ce6b859531cd7c, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 17
@@ -7889,6 +7917,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 16
@@ -8315,6 +8344,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 26f600a5000a94842811ebe44056881c, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 3
@@ -8741,6 +8771,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: d787434fc9af1d741a91736d13b99b53, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 1
@@ -9119,6 +9150,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: da3a4d8d24fd0e741bb9214fb560a896, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 18
@@ -9526,6 +9558,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 12ec1d01e06e2c44cac35a376adb2b6d, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 20
@@ -9904,6 +9937,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 23
@@ -10319,6 +10353,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 6ed5ac87abee71f4ba0a1e940b5e85cb, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 15
@@ -10729,6 +10764,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 739f167c50bbb644196b0c20cd2878d9, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 5
@@ -11139,6 +11175,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 729e1710c0bca65489bdc54c2f75005e, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 4
@@ -11549,6 +11586,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 892c0a9e71ea25b45834dade033e7e6c, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 2
@@ -12302,6 +12340,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 24
@@ -12686,6 +12725,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 40fd06512d9a6494b845b31b4f1f94c1, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 8
@@ -13075,6 +13115,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: a9d6631ee5bab2f4e897b4ca0b90aa15, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 21
@@ -13468,6 +13509,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: df469b633377aa54e9e02d138bcd4a20, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 19
@@ -13894,6 +13936,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 1
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 2d354bb0dfc14624680b787725251a8d, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   architectItemType: 25

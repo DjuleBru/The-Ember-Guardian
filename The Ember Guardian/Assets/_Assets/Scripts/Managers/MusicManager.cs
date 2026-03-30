@@ -168,6 +168,7 @@ public class MusicManager : MonoBehaviour {
             Player.Instance.OnPlayerDied += Player_OnPlayerDied;
             Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
             HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
+            HubMerchant.OnPlayerOpenedAnyHubMerchantShop += HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
             Fire.Instance.OnFireDamageTaken += Fire_OnFireDamageTaken;
             Player.Instance.OnPlayerStartedExploring += Player_OnPlayerStartedExploring;
@@ -205,6 +206,7 @@ public class MusicManager : MonoBehaviour {
         }
 
     }
+
 
     public void FadeInToMainMenuMusic() {
         StartCoroutine(FadeOutThenInCoroutine(1f, 1f, mainMenuMusic));
@@ -326,17 +328,23 @@ public class MusicManager : MonoBehaviour {
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         targetVolume = volumeBeforeTalkingToNPC;
         if (isPlayingLevelDiscoveryMusic || isPlayingPeacefulMusic || isPlayingExplorationMusic) {
-            StartCoroutine(FadeInCoroutine(1f, volumeBeforeTalkingToNPC / 1.5f));
+            StartCoroutine(FadeInCoroutine(.5f, volumeBeforeTalkingToNPC / 1.5f));
         }
     }
 
     private void HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant(object sender, EventArgs e) {
-
         if (isPlayingLevelDiscoveryMusic || isPlayingPeacefulMusic || isPlayingExplorationMusic) {
             volumeBeforeTalkingToNPC = audioSourceA.volume;
-            StartCoroutine(FadeOutCoroutine(1f, volumeBeforeTalkingToNPC / 1.5f));
+            StartCoroutine(FadeOutCoroutine(.5f, volumeBeforeTalkingToNPC / 1.5f));
         }
 
+    }
+
+    private void HubMerchant_OnPlayerOpenedAnyHubMerchantShop(object sender, EventArgs e) {
+        if (isPlayingLevelDiscoveryMusic || isPlayingPeacefulMusic || isPlayingExplorationMusic) {
+            volumeBeforeTalkingToNPC = audioSourceA.volume;
+            StartCoroutine(FadeOutCoroutine(.5f, volumeBeforeTalkingToNPC / 1.5f));
+        }
     }
 
     private void PauseMenuUI_OnPauseMenuOpened(object sender, EventArgs e) {
@@ -909,6 +917,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void FadeOutMusic(float fadeDuration) {
+        Debug.Log("FadeOutMusic");
         isPlayingLevelDiscoveryMusic = false;
         isPlayingPeacefulMusic = false;
         isPlayingEndLevelAreaMusic = false;
@@ -1104,6 +1113,7 @@ public class MusicManager : MonoBehaviour {
             LevelManager.Instance.OnNewLocationShown -= LevelManager_OnNewLocationShown;
             Fire.Instance.OnInitialFireActivated -= Fire_OnInitialFireActivated;
             HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant -= HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
+            HubMerchant.OnPlayerOpenedAnyHubMerchantShop -= HubMerchant_OnPlayerOpenedAnyHubMerchantShop;
             HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         }
 

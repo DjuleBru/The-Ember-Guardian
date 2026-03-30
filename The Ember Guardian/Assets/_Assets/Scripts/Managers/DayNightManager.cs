@@ -103,7 +103,7 @@ public class DayNightManager : MonoBehaviour
 
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
-        Debug.Log("HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant");
+        SetCyclePaused(false, true);
         OnCycleUnpaused?.Invoke(this, EventArgs.Empty);
     }
 
@@ -113,7 +113,6 @@ public class DayNightManager : MonoBehaviour
     }
 
     private void HubMerchantUI_OnAnyHubMerchantCloseUIPanel(object sender, EventArgs e) {
-        //Debug.Log("HubMerchantUI_OnAnyHubMerchantCloseUIPanel");
         SetCyclePaused(false, true);
     }
 

@@ -52,6 +52,12 @@ public class ButtonUI : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPo
 
     #region NAVIGATION
 
+    public void SelectExternal() {
+        buttonSelected = true;
+
+        OnAnyButtonSelected?.Invoke(this, EventArgs.Empty);
+    }
+
     public void OnSelect(BaseEventData eventData) {
         buttonSelected = true;
 

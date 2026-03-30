@@ -196,7 +196,6 @@ public class GunMerchantUI_HordeMode : MonoBehaviour
     }
 
     private Button GetGunItemsButton(GunSO gunSO) {
-        Debug.Log("GetGunItemsButton " + gunSO);
         if (gunSO.gunType == GunSO.GunType.Rifle) {
             return rifleButton;
         }

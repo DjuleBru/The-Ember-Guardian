@@ -140,8 +140,13 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
+        if(itemHovered || itemSelected) {
+            descriptionCard.gameObject.SetActive(false);
+        }
+
         itemHovered = false;
         itemSelected = false;
+
     }
 
     private void GameInput_OnRefundGunPerformed(object sender, EventArgs e) {
@@ -798,6 +803,7 @@ public class ItemButtonUI : ButtonUI {
         if (lockHoverInteractions) return;
         if (!GameInput.Instance.IsUsingGamepad()) return;
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
+
         if (this == itemButtonUI) {
             itemSelected = true;
             descriptionCard.gameObject.SetActive(true);

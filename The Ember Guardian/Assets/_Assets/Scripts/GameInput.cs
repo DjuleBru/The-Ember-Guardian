@@ -320,6 +320,7 @@ public class GameInput : MonoBehaviour
     private void DetectControlSchemeMouse() {
         Vector2 mousePosition = Input.mousePosition;
         Vector2 gamepadLookInput = playerInputActions.Player.Aim.ReadValue<Vector2>();
+        float gamepadMoveInput = playerInputActions.Player.Move.ReadValue<float>();
 
         // Détecte l'utilisation de la souris
         if ((mousePosition - lastMousePosition).sqrMagnitude > 0.01f) {
@@ -332,7 +333,7 @@ public class GameInput : MonoBehaviour
         }
 
         // Détecte l'utilisation du joystick droit
-        if (gamepadLookInput.magnitude > 0.1f) {
+        if (gamepadLookInput.magnitude > 0.1f || Mathf.Abs(gamepadMoveInput) > 0.1f) {
             if(!isUsingGamepad) {
                 currentControlScheme = "Gamepad";
                 isUsingGamepad = true;

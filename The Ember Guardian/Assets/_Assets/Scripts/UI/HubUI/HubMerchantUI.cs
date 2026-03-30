@@ -133,6 +133,10 @@ public class HubMerchantUI : MonoBehaviour
 
         if(GameInput.Instance.IsUsingGamepad()) {
             EventSystem.current.SetSelectedGameObject(firstButtonSelected);
+            ButtonUI buttonUI = firstButtonSelected.GetComponent<ButtonUI>();
+            if (buttonUI != null) {
+                buttonUI.SelectExternal();
+            }
         }
 
         OnAnyHubMerchantOpenUIPanel?.Invoke(this, EventArgs.Empty);
