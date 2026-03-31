@@ -852,7 +852,7 @@ public class SoundManager : MonoBehaviour
             PlaySound2D(soundRefsSO.switchGunFireMode_revolver, 1);
         }
         if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Pistol) {
-            PlaySound2D(soundRefsSO.switchGunFireMode_pistol, 1);
+            PlaySound2D(soundRefsSO.switchGunFireMode_pistol, .5f);
         }
         if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.LMG && PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
             PlaySound2D(soundRefsSO.switchGunFireMode_LMG, 1);
@@ -869,7 +869,6 @@ public class SoundManager : MonoBehaviour
 
     private void Player_OnPlayerFocusBlastStopped(object sender, System.EventArgs e) {
         gunPoweringUpAudioSource.Stop();
-        Debug.Log("stop");
     }
 
     private void PlayerShoot_OnShotStartedLoading(object sender, System.EventArgs e) {

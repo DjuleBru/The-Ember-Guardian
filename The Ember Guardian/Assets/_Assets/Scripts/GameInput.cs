@@ -318,13 +318,43 @@ public class GameInput : MonoBehaviour
     }
 
     private void DetectControlSchemeMouse() {
+        string scheme = playerInput.currentControlScheme;
         Vector2 mousePosition = Input.mousePosition;
         Vector2 gamepadLookInput = playerInputActions.Player.Aim.ReadValue<Vector2>();
-        float gamepadMoveInput = playerInputActions.Player.Move.ReadValue<float>();
 
         // Détecte l'utilisation de la souris
-        if ((mousePosition - lastMousePosition).sqrMagnitude > 0.01f) {
+        if ((mousePosition - lastMousePosition).sqrMagnitude > 0.1f) {
             lastMousePosition = mousePosition;
+            if (isUsingGamepad) {
+                currentControlScheme = "Keyboard";
+                isUsingGamepad = false;
+                OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
+            };
+            return;
+        }
+
+        // Détecte l'utilisation du joystick droit
+        if (gamepadLookInput.magnitude > 0.1f) {
+            if (!isUsingGamepad) {
+                currentControlScheme = "Gamepad";
+                isUsingGamepad = true;
+                OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
+            }
+            return;
+        }
+
+
+        if (playerInput.currentControlScheme == "Gamepad") {
+
+            if (!isUsingGamepad) {
+                currentControlScheme = "Gamepad";
+                isUsingGamepad = true;
+                OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        if (playerInput.currentControlScheme == "Keyboard") {
+
             if (isUsingGamepad) {
                 currentControlScheme = "Keyboard";
                 isUsingGamepad = false;
@@ -332,15 +362,8 @@ public class GameInput : MonoBehaviour
             };
         }
 
-        // Détecte l'utilisation du joystick droit
-        if (gamepadLookInput.magnitude > 0.1f || Mathf.Abs(gamepadMoveInput) > 0.1f) {
-            if(!isUsingGamepad) {
-                currentControlScheme = "Gamepad";
-                isUsingGamepad = true;
-                OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
     }
+
     public Vector2 GetGamepadLookInput() {
         Vector2 input = playerInputActions.Player.Aim.ReadValue<Vector2>();
         return input.magnitude > gamepadDeadzone ? input : Vector2.zero;

@@ -618,6 +618,7 @@ public class Gun : MonoBehaviour
     }
 
     protected virtual void Shoot() {
+        //Debug.Log(damagePerBullet);
         if(gunSO.bulletIsSprite) {
             return;
         }
@@ -699,6 +700,7 @@ public class Gun : MonoBehaviour
     }
 
     public void BuffBulletDamage(float buffAmount, bool globalBuff = true) {
+        Debug.Log("BuffBulletDamage " + buffAmount + " globalBuff " + globalBuff);
         if(globalBuff) {
             totalBuffMultiplier *= buffAmount;
         } else {
@@ -709,6 +711,7 @@ public class Gun : MonoBehaviour
     }
 
     public void DebuffBulletDamage(float debuffAmount, bool globalDebuff = true) {
+        Debug.Log("DebuffBulletDamage " + debuffAmount + " globalBuff " + globalDebuff);
         if (globalDebuff) {
             totalBuffMultiplier /= debuffAmount;
         }
@@ -726,14 +729,15 @@ public class Gun : MonoBehaviour
     protected void CheckPassiveSkillEffectsOnBullet() {
         if(PlayerSkills.Instance.GetLastBulletDealsMoreDamage()) {
 
+            float damageBuff = PlayerSkills.Instance.GetLastBulletDealsMoreDamageBuff();
             if (lastBulletShot) {
                 lastBulletShot = false;
                 OnDebuffLastBulletShot?.Invoke(this, EventArgs.Empty);
+                DebuffBulletDamage(damageBuff);
             }
 
             if (PlayerShoot.Instance.GetCurrentBullets() == 0 && !lastBulletShot) {
                 //Last bullet
-                float damageBuff = PlayerSkills.Instance.GetLastBulletDealsMoreDamageBuff();
                 BuffBulletDamage(damageBuff);
                 OnBuffedLastBulletShot?.Invoke(this, EventArgs.Empty);
                 lastBulletShot = true;

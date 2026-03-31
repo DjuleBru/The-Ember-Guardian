@@ -22,7 +22,7 @@ public class WorkerStats : MonoBehaviour
     private int initialHunterHealth = 2;
     private int initialHunterDamage = 10;
     private float initialHunterAttackCooldown = 3f;
-    private float initialHunterAccuracy = 1.5f;
+    private float initialHunterAccuracy = .9f;
     private int hunterDamageBuff;
     private int hunterHealthBuff;
     private float hunterAttackCooldownBuff;
@@ -228,7 +228,7 @@ public class WorkerStats : MonoBehaviour
         return initialGuardHealth + guardHealthBuff;
     }
     public float GetHunterAccuracy() {
-        float accuracy = initialHunterAccuracy - hunterAccuracyBuff / 100f;
+        float accuracy = initialHunterAccuracy - initialHunterAccuracy*hunterAccuracyBuff / 100f;
         if(accuracy < 0) {
             accuracy = 0;
         }

@@ -580,7 +580,7 @@ public class DogAI : MonoBehaviour
 
         yield return new WaitForSeconds(biteAnimationDelay - standStillDelay);
 
-        if (creature != null) {
+        if (creature != null && !creature.GetDead()) {
 
             if (dogAIType == Dog.DogType.GermanShepherd) {
                 // Flying creature went back up ?
@@ -588,11 +588,16 @@ public class DogAI : MonoBehaviour
                     dogMovement.SetMoveTarget(transform.position);
                     ChangeState(State.barking);
                     biteStarted = false;
+                    biteReady = true;
                     yield break;
                 }
             }
 
             closestCreature.TakeDamage(GetBiteDamage(), transform);
+
+        } else {
+
+            biteReady = true;
         }
 
         dogMovement.SetMoveTarget(transform.position);

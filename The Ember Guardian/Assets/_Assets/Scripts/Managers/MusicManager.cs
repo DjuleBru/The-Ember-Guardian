@@ -917,7 +917,7 @@ public class MusicManager : MonoBehaviour {
     }
 
     public void FadeOutMusic(float fadeDuration) {
-        Debug.Log("FadeOutMusic");
+        //Debug.Log("FadeOutMusic");
         isPlayingLevelDiscoveryMusic = false;
         isPlayingPeacefulMusic = false;
         isPlayingEndLevelAreaMusic = false;

@@ -76,7 +76,7 @@ public class WorkerMovement : MobMovement
             moveSpeedBuff = WorkerStats.Instance.GetGuardMoveSpeedBuff();
         }
         if (workerAI.GetJob() == WorkerAI.JobTypes.miner) {
-            Debug.Log(gameObject + " SetMoveSpeed " + moveSpeed);
+            //Debug.Log(gameObject + " SetMoveSpeed " + moveSpeed);
             moveSpeedBuff = WorkerStats.Instance.GetMinerMoveSpeedBuff();
         }
         if (workerAI.GetJob() == WorkerAI.JobTypes.engineer) {

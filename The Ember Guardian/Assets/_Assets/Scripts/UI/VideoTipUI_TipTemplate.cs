@@ -66,6 +66,7 @@ public class VideoTipUI_TipTemplate : MonoBehaviour, ISelectHandler, IPointerEnt
     }
 
     private void RefreshFontMaterial() {
+        tipNameText.font = LocalizationManager.Instance.GetCurrentFont();
         if (tipNewlyUnlocked) {
             tipNameText.fontMaterial = LocalizationManager.Instance.GetBlueGlowMaterial();
         }

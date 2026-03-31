@@ -87,7 +87,9 @@ public class WorkerAttack : MobAttack
             homingProjectile = UnityEngine.Random.value < probabilityToHaveHomingProjectileOnCreature;
         }
         else {
-            homingProjectile = false;
+
+            float probabilityToHaveHomingProjectileOnAnimal = WorkerStats.Instance.GetHunterAccuracyBuff()/200f;
+            homingProjectile = UnityEngine.Random.value < probabilityToHaveHomingProjectileOnAnimal;
         }
         
         base.Attack();

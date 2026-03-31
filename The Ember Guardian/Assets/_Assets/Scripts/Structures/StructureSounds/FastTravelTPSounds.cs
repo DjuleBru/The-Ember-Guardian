@@ -22,30 +22,30 @@ public class FastTravelTPSounds : StructureSounds
     }
 
     private void FastTravelTP_OnOtherCharacterWarped(object sender, System.EventArgs e) {
-        PlaySound2D(warpAudioClip);
+        PlaySound2D(warpAudioClip, 2.5f);
     }
 
     private void FastTravelTP_OnReceiverFastTravelTPChanged(object sender, System.EventArgs e) {
-        PlaySound2D(selectReceiverTPAudioClip);
+        PlaySound2D(selectReceiverTPAudioClip, 2.5f);
     }
 
 
     private void FastTravelTP_OnPlayerWarpStarted(object sender, System.EventArgs e) {
-        PlaySound2D(warpStartAudioClip);
+        PlaySound2D(warpStartAudioClip, 2.5f);
     }
 
     private void FastTravelTP_OnPlayerCanceledTP(object sender, System.EventArgs e) {
-        PlaySound2D(positionOnTPAudioClip);
+        PlaySound2D(positionOnTPAudioClip, 2.5f);
     }
 
     private void FastTravelTP_OnPlayerWarped(object sender, System.EventArgs e) {
-        PlaySound2D(warpAudioClip);
+        PlaySound2D(warpAudioClip, 2.5f);
     }
 
     private void FastTravelTP_OnPlayerWarpedOut(object sender, System.EventArgs e) {
-        PlaySound2D(warpAudioClip);
+        PlaySound2D(warpAudioClip, 2.5f);
     }
     private void FastTravelTP_OnPlayerPositionedOnTP(object sender, System.EventArgs e) {
-        PlaySound2D(positionOnTPAudioClip);
+        PlaySound2D(positionOnTPAudioClip, 2.5f);
     }
 }

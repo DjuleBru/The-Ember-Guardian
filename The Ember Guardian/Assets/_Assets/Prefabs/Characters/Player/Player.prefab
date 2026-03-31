@@ -25477,6 +25477,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.75
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
   layMinesShootAudioClips:
   - {fileID: 8300000, guid: b2a8d76a89a66a84db849af5a2d69599, type: 3}
   - {fileID: 8300000, guid: b595fc1c8910252439ad13d62bf6abec, type: 3}
@@ -43648,6 +43649,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.3
   lastBulletPitch: 1.3
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
 --- !u!1 &2247522805809411216
 GameObject:
   m_ObjectHideFlags: 0
@@ -44363,6 +44365,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.3
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
 --- !u!1 &2323658240935819318
 GameObject:
   m_ObjectHideFlags: 0
@@ -65672,6 +65675,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.75
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
 --- !u!1 &2683016430594531095
 GameObject:
   m_ObjectHideFlags: 0
@@ -90678,6 +90682,7 @@ MonoBehaviour:
   surgeBuffVolume: 0
   lastBulletPitch: 1.3
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
   shootMultipleGrenadesAudioClips:
   - {fileID: 8300000, guid: c1410f6e1f57dac4ca8a13a95d2fa028, type: 3}
 --- !u!114 &4319422627760036397
@@ -97601,6 +97606,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.75
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
 --- !u!1 &3755223407975608531
 GameObject:
   m_ObjectHideFlags: 0
@@ -133581,6 +133587,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.75
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
 --- !u!1 &4975682505801664034
 GameObject:
   m_ObjectHideFlags: 0
@@ -134638,7 +134645,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &824720439740459657
 Transform:
   m_ObjectHideFlags: 0
@@ -134809,6 +134816,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.75
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
   silencedAudioClips:
   - {fileID: 8300000, guid: e19663f781bb3164eaec3de06eb93189, type: 3}
   - {fileID: 8300000, guid: c406cce7323e38143bf11207d111197b, type: 3}
@@ -187462,7 +187470,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8408435833414752509
 Transform:
   m_ObjectHideFlags: 0
@@ -187639,6 +187647,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.3
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
 --- !u!114 &2317201065228283183
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201278,6 +201287,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.3
   lastBulletPitch: 1.3
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
 --- !u!114 &1691439504649091301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201298,6 +201308,7 @@ MonoBehaviour:
   surgeBuffVolume: 0
   lastBulletPitch: 1.3
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
   shootAudioSource: {fileID: 0}
   startShotAudioClips: []
   shootLoopAudioClips: []
@@ -206481,6 +206492,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.75
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
   piercingRoundsAudioClips:
   - {fileID: 8300000, guid: 7d18484cc8dfbb44ebe81bb03c6f56d0, type: 3}
   - {fileID: 8300000, guid: 85bd0ecfb69ec4040911f3ed2e76ad69, type: 3}
@@ -213721,6 +213733,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.75
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
 --- !u!1 &7915249734270255090
 GameObject:
   m_ObjectHideFlags: 0
@@ -218839,6 +218852,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.3
   lastBulletPitch: 1.75
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
   gunPoweringDownClip: {fileID: 8300000, guid: 5c95e06662bbb314aa8569be37262094, type: 3}
   gunPoweredClip: {fileID: 8300000, guid: 3a4efa3bcc013a443b9ee9f9033d978a, type: 3}
   secondaryFireModeAudioClips:
@@ -230364,6 +230378,7 @@ MonoBehaviour:
   surgeBuffVolume: 0.2
   lastBulletPitch: 1.75
   lastBulletVolume: 1.2
+  surgeMaxDuration: 10
 --- !u!1 &8408226057727364104
 GameObject:
   m_ObjectHideFlags: 0

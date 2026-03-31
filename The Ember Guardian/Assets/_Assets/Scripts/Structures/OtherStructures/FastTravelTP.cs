@@ -116,7 +116,11 @@ public class FastTravelTP : Structure
         OnPlayerWarped?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerWarped?.Invoke(this, EventArgs.Empty);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
+
+        CrossfadeManager.Instance.StartCrossfade();
+
+        yield return new WaitForSeconds(.5f);
 
         floorCollider.enabled = false;
         teleportingPlayer = false;
@@ -129,8 +133,10 @@ public class FastTravelTP : Structure
         isReceiverTP = true;
         floorCollider.enabled = true;
         Player.Instance.SetPosition(playerPositionOnTP.position);
-        CameraManager.Instance.SetCameraNotCenteredOnPlayer();
+        //CameraManager.Instance.SetCameraNotCenteredOnPlayer();
+        CameraManager.Instance.SetCameraPositionToPlayer();
         OnTPSetAsReceiver?.Invoke(this, EventArgs.Empty);
+        StartCoroutine(ReceiverTPCoroutine());
     }
 
     private void CameraManager_OnCameraCenteredOnPlayer(object sender, EventArgs e) {
@@ -140,6 +146,10 @@ public class FastTravelTP : Structure
     }
 
     private IEnumerator ReceiverTPCoroutine() {
+        CrossfadeManager.Instance.EndCrossfade();
+
+        yield return new WaitForSeconds(.5f);
+
         OnPlayerWarpedOut?.Invoke(this, EventArgs.Empty);
         OnAnyPlayerWarpedOut?.Invoke(this, EventArgs.Empty);
 

@@ -804,6 +804,10 @@ public class ItemButtonUI : ButtonUI {
         if (!GameInput.Instance.IsUsingGamepad()) return;
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
 
+        if (itemButtonUI == null) {
+            return;
+        }
+
         if (this == itemButtonUI) {
             itemSelected = true;
             descriptionCard.gameObject.SetActive(true);

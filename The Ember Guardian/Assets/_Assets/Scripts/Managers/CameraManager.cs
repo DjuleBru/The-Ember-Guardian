@@ -249,10 +249,13 @@ public class CameraManager : MonoBehaviour
 
     public void SetCameraPositionToPlayer() {
 
-        virtualCamera.OnTargetObjectWarped(
-            Player.Instance.transform,
-            Player.Instance.transform.position - virtualCamera.transform.position
-        );
+        Vector3 camPos = virtualCamera.transform.position;
+        Vector3 playerPos = Player.Instance.transform.position;
+
+        Vector3 delta = new Vector3(playerPos.x - camPos.x, 0f, 0f);
+
+        virtualCamera.OnTargetObjectWarped(Player.Instance.transform,delta);
+
 
         // Optionnel : reset le blend pour être sûr
         var brain = Camera.main.GetComponent<CinemachineBrain>();

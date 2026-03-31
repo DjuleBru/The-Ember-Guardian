@@ -185,7 +185,7 @@ public class MinerJob : WorkerJob {
     }
 
     private void Worker_OnWorkerDied(object sender, EventArgs e) {
-        Debug.Log("Worker_OnWorkerDied");
+        //Debug.Log("Worker_OnWorkerDied");
         UnAssignScavengable();
     }
 
@@ -304,7 +304,7 @@ public class MinerJob : WorkerJob {
     }
 
     public void UnAssignScavengable() {
-        Debug.Log("UnAssignScavengable " + assignedScavengable);
+        //Debug.Log("UnAssignScavengable " + assignedScavengable);
         if (assignedScavengable == null) return;
 
         assignedScavengable.UnassignMiner(this);
