@@ -10,6 +10,7 @@ public class DogDigAbility : MonoBehaviour
 
     public static DogDigAbility Instance;
 
+    private bool gamePaused;
     private bool digAbilityUnlocked;
     private bool sniffing;
     private bool fireLit;
@@ -35,6 +36,18 @@ public class DogDigAbility : MonoBehaviour
 
         digAbilityUnlocked = DogStats.Instance.GetGermanShepherdDigResourceAbilityUnlocked();
         digTimer = DogStats.Instance.GetGermanShepherdDigResourceCooldown();
+
+        if (DayNightManager.Instance != null) {
+            DayNightManager.Instance.OnCyclePausedByMerchantTalk += DayNightManager_OnCyclePausedByMerchantTalk;
+            DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
+        }
+    }
+    private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
+        gamePaused = false;
+    }
+
+    private void DayNightManager_OnCyclePausedByMerchantTalk(object sender, EventArgs e) {
+        gamePaused = true;
     }
 
     private void Fire_OnInitialFireActivated(object sender, EventArgs e) {
@@ -48,6 +61,7 @@ public class DogDigAbility : MonoBehaviour
     }
 
     private void Update() {
+        if (gamePaused) return;
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Level) return;
 
         if (!digAbilityUnlocked) return;
@@ -137,4 +151,10 @@ public class DogDigAbility : MonoBehaviour
         return sniffing;
     }
 
+    private void OnDestroy() {
+        if (DayNightManager.Instance != null) {
+            DayNightManager.Instance.OnCyclePausedByMerchantTalk -= DayNightManager_OnCyclePausedByMerchantTalk;
+            DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
+        }
+    }
 }

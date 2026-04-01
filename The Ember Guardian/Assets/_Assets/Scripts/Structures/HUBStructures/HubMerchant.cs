@@ -93,6 +93,8 @@ public class HubMerchant : MonoBehaviour
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
         GameInput.Instance.OnPlayerPausePerformed += GameInput_OnPlayerPausePerformed;
+        GameInput.Instance.OnPlayerRollPerformed += GameInput_OnPlayerRollPerformed;
+        GameInput.Instance.OnPlayerRunPerformed += GameInput_OnPlayerRunPerformed;
         Player.Instance.OnPlayerDamaged += Player_OnPlayerDamaged;
 
         if (isHubMerchant) {
@@ -229,6 +231,14 @@ public class HubMerchant : MonoBehaviour
     protected void GameInput_OnPlayerInteractPerformed(object sender, System.EventArgs e) {
         TryStartInteractingWithMerchant();
     }
+    private void GameInput_OnPlayerRunPerformed(object sender, EventArgs e) {
+        TryStopInteractingWithMerchant();
+    }
+
+    private void GameInput_OnPlayerRollPerformed(object sender, EventArgs e) {
+        TryStopInteractingWithMerchant();
+    }
+
 
     private void TryStopInteractingWithMerchant() {
         if (!playerInTriggerArea) return;

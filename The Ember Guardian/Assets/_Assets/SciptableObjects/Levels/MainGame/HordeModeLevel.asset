@@ -73,14 +73,14 @@ MonoBehaviour:
   bossNightSpawns: 050000000a0000000f00000014000000190000001e00000023000000280000002d00000032000000
   bossNightWaveDifficultyMultiplier: 0.5
   startWaveToSpawnFromBothSides: 1
-  baseDifficulty: 50
+  baseDifficulty: 35
   intialMinSubwaveDifficulty: 20
-  minSubwaveDifficulty: 45
+  minSubwaveDifficulty: 75
   intialMaxSubwaveDifficulty: 30
-  maxSubwaveDifficulty: 90
-  growthFactor: 1.15
-  typicalLevelDaysToComplete: 5
-  minMaxSubwaveDifficultyGrowthFactor: 1.25
+  maxSubwaveDifficulty: 150
+  growthFactor: 1.6
+  typicalLevelDaysToComplete: 10
+  minMaxSubwaveDifficultyGrowthFactor: 1.2
   setDifficultyAnimationCurve: 0
   difficultyAtMaxWave: 0
   difficultyAnimationCurve:
@@ -93,7 +93,7 @@ MonoBehaviour:
   canSpawnElite: 1
   hasSpecialWaveTypes: 1
   specialWaveTypesInLevel: 010000000200000003000000
-  specialWaveProbability: 0.15
+  specialWaveProbability: 0.1
   maxSpecialWaveAmount: 100
   environmentType: 0
   hasFog: 0

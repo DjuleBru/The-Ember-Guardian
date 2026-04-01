@@ -23,7 +23,7 @@ public class CreatureDetectionCollider : MonoBehaviour {
     private float guardHitCreatureAggroTime = 5f;
 
     private float refreshTargetTimer;
-    private float refreshTargetcooldown = .25f;
+    private float refreshTargetcooldown = .61f;
 
     // Targeting priorities : higher value = higher priority  
     private int workerTargetingPriority;

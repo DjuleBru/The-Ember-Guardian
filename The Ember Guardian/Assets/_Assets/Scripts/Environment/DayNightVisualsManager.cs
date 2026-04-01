@@ -259,7 +259,7 @@ public class DayNightVisualsManager : MonoBehaviour
 
         if (duskStarted) {
             transitionProgress += Time.deltaTime / transitionDuration;
-            if (inCave) return;
+            //if (inCave) return;
 
             if (transitionProgress < 1) {
                 globalLight2D.color = ColorTransition(dayLightColor, duskLightColor);
@@ -280,7 +280,7 @@ public class DayNightVisualsManager : MonoBehaviour
 
         if (nightStarted) {
             transitionProgress += Time.deltaTime / transitionDuration;
-            if (inCave) return;
+            //if (inCave) return;
 
             if (transitionProgress < 1) {
                 globalLight2D.color = ColorTransition(duskLightColor, nightLightColor);

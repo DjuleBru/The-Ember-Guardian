@@ -6,6 +6,10 @@ public class DiscoverLocationCollider : MonoBehaviour
 {
     public static bool playerCollided;
 
+    private void Awake() {
+        playerCollided = false;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision) {
         if (playerCollided) return;
 

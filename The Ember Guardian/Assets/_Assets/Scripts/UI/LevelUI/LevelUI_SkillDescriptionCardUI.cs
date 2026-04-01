@@ -23,14 +23,8 @@ public class LevelUI_SkillDescriptionCardUI : MonoBehaviour
     }
 
     private void Start() {
+        Debug.Log("Start");
         PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
-
-        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
-        itemNameText.font = font;
-        itemDescriptionText.font = font;
-        itemLoreDescriptionText.font = font;
-        itemStatTemplateText.font = font;
-        itemStatTemplateValue.font = font;
 
     }
 
@@ -46,7 +40,14 @@ public class LevelUI_SkillDescriptionCardUI : MonoBehaviour
     }
 
     public void SetDescriptionCardText(string itemName, List<string> itemStatDescriptionList, List<string> itemStatList) {
-       
+
+        TMP_FontAsset font = LocalizationManager.Instance.GetCurrentFont();
+        itemNameText.font = font;
+        itemDescriptionText.font = font;
+        itemLoreDescriptionText.font = font;
+        itemStatTemplateText.font = font;
+        itemStatTemplateValue.font = font;
+
         itemNameText.text = LocalizationManager.Instance.GetLocalizedText(itemName);
         string itemDescriptionKey = itemName + "_ItemDescription";
         itemDescriptionText.text = LocalizationManager.Instance.GetLocalizedText(itemDescriptionKey);

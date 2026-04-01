@@ -135,6 +135,8 @@ public class Creature : Mob
         PlayerMovement.Instance.OnPlayerCrouched += PlayerMovement_OnPlayerCrouched;
         PlayerMovement.Instance.OnPlayerCrouchedEnded += PlayerMovement_OnPlayerCrouchedEnded;
         MetaProgressionManager.Instance.OnCreatureSOUnlocked += MetaProgressionMaanger_OnCreatureSOUnlocked;
+
+      
     }
 
     private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
@@ -158,8 +160,17 @@ public class Creature : Mob
     protected virtual void OnEnable() {
         CreaturesManager.Instance.AddCreatureSpawned(this);
         dead = false;
-        health = creatureSO.maxHealth;
         maxHealth = creatureSO.maxHealth;
+
+        if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Hard) {
+            maxHealth += maxHealth / 15;
+        }
+
+        if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
+            maxHealth -= maxHealth / 10;
+        }
+
+        health = maxHealth;
 
         GetComponent<Collider2D>().enabled = true;
         rb.gravityScale = initialGravityScale;
@@ -490,7 +501,6 @@ public class Creature : Mob
             detectionCollider.DebuffRadius(playerShootDetectionRangeMultiplier);
         }
     }
-
 
     public void SetCreatureTargeted(bool creatureTargeted) {
         this.creatureTargeted = creatureTargeted;

@@ -69,6 +69,8 @@ public class DayNightManager : MonoBehaviour
         HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant += HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
         HubMerchantUI.OnAnyHubMerchantCloseUIPanel += HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
+        Merchant.OnAnyPlayerClosedMerchantShop += Merchant_OnAnyPlayerClosedMerchantShop;
+        Merchant.OnAnyPlayerOpenedMerchantShop += Merchant_OnAnyPlayerOpenedMerchantShop;
 
         initialDawnDuration = dawnDuration;
         initialDayDuration = dayDuration;
@@ -101,6 +103,15 @@ public class DayNightManager : MonoBehaviour
         OnDawnStart?.Invoke(this, EventArgs.Empty);
     }
 
+    private void Merchant_OnAnyPlayerOpenedMerchantShop(object sender, EventArgs e) {
+        SetCyclePaused(true, true);
+        OnCyclePausedByMerchantTalk?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void Merchant_OnAnyPlayerClosedMerchantShop(object sender, EventArgs e) {
+        SetCyclePaused(false, true);
+        OnCycleUnpaused?.Invoke(this, EventArgs.Empty);
+    }
 
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         SetCyclePaused(false, true);
@@ -348,5 +359,7 @@ public class DayNightManager : MonoBehaviour
         HubMerchant.OnPlayerStartedTalkingWithAnyHubMerchant -= HubMerchant_OnPlayerStartedTalkingWithAnyHubMerchant;
         HubMerchantUI.OnAnyHubMerchantCloseUIPanel -= HubMerchantUI_OnAnyHubMerchantCloseUIPanel;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
+        Merchant.OnAnyPlayerClosedMerchantShop -= Merchant_OnAnyPlayerClosedMerchantShop;
+        Merchant.OnAnyPlayerOpenedMerchantShop -= Merchant_OnAnyPlayerOpenedMerchantShop;
     }
 }

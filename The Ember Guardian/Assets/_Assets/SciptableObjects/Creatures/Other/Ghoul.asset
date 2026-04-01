@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Ghoul
   isBoss: 0
+  appearTwiceOnSecondPhase: 0
   description: Melee mob that can respawn after it's first death !
   creatureIcon: {fileID: 21300000, guid: acedcfdae6ef8cf49ac7fd46f78fcad7, type: 3}
   creatureIcon_Portrait: {fileID: 21300000, guid: 3b8a9b85ff3f1e845abcd2d9f0ef7cb1, type: 3}
@@ -30,13 +31,16 @@ MonoBehaviour:
   flightMinAltitude: 0
   flightMaxAltitude: 0
   flightAltitudeRandomizer: 0
-  dayMoveSpeed: 2
-  nightMoveSpeed: 3
+  minRepositionDistanceToPlayer: 0
+  maxRepositionDistanceToPlayer: 8
+  dayMoveSpeed: 2.2
+  nightMoveSpeed: 3.7
   aggroMoveSpeedBuff: 1.5
   enteredLightMoveSpeedDebuff: 1.3
   moveSpeedRandomizerDelta: 0.25
   maxHealth: 45
   enteredLightattackRateDebuff: 2.5
+  nightSpawnYPosition: 2
   probabilityToAggroOnGunShot: 1
   immuneToPoison: 0
   immuneToShock: 0
@@ -48,6 +52,7 @@ MonoBehaviour:
   workerTargetingPriority: 1
   playerTargetingPriority: 3
   barricadeTargetingPriority: 2
+  fireTargetingPriority: 2147483647
   probabilityToDropOrb: 0.5
   currencyTypeDroppedList: 02000000
   currencyDropAmountList: 01000000
@@ -55,6 +60,7 @@ MonoBehaviour:
   initialWaveSpawn: 1
   spawnProbability: 1
   maxCreaturesPerPacket: 8
+  maxCreaturesPerPacket_Day: 0
   dieAudioClips:
   - {fileID: 8300000, guid: 5754133c60f687f4f948198eb0096c83, type: 3}
   - {fileID: 8300000, guid: 3db2b71397825294c9ee1bc322b68620, type: 3}

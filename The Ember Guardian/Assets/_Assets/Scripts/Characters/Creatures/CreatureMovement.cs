@@ -60,6 +60,11 @@ public class CreatureMovement : MobMovement
             initialMobSpeed *= 1.5f;
         }
 
+        if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Hard) {
+            initialMobSpeed += initialMobSpeed / 15;
+        }
+
+
         initialMobSpeed = initialMobSpeed + Random.Range(-creature.GetCreatureSO().moveSpeedRandomizerDelta, creature.GetCreatureSO().moveSpeedRandomizerDelta);
         moveSpeed = initialMobSpeed;
         aggroMoveSpeedBuff = creature.GetCreatureSO().aggroMoveSpeedBuff;

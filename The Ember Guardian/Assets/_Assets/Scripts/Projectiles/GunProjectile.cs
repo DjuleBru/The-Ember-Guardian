@@ -50,8 +50,10 @@ public class GunProjectile : MonoBehaviour
 
     protected virtual void Explode() {
         transform.rotation = Quaternion.identity;
+        if(rb != null) {
+            rb.bodyType = RigidbodyType2D.Static;
+        }
 
-        rb.bodyType = RigidbodyType2D.Static;
         OnProjectileExploded?.Invoke(this, EventArgs.Empty);
         transform.localScale = Vector3.one * explosionRadiusMultiplier * bulletSizeMultiplier;
 

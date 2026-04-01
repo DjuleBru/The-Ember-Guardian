@@ -61,8 +61,8 @@ MonoBehaviour:
   critChance: 5
   bulletLifetime: 0.3
   bulletSpeed: 50
-  shootCooldownTime: 0.33
-  reloadTime: 2
+  shootCooldownTime: 0.38
+  reloadTime: 2.2
   handsReloadTime: 1.5
   handsAnimationReloadTime: 1
   bulletKnockback: 10
@@ -78,8 +78,8 @@ MonoBehaviour:
   followMouseSpeed: 35
   swapToWeaponTimeMultiplier: 1.5
   gunKnockback: 0.8
-  gunRecoil: 0.2
-  gunRecoilDamping: 4
+  gunRecoil: 0.6
+  gunRecoilDamping: 6
   shootConeAngle: 3.5
   weaponPrecisionMultiplier: 1
   movePrecisionDebuff: 1.25
@@ -88,7 +88,7 @@ MonoBehaviour:
   weaponSecondaryRecoilReductionFactor: 1
   weaponSecondSecondaryAbilityPrecisionFactor: 0.75
   weaponSecondSecondaryRecoilReductionFactor: 0.1
-  weaponMaxRecoilImpactOnMouseReticle: 0.25
+  weaponMaxRecoilImpactOnMouseReticle: 0.35
   crouchPrecisionBuff: 2
   crouchRecoilReductionFactor: 2
   damageStatModifier: {fileID: 11400000, guid: 2f6817d6482efdd4ea61bb0cfd3722b1, type: 2}
@@ -107,7 +107,7 @@ MonoBehaviour:
   subExplosivesAmountStatModifier: {fileID: 0}
   subExplosivesDamageStatModifier: {fileID: 0}
   shotCooldownAnimationTriggerTime: 0
-  shootCooldownSFXTriggerTime: 0.2
+  shootCooldownSFXTriggerTime: 0.3
   triggersShootFeedbackOnEachBuller: 1
   triggersShootSFXOnEachBuller: 1
   shootGunSound:

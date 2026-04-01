@@ -29,6 +29,8 @@ public class Merchant : Structure {
 
     public event EventHandler OnPlayerOpenedMerchantShop;
     public event EventHandler OnPlayerClosedMerchantShop;
+    public static event EventHandler OnAnyPlayerClosedMerchantShop;
+    public static event EventHandler OnAnyPlayerOpenedMerchantShop;
     public event EventHandler<OnPlayerBoughtItemEventArgs> OnPlayerBoughtItem;
 
     public class OnPlayerBoughtItemEventArgs : EventArgs {
@@ -51,6 +53,8 @@ public class Merchant : Structure {
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
+        GameInput.Instance.OnPlayerRollPerformed += GameInput_OnPlayerRollPerformed;
+        GameInput.Instance.OnPlayerRunPerformed += GameInput_OnPlayerRunPerformed;
         PlayerTabMenuUI.Instance.OnPlayerTabOpened += PlayerTabMenuUI_OnPlayerTabOpened;
     }
 
@@ -147,7 +151,6 @@ public class Merchant : Structure {
     }
 
     protected override void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
-        //if (!playerPayedToRefreshShop) return;
         if (!playerInTriggerArea) return;
         if (!playerInteracting) return;
         if (playerJustTriggeredInteraction) return;
@@ -175,6 +178,19 @@ public class Merchant : Structure {
         };
 
     }
+    private void GameInput_OnPlayerRunPerformed(object sender, EventArgs e) {
+        if (shopOpened) {
+            shopOpened = false;
+            OpenCloseShop(shopOpened);
+        };
+    }
+
+    private void GameInput_OnPlayerRollPerformed(object sender, EventArgs e) {
+        if (shopOpened) {
+            shopOpened = false;
+            OpenCloseShop(shopOpened);
+        };
+    }
 
     protected void OpenCloseShop(bool shopOpened) {
         if (!shopOpened) {
@@ -190,6 +206,7 @@ public class Merchant : Structure {
             }
 
             OnPlayerClosedMerchantShop?.Invoke(this, EventArgs.Empty);
+            OnAnyPlayerClosedMerchantShop?.Invoke(this, EventArgs.Empty);
             return;
 
         }
@@ -201,6 +218,7 @@ public class Merchant : Structure {
             CameraManager.Instance.ZoomIn(false, 1.2f, .5f);
             Player.Instance.StartInteractingWithMerchant();
             OnPlayerOpenedMerchantShop?.Invoke(this, EventArgs.Empty);
+            OnAnyPlayerOpenedMerchantShop?.Invoke(this, EventArgs.Empty);
         }
     }
 
