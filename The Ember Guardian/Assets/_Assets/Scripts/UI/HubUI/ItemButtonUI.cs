@@ -442,8 +442,10 @@ public class ItemButtonUI : ButtonUI {
 
                 string itemNameLocalized = LocalizationManager.Instance.GetLocalizedText(itemButtonUI.GetHubMerchantItem().GetItemName());
                 string hubMerchantParentLocalized = LocalizationManager.Instance.GetLocalizedText(lockingItemHubMerchantParent.GetHubMerchantName());
+                string requiresLocalized = LocalizationManager.Instance.GetLocalizedText("Item_Requires");
+                string fromLocalized = LocalizationManager.Instance.GetLocalizedText("Item_From");
 
-                buyItemFromOtherMerchantText.text = "Buy " + itemNameLocalized + " from " + hubMerchantParentLocalized;
+                buyItemFromOtherMerchantText.text = requiresLocalized + " " + itemNameLocalized + " " + fromLocalized + " " + hubMerchantParentLocalized;
                 buyItemFromOtherMerchantTextAnimator.SetTrigger("Show");
             }
         }

@@ -46,20 +46,28 @@ public class SettingsManager : MonoBehaviour
         MaximisedWindow,
         Fullscreen
     }
+
+    public enum AutoAimMode {
+        Off,
+        FlyingOnly,
+        On
+    }
+
     public enum Difficulty {
         Easy,
         Medium,
         Hard
     }
+
     private Difficulty difficulty;
     private Difficulty hordeDifficulty;
 
     private UIDisplayType currentUIDisplayType;
 
     private LocalizationManager.Language currentLanguage = LocalizationManager.Language.English;
+    private AutoAimMode currentAutoAimMode = AutoAimMode.On;
     private Resolution resolution;
     private bool holdToRun;
-    private bool aimAssist;
     private bool autoAlignAimWithMovement;
     private bool autoSwitchLightGun;
     private bool controllerVibrations; 
@@ -100,7 +108,6 @@ public class SettingsManager : MonoBehaviour
 
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         holdToRun = ES3.Load("holdToRun", true, settingsSaveFileSettings);
-        aimAssist = ES3.Load("aimAssist", true, settingsSaveFileSettings);
         autoAlignAimWithMovement = ES3.Load("autoAlignAimWithMovement", true, settingsSaveFileSettings);
         autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true, settingsSaveFileSettings);
         controllerVibrations = ES3.Load("controllerVibrations", true, settingsSaveFileSettings);
@@ -111,6 +118,8 @@ public class SettingsManager : MonoBehaviour
         showDamageNumbers = ES3.Load("showDamageNumbers", true, settingsSaveFileSettings);
         waterReflections = ES3.Load("waterReflections", true, settingsSaveFileSettings);
         photosensitivityMode = ES3.Load("photosensitivityMode", false, settingsSaveFileSettings);
+
+        currentAutoAimMode = ES3.Load("currentAutoAimMode", AutoAimMode.On, settingsSaveFileSettings);
 
         Resolution defaultRes = Screen.currentResolution;
         resolution = ES3.Load("resolution", resolution, settingsSaveFileSettings);
@@ -194,6 +203,25 @@ public class SettingsManager : MonoBehaviour
         ES3.Save("currentUIDisplayType", currentUIDisplayType, settingsSaveFileSettings);
         OnUIDisplayChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    public void ChangeAutoAimMode() {
+
+        switch (currentAutoAimMode) {
+            case AutoAimMode.On:
+                currentAutoAimMode = AutoAimMode.FlyingOnly;
+                break;
+            case AutoAimMode.FlyingOnly:
+                currentAutoAimMode = AutoAimMode.Off;
+                break;
+            case AutoAimMode.Off:
+                currentAutoAimMode = AutoAimMode.On;
+                break;
+        }
+
+        ES3.Save("currentAutoAimMode", currentAutoAimMode, settingsSaveFileSettings);
+        OnAimAssistChanged?.Invoke(this, EventArgs.Empty);
+    }
+
     public void SetMasterVolume(float newMasterVolume) {
         masterVolume = newMasterVolume;
         ES3.Save("masterVolume", newMasterVolume, settingsSaveFileSettings);
@@ -311,12 +339,6 @@ public class SettingsManager : MonoBehaviour
     public ScreenMode GetCurrentScreenMode() => currentScreenMode;
    
 
-    public void ChangeAimAssist() {
-        aimAssist = !aimAssist;
-        OnAimAssistChanged?.Invoke(this, EventArgs.Empty);
-
-        ES3.Save("aimAssist", aimAssist, settingsSaveFileSettings);
-    }
     public void ChangeAutoReload() {
         autoReload = !autoReload;
         OnAutoReloadChanged?.Invoke(this, EventArgs.Empty);
@@ -411,8 +433,11 @@ public class SettingsManager : MonoBehaviour
         return autoAlignAimWithMovement;
     }
 
-    public bool GetAimAssist() {
-        return aimAssist;
+    public AutoAimMode GetAutoAimMode() {
+        return currentAutoAimMode;
+    }
+    public bool GetAutoAimActive() {
+        return currentAutoAimMode == AutoAimMode.On || currentAutoAimMode == AutoAimMode.FlyingOnly;
     }
     public bool GetAutoReload() {
         return autoReload;

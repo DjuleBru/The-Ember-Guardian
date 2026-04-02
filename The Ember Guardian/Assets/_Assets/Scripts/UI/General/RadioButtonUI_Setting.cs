@@ -69,7 +69,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
             SettingsManager.Instance.ChangeAutoSwitchGunLight();
         }
         if (settingType == SettingType.AimAssist) {
-            SettingsManager.Instance.ChangeAimAssist();
+            SettingsManager.Instance.ChangeAutoAimMode();
         }
         if (settingType == SettingType.AutoAlignPlayerWithMoveDir) {
             SettingsManager.Instance.ChangeAutoAlignAimWithMovement();
@@ -194,9 +194,13 @@ public class RadioButtonUI_Setting : RadioButtonUI
         if (settingType == SettingType.AutoToggleLight) {
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetAutoSwitchLight());
         }
+
         if (settingType == SettingType.AimAssist) {
-            toggledImageGameObject.SetActive(SettingsManager.Instance.GetAimAssist());
+            SettingsManager.AutoAimMode autoAimMode = SettingsManager.Instance.GetAutoAimMode();
+            string localizationKey = autoAimMode.ToString();
+            toggledText.text = LocalizationManager.Instance.GetLocalizedText(localizationKey);
         }
+
         if (settingType == SettingType.AutoAlignPlayerWithMoveDir) {
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetAlignAimWithMovement());
         }

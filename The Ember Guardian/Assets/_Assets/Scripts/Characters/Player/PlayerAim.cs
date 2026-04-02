@@ -157,7 +157,7 @@ public class PlayerAim : MonoBehaviour
         SettingsManager.Instance.OnAutoAlignAimWithMovementChanged += SettingsManager_OnAutoAlignAimWithMovementChanged;
 
         autoAimOnMovement = SettingsManager.Instance.GetAlignAimWithMovement();
-        autoAimActive = SettingsManager.Instance.GetAimAssist();
+        autoAimActive = SettingsManager.Instance.GetAutoAimActive();
         isUsingGamepad = GameInput.Instance.IsUsingGamepad();
 
         damageImmunityAfterTakingDamageTime = PlayerStats.Instance.GetDamagedImmunityTime();
@@ -185,7 +185,7 @@ public class PlayerAim : MonoBehaviour
     }
 
     private void SettingsManager_OnAimAssistChanged(object sender, EventArgs e) {
-        autoAimActive = SettingsManager.Instance.GetAimAssist();
+        autoAimActive = SettingsManager.Instance.GetAutoAimActive();
     }
 
     private void GameInput_OnPlayerInputChanged(object sender, EventArgs e) {
@@ -462,7 +462,9 @@ public class PlayerAim : MonoBehaviour
             Creature creature = enemy.GetComponentInParent<Creature>();
             if(creature != null) {
                  if (creature.GetDead()) continue;
+                 if (SettingsManager.Instance.GetAutoAimMode() == SettingsManager.AutoAimMode.FlyingOnly && !creature.GetCreatureSO().flying) continue;
             }
+
             CreatureSpawnerContinuous creatureSpawner = enemy.GetComponentInParent<CreatureSpawnerContinuous>();
             if (creatureSpawner != null) {
                 if (creatureSpawner.GetDead()) continue;

@@ -80,15 +80,13 @@ public class GunProjectile : MonoBehaviour
 
         if (creatureHit != null || spawnerHit != null) {
             if (explodeOnContact) {
+
                 if (!projectileExploded) {
                     Explode();
-                    DamageCreatureHit(creatureHit, collision);
-                    return;
                 };
 
                 if(creatureHit != null) {
                     DamageCreatureHit(creatureHit, collision);
-                    return;
                 }
                 if(spawnerHit != null) {
                     DamageSpawnerHit(spawnerHit, collision);
@@ -105,7 +103,6 @@ public class GunProjectile : MonoBehaviour
 
                     if(creatureHit != null) {
                         creatureHit.TakeDamage(projectileHitDamage, transform, false);
-                        return;
                     }
                     if(spawnerHit != null) {
                         spawnerHit.TakeDamage(projectileHitDamage, transform, false);
@@ -115,7 +112,6 @@ public class GunProjectile : MonoBehaviour
                 else {
                     if (creatureHit != null) {
                         DamageCreatureHit(creatureHit, collision);
-                        return;
                     }
                     if (spawnerHit != null) {
                         DamageSpawnerHit(spawnerHit, collision);

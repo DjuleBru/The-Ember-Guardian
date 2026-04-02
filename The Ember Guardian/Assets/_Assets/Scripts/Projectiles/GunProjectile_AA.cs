@@ -96,6 +96,8 @@ public class GunProjectile_AA : GunProjectile
 
     protected override void DamageCreatureHit(Creature creatureHit, Collider2D collision) {
         int damage = projectileExplosionDamage;
+        if (creatureHit == null) return;
+
         if (creatureHit.GetCreatureSO().flying) {
             damage *= damageToFlyingMultiplier;
         }
