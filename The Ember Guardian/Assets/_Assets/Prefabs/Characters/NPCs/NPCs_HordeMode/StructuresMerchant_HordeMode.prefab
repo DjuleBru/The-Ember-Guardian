@@ -32,6 +32,10 @@ PrefabInstance:
       propertyPath: hideItemIconUntilUnlocked
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 610755836306980359, guid: 3bb9e5054f4ec4741838e82ea7df22cd, type: 3}
+      propertyPath: firstButtonSelected
+      value: 
+      objectReference: {fileID: 5144946910835417921}
     - target: {fileID: 629444989780642358, guid: 3bb9e5054f4ec4741838e82ea7df22cd, type: 3}
       propertyPath: linkedStatModifierSO
       value: 
@@ -401,9 +405,14 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3289184335971724875, guid: 3bb9e5054f4ec4741838e82ea7df22cd, type: 3}
   m_PrefabInstance: {fileID: 7744754913273796140}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5144946910835417921}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5144946910835417921 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3178521521479218541, guid: 3bb9e5054f4ec4741838e82ea7df22cd, type: 3}
+  m_PrefabInstance: {fileID: 7744754913273796140}
+  m_PrefabAsset: {fileID: 0}

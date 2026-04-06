@@ -9,6 +9,9 @@ public class PlayerUI_StaminaBar : MonoBehaviour
     [SerializeField] private Image staminaBarFill_Right;
     [SerializeField] private Image staminaBarFill_Left;
 
+    [SerializeField] private Color staminaRefillingFastColor;
+    [SerializeField] private Color staminaRefillingNormalColor;
+
     private RectTransform staminaBarRectTransform;
     private RectTransform staminaBarFillRightRect;
     private RectTransform staminaBarFillLeftRect;
@@ -23,6 +26,7 @@ public class PlayerUI_StaminaBar : MonoBehaviour
     private float maxStamina;
     private Vector2 initialSize;
 
+    private bool barDisplayed;
     private bool alwaysDisplay;
 
     private void Awake() {
@@ -37,6 +41,12 @@ public class PlayerUI_StaminaBar : MonoBehaviour
     }
 
     private void Start() {
+        PlayerMovement.Instance.OnPlayerRunStarted += PlayerMovement_OnPlayerRunStarted;
+        PlayerMovement.Instance.OnPlayerRoll += PlayerMovement_OnPlayerRoll;
+
+        PlayerMovement.Instance.OnPlayerRecoverStaminaFastStarted += Instance_OnPlayerRecoverStaminaFastStarted;
+        PlayerMovement.Instance.OnPlayerRecoverStaminaFastStopped += Instance_OnPlayerRecoverStaminaFastStopped;
+
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStopped += PlayerMovement_OnPlayerAlmostExhaustionStopped;
         PlayerStats.Instance.OnPlayerMaxStaminaBuffed += PlayerStats_OnPlayerMaxStaminaBuffed;
@@ -48,6 +58,36 @@ public class PlayerUI_StaminaBar : MonoBehaviour
         RefreshStaminaBarSize();
         RefreshAlwaysDisplay();
         SettingsManager.Instance.OnUIDisplayChanged += SettingsManager_OnUIDisplayChanged;
+    }
+
+    private void Instance_OnPlayerRecoverStaminaFastStopped(object sender, System.EventArgs e) {
+        staminaBarFill_Right.color = staminaRefillingNormalColor;
+        staminaBarFill_Left.color = staminaRefillingNormalColor;
+    }
+
+    private void Instance_OnPlayerRecoverStaminaFastStarted(object sender, System.EventArgs e) {
+        staminaBarFill_Right.color = staminaRefillingFastColor;
+        staminaBarFill_Left.color = staminaRefillingFastColor;
+    }
+
+    private void Update() {
+        staminaBarFill_Right.fillAmount = 1 - PlayerMovement.Instance.GetStaminaTimerNormalized();
+        staminaBarFill_Left.fillAmount = 1 - PlayerMovement.Instance.GetStaminaTimerNormalized();
+
+        if(barDisplayed && PlayerMovement.Instance.GetStaminaTimerNormalized() <= 0) {
+            StartFade(false);
+        }
+    }
+
+
+    private void PlayerMovement_OnPlayerRoll(object sender, System.EventArgs e) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) return;
+        StartFade(true);
+    }
+
+    private void PlayerMovement_OnPlayerRunStarted(object sender, System.EventArgs e) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) return;
+        StartFade(true);
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, System.EventArgs e) {
@@ -93,11 +133,6 @@ public class PlayerUI_StaminaBar : MonoBehaviour
         staminaBarFillRightRect.offsetMax = Vector2.zero;
     }
 
-    private void Update() {
-        staminaBarFill_Right.fillAmount = 1 - PlayerMovement.Instance.GetStaminaTimerNormalized();
-        staminaBarFill_Left.fillAmount = 1 - PlayerMovement.Instance.GetStaminaTimerNormalized();
-    }
-
     private void PlayerMovement_OnPlayerAlmostExhaustionStarted(object sender, System.EventArgs e) {
         if (alwaysDisplay) return;
         StartFade(true);
@@ -109,6 +144,8 @@ public class PlayerUI_StaminaBar : MonoBehaviour
     }
 
     private void StartFade(bool fadeIn) {
+        barDisplayed = fadeIn;
+
         if (fadeCoroutine != null) {
             StopCoroutine(fadeCoroutine);
         }

@@ -169,7 +169,7 @@ public class CreditsManager : MonoBehaviour
 
         InitBoxForNewText(LocalizationManager.Instance.GetLocalizedText("Original Music by"));
         yield return new WaitForSeconds(1f);
-        creditNamesTypeWriter.ShowText("Jonathan Meyer");
+        creditNamesTypeWriter.ShowText("Studio Heta");
         yield return new WaitForSeconds(1f);
         creditNamesTypeWriter2.ShowText("Alexey Samojlenko");
         yield return new WaitForSeconds(1f);
