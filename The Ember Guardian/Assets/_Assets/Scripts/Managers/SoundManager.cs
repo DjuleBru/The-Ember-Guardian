@@ -113,6 +113,8 @@ public class SoundManager : MonoBehaviour
             LevelUI_DayCountUI.Instance.OnDayUIShown += LevelUI_OnDayUIShown;
             WorkerFollowPlayerHandler.Instance.OnAllFollowingWorkersRemoved += WorkerFollowPlayerHandler_OnAllFollowingWorkersRemoved;
             Fire.Instance.OnPrimordialFireLit += Fire_OnPrimordialFireLit;
+            WorkerManager.Instance.OnHunterReAssignedSide += WorkerManager_OnHunterReAssignedSide;
+            WorkerManager.Instance.OnGuardReAssignedSide += WorkerManager_OnGuardReAssignedSide;
         }
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             UICurrencyManager.HubInventoryUI.OnCurrencyCollected += HubInventoryUI_OnCurrencyCollected;
@@ -224,6 +226,7 @@ public class SoundManager : MonoBehaviour
         DogSkinReplaceButton.OnDogSkinSwapped += DogSkinReplaceButton_OnDogSkinSwapped;
         DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
+
     }
 
 
@@ -1148,6 +1151,12 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(soundRefsSO.merchantRefundItem, .7f);
     }
 
+    private void WorkerManager_OnHunterReAssignedSide(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.workerStartedFollowing);
+    }
+    private void WorkerManager_OnGuardReAssignedSide(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.workerStartedFollowing);
+    }
     #endregion
 
     #region PLAY SOUNDS
@@ -1275,6 +1284,8 @@ public class SoundManager : MonoBehaviour
         }
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             WorkerFollowPlayerHandler.Instance.OnHoveredFollowingWorkerChanged -= WorkerFollowPlayerHandler_OnHoveredFollowingWorkerChanged;
+            WorkerManager.Instance.OnHunterReAssignedSide -= WorkerManager_OnHunterReAssignedSide;
+            WorkerManager.Instance.OnGuardReAssignedSide -= WorkerManager_OnGuardReAssignedSide;
         }
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             UICurrencyManager.HubInventoryUI.OnCurrencyCollected -= HubInventoryUI_OnCurrencyCollected;
@@ -1362,5 +1373,7 @@ public class SoundManager : MonoBehaviour
         DogSkinReplaceButton.OnDogSkinSwapped -= DogSkinReplaceButton_OnDogSkinSwapped;
         DeleteSkillUI.OnAnyActiveSkillDeleted -= DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem -= Merchant_Skills_OnPlayerRefundedItem;
+
     }
+
 }

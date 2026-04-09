@@ -31,6 +31,10 @@ public class WorkerManager : MonoBehaviour
     public event EventHandler OnJoblessWorkerAmountChanged;
     public event EventHandler OnRecruitedWorkerDied;
     public event EventHandler OnWorkerAssignedToJob;
+    public event EventHandler OnHunterAssignedSide;
+    public event EventHandler OnHunterReAssignedSide;
+    public event EventHandler OnGuardAssignedSide;
+    public event EventHandler OnGuardReAssignedSide;
     public event EventHandler<OnClosestWorkerChangedEventArgs> OnClosestWorkerChanged;
 
     public class OnClosestWorkerChangedEventArgs : EventArgs {
@@ -136,9 +140,11 @@ public class WorkerManager : MonoBehaviour
                 if(equalGoesLeft) {
                     leftSideAssignedHunters.Add(worker);
                     worker.AssignSide(CampZoneManager.CampSide.left);
+                    OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
                 } else {
                     rightSideAssignedHunters.Add(worker);
                     worker.AssignSide(CampZoneManager.CampSide.right);
+                    OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
                 }
                 return;
             }
@@ -147,12 +153,14 @@ public class WorkerManager : MonoBehaviour
 
                 leftSideAssignedHunters.Add(worker);
                 worker.AssignSide(CampZoneManager.CampSide.left);
+                OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
 
             }
             else {
 
                 rightSideAssignedHunters.Add(worker);
                 worker.AssignSide(CampZoneManager.CampSide.right);
+                OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
 
             }
         }
@@ -164,10 +172,12 @@ public class WorkerManager : MonoBehaviour
                 if (equalGoesLeft) {
                     leftSideAssignedMiners.Add(worker);
                     worker.AssignSide(CampZoneManager.CampSide.left);
+                    OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
                 }
                 else {
                     rightSideAssignedMiners.Add(worker);
                     worker.AssignSide(CampZoneManager.CampSide.right);
+                    OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
                 }
                 return;
             }
@@ -177,12 +187,14 @@ public class WorkerManager : MonoBehaviour
 
                 leftSideAssignedMiners.Add(worker);
                 worker.AssignSide(CampZoneManager.CampSide.left);
+                OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
 
             }
             else {
 
                 rightSideAssignedMiners.Add(worker);
                 worker.AssignSide(CampZoneManager.CampSide.right);
+                OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
 
             }
         }
@@ -194,10 +206,12 @@ public class WorkerManager : MonoBehaviour
                 if (equalGoesLeft) {
                     leftSideAssignedGuards.Add(worker);
                     worker.AssignSide(CampZoneManager.CampSide.left);
+                    OnGuardAssignedSide?.Invoke(this, EventArgs.Empty);
                 }
                 else {
                     rightSideAssignedGuards.Add(worker);
                     worker.AssignSide(CampZoneManager.CampSide.right);
+                    OnGuardAssignedSide?.Invoke(this, EventArgs.Empty);
                 }
                 return;
             }
@@ -206,12 +220,14 @@ public class WorkerManager : MonoBehaviour
 
                 leftSideAssignedGuards.Add(worker);
                 worker.AssignSide(CampZoneManager.CampSide.left);
+                OnGuardAssignedSide?.Invoke(this, EventArgs.Empty);
 
             }
             else {
 
                 rightSideAssignedGuards.Add(worker);
                 worker.AssignSide(CampZoneManager.CampSide.right);
+                OnGuardAssignedSide?.Invoke(this, EventArgs.Empty);
 
             }
         }
@@ -228,11 +244,80 @@ public class WorkerManager : MonoBehaviour
         if(campSide == CampZoneManager.CampSide.left) {
             leftSideAssignedHunters.Add(worker);
             worker.AssignSide(CampZoneManager.CampSide.left);
+            OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
         }
         if (campSide == CampZoneManager.CampSide.right) {
             rightSideAssignedHunters.Add(worker);
             worker.AssignSide(CampZoneManager.CampSide.right);
+            OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    public void ReassignHunterToASide(CampZoneManager.CampSide campSide) {
+
+        if (campSide == CampZoneManager.CampSide.left) {
+            if (rightSideAssignedHunters.Count == 0) return;
+
+            Worker worker = rightSideAssignedHunters[0];
+            leftSideAssignedHunters.Add(worker);
+            rightSideAssignedHunters.Remove(worker);
+
+            worker.AssignSide(CampZoneManager.CampSide.left);
+            OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
+            OnHunterReAssignedSide?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (campSide == CampZoneManager.CampSide.right) {
+            if (leftSideAssignedHunters.Count == 0) return;
+
+            Worker worker = leftSideAssignedHunters[0];
+            rightSideAssignedHunters.Add(worker);
+            leftSideAssignedHunters.Remove(worker);
+
+            worker.AssignSide(CampZoneManager.CampSide.right);
+            OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
+            OnHunterReAssignedSide?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public void ReassignGuardToASide(CampZoneManager.CampSide campSide) {
+
+        if (campSide == CampZoneManager.CampSide.left) {
+            if (rightSideAssignedGuards.Count == 0) return;
+
+            Worker worker = rightSideAssignedGuards[0];
+            leftSideAssignedGuards.Add(worker);
+            rightSideAssignedGuards.Remove(worker);
+
+            worker.AssignSide(CampZoneManager.CampSide.left);
+            OnGuardAssignedSide?.Invoke(this, EventArgs.Empty);
+            OnGuardReAssignedSide?.Invoke(this, EventArgs.Empty);
+        }
+
+        if (campSide == CampZoneManager.CampSide.right) {
+            if (leftSideAssignedGuards.Count == 0) return;
+
+            Worker worker = leftSideAssignedGuards[0];
+            rightSideAssignedGuards.Add(worker);
+            leftSideAssignedGuards.Remove(worker);
+
+            worker.AssignSide(CampZoneManager.CampSide.right);
+            OnGuardAssignedSide?.Invoke(this, EventArgs.Empty);
+            OnGuardReAssignedSide?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public int GetLeftHuntersAssignedAmount() {
+        return leftSideAssignedHunters.Count;
+    }
+    public int GetRightHuntersAssignedAmount() {
+        return rightSideAssignedHunters.Count;
+    }
+    public int GetLeftGuardsAssignedAmount() {
+        return leftSideAssignedGuards.Count;
+    }
+    public int GetRightGuardsAssignedAmount() {
+        return rightSideAssignedGuards.Count;
     }
 
     public void RemoveJoblessWorker(Worker worker) {

@@ -151,8 +151,6 @@ public class Fire : Structure, IDamageable {
                 UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
             }
 
-            DayNightManager.Instance.OnCyclePausedByMerchantTalk += DayNightManager_OnCyclePausedByMerchantTalk;
-            DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
         }
 
         if (isMainFire) {
@@ -162,6 +160,8 @@ public class Fire : Structure, IDamageable {
             PlayerCurrencies.Instance.OnEmberDropped += PlayerCurrencies_OnEmberDropped;
             Tent.Instance.OnStructureUpgraded += Tent_OnStructureUpgraded;
             ChangeState(State.calm);
+            DayNightManager.Instance.OnCyclePausedByMerchantTalk += DayNightManager_OnCyclePausedByMerchantTalk;
+            DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
 
         }
 
@@ -179,6 +179,7 @@ public class Fire : Structure, IDamageable {
             state = State.calm;
             ChangeState(State.calm);
             SetStructurePrimaryFunctionUnlocked(false);
+
         } else {
             SetFireCurrentMaxFuelTreshold();
         }
