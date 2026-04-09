@@ -730,7 +730,10 @@ public class SoundManager : MonoBehaviour
 
     private void ParticleCollision_OnParticleBouncedOff(object sender, System.EventArgs e) {
         AudioClip[] audioClipArray = soundRefsSO.bulletBoucedOff;
-        PlaySound2D(audioClipArray, .5f);
+
+        ParticleCollision particle = sender as ParticleCollision;
+
+        PlaySound3D(audioClipArray, particle.transform.position, .5f);
     }
 
     private void ParticleCollision_OnAnyPlayerBulletHitEnemy(object sender, ParticleCollision.OnBulletHitEventArgs e) {

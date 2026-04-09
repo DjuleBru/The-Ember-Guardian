@@ -199,6 +199,7 @@ public class Projectile : MonoBehaviour
     }
 
     protected void OnTriggerEnter2D(Collider2D collision) {
+        if (projectileSO == null) return;
         if (projectileHasHit && !projectileSO.isExplosiveProjectile) return;
 
         mobHit = collision.GetComponentInParent<Mob>();
@@ -298,7 +299,21 @@ public class Projectile : MonoBehaviour
         projectileHasHit = false;
         gameObject.SetActive(false);
 
-        if(parentMob != null) {
+        projectileSO = null;
+        parentMob = null;
+        damageSource = null;
+        projectileTarget = null;
+
+        projectileMaxMoveSpeed = 0;
+        projectileMoveSpeed = 0;
+
+        if (rb != null) {
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
+
+        if (parentMob != null) {
             parentMob.GetComponent<MobAttack>().ResetProjectileInObjectPool(this);
         } else {
             Destroy(gameObject);

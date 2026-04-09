@@ -379,6 +379,7 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public bool GetMerchantItemBought(string saveString) {
+        //Debug.Log("GetMerchantItemBought " + saveString);
         var data = LoadHubMerchantItemData(saveString);
         return Convert.ToBoolean(data["Bought"]);
     }

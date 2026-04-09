@@ -19,6 +19,7 @@ public class ProjectileForces : Projectile {
     private bool hasPassedApex;
 
     public void ActivateAndInitializeWithForces(IDamageable targetIDamageable, ProjectileSO projectileSO, Transform damageSource, int damage, float targetRandomizer, bool homing) {
+        //Debug.Log(this + " ActivateAndInitializeWithForces " + projectileSO);
         Transform targetTransform = targetIDamageable.GetProjectileTarget();
 
         if (targetTransform == null) {

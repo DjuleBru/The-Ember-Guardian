@@ -35,6 +35,12 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI trapSpecialStatValue;
     [SerializeField] protected TextMeshProUGUI trapSpecialStatDescription;
 
+    [SerializeField] protected TextMeshProUGUI trapDamageStatDescription;
+    [SerializeField] protected TextMeshProUGUI trapCooldownStatDescription;
+    [SerializeField] protected TextMeshProUGUI trapRearmPriceStatDescription;
+    [SerializeField] protected TextMeshProUGUI trapRearmBeforeBreakingStatDescription;
+    [SerializeField] protected TextMeshProUGUI trapUsesPerNightStatDescription;
+
     [SerializeField] protected Material cleanFontMaterial;
     [SerializeField] protected Material UpgradeFontMaterial;
 
@@ -60,7 +66,12 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
             trapMaxReloadsStatValue.font = font;
             trapReloadPriceStatValue.font = font;
             trapSpecialStatValue.font = font;
-            trapSpecialStatDescription.font = font;
+            trapSpecialStatDescription.font = font; 
+            trapDamageStatDescription.font = font;
+            trapCooldownStatDescription.font = font;
+            trapRearmPriceStatDescription.font = font;
+            trapRearmBeforeBreakingStatDescription.font = font;
+            trapUsesPerNightStatDescription.font = font;
         }
 
     }
@@ -74,9 +85,11 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         descriptionPanelRectTransform.gameObject.SetActive(true);
         descriptionPanelAnimator.SetTrigger("Open");
     }
+
     public void ClosePanel() {
         descriptionPanelRectTransform.gameObject.SetActive(false);   
     }
+
     public void UpdateDescriptionPanelVisuals(MerchantItem merchantItem) {
         descriptionPanelItemIcon.sprite = merchantItem.icon;
         descriptionPanelItemName.text = LocalizationManager.Instance.GetLocalizedText(merchantItem.itemName);
@@ -89,14 +102,14 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
 
         SetStatChangesText(merchantItem);
 
-        if(merchantItem.itemType == MerchantItem.MerchantItemType.RefreshShopItems) {
+        if (merchantItem.itemType == MerchantItem.MerchantItemType.RefreshShopItems) {
             descriptionPanelItemName.text = LocalizationManager.Instance.GetLocalizedText(merchantItem.itemName);
         }
     }
 
-    private void SetStatChangesText(MerchantItem merchantItem) {
 
-        if(merchantItem is SkillItem) {
+    private void SetStatChangesText(MerchantItem merchantItem) {
+        if (merchantItem is SkillItem) {
             SkillItem skillItem = (SkillItem)merchantItem;
 
             if(skillItem.itemType == MerchantItem.MerchantItemType.PassiveSkill) {
@@ -236,23 +249,30 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         activeItemCooldownValue.text = cooldownStatText;
         activeItemCooldownChangesText.text = LocalizationManager.Instance.GetLocalizedText("card_cooldown") + previousCooldownStatText;
     }
+   
     private void SetTrapStatsDescription(TrapItem trapItem) {
         TrapSO trapSO = trapItem.trapSO;
 
         trapSpecialStatValueGameObject.SetActive(false);
+        LocalizationManager.Language currentLanguage = SettingsManager.Instance.GetLanguage();
 
-        if(trapSO.trapType == TrapItem.TrapType.bearTrap || trapSO.trapType == TrapItem.TrapType.shockerEjector || trapSO.trapType == TrapItem.TrapType.smokeEjector || trapSO.trapType == TrapItem.TrapType.fireEjector) {
+        if (trapSO.trapType == TrapItem.TrapType.bearTrap || trapSO.trapType == TrapItem.TrapType.shockerEjector || trapSO.trapType == TrapItem.TrapType.smokeEjector || trapSO.trapType == TrapItem.TrapType.fireEjector) {
             trapSpecialStatValueGameObject.SetActive(true);
 
             float trapSpecialUpgrade = TrapManager.Instance.GetCurrentUpgradeValue(trapItem.trapType, TrapUpgradeSO.TrapUpgradeType.special);
             float totalSpecial = trapSO.trapSpecialStat + trapSpecialUpgrade;
             trapSpecialStatValue.text = totalSpecial.ToString();
-            if (trapSpecialUpgrade != 0) {
-                trapSpecialStatValue.fontMaterial = UpgradeFontMaterial;
+
+            if (currentLanguage != LocalizationManager.Language.Japanese && currentLanguage != LocalizationManager.Language.Chinese && currentLanguage != LocalizationManager.Language.Korean) {
+                if (trapSpecialUpgrade != 0) {
+                    trapSpecialStatValue.fontMaterial = UpgradeFontMaterial;
+                }
+                else {
+                    trapSpecialStatValue.fontMaterial = cleanFontMaterial;
+                }
             }
-            else {
-                trapSpecialStatValue.fontMaterial = cleanFontMaterial;
-            }
+
+       
         }
 
         switch (trapSO.trapType) {
@@ -289,51 +309,80 @@ public class MerchantDescriptionPanelUI : MonoBehaviour
         int trapDamageUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapItem.trapType, TrapUpgradeSO.TrapUpgradeType.damage);
         int totalTrapDamage = trapSO.trapDamage + trapDamageUpgrade;
         trapDamageStatValue.text = totalTrapDamage.ToString();
-        if(trapDamageUpgrade != 0) {
-            trapDamageStatValue.fontMaterial = UpgradeFontMaterial;
-        } else {
-            trapDamageStatValue.fontMaterial = cleanFontMaterial;
+        trapDamageStatDescription.text = LocalizationManager.Instance.GetLocalizedText("card_damage");
+
+       
+        if (currentLanguage != LocalizationManager.Language.Japanese && currentLanguage != LocalizationManager.Language.Chinese && currentLanguage != LocalizationManager.Language.Korean) {
+            if (trapDamageUpgrade != 0) {
+                trapDamageStatValue.fontMaterial = UpgradeFontMaterial;
+            }
+            else {
+                trapDamageStatValue.fontMaterial = cleanFontMaterial;
+            }
         }
+        
 
         float trapCooldownUpgrade = TrapManager.Instance.GetCurrentUpgradeValue(trapItem.trapType, TrapUpgradeSO.TrapUpgradeType.cooldown);
         float totalCooldown = trapSO.trapCooldown - trapCooldownUpgrade;
         trapCooldownStatValue.text = totalCooldown.ToString("F1") + "s";
-        if (trapCooldownUpgrade != 0) {
-            trapCooldownStatValue.fontMaterial = UpgradeFontMaterial;
+        trapCooldownStatDescription.text = LocalizationManager.Instance.GetLocalizedText("card_cooldown");
+
+        if (currentLanguage != LocalizationManager.Language.Japanese && currentLanguage != LocalizationManager.Language.Chinese && currentLanguage != LocalizationManager.Language.Korean) {
+            if (trapCooldownUpgrade != 0) {
+                trapCooldownStatValue.fontMaterial = UpgradeFontMaterial;
+            }
+            else {
+                trapCooldownStatValue.fontMaterial = cleanFontMaterial;
+            }
         }
-        else {
-            trapCooldownStatValue.fontMaterial = cleanFontMaterial;
-        }
+        
 
         int trapUsesPerNightUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapItem.trapType, TrapUpgradeSO.TrapUpgradeType.usesPerNight);
         int totalUsesPerNight = trapSO.trapUsesPerNight + trapUsesPerNightUpgrade;
         trapUsesPerNightStatValue.text = totalUsesPerNight.ToString();
-        if (trapUsesPerNightUpgrade != 0) {
-            trapUsesPerNightStatValue.fontMaterial = UpgradeFontMaterial;
+        trapUsesPerNightStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Uses Per Night");
+
+        if (currentLanguage != LocalizationManager.Language.Japanese && currentLanguage != LocalizationManager.Language.Chinese && currentLanguage != LocalizationManager.Language.Korean) {
+            if (trapUsesPerNightUpgrade != 0) {
+                trapUsesPerNightStatValue.fontMaterial = UpgradeFontMaterial;
+            }
+            else {
+                trapUsesPerNightStatValue.fontMaterial = cleanFontMaterial;
+            }
         }
-        else {
-            trapUsesPerNightStatValue.fontMaterial = cleanFontMaterial;
-        }
+       
 
         int trapMaxReloadsUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapItem.trapType, TrapUpgradeSO.TrapUpgradeType.totalUses);
         int totalMaxReloads = trapSO.maxRearmsBeforeBreaking + trapMaxReloadsUpgrade;
         trapMaxReloadsStatValue.text = totalMaxReloads.ToString();
-        if (trapMaxReloadsUpgrade != 0) {
-            trapMaxReloadsStatValue.fontMaterial = UpgradeFontMaterial;
+        trapRearmBeforeBreakingStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Total Rearms");
+
+        if (currentLanguage != LocalizationManager.Language.Japanese && currentLanguage != LocalizationManager.Language.Chinese && currentLanguage != LocalizationManager.Language.Korean) {
+            if (trapMaxReloadsUpgrade != 0) {
+                trapMaxReloadsStatValue.fontMaterial = UpgradeFontMaterial;
+            }
+            else {
+                trapMaxReloadsStatValue.fontMaterial = cleanFontMaterial;
+            }
         }
-        else {
-            trapMaxReloadsStatValue.fontMaterial = cleanFontMaterial;
-        }
+       
 
         int trapReloadPriceUpgrade = (int)TrapManager.Instance.GetCurrentUpgradeValue(trapItem.trapType, TrapUpgradeSO.TrapUpgradeType.priceToReload);
         int totalReloadPrice = trapSO.rearmPrice - trapReloadPriceUpgrade;
         trapReloadPriceStatValue.text = totalReloadPrice.ToString();
-        if (trapReloadPriceUpgrade != 0) {
-            trapReloadPriceStatValue.fontMaterial = UpgradeFontMaterial;
+        trapRearmPriceStatDescription.text = LocalizationManager.Instance.GetLocalizedText("Rearm Price");
+
+        if (currentLanguage != LocalizationManager.Language.Japanese && currentLanguage != LocalizationManager.Language.Chinese && currentLanguage != LocalizationManager.Language.Korean) {
+            if (trapReloadPriceUpgrade != 0) {
+                trapReloadPriceStatValue.fontMaterial = UpgradeFontMaterial;
+            }
+            else {
+                trapReloadPriceStatValue.fontMaterial = cleanFontMaterial;
+            }
+
         }
-        else {
-            trapReloadPriceStatValue.fontMaterial = cleanFontMaterial;
-        }
+
+
     }
 
     private void SetTrapUpgradeStatsDescription(TrapItem trapItem) {

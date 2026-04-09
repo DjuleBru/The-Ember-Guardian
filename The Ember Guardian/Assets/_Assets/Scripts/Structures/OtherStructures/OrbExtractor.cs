@@ -16,6 +16,7 @@ public class OrbExtractor : Structure
     public event EventHandler OnEngineerStartedWorking;
     public event EventHandler OnEngineerStoppedWorking;
 
+    private bool drilling;
     private float probabilityToExtractBigOrb = .3f;
     private float drillAnimationDuration = 1.5f;
     private float extractionRate = .7f;
@@ -33,8 +34,11 @@ public class OrbExtractor : Structure
     }
 
     private void Update() {
+        if (drilling) return;
+
         extractionTimer -= Time.deltaTime * extractionRate;
         if(extractionTimer <= 0) {
+            drilling = true;
             StartCoroutine(Drill());
             extractionTimer = pauseDuration;
         }
@@ -44,7 +48,7 @@ public class OrbExtractor : Structure
         drillIndex++;
         OnExtractorStartedDrilling?.Invoke(this, EventArgs.Empty);
 
-        if(engineersAssignedWorking.Count != 0) {
+        if (engineersAssignedWorking.Count != 0) {
             if(engineersAssignedWorking[0].GetState() == EngineerJob.EngineerState.workingInStructure) {
                 engineersAssignedWorking[0].OrbExtractorTriggerDrill();
             }
@@ -56,6 +60,8 @@ public class OrbExtractor : Structure
             ExtractOrb();
             drillIndex = 0;
         }
+
+        drilling = false;
     }
 
     private void ExtractOrb() {

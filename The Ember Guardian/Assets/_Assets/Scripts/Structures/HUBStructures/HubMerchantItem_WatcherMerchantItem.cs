@@ -516,6 +516,7 @@ public class HubMerchantItem_WatcherMerchantItem : HubMerchantItem {
     }
 
     public override void SetNewItemUnlocked(bool unlocked) {
+        Debug.Log("SetNewItemUnlocked " + unlocked);
         base.SetNewItemUnlocked(unlocked);
 
         if (unlocked && itemBought) {

@@ -58,6 +58,7 @@ public class AddStructureBlueprint : ButtonUI
         base.Start();
 
         hordeMode = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
+        maxedOutStructureBlueprintText.font = LocalizationManager.Instance.GetCurrentFont();
         maxedOutStructureBlueprintText.fontMaterial = LocalizationManager.Instance.GetRedGlowMaterial();
         maxBlueprintAmount_HordeMode = linkedStructureSO.maxStructureBlueprintAmount_HordeMode;
 

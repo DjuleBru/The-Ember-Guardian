@@ -69,6 +69,9 @@ public class CampEditManager : MonoBehaviour {
         campGrid = GetComponent<CampGrid>();
         hordeMode = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu;
 
+        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchantItem.OnAnyHubMerchantItemArchitectTableUnlocks += HubMerchantItem_OnAnyHubMerchantItemArchitectTableUnlocks;
+
         LoadCampLayout();
     }
 
@@ -77,7 +80,6 @@ public class CampEditManager : MonoBehaviour {
         GameInput.Instance.OnEditCampSelect += GameInput_OnEditCampSelect;
         GameInput.Instance.OnEditCampSelectReleased += GameInput_OnEditCampSelectReleased;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
-        HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
 
         scrollRectEvents.OnDragEnded += ScrollRectEvents_OnDragEnded;
         scrollRectEvents.OnDragStarted += ScrollRectEvents_OnDragStarted;
@@ -313,6 +315,7 @@ public class CampEditManager : MonoBehaviour {
     public void SetBlueprintHovered(StructureBlueprint blueprint) {
         this.blueprintBeingHovered = blueprint;
     }
+
     private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, EventArgs e) {
         HubMerchantItem merchantItem = sender as HubMerchantItem;
 
@@ -324,9 +327,24 @@ public class CampEditManager : MonoBehaviour {
 
         HubMerchantItem_WatcherMerchantItem watcherMerchantItem = merchantItem as HubMerchantItem_WatcherMerchantItem;
         if (watcherMerchantItem != null) {
-            structureTypesUnlockedThisSession.Add(watcherMerchantItem.GetStructureType());
+            if (!structureTypesUnlockedThisSession.Contains(watcherMerchantItem.GetStructureType())) {
+                structureTypesUnlockedThisSession.Add(watcherMerchantItem.GetStructureType());
+            }
         }
     }
+
+    private void HubMerchantItem_OnAnyHubMerchantItemArchitectTableUnlocks(object sender, EventArgs e) {
+        HubMerchantItem merchantItem = sender as HubMerchantItem;
+
+        HubMerchantItem_WatcherMerchantItem watcherMerchantItem = merchantItem as HubMerchantItem_WatcherMerchantItem;
+        if (watcherMerchantItem != null) {
+            if(!structureTypesUnlockedThisSession.Contains(watcherMerchantItem.GetStructureType())) {
+                structureTypesUnlockedThisSession.Add(watcherMerchantItem.GetStructureType());
+            }
+
+        }
+    }
+
     private void GameInput_OnEditCampSelectReleased(object sender, System.EventArgs e) {
         // Drop bluprint logic
 
@@ -569,6 +587,7 @@ public class CampEditManager : MonoBehaviour {
 
     private void OnDestroy() {
         HubMerchantItem.OnAnyHubMerchantItemBought -= HubMerchantItem_OnAnyHubMerchantItemBought;
+        HubMerchantItem.OnAnyHubMerchantItemArchitectTableUnlocks -= HubMerchantItem_OnAnyHubMerchantItemArchitectTableUnlocks;
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant -= HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
     }
 

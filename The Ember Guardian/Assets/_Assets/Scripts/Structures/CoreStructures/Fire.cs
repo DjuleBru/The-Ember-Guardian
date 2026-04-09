@@ -91,6 +91,7 @@ public class Fire : Structure, IDamageable {
     private bool justFuelledFire;
     private bool lerping;
     private bool extractingEmber;
+    private bool cyclePaused;
     private float extractingEmberTimer;
     private float extractingEmberTime = 3f;
     private float extractingEmberFuelUsed;
@@ -144,10 +145,14 @@ public class Fire : Structure, IDamageable {
             GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
             GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
             GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
+
             if(UICurrencyManager.PlayerInventoryUI != null) {
                 UICurrencyManager.PlayerInventoryUI.OnCurrencyRemovedFromBag += PlayerInventoryUI_OnCurrencyRemovedFromBag;
                 UICurrencyManager.PlayerInventoryUI.OnCurrencyCollected += PlayerInventoryUI_OnCurrencyCollected;
             }
+
+            DayNightManager.Instance.OnCyclePausedByMerchantTalk += DayNightManager_OnCyclePausedByMerchantTalk;
+            DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
         }
 
         if (isMainFire) {
@@ -181,6 +186,14 @@ public class Fire : Structure, IDamageable {
         if(isPrimordialFire && !isHubFire) {
             LevelManager.Instance.OnLevelSuccess += LevelManager_OnLevelSuccess;
         }
+    }
+
+    private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
+        cyclePaused = false;
+    }
+
+    private void DayNightManager_OnCyclePausedByMerchantTalk(object sender, EventArgs e) {
+        cyclePaused = true;
     }
 
     private void StructureStats_OnStructureStatsUpdated(object sender, EventArgs e) {
@@ -366,6 +379,7 @@ public class Fire : Structure, IDamageable {
     }
 
     private void HandleFuelDecrease() {
+        if (cyclePaused) return;
         if (isSecondaryFire) return;
 
         if (extractingEmber) {

@@ -491,14 +491,14 @@ public class EngineerJob : WorkerJob {
     #endregion
 
     private void WorkerCurrencies_OnPaymentFinalized(object sender, EventArgs e) {
-        Debug.Log("WorkerCurrencies_OnPaymentFinalized ");
+        //Debug.Log("WorkerCurrencies_OnPaymentFinalized ");
         CheckAvailableWork();
 
         ChangeState(EngineerState.idle);
     }
 
     private void WorkerCurrencies_OnCurrencyPaid(object sender, WorkerCurrencies.OnCurrencyPaidEventArgs e) {
-        Debug.Log("WorkerCurrencies_OnCurrencyPaid ");
+        //Debug.Log("WorkerCurrencies_OnCurrencyPaid ");
         worker.RemoveCurrency(e.currencyType);
     }
 

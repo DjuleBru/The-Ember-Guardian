@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 6430389753102987819}
   - component: {fileID: 3597296399954733944}
   - component: {fileID: 3002960798667734211}
+  - component: {fileID: 1075793415003680804}
   m_Layer: 5
   m_Name: RefundText
   m_TagString: Untagged
@@ -129,7 +130,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 87.5, y: -15}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 60.95, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6430389753102987819
 CanvasRenderer:
@@ -242,6 +243,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &1075793415003680804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3550277384786954274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizationKey: menu_refund
 --- !u!1 &7338209574269120673
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,6 +269,7 @@ GameObject:
   - component: {fileID: 3747207036489218565}
   - component: {fileID: 4613789325169443552}
   - component: {fileID: 2984328565071661844}
+  - component: {fileID: 8309427929157877102}
   m_Layer: 5
   m_Name: RefundUI
   m_TagString: Untagged
@@ -354,3 +369,16 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &8309427929157877102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7338209574269120673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizationKey: 

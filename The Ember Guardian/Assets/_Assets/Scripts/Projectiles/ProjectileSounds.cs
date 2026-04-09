@@ -17,7 +17,7 @@ public class ProjectileSounds : SoundObject
         if(audioSource2D == null) {
             audioSource2D = GetComponent<AudioSource>();
         }
-
+        if (projectile.GetProjectileSO() == null) return;
         PlaySound2D(projectile.GetProjectileSO().projectileInstantiatedAudioClips, projectileInstantiatedVolumeMultiplier);
     }
 
@@ -29,10 +29,12 @@ public class ProjectileSounds : SoundObject
             audioSource2D = GetComponent<AudioSource>();
         }
 
+        if (projectile.GetProjectileSO() == null) return;
         PlaySound2D(projectile.GetProjectileSO().projectileInstantiatedAudioClips, projectileInstantiatedVolumeMultiplier);
     }
 
     private void Projectile_OnProjectileHit(object sender, System.EventArgs e) {
+        if (projectile.GetProjectileSO() == null) return;
         PlaySound2D(projectile.GetProjectileSO().projectileHitAudioClips, projectileHitVolumeMultiplier);
     }
 }

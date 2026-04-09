@@ -162,7 +162,7 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     }
 
     public void MarkToScavenge(bool markedFromSave = false) {
-        Debug.Log("MarkToScavenge");
+        //Debug.Log("MarkToScavenge");
         markedToScavenge = true;
 
         OnScavengableMarkedToScavenge?.Invoke(this, EventArgs.Empty);
@@ -282,7 +282,7 @@ public class Scavengable : MonoBehaviour, IDamageable, IScavengable {
     }
 
     public void UnassignMiner(MinerJob miner) {
-        Debug.Log("UnassignMiner " + miner);
+        //Debug.Log("UnassignMiner " + miner);
         MinerStopsMining(miner);
 
         if (minerAssignedList.Contains(miner)) {

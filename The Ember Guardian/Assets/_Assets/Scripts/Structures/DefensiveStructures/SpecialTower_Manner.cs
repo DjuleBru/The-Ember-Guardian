@@ -98,6 +98,16 @@ public class SpecialTower_Manner : MonoBehaviour {
 
     protected virtual void Update() {
         if (engineersManning.Count == 0) return;
+
+        // Sécurité anti-deadlock reload
+        if (currentShotIndex <= 0) {
+            if (!reloading && specialTower.GetCurrentAmmoClip() > 0) {
+                StartCoroutine(HandleReloading());
+            }
+            return;
+        }
+
+
         if (reloading) return;
         if (currentShotIndex <= 0) return;
 
@@ -128,7 +138,6 @@ public class SpecialTower_Manner : MonoBehaviour {
         if(currentShotIndex <= 0 && !towerOutOfAmmo) {
             StartCoroutine(HandleReloading());
         }
-
 
         if (bulletIsParticle) {
             shootPS.Emit(pelletsPerBullet);
@@ -279,6 +288,7 @@ public class SpecialTower_Manner : MonoBehaviour {
         Creature highestHPCreature = null;
 
         foreach(Creature creature in creaturesInRange) {
+            if (creature == null) continue;
 
             float distanceToCreature = Vector3.Distance(transform.position, creature.transform.position);
             if (distanceToCreature < minDistanceToShoot) continue;
@@ -297,6 +307,7 @@ public class SpecialTower_Manner : MonoBehaviour {
         Creature closestCreature = null;
 
         foreach (Creature creature in creaturesInRange) {
+            if (creature == null) continue;
             if (!targetFlying && creature.GetCreatureSO().flying) continue;
 
             float distanceToCreature = Vector3.Distance(transform.position, creature.transform.position);
