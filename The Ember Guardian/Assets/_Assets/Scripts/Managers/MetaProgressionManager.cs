@@ -253,7 +253,8 @@ public class MetaProgressionManager : MonoBehaviour
     }
 
     public void SaveLevelGemsAndHoldingEmber(float proportionToSave = 1f, string savePath = "SaveFile.es3") {
-        Debug.Log("SaveLevelGemsAndHoldingEmber");
+        Debug.Log("SaveLevelGemsAndHoldingEmber " + savePath);
+
         ES3Settings settings = new ES3Settings(savePath);
 
         var gemData = new Dictionary<string, List<Vector3>>();

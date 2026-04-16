@@ -45,6 +45,7 @@ public class SelectDifficultyUI : MonoBehaviour
 
         if(fromHordeMode) {
             hordeXPText.gameObject.SetActive(true);
+            hordeXPText.font = LocalizationManager.Instance.GetCurrentFont();
             hordeXPText.text = " +30% " + LocalizationManager.Instance.GetLocalizedText("difficulty_hordeBonus");
         } else {
             hordeXPText.gameObject.SetActive(false);

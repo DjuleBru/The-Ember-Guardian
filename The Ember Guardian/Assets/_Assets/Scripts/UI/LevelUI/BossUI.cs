@@ -50,6 +50,7 @@ public class BossUI : MonoBehaviour
     }
 
     public void LinkBoss(Creature creature, bool hasMultiplePhases) {
+        Debug.Log("LinkBoss " + creature);
         linkedBoss = creature;
         creature.OnMobDamageTaken += Creature_OnMobDamageTaken;
         tryingToShowPanel = true;
@@ -90,9 +91,11 @@ public class BossUI : MonoBehaviour
     }
 
     public void Show() {
+        Debug.Log("Show " + panelShown);
         if (panelShown) return;
 
         bossUIPanel.SetActive(true);
+        bossUIPanelAnimator.ResetTrigger("Hide");
         bossUIPanelAnimator.SetTrigger("Show");
         panelShown = true;
 
@@ -148,7 +151,9 @@ public class BossUI : MonoBehaviour
     }
 
     public void Hide() {
+        bossUIPanelAnimator.ResetTrigger("Show");
         bossUIPanelAnimator.SetTrigger("Hide");
+        panelShown = false;
     }
 
     private void Creature_OnMobDamageTaken(object sender, Mob.OnMobDamageTakenEventArgs e) {

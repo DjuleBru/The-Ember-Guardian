@@ -751,7 +751,7 @@ public class SoundManager : MonoBehaviour
         float bulletHitGunVolumeMultiplier = PlayerShoot.Instance.GetHeldGunSO().bulletHitSoundMultiplier;
         float bulletHitCreatureVolumeMultiplier = creatureHit.GetCreatureSO().bulletHitVolumeMultiplier;
 
-        PlaySound2D(audioClipArray, bulletHitGunVolumeMultiplier* bulletHitCreatureVolumeMultiplier);
+        PlaySound2D(audioClipArray, bulletHitGunVolumeMultiplier* bulletHitCreatureVolumeMultiplier*5);
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, ParticleCollision.OnBulletHitEventArgs e) {
@@ -1322,6 +1322,7 @@ public class SoundManager : MonoBehaviour
         MenuButton.OnAnyMenuButtonPressed -= MenuButton_OnAnyMenuButtonPressed;
         StructureBlueprint.OnAnyBlueprintWithStructureHovered -= StructureBlueprint_OnAnyBlueprintWithStructureHovered;
         GridVisualUnit.OnAnyGridWithoutStructureHovered -= GridVisualUnit_OnAnyGidWithoutStructureHovered;
+        GridVisualUnit.OnAnyGridHoveredWhileMovingBlueprint -= GridVisualUnit_OnAnyGridHoveredWhileMovingBlueprint;
         PlayerUI_TickTemplate.OnAnyBulletPingShineWindowStarted -= PlayerUI_TickTemplate_OnAnyBulletPingShineWindowStarted;
         PlayerUI_TickTemplate.OnAnyBulletPingShineStarted -= PlayerUI_TickTemplate_OnAnyBulletPingShineStarted;
         PlayerUI_TickTemplate.OnAnyBulletPingShineReachedGun -= PlayerUI_TickTemplate_OnAnyBulletPingShineReachedGun;

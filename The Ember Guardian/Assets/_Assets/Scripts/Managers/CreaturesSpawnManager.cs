@@ -112,9 +112,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
     protected bool debugDontSpawnAtNight;
     private bool forceEndNightWave = false;
 
-    protected float easyDifficultyNightWaveMultiplier = 0.8f;
-    protected float hardDifficultyNightWaveMultiplier = 1.1f;
+    protected float easyDifficultyNightWaveMultiplier = 0.7f;
+    protected float hardDifficultyNightWaveMultiplier = 1.15f;
     protected float currentNightWaveDifficultyMultiplier = 1f;
+
+    [SerializeField] protected LayerMask caveRoofsLayer;
 
     protected virtual void Awake() {
         Instance = this;
@@ -692,11 +694,6 @@ public class CreaturesSpawnManager : MonoBehaviour {
     }
 
     protected Creature SpawnCreatureAtSide(CreatureSO creatureToSpawn, SpawnSide spawnSide) {
-        //Creature creature = GetCreatureFromPool(
-        //    creatureToSpawn,
-        //    GetSpawnPosition(spawnSide, creatureToSpawn),
-        //    Quaternion.identity
-        //);
 
         Creature creature = Instantiate(creatureToSpawn.creaturePrefab, GetSpawnPosition(spawnSide, creatureToSpawn), Quaternion.identity, nightCreaturesTransformParent).GetComponent<Creature>();
         creature.SetAsDayCreature(false);
@@ -804,8 +801,24 @@ public class CreaturesSpawnManager : MonoBehaviour {
             xSpawnPosition = minLevelXPosition + 10f;
         }
 
-        return new Vector3(xSpawnPosition + UnityEngine.Random.Range(-4f, 4f), yPosition, 0);
+        Vector3 spawnPos = new Vector3(xSpawnPosition + UnityEngine.Random.Range(-4f, 4f), yPosition, 0);
 
+        Vector3 spawnPosCorrected = GetValidSpawnPositionThroughCaveRoofs(spawnPos);
+
+        return spawnPosCorrected;
+
+    }
+
+    private Vector2 GetValidSpawnPositionThroughCaveRoofs(Vector2 basePosition) {
+        float radius = 3f;
+
+        Collider2D hit = Physics2D.OverlapCircle(basePosition, radius, caveRoofsLayer);
+
+        if (hit == null) {
+            return basePosition;
+        }
+
+        return new Vector2(basePosition.x, 1f);
     }
 
     public void CountCreatureOccurrences(List<SpawnedCreatureInfo> spawnedCreatures) {

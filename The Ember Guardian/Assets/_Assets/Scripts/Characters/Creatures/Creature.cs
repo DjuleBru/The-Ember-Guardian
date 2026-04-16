@@ -163,11 +163,11 @@ public class Creature : Mob
         maxHealth = creatureSO.maxHealth;
 
         if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Hard) {
-            maxHealth += maxHealth / 15;
+            maxHealth += Mathf.RoundToInt(maxHealth * 0.2f);
         }
 
         if (SettingsManager.Instance.GetDifficulty() == SettingsManager.Difficulty.Easy) {
-            maxHealth -= maxHealth / 10;
+            maxHealth -= Mathf.RoundToInt(maxHealth * 0.33f);
         }
 
         health = maxHealth;

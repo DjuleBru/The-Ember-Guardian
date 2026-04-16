@@ -303,10 +303,8 @@ public class LevelManager : MonoBehaviour
             defeatGemsProportionsRewarded = 1f;
         }
 
-        MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber(defeatGemsProportionsRewarded);
-        MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
-
         if(isHordeMode) {
+
             ES3Settings hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
 
             string key = "hordeMode_maxNightsSurvived_" + currentLevelEnvironment.ToString();
@@ -319,6 +317,10 @@ public class LevelManager : MonoBehaviour
             ES3.Save("lastXPGainFromMainGame", false, hordeModeSaveFileSettings);
             ES3.Save("backFromHordeModeAfterDefeat", true, hordeModeSaveFileSettings);
             ES3.Save("lastHordeModeNightsSurvived", currentDay, hordeModeSaveFileSettings);
+
+        } else {
+            MetaProgressionManager.Instance.SaveLevelGemsAndHoldingEmber(defeatGemsProportionsRewarded);
+            MetaProgressionManager.Instance.SetNextHubArrivalThroughPortal(true);
         }
     }
 

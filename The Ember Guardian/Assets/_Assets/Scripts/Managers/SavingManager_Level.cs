@@ -94,7 +94,6 @@ public class SavingManager_Level : MonoBehaviour
 
     }
 
-
     private void DayNightManager_OnDawnStart(object sender, System.EventArgs e) {
         if (firstDawnAfterGameStart) {
             firstDawnAfterGameStart = false;

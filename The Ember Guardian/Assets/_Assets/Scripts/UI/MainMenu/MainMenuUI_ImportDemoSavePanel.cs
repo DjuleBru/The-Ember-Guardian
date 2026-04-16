@@ -25,14 +25,6 @@ public class MainMenuUI_ImportDemoSavePanel : MonoBehaviour {
 
     private void Start() {
         GameInput.Instance.OnPlayerBackPerformed += Gameinput_OnPlayerBackPerformed;
-
-        panelText.font = LocalizationManager.Instance.GetCurrentFont();
-        panelName.font = LocalizationManager.Instance.GetCurrentFont();
-        string loadedText = LocalizationManager.Instance.GetLocalizedText("importProgressionPanel_Text");
-        loadedText = loadedText.Replace("\\n", "\n");
-        panelName.text = LocalizationManager.Instance.GetLocalizedText("importProgressionPanel_Name");
-        panelText.text = loadedText;
-
         panelNameImageAnimator.SetTrigger("DeletedSaveFile");
     }
 
@@ -42,6 +34,15 @@ public class MainMenuUI_ImportDemoSavePanel : MonoBehaviour {
     }
 
     public void OpenPanel() {
+
+        panelText.font = LocalizationManager.Instance.GetCurrentFont();
+        panelName.font = LocalizationManager.Instance.GetCurrentFont();
+
+        string loadedText = LocalizationManager.Instance.GetLocalizedText("importProgressionPanel_Text");
+        loadedText = loadedText.Replace("\\n", "\n");
+        panelName.text = LocalizationManager.Instance.GetLocalizedText("importProgressionPanel_Name");
+        panelText.text = loadedText;
+
         panelOpen = true;
         EventSystem.current.SetSelectedGameObject(importSaveButton.gameObject);
         startupMessagePanel.gameObject.SetActive(true);

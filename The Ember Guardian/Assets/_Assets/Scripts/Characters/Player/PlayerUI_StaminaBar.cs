@@ -28,6 +28,9 @@ public class PlayerUI_StaminaBar : MonoBehaviour
 
     private bool barDisplayed;
     private bool alwaysDisplay;
+    
+    private float hideDelay = 0.25f;
+    private float hideTimer;
 
     private void Awake() {
         staminaBarCanvasGroup = staminaBarGameObject.GetComponent<CanvasGroup>();
@@ -71,11 +74,21 @@ public class PlayerUI_StaminaBar : MonoBehaviour
     }
 
     private void Update() {
-        staminaBarFill_Right.fillAmount = 1 - PlayerMovement.Instance.GetStaminaTimerNormalized();
-        staminaBarFill_Left.fillAmount = 1 - PlayerMovement.Instance.GetStaminaTimerNormalized();
+        float staminaNormalized = PlayerMovement.Instance.GetStaminaTimerNormalized();
+        staminaBarFill_Right.fillAmount = 1 - staminaNormalized;
+        staminaBarFill_Left.fillAmount = 1 - staminaNormalized;
 
-        if(barDisplayed && PlayerMovement.Instance.GetStaminaTimerNormalized() <= 0) {
-            StartFade(false);
+        if(barDisplayed) {
+            if (staminaNormalized <= 0) {
+                hideTimer -= Time.deltaTime;
+
+                if (hideTimer <= 0) {
+                    StartFade(false);
+                }
+            }
+            else {
+                hideTimer = hideDelay;
+            }
         }
     }
 
@@ -144,12 +157,15 @@ public class PlayerUI_StaminaBar : MonoBehaviour
     }
 
     private void StartFade(bool fadeIn) {
-        barDisplayed = fadeIn;
-
         if (fadeCoroutine != null) {
             StopCoroutine(fadeCoroutine);
         }
         fadeCoroutine = StartCoroutine(FadeRoutine(fadeIn));
+        barDisplayed = fadeIn;
+
+        if (fadeIn) {
+            hideTimer = hideDelay;
+        }
     }
 
     private IEnumerator FadeRoutine(bool fadeIn) {

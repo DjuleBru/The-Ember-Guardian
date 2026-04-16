@@ -3671,6 +3671,7 @@ GameObject:
   - component: {fileID: 3803785570041165771}
   - component: {fileID: 7934500974518866089}
   - component: {fileID: 186198099621252249}
+  - component: {fileID: 2361404821165920674}
   m_Layer: 24
   m_Name: IncomingDifficultyText
   m_TagString: Untagged
@@ -3756,7 +3757,7 @@ MonoBehaviour:
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 12
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -3794,6 +3795,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2361404821165920674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4789158538127410374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizationKey: waveInfoUI_incomingDifficulty
 --- !u!1 &4911471235912824025
 GameObject:
   m_ObjectHideFlags: 0
@@ -5804,6 +5818,7 @@ GameObject:
   - component: {fileID: 8379889319045233340}
   - component: {fileID: 2278156931570166491}
   - component: {fileID: 1655021249618566006}
+  - component: {fileID: 1498477744718541373}
   m_Layer: 24
   m_Name: IncomingDifficultyText
   m_TagString: Untagged
@@ -5889,7 +5904,7 @@ MonoBehaviour:
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 12
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
@@ -5927,6 +5942,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1498477744718541373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7787487000260644261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6016a991bcac4044988268198e75109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizationKey: waveInfoUI_incomingDifficulty
 --- !u!1 &7795330160677228774
 GameObject:
   m_ObjectHideFlags: 0

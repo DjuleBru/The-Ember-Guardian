@@ -45,7 +45,7 @@ public class CreaturesSpawnManager_HordeMode : CreaturesSpawnManager
 
     protected float extremeWaveDifficultyMultiplier = 2f;
     protected float extremeSubWaveDifficultyMultiplier = 1.5f;
-    protected float peacefulWaveDifficultyMultiplier = .25f;
+    protected float peacefulWaveDifficultyMultiplier = .2f;
     protected float peacefulSubWaveDifficultyMultiplier = .5f;
 
     protected int nightsSinceLastExtreme;

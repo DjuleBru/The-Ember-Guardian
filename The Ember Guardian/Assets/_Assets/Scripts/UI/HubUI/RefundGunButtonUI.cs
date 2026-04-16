@@ -36,6 +36,7 @@ public class RefundGunButtonUI : MonoBehaviour
             if (buttonHovered) return;
 
             buttonHovered = true;
+            animator.ResetTrigger("Hide");
             animator.SetTrigger("Show");
 
         }
@@ -43,6 +44,7 @@ public class RefundGunButtonUI : MonoBehaviour
 
             if (!buttonHovered) return;
             buttonHovered = false;
+            animator.ResetTrigger("Show");
             animator.SetTrigger("Hide");
 
         }
@@ -51,6 +53,7 @@ public class RefundGunButtonUI : MonoBehaviour
     private void LinkedItemButtonUI_OnHubMerchantItemRefunded(object sender, System.EventArgs e) {
         if (!buttonHovered) return;
         buttonHovered = false;
+        animator.ResetTrigger("Show");
         animator.SetTrigger("Hide");
     }
 
@@ -58,6 +61,7 @@ public class RefundGunButtonUI : MonoBehaviour
         if (!buttonHovered) return;
 
         buttonHovered = false;
+        animator.ResetTrigger("Show");
         animator.SetTrigger("Hide");
     }
 
@@ -70,12 +74,14 @@ public class RefundGunButtonUI : MonoBehaviour
             if (buttonHovered) return;
 
             buttonHovered = true;
+            animator.ResetTrigger("Hide");
             animator.SetTrigger("Show");
 
         } else {
 
             if (!buttonHovered) return;
             buttonHovered = false;
+            animator.ResetTrigger("Show");
             animator.SetTrigger("Hide");
 
         }

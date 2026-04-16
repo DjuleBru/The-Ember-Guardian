@@ -1158,7 +1158,7 @@
    "Chinese": "探索新的区域",
    "Spanish": "Explora nuevas zonas",
    "German": "Erkunde neue Gegenden",
-   "French": "Exporer de nouvelles zones"
+   "French": "Explorer de nouvelles zones"
  },
  {
    "key": "Obj_HUBDemo_PrepareToReturn",
@@ -6748,7 +6748,7 @@
    "Chinese": "命中弱点造成额外伤害",
    "Spanish": "Golpear un punto débil inflige daño adicional",
    "German": "Das Treffen einer Schwachstelle verursacht Bonusschaden",
-   "French": "• Toucher un point faible a des chances d'infliger des dégâts critiques"
+   "French": "• Toucher un point faible inflige plus de dégâts"
  },
  {
    "key": "VideoTip_CritHitTip2",
@@ -11035,7 +11035,7 @@
    "English": "Tuned to pick up on troop echoes and rhythmic pulses, this enhancement allows for an accurate headcount",
    "Korean": "이 향상된 기능으로 적 부대가 내는 소리의 공명과 리드미컬한 박동을 탐지해 머릿수를 정확히 파악할 수 있습니다.",
    "Japanese": "敵の群れの動きが生む反響と周期信号を解析し、正確な数を把握可能にする。",
-   "Chinese": "调校以捕捉部队回响与节奏脉冲，此项改进可准确计算出敌人数量。",
+   "Chinese": "调校信号以捕捉部队回响与节奏脉冲，此项改进可准确计算出敌人数量。",
    "Spanish": "Sintonizado para captar los pulsos rítmicos de la marcha, permite un recuento exacto.",
    "German": "Abgestimmt auf Truppenechos und rhythmische Pulse, ermöglicht diese Verbesserung eine genaue Zählung.",
    "French": "Réglé pour capter les échos de troupes et pulsations rythmiques."
@@ -14738,7 +14738,7 @@
    "Chinese": "在宝箱中净化它们……<bounce a=.2 f=1.2>唯有如此</bounce>火焰才会认可。",
    "Spanish": "Purifícalas en el cofre… Sólo entonces la Llama las reconocerá.",
    "German": "Reinige sie in der Truhe… <bounce a=.2 f=1.2>Erst dann</bounce> wird die Flamme sie erkennen.",
-   "French": "Purifie-les dans le coffre… <bounce a=.2 f=1.2>Alors seulement</bounce> la Flamme les reconnaîtra."
+   "French": "Purifie les dans le coffre… <bounce a=.2 f=1.2>Alors seulement</bounce> la Flamme les reconnaîtra."
  },
  {
    "key": "gemTrader_Outro1",
@@ -18214,9 +18214,9 @@
    "key": "Item_Requires",
    "English": "Requires:",
    "Korean": "해금 조건:",
-   "Japanese": "",
-   "Chinese": "",
-   "Spanish": "",
+   "Japanese": "解除条件:",
+   "Chinese": "需要：",
+   "Spanish": "Requiere:",
    "German": "",
    "French": "Nécessite:"
  },
@@ -18224,41 +18224,51 @@
    "key": "Item_From",
    "English": "From:",
    "Korean": "/ 상인:",
-   "Japanese": "",
-   "Chinese": "",
-   "Spanish": "",
+   "Japanese": "/商人:",
+   "Chinese": "/商人：",
+   "Spanish": "Desde:",
    "German": "",
    "French": "Chez:"
  },
  {
    "key": "On",
    "English": "On",
-   "Korean": "",
-   "Japanese": "",
-   "Chinese": "",
-   "Spanish": "",
+   "Korean": "켬",
+   "Japanese": "オン",
+   "Chinese": "开",
+   "Spanish": "On",
    "German": "",
    "French": "On"
  },
  {
    "key": "Off",
    "English": "Off",
-   "Korean": "",
-   "Japanese": "",
-   "Chinese": "",
-   "Spanish": "",
+   "Korean": "끔",
+   "Japanese": "オフ",
+   "Chinese": "关",
+   "Spanish": "Off",
    "German": "",
    "French": "Off"
  },
  {
    "key": "FlyingOnly",
    "English": "Flying Only",
-   "Korean": "",
-   "Japanese": "",
-   "Chinese": "",
-   "Spanish": "",
+   "Korean": "공중 적 한정",
+   "Japanese": "空中の敵のみ",
+   "Chinese": "仅飞行",
+   "Spanish": "Solo voladores",
    "German": "",
    "French": "Volants uniq."
+ },
+ {
+   "key": "waveInfoUI_incomingDifficulty",
+   "English": "Incoming Difficulty",
+   "Korean": "다음 웨이브 난이도",
+   "Japanese": "襲撃難易度",
+   "Chinese": "敌人强度",
+   "Spanish": "Dificultad",
+   "German": "",
+   "French": "Difficulté"
  }
 ]
 }

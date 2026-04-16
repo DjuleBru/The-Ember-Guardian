@@ -370,9 +370,10 @@ public class CampEditManager : MonoBehaviour {
 
     private void GameInput_OnEditCampSelect(object sender, System.EventArgs e) {
         // Pickup blueprint logic
-
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB && !ArchitectTable.Instance.GetArchitectTableHubMerchant().GetPlayerInteractingWithMerchant()) return;
         if (GetMovingBlueprint()) return;
         if (blueprintBeingAdded != null) return;
+
 
         GridVisualUnit hoveredCell = campGrid.GetFirstHoveredCellWithStructure();
 
@@ -385,6 +386,7 @@ public class CampEditManager : MonoBehaviour {
         playerJustPressedSelect = true;
         draggingTimer = 0;
     }
+
     private void GameInput_OnEditCampDeselect(object sender, System.EventArgs e) {
         if (GetMovingBlueprint()) {
             CancelPlacement();

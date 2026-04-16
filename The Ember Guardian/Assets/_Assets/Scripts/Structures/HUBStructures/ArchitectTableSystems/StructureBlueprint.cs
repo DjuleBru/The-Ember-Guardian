@@ -77,7 +77,7 @@ public class StructureBlueprint : MonoBehaviour {
         }
 
         string saveString = linkedStructureSO.structureType.ToString() + (1);
-        Debug.Log("saveString " + saveString);
+        //Debug.Log("saveString " + saveString);
         if (!linkedStructureSO.level1StructureInitiallyUnlocked && !MetaProgressionManager.Instance.GetMerchantItemBought(saveString) && !CampEditManager.Instance.GetStructureTypeUnlockedThisSession(linkedStructureSO.structureType)) {
             locked = true;
             gameObject.SetActive(false);

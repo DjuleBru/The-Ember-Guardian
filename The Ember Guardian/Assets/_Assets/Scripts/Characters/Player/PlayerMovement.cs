@@ -111,7 +111,6 @@ public class PlayerMovement : MonoBehaviour {
         isHubScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
     }
 
-
     private void FixedUpdate() {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
         if (PlayerShoot.Instance.GetHoldingStationaryGun()) return;
@@ -229,17 +228,6 @@ public class PlayerMovement : MonoBehaviour {
         if (PlayerShoot.Instance.GetHeldGun().GetGunJammedAndNextInputSequence(GameInput.Binding.roll) || PlayerShoot.Instance.GetHeldGun().GetGunJustJammed()) return;
 
         StartRolling();
-        return;
-
-        if (GetPlatformStanding() != null) {
-            if (GameInput.Instance.GetJumpDirNormalized() <= -.5) {
-                PlatformJumpDown();
-            } else {
-                //StartJumping();
-            }
-        } else {
-            //StartJumping();
-        }
     }
 
     private void GameInput_OnPlayerJumpCanceled(object sender, System.EventArgs e) {
@@ -252,20 +240,14 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void PlayerAim_OnPlayerAimSightEnded(object sender, EventArgs e) {
-        if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
-
         BuffMoveSpeed("Sniper AimSight", PlayerStats.Instance.GetAimingSightDecelerationFactor());
     }
 
     private void PlayerAIm_OnPlayerAimSightStarted(object sender, EventArgs e) {
-        if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
-
         DebuffMoveSpeed("Sniper AimSight", PlayerStats.Instance.GetAimingSightDecelerationFactor());
     }
 
     private void GameInput_OnPlayerRunCanceled(object sender, System.EventArgs e) {
-        if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
-
         if (!holdToRun) return;
         if (!isRunning) return;
 
@@ -273,8 +255,6 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void GameInput_OnPlayerRunStarted(object sender, System.EventArgs e) {
-        if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
-
         if(holdToRun) {
             if (isExhausted) return;
             StartRunning();
@@ -309,7 +289,6 @@ public class PlayerMovement : MonoBehaviour {
 
     private void HandleCrouch() {
         if (isJumping) return;
-        if (PauseMenuUI.Instance != null && PauseMenuUI.Instance.isPaused) return;
         if (PlayerShoot.Instance.GetHoldingStationaryGun()) return;
 
         if (GameInput.Instance.GetJumpDirNormalized() <= -.5) {
@@ -328,20 +307,6 @@ public class PlayerMovement : MonoBehaviour {
             }
 
         }
-    }
-
-    private void StartJumping() {
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        lastJumpTime = 0;
-
-        isJumping = true;
-        isJumpTop = false;
-        isJumpDown = false;
-        isLanded = false;
-        isCrouching = false;
-
-        OnPlayerCrouchedEnded?.Invoke(this, EventArgs.Empty);
-        OnPlayerJumpUp?.Invoke(this, EventArgs.Empty);
     }
 
     private void StartRolling() {
@@ -373,19 +338,6 @@ public class PlayerMovement : MonoBehaviour {
     private void EndRoll() {
         OnPlayerRollEnded?.Invoke(this, EventArgs.Empty);
         isRolling = false;
-    }
-
-    private void PlatformJumpDown() {
-        Platform platformStandingOn = GetPlatformStanding();
-
-        if (platformStandingOn != null) {
-            platformStandingOn.DisablePlatformCollider();
-
-            OnPlayerJumpDown?.Invoke(this, EventArgs.Empty);
-            isLanded = false;
-            isJumping = true;
-        }
-
     }
 
     private void HandleMovementForces() {
@@ -508,6 +460,7 @@ public class PlayerMovement : MonoBehaviour {
             }
         }
 
+        //Debug.Log("staminaTimer " + staminaTimer);
     }
 
     public float GetStaminaTimerNormalized() {
