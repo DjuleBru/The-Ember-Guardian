@@ -751,7 +751,7 @@ public class SoundManager : MonoBehaviour
         float bulletHitGunVolumeMultiplier = PlayerShoot.Instance.GetHeldGunSO().bulletHitSoundMultiplier;
         float bulletHitCreatureVolumeMultiplier = creatureHit.GetCreatureSO().bulletHitVolumeMultiplier;
 
-        PlaySound2D(audioClipArray, bulletHitGunVolumeMultiplier* bulletHitCreatureVolumeMultiplier*5);
+        PlaySound2D(audioClipArray, bulletHitGunVolumeMultiplier* bulletHitCreatureVolumeMultiplier);
     }
 
     private void ParticleCollision_OnAnyBulletHitEnemyCrit(object sender, ParticleCollision.OnBulletHitEventArgs e) {

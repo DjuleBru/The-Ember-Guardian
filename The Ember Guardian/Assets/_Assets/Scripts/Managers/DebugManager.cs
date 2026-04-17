@@ -71,7 +71,7 @@ public class DebugManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.W)) {
                 i++;
 
-                ScreenCapture.CaptureScreenshot("screenshot_" + i + ".png", 3) ;
+                ScreenCapture.CaptureScreenshot("screenshot_" + i + ".png", 1) ;
                 Debug.Log("A screenshot was taken!");
             }
 
