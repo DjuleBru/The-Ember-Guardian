@@ -605,6 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a270f8bf59c75454aa571def6d08af9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scavengableID: 29f0d6cd-52ef-4de5-8b01-259e8e215eb7
   orbTemplateWorldUIParent: {fileID: 3131925541453256128}
   currencySpawnPoint: {fileID: 3236911237401712110}
   minePoints:
@@ -621,7 +622,7 @@ MonoBehaviour:
   infiniteSource: 0
   doNotYieldResources: 0
   miningPriority: 1
-  maxMinersAssigned: 1
+  maxMinersAssigned: 2
   initialTimeToMineOneResource: 25
   maxTimeToMineOneResource: 0
   miningTimeIncreasePerResourceExtracted: 1

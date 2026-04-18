@@ -249,7 +249,12 @@ public class SpecialTower_Manner : MonoBehaviour {
         else {
             engineerJob.GetDetectionCollider().ResetDetectionColliderRadius();
             engineerJob.GetDetectionCollider().OnCreaturesInColliderChanged -= SpecialTower_Manner_OnCreaturesInColliderChanged;
+
+            Vector3 groundPosition = new Vector3(transform.position.x, 1, 0);
+            engineerJob.transform.position = groundPosition;
+
             engineersManning.Remove(engineerJob);
+
         }
     }
 

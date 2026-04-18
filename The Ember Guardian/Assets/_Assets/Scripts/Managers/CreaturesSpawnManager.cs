@@ -810,7 +810,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     }
 
     private Vector2 GetValidSpawnPositionThroughCaveRoofs(Vector2 basePosition) {
-        float radius = 3f;
+        float radius = 10f;
 
         Collider2D hit = Physics2D.OverlapCircle(basePosition, radius, caveRoofsLayer);
 

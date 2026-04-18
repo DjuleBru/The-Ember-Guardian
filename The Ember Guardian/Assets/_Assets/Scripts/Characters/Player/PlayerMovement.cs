@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour {
 
     [SerializeField] private float castDistance;
     [SerializeField] Vector2 boxSize;
+    [SerializeField] private Collider2D playerCollider;
     [SerializeField] private LayerMask groundLayerMask;
     [SerializeField] private LayerMask platformLayerMask;
 
@@ -81,6 +82,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public event EventHandler OnPlayerCrouched;
     public event EventHandler OnPlayerCrouchedEnded;
+    private Dictionary<Collider2D, Coroutine> collisionCooldowns = new Dictionary<Collider2D, Coroutine>();
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -509,7 +511,7 @@ public class PlayerMovement : MonoBehaviour {
         LogSpeedChange(source, buffAmount, false);
     }
     private void LogSpeedChange(string source, float factor, bool added) {
-        //Debug.Log($"[MoveSpeed] {(added ? "Buff" : "Debuff")} {source} x{factor} => New speed: {moveSpeed}");
+        Debug.Log($"[MoveSpeed] {(added ? "Buff" : "Debuff")} {source} x{factor} => New speed: {moveSpeed}");
     }
 
     public bool IsMovingBackwards() {
@@ -578,6 +580,63 @@ public class PlayerMovement : MonoBehaviour {
         rb.velocity = Vector2.zero;
        
     }
+
+    #region TOWER BUG
+
+    private bool IsInLayerMask(LayerMask mask, int layer) {
+
+        if ((mask.value & (1 << layer)) != 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
+
+    private void OnCollisionStay2D(Collision2D collision) {
+
+        if (!IsInLayerMask(platformLayerMask, collision.collider.gameObject.layer)) {
+            return;
+        }
+
+        foreach (ContactPoint2D contact in collision.contacts) {
+
+            float dot = Vector2.Dot(contact.normal, Vector2.up);
+
+            if (dot < 0.5f) {
+
+                if (!collisionCooldowns.ContainsKey(collision.collider)) {
+
+                    Physics2D.IgnoreCollision(playerCollider, collision.collider, true);
+                    Coroutine co = StartCoroutine(ReenableCollisionAfterDelay(collision.collider, 0.5f));
+                    collisionCooldowns.Add(collision.collider, co);
+
+                }
+
+                return;
+            }
+
+        }
+
+    }
+
+    private IEnumerator ReenableCollisionAfterDelay(Collider2D col, float delay) {
+
+        yield return new WaitForSeconds(delay);
+
+        if (col != null) {
+            Physics2D.IgnoreCollision(playerCollider, col, false);
+        }
+
+        if (collisionCooldowns.ContainsKey(col)) {
+            collisionCooldowns.Remove(col);
+        }
+
+    }
+
+    #endregion
+
 
     private void OnDrawGizmos() {
         Gizmos.DrawWireCube(transform.position-transform.up*castDistance, boxSize);

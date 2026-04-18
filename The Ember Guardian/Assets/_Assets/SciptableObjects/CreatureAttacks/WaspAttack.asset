@@ -17,17 +17,20 @@ MonoBehaviour:
   isStaticProjectileAttack: 0
   isAnimatedAttack: 0
   attackCooldown: 3
-  minAttackRange: 0.75
-  maxAttackRange: 1.5
+  minAttackRange: 0.4
+  maxAttackRange: 1
   hasDifferentDayAndNightRange: 0
   minAttackRange_Night: 0
   maxAttackRange_Night: 0
   attackRangeRandomizer: 0.2
+  maxAttackRangeRandomizer: 0
   damage: 1
   damageToFire: 1
   damageToBarricades: 1
   canAttackPlayerBehindBarricades: 0
   canAttackPlayerOnTower: 1
+  blockSwitchXScaleWhileAttacking: 0
+  startblockSwitchXScaleWhileAttackingTime: 0.1
   attackAnimationDelay: 0.3
   totalAttackAnimationTime: 0.5
   attackSFXDelayAfterAnimationStart: 0
