@@ -82,6 +82,8 @@ public class DogSounds : SoundObject
             dogAI.OnStateChanged += DogAI_OnStateChanged;
             dogAI.OnDogBite += DogAI_OnDogBite;
         }
+
+        PreloadAudioClips();
     }
 
     private void SettingsManager_OnDogVolumeChanged(object sender, System.EventArgs e) {
@@ -290,5 +292,63 @@ public class DogSounds : SoundObject
         dogAudioSource.PlayOneShot(sniffAudioClips[Random.Range(0, sniffAudioClips.Length)], masterVolume * dogVolume * .15f);
 
     }
+    private void PreloadAudioClips() {
 
+        AudioClip[][] allClipArrays = new AudioClip[][] {
+        footStepAudioClips,
+        breatheAudioClips,
+        sniffAudioClips,
+        pantAudioClips,
+        groanAudioClips,
+        groanAudioClips_darkCompanion,
+        growlAudioClips,
+        growlAudioClips_darkCompanion,
+        barkAudioClips,
+        barkAudioClips_retreiver,
+        barkAudioClips_darkCompanion,
+        biteAudioClips,
+        biteAudioClips_darkCompanion,
+        petStartAudioClips,
+        petLoopAudioClips,
+        petBarkAudioClips,
+        petTapAudioClips,
+        skidAudioClips
+    };
+
+        for (int i = 0; i < allClipArrays.Length; i++) {
+
+            AudioClip[] array = allClipArrays[i];
+
+            if (array == null) continue;
+
+            for (int j = 0; j < array.Length; j++) {
+
+                AudioClip clip = array[j];
+
+                if (clip == null) continue;
+
+                if (clip.loadState == AudioDataLoadState.Unloaded) {
+                    clip.LoadAudioData();
+                }
+            }
+        }
+
+        // Clips unitaires
+        AudioClip[] singleClips = new AudioClip[] {
+        rollingAudioClip,
+        laserAttackAudioClip,
+        stompAttackAudioClip
+    };
+
+        for (int i = 0; i < singleClips.Length; i++) {
+
+            AudioClip clip = singleClips[i];
+
+            if (clip == null) continue;
+
+            if (clip.loadState == AudioDataLoadState.Unloaded) {
+                clip.LoadAudioData();
+            }
+        }
+    }
 }

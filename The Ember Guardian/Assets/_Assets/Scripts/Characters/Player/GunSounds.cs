@@ -35,6 +35,8 @@ public class GunSounds : SoundObject
         surgeAudioSource.loop = true;
         surgeAudioSource.clip = surgeAudioClip;
         surgeAudioSource.volume = sfxVolume * surgeBuffVolume;
+
+        PreloadAudioClips();
     }
     protected virtual void Update() {
 
@@ -140,6 +142,30 @@ public class GunSounds : SoundObject
 
         surgeTimerRunning = false;
         surgeTimer = 0f;
+    }
+
+    private void PreloadAudioClips() {
+        if(PlayerShoot.Instance.GetPrimaryGunSO() == gun.GetGunSO() || PlayerShoot.Instance.GetSecondaryGunSO() == gun.GetGunSO()) {
+            if (gun != null && gun.GetGunSO() != null) {
+
+                AudioClip[] shootClips = gun.GetGunSO().shootGunSound;
+
+                if (shootClips != null) {
+
+                    for (int i = 0; i < shootClips.Length; i++) {
+
+                        AudioClip clip = shootClips[i];
+
+                        if (clip == null) continue;
+
+                        if (clip.loadState == AudioDataLoadState.Unloaded) {
+                            clip.LoadAudioData();
+                        }
+                    }
+                }
+            }
+        }
+        
     }
 
     protected override void SettingsManager_OnSfxVolumeChanged(object sender, System.EventArgs e) {

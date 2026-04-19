@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7145552451073045687}
   - component: {fileID: 3694400850988734811}
   - component: {fileID: 3941517374343610602}
+  - component: {fileID: 528920751146548506}
   m_Layer: 0
   m_Name: CreaturesManager
   m_TagString: Untagged
@@ -59,3 +60,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageNumberPrefab: {fileID: 1750896301428395208, guid: b75fa938d2a3f7b40a2552c5ceed17bf, type: 3}
   poolSize: 50
+--- !u!114 &528920751146548506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3237429567863252852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f75b0345ae519a84b914dd17c9e1a146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

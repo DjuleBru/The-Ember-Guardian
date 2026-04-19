@@ -33,6 +33,37 @@ public class WorkerSound : SoundObject
         engineerJob.OnEngineerTurnsWrench += EngineerJob_OnEngineerTurnsWrench;
 
         footStepAudioSource.GetComponent<SoundVolume2D>().SetVolumeMultiplier(footstepVolumeMultiplier);
+
+        PreloadAudioClips();
+    }
+
+    private void PreloadAudioClips() {
+
+        AudioClip[][] allClipArrays = new AudioClip[][] {
+        workerFootstepAudioClips,
+        guardFootstepAudioClips,
+        guardSpearHitAudioClips,
+        pickaxeHitAudioClips,
+        turnWrenchAudioClips
+    };
+
+        for (int i = 0; i < allClipArrays.Length; i++) {
+
+            AudioClip[] array = allClipArrays[i];
+
+            if (array == null) continue;
+
+            for (int j = 0; j < array.Length; j++) {
+
+                AudioClip clip = array[j];
+
+                if (clip == null) continue;
+
+                if (clip.loadState == AudioDataLoadState.Unloaded) {
+                    clip.LoadAudioData();
+                }
+            }
+        }
     }
 
     private void EngineerJob_OnEngineerTurnsWrench(object sender, System.EventArgs e) {

@@ -46,6 +46,7 @@ public class PlayerSounds : SoundObject
         ES3Settings settingsSaveFileSettings = new ES3Settings("Settings.es3");
         bool isFemaleAnimator = ES3.Load("characterType", false, settingsSaveFileSettings);
         SetSelectedGenderAudioClips(isFemaleAnimator);
+        PreloadAudioClips();
 
         playerAnimator.OnFootStepTriggered += PlayerAnimator_OnFootStepTriggered;
         playerBreathAnimator.OnPantTriggered += PlayerAnimator_OnPantTriggered;
@@ -73,6 +74,54 @@ public class PlayerSounds : SoundObject
         activeMoveSpeedBoostVisual.OnMoveSpeedFootStepTriggered += ActiveMoveSpeedBoostVisual_OnMoveSpeedFootStepTriggered;
     }
 
+    private void PreloadAudioClips() {
+        // Tous les tableaux à preload
+        AudioClip[][] allClipArrays = new AudioClip[][] {
+        footStepAudioClips,
+        playerDamagedAudioClips,
+        playerDamagedAudioClips_Female,
+        playerDiedAudioClips,
+        playerDiedAudioClips_Female,
+        playerDamagedElectricAudioClips,
+        playerPantAudioClips,
+        playerPantAudioClips_Female,
+        playerExhaustedAudioClips,
+        playerExhaustedAudioClips_Female,
+        playerRollAudioClips,
+        playerMeleeAttackStartedAudioClips,
+        playerMeleeAttackHitAudioClips,
+        gunJamHitFailed,
+        gunJamSpamHitPerformed,
+        gunJamPerfectQTE
+    };
+
+        // Parcours des tableaux
+        for (int i = 0; i < allClipArrays.Length; i++) {
+
+            AudioClip[] clipArray = allClipArrays[i];
+
+            if (clipArray == null) continue;
+
+            for (int j = 0; j < clipArray.Length; j++) {
+
+                AudioClip clip = clipArray[j];
+
+                if (clip == null) continue;
+
+                if (clip.loadState == AudioDataLoadState.Unloaded) {
+                    clip.LoadAudioData();
+                }
+            }
+        }
+
+        // Clip unique
+        if (activeMoveSpeedBoostFootstepAudioClip != null) {
+
+            if (activeMoveSpeedBoostFootstepAudioClip.loadState == AudioDataLoadState.Unloaded) {
+                activeMoveSpeedBoostFootstepAudioClip.LoadAudioData();
+            }
+        }
+    }
 
     private void SetSelectedGenderAudioClips(bool isFemale) {
         if(isFemale) {

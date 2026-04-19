@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class CreatureAudioLoadManager : MonoBehaviour
 {
-    private List<AudioClip> audioClipsPreloaded;
+    private List<AudioClip> audioClipsPreloaded = new List<AudioClip>();
     private void Start() {
         if (LevelManager.Instance == null) return;
 
-       //foreach(CreatureSO creatureSO in LevelManager.Instance.GetLevelSO().nightCreatureTypes) {
-       //     PreloadCreatureClips(creatureSO);
-       //}
-       //foreach (CreatureSO creatureSO in LevelManager.Instance.GetLevelSO().dayCreatureTypes) {
-       //     PreloadCreatureClips(creatureSO);
-       //}
+        foreach (CreatureSO creatureSO in LevelManager.Instance.GetLevelSO().nightCreatureTypes) {
+            PreloadCreatureClips(creatureSO);
+        }
+        foreach (CreatureSO creatureSO in LevelManager.Instance.GetLevelSO().dayCreatureTypes) {
+            PreloadCreatureClips(creatureSO);
+        }
 
         SceneLoader.Instance.OnSceneFadeOut += SceneLoader_OnSceneFadeOut;
     }
@@ -28,7 +28,7 @@ public class CreatureAudioLoadManager : MonoBehaviour
     }
 
     private void PreloadCreatureClips(CreatureSO creatureSO) {
-
+        Debug.Log("PreloadCreatureClips " + creatureSO);
         foreach(AudioClip clip in creatureSO.spawnAudioClips) {
         }
 
@@ -44,7 +44,11 @@ public class CreatureAudioLoadManager : MonoBehaviour
             LoadAudioClip(clip);
         }
 
-        if(creatureSO.primaryAttackSO != null) {
+        foreach (AudioClip clip in creatureSO.footStepAudioClips) {
+            LoadAudioClip(clip);
+        }
+
+        if (creatureSO.primaryAttackSO != null) {
             foreach (AudioClip clip in creatureSO.primaryAttackSO.attackAudioClips) {
                 LoadAudioClip(clip);
             }
@@ -53,13 +57,16 @@ public class CreatureAudioLoadManager : MonoBehaviour
                 LoadAudioClip(clip);
             }
 
-            foreach (AudioClip clip in creatureSO.primaryAttackSO.projectileSO.projectileInstantiatedAudioClips) {
-                LoadAudioClip(clip);
+            if(creatureSO.primaryAttackSO.projectileSO != null) {
+                foreach (AudioClip clip in creatureSO.primaryAttackSO.projectileSO.projectileInstantiatedAudioClips) {
+                    LoadAudioClip(clip);
+                }
+
+                foreach (AudioClip clip in creatureSO.primaryAttackSO.projectileSO.projectileHitAudioClips) {
+                    LoadAudioClip(clip);
+                }
             }
 
-            foreach (AudioClip clip in creatureSO.primaryAttackSO.projectileSO.projectileHitAudioClips) {
-                LoadAudioClip(clip);
-            }
 
         }
 
@@ -72,13 +79,17 @@ public class CreatureAudioLoadManager : MonoBehaviour
                 LoadAudioClip(clip);
             }
 
-            foreach (AudioClip clip in creatureSO.secondaryAttackSO.projectileSO.projectileInstantiatedAudioClips) {
-                LoadAudioClip(clip);
+            if (creatureSO.secondaryAttackSO.projectileSO != null) {
+
+                foreach (AudioClip clip in creatureSO.secondaryAttackSO.projectileSO.projectileInstantiatedAudioClips) {
+                    LoadAudioClip(clip);
+                }
+
+                foreach (AudioClip clip in creatureSO.secondaryAttackSO.projectileSO.projectileHitAudioClips) {
+                    LoadAudioClip(clip);
+                }
             }
 
-            foreach (AudioClip clip in creatureSO.secondaryAttackSO.projectileSO.projectileHitAudioClips) {
-                LoadAudioClip(clip);
-            }
 
         }
     }
