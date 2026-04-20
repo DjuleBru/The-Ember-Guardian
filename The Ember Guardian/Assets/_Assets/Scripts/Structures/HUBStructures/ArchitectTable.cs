@@ -170,7 +170,7 @@ public class ArchitectTable : MonoBehaviour
     }
 
     public int GetMaxFastTravelTPAmount() {
-        return maxMortarPositionsAmount;
+        return maxFastTravelTP;
     }
 
     #endregion

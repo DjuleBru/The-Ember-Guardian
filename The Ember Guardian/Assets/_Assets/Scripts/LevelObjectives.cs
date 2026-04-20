@@ -22,6 +22,7 @@ public class LevelObjectives : MonoBehaviour
     private bool rightDarklingNestFound;
     private bool rightDarklingNestDestroyed;
     private bool returnToHubObjectiveShown;
+    private bool architectSpokenTo;
 
     private bool tamerMet;
     private bool trainerMet;
@@ -251,14 +252,19 @@ public class LevelObjectives : MonoBehaviour
 
         }
 
-
         if (objectiveTypeToShow == LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity) {
 
             LevelUI_ObjectiveUI.Instance.ShowObjectiveUI(LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity);
+
+
             List<LevelUI_ObjectiveUI.SubObjectiveType> subObjectives = new List<LevelUI_ObjectiveUI.SubObjectiveType>() {
                     LevelUI_ObjectiveUI.SubObjectiveType.FindArchitect,
                     LevelUI_ObjectiveUI.SubObjectiveType.FindNest,
                 };
+
+            if (architectSpokenTo) {
+                subObjectives.Remove(LevelUI_ObjectiveUI.SubObjectiveType.FindArchitect);
+            }
 
             LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectives);
 
@@ -370,7 +376,7 @@ public class LevelObjectives : MonoBehaviour
         }
 
         if (levelMerchant.GetHubMerchantType() == HubMerchant.HubMerchantType.StructuresMerchant) {
-
+            architectSpokenTo = true;
             yield return new WaitForSeconds(1f);
 
             if (LevelManager.Instance.GetLevelSO().endLevelType == LevelUI_ObjectiveUI.ObjectiveType.FindArchitectTable) {
@@ -444,7 +450,7 @@ public class LevelObjectives : MonoBehaviour
 
         if(LevelManager.Instance.GetLevelSO().levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity) {
             LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.LightFire);
-            if (NPCInteractionsIndex == 1) {
+            if (NPCInteractionsIndex >= 1) {
                 ShowReturnToHubObj(3f);
             }
         }

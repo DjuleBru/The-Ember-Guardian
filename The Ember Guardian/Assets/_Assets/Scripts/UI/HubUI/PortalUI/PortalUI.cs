@@ -9,6 +9,7 @@ public class PortalUI : MonoBehaviour {
 
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject firstButtonSelected;
+    [SerializeField] private Button teleportButton;
     [SerializeField] private Portal portal;
     [SerializeField] private Animator portalUIAnimator;
     [SerializeField] private Animator portalDescriptionUIAnimator;
@@ -25,6 +26,7 @@ public class PortalUI : MonoBehaviour {
 
     private bool switchingLevel;
     private bool portalUIOpen;
+    private bool teleportButtonInteractable;
 
     public static event EventHandler OnAnyPortalUIClosed;
     public static event EventHandler OnAnyPortalUIOpened;
@@ -32,7 +34,12 @@ public class PortalUI : MonoBehaviour {
     private void Awake() {
         canvas = GetComponent<Canvas>();
         mainPanel.SetActive(false);
+
+        teleportButton.onClick.AddListener(() => {
+            TryTeleportPlayerFromHub();
+        });
     }
+
 
     private void Start() {
         canvas.worldCamera = CameraManager.Instance.GetUICamera();
@@ -47,6 +54,11 @@ public class PortalUI : MonoBehaviour {
         SetDisplayedLevelSO();
         RefreshUnlockedLevels();
         RefreshCanClickOnNextLevel();
+    }
+
+    private void TryTeleportPlayerFromHub() {
+        if (!teleportButtonInteractable) return;
+        portal.TeleportPlayerFromHub();
     }
 
     private void Portal_OnLinkedLevelSOSet(object sender, EventArgs e) {
@@ -88,6 +100,7 @@ public class PortalUI : MonoBehaviour {
     }
 
     private void OpenPanel() {
+        teleportButtonInteractable = false;
         portalUIOpen = true;
         portal.SetPlayerOpenedPortalUI(true);
 
@@ -104,6 +117,13 @@ public class PortalUI : MonoBehaviour {
         CameraManager.Instance.ChangeCameraTarget(portal.GetLevelSelectionCameraTarget());
 
         OnAnyPortalUIOpened?.Invoke(this, EventArgs.Empty);
+
+        StartCoroutine(SetButtonInteractableAfterFrame());
+    }
+
+    private IEnumerator SetButtonInteractableAfterFrame() {
+        yield return new WaitForEndOfFrame();
+        teleportButtonInteractable = true;
     }
 
     private void ClosePanel(bool zoomOut = true) {

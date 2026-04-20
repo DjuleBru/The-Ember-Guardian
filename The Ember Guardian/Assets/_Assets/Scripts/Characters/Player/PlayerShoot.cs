@@ -1625,6 +1625,17 @@ public class PlayerShoot : MonoBehaviour
             RemoveLMGBipod(true);
         }
 
+        if(secondaryAbilityActive) {
+            bool primarySecondaryAbilityEquipped = debugUseFirstSecondaryAbility;
+            bool secondarySecondaryAbilityEquipped = debugUseSecondSecondaryAbility;
+
+            if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper && primarySecondaryAbilityEquipped) {
+                OnPlayerAimedSightEnded?.Invoke(this, EventArgs.Empty);
+                OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
+                secondaryAbilityActive = false;
+            }
+        }
+
         if(swappingGun) {
             InterruptGunSwap();
         }

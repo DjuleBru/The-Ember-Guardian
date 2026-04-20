@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf824d5b6a98974ab21a5ec2643ace8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnerID: 46e4f73e-a334-4c93-ab70-8c18bd342adf
   sceneViewSpawnerSpriteRenderer: {fileID: 0}
   mobPrefab: {fileID: 2100628709117196716, guid: 61fc72d8cc17be84eb6679397d2fd53c, type: 3}
   spawnPositionList:
@@ -125,12 +126,14 @@ MonoBehaviour:
   canSpawnEliteCreatures: 0
   eliteSpawnProbability: 0
   eliteSpawnAmount: 0
+  flying_SpawnAtSpawnPosition: 0
   linkedMobSpawner: {fileID: 0}
   mobAmountSpawnedSimultaneously: 1
   spawnerHealth: 0
   spawnRate: 15
   spawnAnimationDelay: 0.5
   canSpawnMobsAtNight: 0
+  blockAutoMobSpawn: 0
 --- !u!1 &2836379815106326953
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4244841716830965666, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.786
+      value: 1.33
       objectReference: {fileID: 0}
     - target: {fileID: 5087361752195091880, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.x

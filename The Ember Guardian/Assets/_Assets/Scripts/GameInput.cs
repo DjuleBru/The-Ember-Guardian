@@ -262,6 +262,7 @@ public class GameInput : MonoBehaviour
             }
         }
 
+        //Debug.Log(" currentControlScheme " + currentControlScheme);
         OnPlayerInputChanged?.Invoke(this, EventArgs.Empty);
     }
 

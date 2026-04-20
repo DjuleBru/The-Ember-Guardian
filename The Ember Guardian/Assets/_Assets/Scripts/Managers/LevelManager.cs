@@ -261,7 +261,7 @@ public class LevelManager : MonoBehaviour
         if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.FindArmorer) return;
 
         if (levelSO.levelObjectiveType == LevelUI_ObjectiveUI.ObjectiveType.ExploreCorruptedCity) {
-            if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest && LevelObjectives.Instance.GetNPCInteractionsIndex() == 1) {
+            if (levelSO.endLevelType == LevelUI_ObjectiveUI.ObjectiveType.DestroyNest && LevelObjectives.Instance.GetNPCInteractionsIndex() >= 1) {
                 LevelSuccess(4f);
             };
         };

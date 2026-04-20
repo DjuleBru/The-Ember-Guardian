@@ -11,6 +11,10 @@ public class CreatureDetectionCollider : MonoBehaviour {
     private List<IDamageable> iDamageablesInDetectionRange = new List<IDamageable>();
     private List<IDamageable> iDamageablesExcludedFromDetection = new List<IDamageable>();
 
+    private Collider2D[] overlapBuffer = new Collider2D[64];
+    private List<IDamageable> currentFrame = new List<IDamageable>(64);
+    private List<IDamageable> toRemove = new List<IDamageable>(64);
+
     private bool playerShotCreature;
     private float playerShotCreatureTimer;
     private float playerShotCreatureAggroTime = 5f;
@@ -37,6 +41,8 @@ public class CreatureDetectionCollider : MonoBehaviour {
         creatureMovement = GetComponentInParent<CreatureMovement>();
         creatureAttack = GetComponentInParent<CreatureAttack>();
         circleCollider = GetComponent<CircleCollider2D>();
+
+        refreshTargetTimer = UnityEngine.Random.Range(0, refreshTargetcooldown);
     }
 
     private void Start() {
@@ -77,56 +83,89 @@ public class CreatureDetectionCollider : MonoBehaviour {
 
     // --- Remplacement des triggers ---
     private void ScanForTargets() {
-        HashSet<IDamageable> currentFrame = new HashSet<IDamageable>();
+        currentFrame.Clear();
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, circleCollider.radius);
-        foreach (Collider2D hit in hits) {
+        int hitCount = Physics2D.OverlapCircleNonAlloc(
+            transform.position,
+            circleCollider.radius,
+            overlapBuffer
+        );
+
+        for (int i = 0; i < hitCount; i++) {
+            Collider2D hit = overlapBuffer[i];
             if (hit == null) continue;
 
             if (hit.TryGetComponent<Player>(out var player)) {
                 currentFrame.Add(player);
+                continue;
             }
 
             if (hit.TryGetComponent<Barricade>(out var barricade)) {
                 currentFrame.Add(barricade);
+                continue;
             }
 
-            if (hit.TryGetComponent<Fire>(out var fire) && !fire.GetIsEndLevelAreaFire()) {
-                currentFrame.Add(fire);
+            if (hit.TryGetComponent<Fire>(out var fire)) {
+                if (!fire.GetIsEndLevelAreaFire()) {
+                    currentFrame.Add(fire);
+                }
+                continue;
             }
 
-            if (hit.TryGetComponent<Worker>(out var worker)
-                && worker.GetRecruited()
-                && !(worker.GetDefensiveStructureAssigned() is Tower)) {
-                currentFrame.Add(worker);
-            }
-        }
-
-        // Ajout des nouveaux entrants
-        foreach (IDamageable dmg in currentFrame) {
-            if (!iDamageablesInDetectionRange.Contains(dmg)) {
-                AddIDamageableInDetectionRange(dmg);
-
-                // Abonnements aux événements
-                if (dmg is Worker newWorker) newWorker.OnMobDied += Worker_OnMobDied;
-                if (dmg is Barricade newBarricade) newBarricade.OnBarricadeDestroyed += Barricade_OnBarricadeDestroyed;
-
-                if (dmg is Player || dmg is Worker) unaggroTimer = unaggroTime;
+            if (hit.TryGetComponent<Worker>(out var worker)) {
+                if (worker.GetRecruited()) {
+                    if (!(worker.GetDefensiveStructureAssigned() is Tower)) {
+                        currentFrame.Add(worker);
+                    }
+                }
+                continue;
             }
         }
 
-        // Détection des objets sortis
-        List<IDamageable> toRemove = new List<IDamageable>();
-        foreach (IDamageable dmg in iDamageablesInDetectionRange) {
-            if (!currentFrame.Contains(dmg)) toRemove.Add(dmg);
+        // --- ajout entrants ---
+        for (int i = 0; i < currentFrame.Count; i++) {
+            IDamageable dmg = currentFrame[i];
+
+            if (iDamageablesInDetectionRange.Contains(dmg)) continue;
+
+            AddIDamageableInDetectionRange(dmg);
+
+            if (dmg is Worker newWorker) {
+                newWorker.OnMobDied += Worker_OnMobDied;
+            }
+
+            if (dmg is Barricade newBarricade) {
+                newBarricade.OnBarricadeDestroyed += Barricade_OnBarricadeDestroyed;
+            }
+
+            if (dmg is Player || dmg is Worker) {
+                unaggroTimer = unaggroTime;
+            }
         }
 
-        foreach (IDamageable dmg in toRemove) {
+        // --- removals ---
+        toRemove.Clear();
+
+        for (int i = 0; i < iDamageablesInDetectionRange.Count; i++) {
+            IDamageable dmg = iDamageablesInDetectionRange[i];
+
+            if (!currentFrame.Contains(dmg)) {
+                toRemove.Add(dmg);
+            }
+        }
+
+        for (int i = 0; i < toRemove.Count; i++) {
+            IDamageable dmg = toRemove[i];
+
             RemoveIDamageableInDetectionRange(dmg);
 
-            // Désabonnements aux événements
-            if (dmg is Worker oldWorker) oldWorker.OnMobDied -= Worker_OnMobDied;
-            if (dmg is Barricade oldBarricade) oldBarricade.OnBarricadeDestroyed -= Barricade_OnBarricadeDestroyed;
+            if (dmg is Worker oldWorker) {
+                oldWorker.OnMobDied -= Worker_OnMobDied;
+            }
+
+            if (dmg is Barricade oldBarricade) {
+                oldBarricade.OnBarricadeDestroyed -= Barricade_OnBarricadeDestroyed;
+            }
         }
     }
 
@@ -241,55 +280,45 @@ public class CreatureDetectionCollider : MonoBehaviour {
     }
 
     private void RefreshHighestPriorityTarget() {
-        List<IDamageable> iDamageablesDetected = new List<IDamageable>();
-
-        foreach (IDamageable iDamageable in iDamageablesInDetectionRange) {
-            if (iDamageablesExcludedFromDetection.Contains(iDamageable)) continue;
-            iDamageablesDetected.Add(iDamageable);
-        }
-
-        if (playerShotCreature && !iDamageablesInDetectionRange.Contains(Player.Instance) && !CampZoneManager.Instance.IsWithinCampZoneLimits(Player.Instance.transform.position)) {
-            iDamageablesDetected.Add(Player.Instance);
-        }
-
-        if (iDamageablesDetected.Count == 0) {
+        if (iDamageablesInDetectionRange.Count == 0 && !playerShotCreature) {
             creatureAI.ResetAttackTargetInProximity();
             return;
         }
 
-        IDamageable highestPriorityTarget = null;
-        int highestPriority = 0;
+        IDamageable best = null;
+        int bestPriority = 0;
 
-        foreach (IDamageable iDamageable in iDamageablesDetected) {
-            int currentPriority = 0;
+        for (int i = 0; i < iDamageablesInDetectionRange.Count; i++) {
+            IDamageable dmg = iDamageablesInDetectionRange[i];
 
-            if (iDamageable is Worker worker) {
-                if (CanAddWorkerToTargets(worker)) currentPriority = workerTargetingPriority;
-                else continue;
+            if (iDamageablesExcludedFromDetection.Contains(dmg)) continue;
+
+            int priority = 0;
+
+            if (dmg is Worker worker) {
+                if (!CanAddWorkerToTargets(worker)) continue;
+                priority = workerTargetingPriority;
+            }
+            else if (dmg is Barricade barricade) {
+                if (!CanAddBarricadeToTargets(barricade)) continue;
+                priority = barricadeTargetingPriority;
+            }
+            else if (dmg is Fire fire) {
+                if (!CanAddFireToTargets(fire)) continue;
+                priority = fireTargetingPriority;
+            }
+            else if (dmg is Player) {
+                if (!CanAddPlayerToTargets()) continue;
+                priority = playerTargetingPriority;
             }
 
-            if (iDamageable is Barricade barricade) {
-                if (CanAddBarricadeToTargets(barricade)) currentPriority = barricadeTargetingPriority;
-                else continue;
-            }
-
-            if (iDamageable is Fire fire) {
-                if (CanAddFireToTargets(fire)) currentPriority = fireTargetingPriority;
-                else continue;
-            }
-
-            if (iDamageable is Player) {
-                if (CanAddPlayerToTargets()) currentPriority = playerTargetingPriority;
-                else continue;
-            }
-
-            if (currentPriority > highestPriority) {
-                highestPriorityTarget = iDamageable;
-                highestPriority = currentPriority;
+            if (priority > bestPriority) {
+                bestPriority = priority;
+                best = dmg;
             }
         }
 
-        creatureAI.SetAttackTarget(highestPriorityTarget, iDamageablesDetected);
+        creatureAI.SetAttackTarget(best, iDamageablesInDetectionRange);
     }
 
     private bool CanAddFireToTargets(IDamageable fire) {

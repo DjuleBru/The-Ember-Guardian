@@ -609,7 +609,7 @@ public class UICurrencyManager : MonoBehaviour
     }
 
     public void LoadCurrencies(PlayerCurrencies.CurrencyType currencyType, List<Vector3> currencyPositions, List<Quaternion> currencyRotations) {
-        Debug.Log("LoadCurrencies");
+        //Debug.Log("LoadCurrencies");
         Transform prefab = GetCurrencyUIPrefab(currencyType);
 
         int i = 0;

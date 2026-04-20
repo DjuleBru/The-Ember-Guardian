@@ -196,24 +196,29 @@ public class Mob : MonoBehaviour, IDamageable
             collectibleDroppedList = collectiblesDropped
         });
     }
+
     protected virtual void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.GetComponent<Obstacle>() != null) {
-            Obstacle obstacle = collision.gameObject.GetComponent<Obstacle>();
+        if (collision.TryGetComponent<Obstacle>(out var obstacle)) {
             if (obstacle.GetBuilt()) return;
+
             OnMobHitObstacle?.Invoke(this, EventArgs.Empty);
             inObstacleTriggerArea = true;
-        
+            return;
         }
-        if (collision.gameObject.GetComponent<EndLevelCollider>() != null) {
+
+        if (collision.TryGetComponent<EndLevelCollider>(out var endLevel)) {
             OnMobHitObstacle?.Invoke(this, EventArgs.Empty);
             inObstacleTriggerArea = true;
         }
     }
+
     protected virtual void OnTriggerExit2D(Collider2D collision) {
-        if (collision.gameObject.GetComponent<Obstacle>() != null) {
+        if (collision.TryGetComponent<Obstacle>(out _)) {
             inObstacleTriggerArea = false;
+            return;
         }
-        if (collision.gameObject.GetComponent<EndLevelCollider>() != null) {
+
+        if (collision.TryGetComponent<EndLevelCollider>(out _)) {
             inObstacleTriggerArea = false;
         }
     }

@@ -113,7 +113,6 @@ public class PlayerAim : MonoBehaviour
     private bool limitAimAngle = false;
     private float maxAimAngle = 60f; // Maximum angle from the default aim direction (in degrees)
 
-
     public event EventHandler OnXAimDirChanged;
     public event EventHandler OnPlayerAimSightStarted;
     public event EventHandler OnPlayerAimSightEnded;
@@ -162,7 +161,6 @@ public class PlayerAim : MonoBehaviour
 
         damageImmunityAfterTakingDamageTime = PlayerStats.Instance.GetDamagedImmunityTime();
     }
-
 
     private void LateUpdate() {
         HandleJustTookDamagePrecisionDebuff();
@@ -453,9 +451,8 @@ public class PlayerAim : MonoBehaviour
         float closestDistance = float.MaxValue;
 
         Rigidbody2D enemyRb = null;
+
         foreach (var enemy in hitEnemies) {
-
-
             CreatureAutoAimCollider autoAimCollider = enemy.gameObject.GetComponent<CreatureAutoAimCollider>();
             if (autoAimCollider == null) continue;
 
@@ -472,7 +469,7 @@ public class PlayerAim : MonoBehaviour
 
             Vector3 autoAimPos = autoAimCollider.GetAutoAimPosition();
             float distanceToEnemy = Vector2.Distance(autoAimPos, transform.position);
-            if (distanceToEnemy > weaponRange * .9f) continue;
+            if (distanceToEnemy > weaponRange) continue;
 
             enemyRb = enemy.attachedRigidbody;
             Vector2 enemyVelocity = Vector2.zero;
@@ -485,18 +482,14 @@ public class PlayerAim : MonoBehaviour
             float travelTime = distanceToEnemy / Mathf.Max(1f, projectileSpeed);
 
             // --- Position prédite ---
+            //Debug.Log(enemyVelocity);
             Vector2 predictedPos = (Vector2)autoAimPos + enemyVelocity * travelTime;
 
             // Direction vers la position prédite
             Vector2 dirToEnemy = (predictedPos - (Vector2)transform.position).normalized;
 
             //Vector2 dirToEnemy = (autoAimPos - transform.position).normalized;
-            float dynamicConeAngle = Mathf.Lerp(
-                autoAimConeAngle,
-                maxAutoAimConeAngle,
-                Mathf.InverseLerp(distanceToHaveMinAutoAimConeAngle, distanceToHaveMaxAutoAimConeAngle, distanceToEnemy)
-            );
-
+            float dynamicConeAngle = Mathf.Lerp(autoAimConeAngle,maxAutoAimConeAngle,Mathf.InverseLerp(distanceToHaveMinAutoAimConeAngle, distanceToHaveMaxAutoAimConeAngle, distanceToEnemy));
 
             float angleToEnemy = Vector2.Angle(aimDir, dirToEnemy);
 
@@ -774,14 +767,20 @@ public class PlayerAim : MonoBehaviour
         CameraManager.Instance.ResetCameraTargetToPlayer();
         OnPlayerAimSightEnded?.Invoke(this, EventArgs.Empty);
 
+        detectionRange /= 1.3f;
+
         ResetStationaryPerfectPrecision();
+        Debug.Log("detectionRange " + detectionRange);
     }
 
     private void PlayerShoot_OnPlayerAimedSightStarted(object sender, EventArgs e) {
         CameraManager.Instance.ChangeCameraTarget(aimSightTransform, false);
         OnPlayerAimSightStarted?.Invoke(this, EventArgs.Empty);
 
+        detectionRange *= 1.3f; 
+
         ResetStationaryPerfectPrecision(.5f);
+        Debug.Log("detectionRange " + detectionRange);
     }
 
 
@@ -789,13 +788,28 @@ public class PlayerAim : MonoBehaviour
         RecalculatePrecision();
 
         ResetStationaryPerfectPrecision();
+        RefreshAutoAimDetectionRange();
+    }
 
-        if (PlayerShoot.Instance.GetHeldGun().GetGunSO().bulletIsParticle) {
-            weaponRange = PlayerShoot.Instance.GetHeldGun().GetRange();
+    private void RefreshAutoAimDetectionRange() {
+        weaponRange = PlayerShoot.Instance.GetHeldGun().GetRange();
+
+        float screenBorder = Camera.main.orthographicSize * Camera.main.aspect;
+
+        GunSO.GunType gunType = PlayerShoot.Instance.GetHeldGunSO().gunType;
+        if (gunType == GunSO.GunType.RocketLauncher) {
+            weaponRange *= 2f;
         }
-        else {
-            weaponRange = 8f;
+        if (gunType == GunSO.GunType.AAGun) {
+            weaponRange = .45f;
         }
+
+        detectionRange = Mathf.Min(weaponRange * 1.1f, screenBorder*0.95f);
+
+        weaponProjectileSpeed = PlayerShoot.Instance.GetHeldGun().GetBulletSpeed();
+
+        Debug.Log(weaponProjectileSpeed);
+
     }
 
     public void AddRecoil(float recoil, float recoilDamping) {

@@ -595,30 +595,39 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void OnCollisionStay2D(Collision2D collision) {
-
         if (!IsInLayerMask(platformLayerMask, collision.collider.gameObject.layer)) {
             return;
         }
 
-        foreach (ContactPoint2D contact in collision.contacts) {
+        if (collisionCooldowns.ContainsKey(collision.collider)) {
+            return;
+        }
+
+        ContactPoint2D contact;
+        bool invalidContact = false;
+
+        int contactCount = collision.contactCount;
+
+        for (int i = 0; i < contactCount; i++) {
+            contact = collision.GetContact(i);
 
             float dot = Vector2.Dot(contact.normal, Vector2.up);
 
             if (dot < 0.5f) {
-
-                if (!collisionCooldowns.ContainsKey(collision.collider)) {
-
-                    Physics2D.IgnoreCollision(playerCollider, collision.collider, true);
-                    Coroutine co = StartCoroutine(ReenableCollisionAfterDelay(collision.collider, 0.5f));
-                    collisionCooldowns.Add(collision.collider, co);
-
-                }
-
-                return;
+                invalidContact = true;
+                break;
             }
-
         }
 
+        if (invalidContact) {
+            Physics2D.IgnoreCollision(playerCollider, collision.collider, true);
+
+            Coroutine co = StartCoroutine(
+                ReenableCollisionAfterDelay(collision.collider, 0.5f)
+            );
+
+            collisionCooldowns.Add(collision.collider, co);
+        }
     }
 
     private IEnumerator ReenableCollisionAfterDelay(Collider2D col, float delay) {

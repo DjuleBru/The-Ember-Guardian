@@ -205,6 +205,7 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     private void Portal_OnAnyTeleporterTeleportedPlayerOut(object sender, System.EventArgs e) {
+        if (isUsingGamepad) return;
         ShowWeaponAndMouseCursorGO(true);
     }
     private void Portal_OnAnyPlayerMovedOnTeleporter(object sender, System.EventArgs e) {
@@ -425,6 +426,7 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     public void ShowMouse(bool show) {
+        //Debug.Log("ShowMouse " + show);
         if (this == null) return; // Safety check if called on destroyed object
         if (!show && !AllMenusClosed()) return;
 
@@ -452,6 +454,7 @@ public class MouseCursorManager : MonoBehaviour
     }
 
     private void ShowWeaponAndMouseCursorGO(bool show) {
+        //Debug.Log("ShowWeaponAndMouseCursorGO " + show);
         weaponCursorGameObject.SetActive(show);
         mouseCursorGameObject.SetActive(show);
         weaponCursorImage.enabled = show;

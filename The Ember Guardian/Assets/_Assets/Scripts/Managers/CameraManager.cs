@@ -264,6 +264,13 @@ public class CameraManager : MonoBehaviour
         }
 
         cameraCenteredOnPlayer = true;
+        
+        // AJOUT IMPORTANT
+        StartCoroutine(RestoreBlendNextFrame());
+    }
+    private IEnumerator RestoreBlendNextFrame() {
+        yield return null;
+        RestoreBlend();
     }
 
     public bool IsChangingCameraOrthographicSize() {
