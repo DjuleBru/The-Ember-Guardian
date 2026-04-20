@@ -19,12 +19,7 @@ public class CreatureAudioLoadManager : MonoBehaviour
     }
 
     private void SceneLoader_OnSceneFadeOut(object sender, SceneLoader.OnSceneFadeOutEventArgs e) {
-        foreach (CreatureSO creatureSO in LevelManager.Instance.GetLevelSO().nightCreatureTypes) {
-            UnloadCreatureClips(creatureSO);
-        }
-        foreach (CreatureSO creatureSO in LevelManager.Instance.GetLevelSO().dayCreatureTypes) {
-            UnloadCreatureClips(creatureSO);
-        }
+        UnloadAllAudioClips();
     }
 
     private void PreloadCreatureClips(CreatureSO creatureSO) {
@@ -94,10 +89,18 @@ public class CreatureAudioLoadManager : MonoBehaviour
         }
     }
 
-    private void UnloadCreatureClips(CreatureSO creatureSO) {
-        foreach(AudioClip clip in audioClipsPreloaded) {
-            UnloadAudioClip(clip);
+    private void UnloadAllAudioClips() {
+
+        for (int i = audioClipsPreloaded.Count - 1; i >= 0; i--) {
+
+            AudioClip clip = audioClipsPreloaded[i];
+
+            if (clip != null) {
+                clip.UnloadAudioData();
+            }
         }
+
+        audioClipsPreloaded.Clear();
     }
 
     private void LoadAudioClip(AudioClip clip) {

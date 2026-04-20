@@ -112,6 +112,7 @@ public class Tower : Structure
             SetWorkerGarrisonPosition(worker);
         }
     }
+
     public override void SetStructureLevel(int structureLevel) {
         base.SetStructureLevel(structureLevel);
         DisableAllGarrisonColliders();
