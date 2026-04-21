@@ -146,10 +146,6 @@ public class Portal : MonoBehaviour
             return;
         }
 
-        Debug.Log("isHubDemoPortal " + isHubDemoPortal);
-        Debug.Log("isHUBTeleporter " + isHUBTeleporter);
-        Debug.Log("MetaProgressionManager.Instance.GetLevelUnlocked(linkedLevelSOList[0]) " + MetaProgressionManager.Instance.GetLevelUnlocked(linkedLevelSOList[0]));
-
         if (isHubDemoPortal || isEndLevelTeleporter) {
             StartCoroutine(TeleportPlayerIn());
             return;

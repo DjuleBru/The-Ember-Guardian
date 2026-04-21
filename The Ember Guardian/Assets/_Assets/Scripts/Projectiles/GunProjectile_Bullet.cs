@@ -231,7 +231,7 @@ public class GunProjectile_Bullet : GunProjectile {
 
         }
 
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") || collision.gameObject.layer == LayerMask.NameToLayer("Barricades")) {
 
             Instantiate(explosionPrefab, collisionPosition, Quaternion.Euler(0, 0, angle));
 

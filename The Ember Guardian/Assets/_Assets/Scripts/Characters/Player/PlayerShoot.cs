@@ -502,13 +502,17 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
+        Debug.Log("coolingDown " + coolingDown);
+
         if (!canShoot) return;
-        if (coolingDown) return;
         if (reloading) return;
         if (emptyingRevolverMag) return;
         if (swappingGun) return;
         if (loadingShot && !shotLoaded) return;
         if (Player.Instance.GetHP() == 0) return;
+
+        playerIsHoldingDownShoot = true;
+        if (coolingDown) return;
 
         if (heldGun.GetCurrentBullet() <= 0) {
             TryAutoReload();
@@ -526,7 +530,6 @@ public class PlayerShoot : MonoBehaviour
             Shoot();
         }
 
-        playerIsHoldingDownShoot = true;
 
         if (projectileExplodesOnPlayerClickModeActive && !projectileExplodesOnPlayerClick) {
             projectileExplodesOnPlayerClick = true;
