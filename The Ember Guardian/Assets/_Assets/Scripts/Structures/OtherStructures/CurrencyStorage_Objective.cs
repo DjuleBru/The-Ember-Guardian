@@ -27,7 +27,16 @@ public class CurrencyStorage_Objective : CurrencyStorage
         maxCurrencyStorageList = LevelManager.Instance.GetMaxCurrencyStorageList();
         difficultyReductionFactorsList = LevelManager.Instance.GetDifficultyReductionFactorsList();
         maxCurrencyAmountStored = maxCurrencyStorageList[0];
+    }
 
+    protected override void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        ActivateStructurePrimaryFunctionInteraction(true);
+
+        if (!structureSO.upgradeableAtNight && upgradeUnlocked) {
+            ActivateStructureUpgradeInteraction(true);
+        }
+
+        RefreshInteractable();
     }
 
     protected override void TriggerStructurePrimaryFunction() {
@@ -63,6 +72,7 @@ public class CurrencyStorage_Objective : CurrencyStorage
     public int GetMaxCurrencyStorageIndex() {
         return maxCurrencyStorageIndex;
     }
+
     public void SetMaxCurrencyStorageIndex(int maxCurrencyStorageIndex) {
         this.maxCurrencyStorageIndex = maxCurrencyStorageIndex;
         maxCurrencyAmountStored = maxCurrencyStorageList[maxCurrencyStorageIndex];

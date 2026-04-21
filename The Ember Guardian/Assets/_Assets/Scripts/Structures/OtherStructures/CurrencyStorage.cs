@@ -86,7 +86,8 @@ public class CurrencyStorage : Structure
     }
 
     public void SetCurrencyAmountStored(int currencyAmountStored) {
-
+        Debug.Log("SetCurrencyAmountStored " + currencyAmountStored);
+        Debug.Log("maxAmountStored " + maxCurrencyAmountStored);
         this.currencyAmountStored = currencyAmountStored;
         OnCurrencyStored?.Invoke(this, new OnAnyCurrencyStoredEventArgs {
             triggerSFX = false

@@ -113,12 +113,20 @@ PrefabInstance:
       value: 0.03996104
       objectReference: {fileID: 0}
     - target: {fileID: 628358577469823449, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_Size.x
+      value: 2.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 628358577469823449, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
+      propertyPath: m_Size.y
+      value: 2.3125
+      objectReference: {fileID: 0}
+    - target: {fileID: 628358577469823449, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -1956954786, guid: f981441b33c90a64485ba95f51605091, type: 3}
     - target: {fileID: 628358577469823449, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 628358577469823449, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -300,10 +308,6 @@ PrefabInstance:
       propertyPath: vfxSprite
       value: 
       objectReference: {fileID: 3051476931190769492}
-    - target: {fileID: 8540082468769658690, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8571825916105848638, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creatureAI
       value: 
@@ -365,6 +369,7 @@ MonoBehaviour:
   maxSpeedMultiplier: 1.3
   speedLerpDuration: 2
   speedChangeInterval: 2
+  useNoise: 0
   noiseAmplitude: 0.5
   noiseFrequency: 1
 --- !u!114 &4148215534742379683
@@ -381,10 +386,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roamChangeDestinationRate: 10
   roamRadius: 3
-  repositionCooldown: 2
   distanceToDropOnTarget: 3
   distanceToDropOnTargetRandomizer: 2
   playerYTargetAltitude: 2
+  moveSpeedBuffWhenDropping: 1.5
+  diveAttack: 0
+  diveAttackFollowTargetStrength: 2
 --- !u!4 &3505303790524414288 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1304696204632015260, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}

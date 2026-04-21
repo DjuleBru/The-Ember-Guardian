@@ -796,7 +796,6 @@ public class PlayerAim : MonoBehaviour
 
         float screenBorder = Camera.main.orthographicSize * Camera.main.aspect;
 
-        Debug.Log("weaponRange " + weaponRange);
         GunSO.GunType gunType = PlayerShoot.Instance.GetHeldGunSO().gunType;
         if (gunType == GunSO.GunType.RocketLauncher) {
             weaponRange *= 2f;
@@ -807,10 +806,8 @@ public class PlayerAim : MonoBehaviour
 
         detectionRange = Mathf.Min(weaponRange * 1.1f, screenBorder*0.95f);
 
-        Debug.Log("detectionRange " + detectionRange);
         weaponProjectileSpeed = PlayerShoot.Instance.GetHeldGun().GetBulletSpeed();
 
-        Debug.Log(weaponProjectileSpeed);
 
     }
 

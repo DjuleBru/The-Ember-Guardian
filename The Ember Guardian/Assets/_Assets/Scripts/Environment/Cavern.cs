@@ -6,11 +6,11 @@ public class Cavern : MonoBehaviour
 {
     [SerializeField] private AudioClip cavernAudioClip;
     [SerializeField] private Fog_Front fog_Front;
-    [SerializeField] private float cavernAudioVolume;
+    private float cavernAudioVolume = 3.5f;
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.gameObject.GetComponent<Player>() != null) {
-            BackgroundSoundsManager.Instance.SetInCavern(true, cavernAudioClip, cavernAudioVolume);
+            BackgroundSoundsManager.Instance.SetInCavern(true, cavernAudioClip, cavernAudioVolume * SettingsManager.Instance.GetSfxVolume() * SettingsManager.Instance.GetMasterVolume());
             fog_Front.SetInCavern(true);
             DayNightVisualsManager.Instance.SetInCave(true);
             RainManager.Instance.SetInCavern(true);
@@ -20,7 +20,7 @@ public class Cavern : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision) {
         if (collision.gameObject.GetComponent<Player>() != null) {
-            BackgroundSoundsManager.Instance.SetInCavern(false, cavernAudioClip, cavernAudioVolume);
+            BackgroundSoundsManager.Instance.SetInCavern(false, cavernAudioClip, cavernAudioVolume * SettingsManager.Instance.GetSfxVolume() * SettingsManager.Instance.GetMasterVolume());
             fog_Front.SetInCavern(false);
             DayNightVisualsManager.Instance.SetInCave(false);
             RainManager.Instance.SetInCavern(false);

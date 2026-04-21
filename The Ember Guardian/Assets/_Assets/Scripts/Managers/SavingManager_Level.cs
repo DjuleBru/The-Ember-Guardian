@@ -1060,12 +1060,14 @@ public class SavingManager_Level : MonoBehaviour
                 if (loadedStructureSO.structureCategory == StructureSO.StructureCategory.storage) {
                     CurrencyStorageSaveData storageData = storagesData[storageDataIndex];
                     CurrencyStorage storageStructure = structure as CurrencyStorage;
-                    storageStructure.SetCurrencyAmountStored(storageData.currencyAmountStored);
 
-                    if(loadedStructureSO.structureType == StructureSO.StructureType.currencyStorage_Objective) {
+                    if (loadedStructureSO.structureType == StructureSO.StructureType.currencyStorage_Objective) {
                         CurrencyStorage_Objective storageStructure_Obj = storageStructure as CurrencyStorage_Objective;
                         storageStructure_Obj.SetMaxCurrencyStorageIndex(storageData.maxCurrencyStorageIndex);
                     }
+
+                    storageStructure.SetCurrencyAmountStored(storageData.currencyAmountStored);
+
 
                     storageDataIndex++;
                 };

@@ -203,7 +203,6 @@ public class Mob : MonoBehaviour, IDamageable
 
             OnMobHitObstacle?.Invoke(this, EventArgs.Empty);
             inObstacleTriggerArea = true;
-            return;
         }
 
         if (collision.TryGetComponent<EndLevelCollider>(out var endLevel)) {
@@ -215,7 +214,6 @@ public class Mob : MonoBehaviour, IDamageable
     protected virtual void OnTriggerExit2D(Collider2D collision) {
         if (collision.TryGetComponent<Obstacle>(out _)) {
             inObstacleTriggerArea = false;
-            return;
         }
 
         if (collision.TryGetComponent<EndLevelCollider>(out _)) {

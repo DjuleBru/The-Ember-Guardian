@@ -186,6 +186,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     protected void SettingsManager_OnDifficultyChanged(object sender, EventArgs e) {
         RefreshDifficultyMultiplier();
     }
+
     protected void RefreshDifficultyMultiplier() {
         SettingsManager.Difficulty currentDifficulty = SettingsManager.Instance.GetDifficulty();
         

@@ -52,6 +52,7 @@ MonoBehaviour:
   orbTemplateWorldUIParent: {fileID: 8116224641355240844}
   debugStructureTypeBought: 0
   isAlwaysUnlocked: 0
+  worldLocationScaleX: 0
   showTooltipOnTrigger: {fileID: 4893194195039516114}
 --- !u!114 &3091749738831476434
 MonoBehaviour:
@@ -81,7 +82,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32768
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -91,10 +92,10 @@ BoxCollider2D:
     m_Bits: 4294967295
   m_ContactCaptureLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294934527
   m_CallbackLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294934527
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0

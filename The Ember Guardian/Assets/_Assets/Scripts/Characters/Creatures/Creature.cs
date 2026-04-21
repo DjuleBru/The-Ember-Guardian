@@ -13,6 +13,14 @@ public class Creature : Mob
     [SerializeField] protected CreatureMovement creatureMovement;
     [SerializeField] protected List<Collider2D> critZoneColliders;
     [SerializeField] protected Transform autoAimPosition;
+
+    [SerializeField] private float stuckCheckDelay = 1f;
+    [SerializeField] private float stuckKillTime = 10f;
+    [SerializeField] private float minMovementThreshold = 0.1f;
+    private float stuckTimer;
+    private float stuckCheckTimer;
+    private Vector3 lastPosition;
+
     protected CreatureAI creatureAI;
     protected CreatureAttack creatureAttack;
 
@@ -185,6 +193,10 @@ public class Creature : Mob
         }
         ResetStatusFX();
 
+        stuckTimer = 0f;
+        stuckCheckTimer = 0f;
+        lastPosition = transform.position;
+
         OnCreatureEnabled?.Invoke(this, EventArgs.Empty);
     }
 
@@ -202,6 +214,7 @@ public class Creature : Mob
         }
 
         HandleStatusEffects();
+        HandleStuckCheck();
 
         if (detectionRangeIncreased) {
 
@@ -226,6 +239,43 @@ public class Creature : Mob
             }
         }
 
+    }
+
+    private void HandleStuckCheck() {
+
+        if (dead) return;
+
+        if (IsDayCreature()) return;
+        if (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) return;
+        if (creatureAI.GetState() == CreatureAI.State.attacking) return;
+        if (immobilized || stunned) return;
+
+        if (creatureSO.isBoss) return;
+
+        stuckCheckTimer -= Time.deltaTime;
+
+        if (stuckCheckTimer > 0) return;
+
+        stuckCheckTimer = stuckCheckDelay;
+
+        float distance = Vector3.Distance(transform.position, lastPosition);
+
+        if (distance < minMovementThreshold) {
+
+            stuckTimer += stuckCheckDelay;
+
+            if (stuckTimer >= stuckKillTime) {
+                Debug.Log("Creature killed because stuck: " + gameObject.name);
+                Die();
+            }
+
+        }
+        else {
+
+            stuckTimer = 0f;
+        }
+
+        lastPosition = transform.position;
     }
 
     [Button]

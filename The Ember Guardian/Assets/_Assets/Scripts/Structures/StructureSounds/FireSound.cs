@@ -67,6 +67,7 @@ public class FireSound : StructureSounds
     }
 
     private void Fire_OnFireEmberExtractionStarted(object sender, System.EventArgs e) {
+        extractingEmberAudioSource.volume = sfxVolume * masterVolume;
         extractingEmberAudioSource.Play();
     }
 

@@ -1019,10 +1019,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8540082468769658690, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8571825916105848638, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creatureAttack
       value: 
@@ -1115,6 +1111,7 @@ MonoBehaviour:
   projectileSO: {fileID: 0}
   staticProjectilePrefab: {fileID: 0}
   projectileSpawnPoint: {fileID: 0}
+  multipleProjectileSpawnPointList: []
   attackCooldown: 0
   attackAnimationDelay: 0
   totalAttackAnimationTime: 0

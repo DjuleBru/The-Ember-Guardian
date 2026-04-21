@@ -23,11 +23,18 @@ public class CreatureAudioLoadManager : MonoBehaviour
     }
 
     private void PreloadCreatureClips(CreatureSO creatureSO) {
-        Debug.Log("PreloadCreatureClips " + creatureSO);
+        //Debug.Log("PreloadCreatureClips " + creatureSO);
         foreach(AudioClip clip in creatureSO.spawnAudioClips) {
+            LoadAudioClip(clip);
         }
 
         foreach (AudioClip clip in creatureSO.dieAudioClips) {
+            LoadAudioClip(clip);
+        }
+        foreach (AudioClip clip in creatureSO.continuousAudioClip) {
+            LoadAudioClip(clip);
+        }
+        foreach (AudioClip clip in creatureSO.continuousMovementAudioClip) {
             LoadAudioClip(clip);
         }
 

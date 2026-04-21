@@ -502,8 +502,6 @@ public class PlayerShoot : MonoBehaviour
             return;
         }
 
-        Debug.Log("coolingDown " + coolingDown);
-
         if (!canShoot) return;
         if (reloading) return;
         if (emptyingRevolverMag) return;

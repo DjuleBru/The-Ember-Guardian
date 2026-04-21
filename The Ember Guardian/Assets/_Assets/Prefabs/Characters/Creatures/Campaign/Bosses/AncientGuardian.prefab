@@ -5978,10 +5978,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8540082468769658690, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8571825916105848638, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: creature
       value: 
@@ -6144,10 +6140,14 @@ MonoBehaviour:
   creatureMovement: {fileID: 4337914010403546700}
   critZoneColliders: []
   autoAimPosition: {fileID: 6545005308228710571}
+  stuckCheckDelay: 1
+  stuckKillTime: 10
+  minMovementThreshold: 0.1
   shieldMaxHealth: 50
   shieldCooldown: 12
   activateShieldOnStart: 0
   activateShieldAfterDamageTaken: 1
+  activateShieldRandomly: 0
   timeToActivateShieldAfterDamageTaken: 1
 --- !u!82 &2472456054417652496 stripped
 AudioSource:
