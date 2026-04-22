@@ -807,6 +807,7 @@ public class ItemButtonUI : ButtonUI {
         ItemButtonUI itemButtonUI = sender as ItemButtonUI;
 
         if (itemButtonUI == null) {
+            DeselectItemButtonUI();
             return;
         }
 
@@ -833,8 +834,7 @@ public class ItemButtonUI : ButtonUI {
         }
 
         if (this != itemButtonUI && itemSelected) {
-            itemSelected = false;
-            descriptionCard.gameObject.SetActive(false);
+            DeselectItemButtonUI();
         }
 
         if (treeShowHide != null && this != itemButtonUI) {
@@ -846,6 +846,11 @@ public class ItemButtonUI : ButtonUI {
                 treeShowHide.HideTree();
             }
         }
+    }
+
+    private void DeselectItemButtonUI() {
+        itemSelected = false;
+        descriptionCard.gameObject.SetActive(false);
     }
 
     public override void OnPointerExit(PointerEventData eventData) {
@@ -880,8 +885,8 @@ public class ItemButtonUI : ButtonUI {
     }
 
     public Vector2 GetLocalPosition() {
-        if(isTreeChild) {
-            return transform.parent.GetComponent<RectTransform>().localPosition;
+        if (isTreeChild) {
+            return transform.parent.GetComponent<RectTransform>().localPosition + GetComponent<RectTransform>().localPosition;
         } else {
             return GetComponent<RectTransform>().localPosition;
         }

@@ -125,9 +125,9 @@ public class GunProjectile_AA : GunProjectile
         if (instantiateChildGunGroundProjectiles) {
             for(int i = 0; i < childGunProjectilesInstantiated; ++i) {
 
-                GunProjectile_AA gunProjectile = Instantiate(childGunProjectilePrefab, transform.position, Quaternion.identity).GetComponent<GunProjectile_AA>();
+                GunProjectile gunProjectile = Instantiate(childGunProjectilePrefab, transform.position, Quaternion.identity).GetComponent<GunProjectile>();
                 gunProjectile.gameObject.SetActive(true);
-                gunProjectile.SetIsChildProjectile();
+                //gunProjectile.SetIsChildProjectile();
                 Vector2 initialForce = new Vector2(UnityEngine.Random.Range(-10f,10f),UnityEngine.Random.Range(-10f, 10f));
 
                 float childBulletLifetimeRandomized = UnityEngine.Random.Range(childBulletLifetime - childBulletLifetime / 10, childBulletLifetime + childBulletLifetime / 10);

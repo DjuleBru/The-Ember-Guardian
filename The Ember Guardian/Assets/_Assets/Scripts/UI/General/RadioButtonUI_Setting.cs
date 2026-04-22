@@ -23,6 +23,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         UIDisplay,
         Difficulty,
         Photosensitivity,
+
+        VSync,
+        MaxFPS,
     }
 
     [SerializeField] private SettingType settingType;
@@ -56,6 +59,7 @@ public class RadioButtonUI_Setting : RadioButtonUI
         SettingsManager.Instance.OnUIDisplayChanged += SettingsManager_OnUIDisplayChanged;
         SettingsManager.Instance.OnDifficultyChanged += SettingsManager_OnDifficultyChanged;
         SettingsManager.Instance.OnPhotosensitivityChanged += SettingsManager_OnPhotosensitivityChanged;
+        SettingsManager.Instance.OnVSyncChanged += SettingsManager_OnVSyncChanged;
 
         RefreshVisual();
     }
@@ -104,6 +108,10 @@ public class RadioButtonUI_Setting : RadioButtonUI
             SettingsManager.Instance.ChangeUIDisplayType();
         }
 
+        if (settingType == SettingType.VSync) {
+            SettingsManager.Instance.ChangeVSyncMode();
+        }
+
         if (settingType == SettingType.Difficulty) {
             SettingsManager.Instance.ChangeDifficulty();
         }
@@ -112,6 +120,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
         }
     }
 
+    private void SettingsManager_OnVSyncChanged(object sender, System.EventArgs e) {
+        RefreshVisual();
+    }
     private void SettingsManager_OnPhotosensitivityChanged(object sender, System.EventArgs e) {
         RefreshVisual();
 
@@ -193,6 +204,10 @@ public class RadioButtonUI_Setting : RadioButtonUI
 
         if (settingType == SettingType.AutoToggleLight) {
             toggledImageGameObject.SetActive(SettingsManager.Instance.GetAutoSwitchLight());
+        }
+
+        if (settingType == SettingType.VSync) {
+            toggledImageGameObject.SetActive(SettingsManager.Instance.GetVSyncActive());
         }
 
         if (settingType == SettingType.AimAssist) {

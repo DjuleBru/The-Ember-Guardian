@@ -85,6 +85,7 @@ public class StructureUI_Merchant : StructureUI {
         if (!merchant.GetShopOpen()) return;
         NavigateUIItems();
     }
+
     protected void GameInput_OnPlayerLeftRightDirPerformed(object sender, System.EventArgs e) {
         if (!merchant.GetShopOpen()) return;
         NavigateUIItems();

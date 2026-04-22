@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,10 +26,15 @@ public class SettingsMenuUI : MonoBehaviour
     [SerializeField] protected Slider dogVolumeSlider;
     [SerializeField] protected Slider waterReflectionsSlider;
     [SerializeField] protected Slider zoomLevelSlider;
+    [SerializeField] protected Slider FPSSlider;
     [SerializeField] protected Button UIDisplayButton;
     [SerializeField] protected GameObject firstSelectedButton;
     [SerializeField] protected GameObject difficultyButton;
     [SerializeField] protected Animator takesEffectOnReloadAnimator;
+    [SerializeField] protected TextMeshProUGUI maxFPSText;
+    [SerializeField] protected CanvasGroup maxFPSCanvasGroup;
+    [SerializeField] protected Button VSyncButton;
+    [SerializeField] protected Button underMaxFPSButton;
 
     // Valeurs actuelles de volume
     protected float currentMasterVolume;
@@ -37,6 +43,10 @@ public class SettingsMenuUI : MonoBehaviour
     protected float currentDogVolume;
     protected float waterReflectionsLevel;
     protected float zoomLevel;
+    protected float maxFPS;
+    protected float minFPSSlider = 30;
+    protected float maxFPSSlider = 240;
+
 
     protected bool panelOpen;
 
@@ -49,12 +59,15 @@ public class SettingsMenuUI : MonoBehaviour
     }
 
     protected void Start() {
+        SettingsManager.Instance.OnVSyncChanged += SettingsManager_OnVSyncChanged;
+
         currentMasterVolume = SettingsManager.Instance.GetMasterVolume();
         currentMusicVolume = SettingsManager.Instance.GetMusicVolume();
         currentSfxVolume = SettingsManager.Instance.GetSfxVolume();
         currentDogVolume = SettingsManager.Instance.GetDogVolume();
         waterReflectionsLevel = WaterManager.Instance.GetWaterReflectionLevel();
         zoomLevel = SettingsManager.Instance.GetZoomLevel();
+        maxFPS = SettingsManager.Instance.GetMaxFPS();
 
         // Initialiser les Sliders avec les valeurs actuelles
         masterVolumeSlider.value = currentMasterVolume;
@@ -65,6 +78,11 @@ public class SettingsMenuUI : MonoBehaviour
         waterReflectionsSlider.value = waterReflectionsLevel;
         zoomLevelSlider.value = zoomLevel;
 
+        FPSSlider.minValue = minFPSSlider;
+        FPSSlider.maxValue = maxFPSSlider;
+        FPSSlider.wholeNumbers = true;
+        FPSSlider.value = maxFPS;
+
         // Ajouter des listeners pour détecter les changements de valeur
         masterVolumeSlider.onValueChanged.AddListener(UpdateMasterVolume);
         musicVolumeSlider.onValueChanged.AddListener(UpdateMusicVolume);
@@ -72,11 +90,57 @@ public class SettingsMenuUI : MonoBehaviour
         dogVolumeSlider.onValueChanged.AddListener(UpdateDogVolume);
         waterReflectionsSlider.onValueChanged.AddListener(UpdateWaterReflections);
         zoomLevelSlider.onValueChanged.AddListener(UpdateZoomLevel);
+        FPSSlider.onValueChanged.AddListener(UpdateMaxFPS);
 
         GameInput.Instance.OnPlayerBackPerformed += GameInput_OnPlayerBackPerformed;
 
+        maxFPSText.text = Mathf.RoundToInt(SettingsManager.Instance.GetMaxFPS()).ToString();
+        RefreshFPSSliderActive();
     }
 
+    private void SettingsManager_OnVSyncChanged(object sender, System.EventArgs e) {
+        RefreshFPSSliderActive();
+    }
+
+    private void RefreshFPSSliderActive() {
+        bool vSyncEnabled = SettingsManager.Instance.GetVSyncActive();
+
+        if (vSyncEnabled) {
+            FPSSlider.enabled = false;
+            maxFPSCanvasGroup.alpha = .5f;
+        }
+        else {
+            FPSSlider.enabled = true;
+            maxFPSCanvasGroup.alpha = 1f;
+        }
+        RefreshFPSNavigation(vSyncEnabled);
+    }
+
+    private void RefreshFPSNavigation(bool vSyncEnabled) {
+
+        Navigation vSyncNav = VSyncButton.navigation;
+        Navigation underNav = underMaxFPSButton.navigation;
+
+        if (vSyncEnabled) {
+
+            // skip slider
+            vSyncNav.selectOnDown = underMaxFPSButton;
+
+            underNav.selectOnUp = VSyncButton;
+
+        }
+        else {
+
+            // passer par le slider
+            vSyncNav.selectOnDown = FPSSlider;
+
+            underNav.selectOnUp = FPSSlider;
+
+        }
+
+        VSyncButton.navigation = vSyncNav;
+        underMaxFPSButton.navigation = underNav;
+    }
     protected void GameInput_OnPlayerBackPerformed(object sender, System.EventArgs e) {
         if (!panelOpen) return;
         if(PauseMenuUI.Instance != null) {
@@ -84,6 +148,16 @@ public class SettingsMenuUI : MonoBehaviour
         }
 
         CloseSettingsPanel();
+    }
+
+    protected void UpdateMaxFPS(float value) {
+        maxFPS = (int)value;
+
+        SettingsManager.Instance.ChangeMaxFPS((int)maxFPS);
+
+        Application.targetFrameRate = (int)maxFPS;
+
+        maxFPSText.text = maxFPS.ToString();
     }
 
     protected void UpdateMasterVolume(float value) {

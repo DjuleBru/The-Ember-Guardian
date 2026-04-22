@@ -35,6 +35,30 @@ public class ItemButtonUI_Visual : MonoBehaviour
         animator.enabled = false;
     }
 
+    public void ResetAnimator() {
+        animator.SetTrigger("Reset");
+    }
+
+    public void BuyAnimationInstant(int redCost, int greenCost, int blueCost, int yellowCost, int purpleCost, int cyanCost) {
+        int greenParticlesToEmit = greenCost * 5;
+        int redParticlesToEmit = redCost * 5;
+        int blueParticlesToEmit = blueCost * 5;
+        int yellowParticlesToEmit = yellowCost * 5;
+        int purpleParticlesToEmit = purpleCost * 5;
+        int cyanParticlesToEmit = cyanCost * 5;
+
+        animator.enabled = true;
+        animator.SetTrigger("Buy");
+        OnAnyGemPSTriggered?.Invoke(this, EventArgs.Empty);
+
+        greenGemPS.Emit(greenParticlesToEmit);
+        redGemPS.Emit(redParticlesToEmit);
+        blueGemPS.Emit(blueParticlesToEmit);
+        yellowGemPS.Emit(yellowParticlesToEmit);
+        purpleGemPS.Emit(purpleParticlesToEmit);
+        cyanGemPS.Emit(cyanParticlesToEmit);
+    }
+
     private IEnumerator StartBuyAnimationCoroutine(int redCost, int greenCost, int blueCost, int yellowCost, int purpleCost, int cyanCost) {
         int greenParticlesToEmit = greenCost * 5;
         int redParticlesToEmit = redCost * 5;

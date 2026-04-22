@@ -331,6 +331,11 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     private void PauseMenuUI_OnPauseMenuClosed(object sender, EventArgs e) {
+        StartCoroutine(SetPauseMenuClosedAfterFrame());
+    }
+
+    private IEnumerator SetPauseMenuClosedAfterFrame() {
+        yield return new WaitForEndOfFrame();
         pauseMenuOpen = false;
     }
 

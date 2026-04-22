@@ -45,6 +45,11 @@ public class CampGridControllerNavigator : MonoBehaviour
         if (!isNavigating) return;
         float horizontal = Input.GetAxis("Horizontal");
 
+        Vector2 input = GameInput.Instance.GetUINavigationVector();
+        if (input.x != 0) {
+            horizontal = input.x;
+        }
+
         if (Mathf.Abs(horizontal) > 0.5f) {
             int direction = horizontal > 0 ? 1 : -1;
 

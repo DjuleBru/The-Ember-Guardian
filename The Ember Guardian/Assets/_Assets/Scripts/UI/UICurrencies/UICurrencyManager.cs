@@ -71,6 +71,7 @@ public class UICurrencyManager : MonoBehaviour
 
     private bool payingCurrencyJustCanceled;
     private bool justInteractedWithStructure;
+    private bool closingPauseMenu;
 
     private bool tryingToDropOrb;
     private float tryingToDropOrbTimer;
@@ -91,7 +92,7 @@ public class UICurrencyManager : MonoBehaviour
         GameInput.Instance.OnPlayerInteractHeldDown += GameInput_OnPlayerInteractHeldDown;
         StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
         Structure.OnAnyStructurePrimaryFunctionUsed += Structure_OnAnyStructureFunctionUsed;
-
+        PauseMenuUI.Instance.OnPauseMenuClosed += PauseMenuUI_OnPauseMenuClosed;
 
         allowDebugInputs = DebugManager.Instance.GetAllowDebugInputs_CurrencyUIManager();
 
@@ -107,7 +108,6 @@ public class UICurrencyManager : MonoBehaviour
 
         }
     }
-
 
     private void Update() {
         if(tryingToDropOrb) {
@@ -542,6 +542,11 @@ public class UICurrencyManager : MonoBehaviour
 
     }
 
+    private void PauseMenuUI_OnPauseMenuClosed(object sender, EventArgs e) {
+        if (!GameInput.Instance.IsUsingGamepad()) return;
+        closingPauseMenu = true;
+    }
+
     private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
         // At end of frame because SetPayingCurrency would run before and payingCurrencyJustCanceled hadn't updated
         StartCoroutine(InteractCanceledAfterFrame());
@@ -557,6 +562,11 @@ public class UICurrencyManager : MonoBehaviour
 
         if (payingCurrencyJustCanceled) {
             payingCurrencyJustCanceled = false;
+            yield break;
+        }
+
+        if (closingPauseMenu) {
+            closingPauseMenu = false;
             yield break;
         }
 

@@ -227,6 +227,7 @@ public class SoundManager : MonoBehaviour
         DeleteSkillUI.OnAnyActiveSkillDeleted += DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem += Merchant_Skills_OnPlayerRefundedItem;
 
+        TradeGemsUI.OnAnyGemTypeChanged += TradeGemsUI_OnAnyGemTypeChanged;
     }
 
 
@@ -1151,6 +1152,10 @@ public class SoundManager : MonoBehaviour
         PlaySound2D(soundRefsSO.merchantRefundItem, .7f);
     }
 
+    private void TradeGemsUI_OnAnyGemTypeChanged(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.workerStoppedFollowing, .7f);
+    }
+
     private void WorkerManager_OnHunterReAssignedSide(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.workerStartedFollowing);
     }
@@ -1375,6 +1380,7 @@ public class SoundManager : MonoBehaviour
         DeleteSkillUI.OnAnyActiveSkillDeleted -= DeleteSkillUI_OnAnyActiveSkillDeleted;
         Merchant_Skills.OnPlayerRefundedItem -= Merchant_Skills_OnPlayerRefundedItem;
 
+        TradeGemsUI.OnAnyGemTypeChanged -= TradeGemsUI_OnAnyGemTypeChanged;
     }
 
 }

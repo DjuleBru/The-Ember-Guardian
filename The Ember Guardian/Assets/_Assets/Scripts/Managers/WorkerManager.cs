@@ -30,7 +30,6 @@ public class WorkerManager : MonoBehaviour
 
     public event EventHandler OnJoblessWorkerAmountChanged;
     public event EventHandler OnRecruitedWorkerDied;
-    public event EventHandler OnWorkerAssignedToJob;
     public event EventHandler OnHunterAssignedSide;
     public event EventHandler OnHunterReAssignedSide;
     public event EventHandler OnGuardAssignedSide;
@@ -318,6 +317,29 @@ public class WorkerManager : MonoBehaviour
     }
     public int GetRightGuardsAssignedAmount() {
         return rightSideAssignedGuards.Count;
+    }
+
+    public int GetEngineersAmount() {
+        int engies = 0;
+
+        foreach (Worker worker in recruitedWorkers) {
+            if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.engineer) {
+                engies++;
+            }
+        }
+
+        return engies;
+    }
+    public int GetMinersAmount() {
+        int miners = 0;
+
+        foreach (Worker worker in recruitedWorkers) {
+            if (worker.GetComponent<WorkerAI>().GetJob() == WorkerAI.JobTypes.miner) {
+                miners++;
+            }
+        }
+
+        return miners;
     }
 
     public void RemoveJoblessWorker(Worker worker) {

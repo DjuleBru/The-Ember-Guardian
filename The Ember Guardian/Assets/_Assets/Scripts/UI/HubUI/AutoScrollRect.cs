@@ -46,7 +46,6 @@ public class AutoScrollRect : MonoBehaviour {
 
         // Button is not in scroll rect
         if (selected == null) return;
-
         if (!IsChildOfScrollContent(selected))  return;
 
         if (selected != null && (selected.GetComponent<Button>() != null || selected.GetComponent<ButtonUI>() != null || selected.GetComponent<Toggle>() != null)) {
@@ -76,7 +75,7 @@ public class AutoScrollRect : MonoBehaviour {
         float normalizedPositionX = Mathf.Clamp01((centeredPositionX + contentWidth / 2f) / (contentWidth - viewportWidth));
         float normalizedPositionY = Mathf.Clamp01((centeredPositionY + contentHeight / 2f) / (contentHeight - viewportHeight));
 
-        if(dropdownMenuAutoScroll) {
+        if (dropdownMenuAutoScroll) {
             // position Y réelle dans le content (top = 0, down = positif)
             float itemY = -buttonLocalPosition.y;
 

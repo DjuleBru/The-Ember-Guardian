@@ -17,38 +17,65 @@ public class HuntersAssignedUI : MonoBehaviour
 
     [SerializeField] private bool isHunter;
     [SerializeField] private bool isGuard;
+    [SerializeField] private bool isMiner;
+    [SerializeField] private bool isEngineer;
 
     private void Start() {
         WorkerManager.Instance.OnHunterAssignedSide += Instance_OnHunterAssignedSide;
         WorkerManager.Instance.OnGuardAssignedSide += Instance_OnGuardAssignedSide;
-        RefreshHunterAmounts();
-        RefreshEnabledControlsGO();
+        WorkerAI.OnAnyWorkerAssignedJob += WorkerAI_OnAnyWorkerAssignedJob;
+        Worker.OnAnyWorkerDied += Worker_OnAnyWorkerDied;
+
+        RefreshDisplayedAmounts();
+
+        if(isHunter || isGuard) {
+            RefreshEnabledControlsGO();
+        }
+
+    }
+
+    private void WorkerAI_OnAnyWorkerAssignedJob(object sender, System.EventArgs e) {
+        if (isMiner || isEngineer) {
+            RefreshDisplayedAmounts();
+        }
+    }
+
+    private void Worker_OnAnyWorkerDied(object sender, System.EventArgs e) {
+        RefreshDisplayedAmounts();
     }
 
     private void Instance_OnGuardAssignedSide(object sender, System.EventArgs e) {
         if(isGuard) {
-            RefreshHunterAmounts();
+            RefreshDisplayedAmounts();
             RefreshEnabledControlsGO();
         }
     }
 
     private void Instance_OnHunterAssignedSide(object sender, System.EventArgs e) {
         if(isHunter) {
-            RefreshHunterAmounts();
+            RefreshDisplayedAmounts();
             RefreshEnabledControlsGO();
         }
     }
 
-    private void RefreshHunterAmounts() {
+    private void RefreshDisplayedAmounts() {
         if(isHunter) {
             leftHuntersAssignedAmountText.text = "x " + WorkerManager.Instance.GetLeftHuntersAssignedAmount().ToString();
             rightHuntersAssignedAmountText.text = "x " + WorkerManager.Instance.GetRightHuntersAssignedAmount().ToString();
         }
+
         if(isGuard) {
             leftHuntersAssignedAmountText.text = "x " + WorkerManager.Instance.GetLeftGuardsAssignedAmount().ToString();
             rightHuntersAssignedAmountText.text = "x " + WorkerManager.Instance.GetRightGuardsAssignedAmount().ToString();
         }
 
+        if (isEngineer) {
+            leftHuntersAssignedAmountText.text = "x " + WorkerManager.Instance.GetEngineersAmount().ToString();
+        }
+
+        if (isMiner) {
+            leftHuntersAssignedAmountText.text = "x " + WorkerManager.Instance.GetMinersAmount().ToString();
+        }
     }
 
     private void RefreshEnabledControlsGO() {
@@ -75,5 +102,10 @@ public class HuntersAssignedUI : MonoBehaviour
         else {
             leftHuntersAssignedAmountControlGO.SetActive(true);
         }
+    }
+
+    private void OnDestroy() {
+        Worker.OnAnyWorkerDied -= Worker_OnAnyWorkerDied;
+        WorkerAI.OnAnyWorkerAssignedJob -= WorkerAI_OnAnyWorkerAssignedJob;
     }
 }

@@ -35,6 +35,8 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnUIDisplayChanged;
     public event EventHandler OnDifficultyChanged;
     public event EventHandler OnPhotosensitivityChanged;
+    public event EventHandler OnVSyncChanged;
+    public event EventHandler OnMaxFPSChanged;
 
     public enum UIDisplayType {
         Adaptive,
@@ -77,6 +79,8 @@ public class SettingsManager : MonoBehaviour
     private bool showDamageNumbers;
     private bool photosensitivityMode;
     private bool waterReflections;
+    private bool vSync;
+    private int maxFPS;
 
     private static bool displaySettingsAppliedThisSession = false;
 
@@ -90,6 +94,8 @@ public class SettingsManager : MonoBehaviour
         settingsVersion = ES3.Load("settingsVersion", 0f, settingsSaveFileSettings);
 
         LoadSettings();
+
+        ApplyFrameSettings();
     }
 
     private void LoadSettings() {
@@ -119,6 +125,9 @@ public class SettingsManager : MonoBehaviour
         waterReflections = ES3.Load("waterReflections", true, settingsSaveFileSettings);
         photosensitivityMode = ES3.Load("photosensitivityMode", false, settingsSaveFileSettings);
 
+        vSync = ES3.Load("vSync", true, settingsSaveFileSettings);
+        maxFPS = ES3.Load("maxFPS", 60, settingsSaveFileSettings);
+
         currentAutoAimMode = ES3.Load("currentAutoAimMode", AutoAimMode.On, settingsSaveFileSettings);
 
         Resolution defaultRes = Screen.currentResolution;
@@ -143,7 +152,49 @@ public class SettingsManager : MonoBehaviour
         }
     }
 
+    private void ApplyFrameSettings() {
+
+        bool vSyncActive = vSync;
+        int fps = maxFPS;
+
+        if (vSyncActive) {
+
+            QualitySettings.vSyncCount = 1;
+            Application.targetFrameRate = -1;
+
+        }
+        else {
+
+            QualitySettings.vSyncCount = 0;
+
+            if (fps <= 0) {
+                Application.targetFrameRate = -1;
+            }
+            else {
+                Application.targetFrameRate = fps;
+            }
+
+        }
+
+    }
+
     #region SET SETTINGS
+
+    public void ChangeVSyncMode() {
+        vSync = !vSync;
+        ES3.Save("vSync", vSync, settingsSaveFileSettings);
+        OnVSyncChanged?.Invoke(this, EventArgs.Empty);
+
+        ApplyFrameSettings();
+    }
+
+    public void ChangeMaxFPS(int maxFPS) {
+        this.maxFPS = maxFPS;
+        ES3.Save("maxFPS", maxFPS, settingsSaveFileSettings);
+        OnMaxFPSChanged?.Invoke(this, EventArgs.Empty);
+
+        ApplyFrameSettings();
+    }
     public void ChangePhotosensitivityMode() {
         photosensitivityMode = !photosensitivityMode;
         ES3.Save("photosensitivityMode", photosensitivityMode, settingsSaveFileSettings);
@@ -338,7 +389,6 @@ public class SettingsManager : MonoBehaviour
 
     public ScreenMode GetCurrentScreenMode() => currentScreenMode;
    
-
     public void ChangeAutoReload() {
         autoReload = !autoReload;
         OnAutoReloadChanged?.Invoke(this, EventArgs.Empty);
@@ -404,6 +454,12 @@ public class SettingsManager : MonoBehaviour
     #endregion
 
     #region GET SETTINGS
+    public bool GetVSyncActive() {
+        return vSync;
+    }
+    public int GetMaxFPS() {
+        return maxFPS;
+    }
     public bool GetPhotosensitivityMode() {
         return photosensitivityMode;
     }

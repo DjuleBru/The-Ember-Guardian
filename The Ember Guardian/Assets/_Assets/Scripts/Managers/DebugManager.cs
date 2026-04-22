@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class DebugManager : MonoBehaviour
 {
@@ -39,6 +40,9 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool hordeModeActiveDebug;
     [SerializeField] private bool hordeModeAllUnlockedDebug;
     [SerializeField] private bool debugMode_Credits;
+    [SerializeField] private bool debugMode_EventSystem;
+
+    private GameObject lastSelected;
 
     int i = 0;
     private float screenshotTakeTimer;
@@ -51,6 +55,22 @@ public class DebugManager : MonoBehaviour
     }
 
     private void Update() {
+
+        if(debugMode_EventSystem) {
+            GameObject current = EventSystem.current.currentSelectedGameObject;
+
+            if (current != lastSelected) {
+                Debug.Log(
+                            "[EventSystem] Selection changed\n" +
+                            "FROM: " + (lastSelected != null ? lastSelected.name : "NULL") + "\n" +
+                            "TO: " + (current != null ? current.name : "NULL") + "\n" +
+                            System.Environment.StackTrace
+                        );
+
+                lastSelected = current;
+            }
+        }
+
         if(Input.GetKeyDown(KeyCode.S)) {
             takingScreenshots = !takingScreenshots;
         }
