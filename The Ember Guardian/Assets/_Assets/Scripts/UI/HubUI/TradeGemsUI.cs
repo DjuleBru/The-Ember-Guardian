@@ -106,8 +106,8 @@ public class TradeGemsUI : MonoBehaviour {
             return;
         }
 
-        currentInputGemType = gemTypes[0];
-        currentOutputGemType = gemTypes[1];
+        currentInputGemType = PlayerCurrencies.CurrencyType.greenGem;
+        currentOutputGemType = PlayerCurrencies.CurrencyType.redGem;
     }
 
     private void OnClickInputGem() {

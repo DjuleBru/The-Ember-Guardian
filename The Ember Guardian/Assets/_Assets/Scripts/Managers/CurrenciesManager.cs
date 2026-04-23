@@ -200,6 +200,7 @@ public class CurrenciesManager : MonoBehaviour
             currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.blueGem);
             currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.greenGem);
             currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.redGem);
+            currencyTypesInCategory.Add(PlayerCurrencies.CurrencyType.cyanGem);
         }
 
         if (currencyCategory == PlayerCurrencies.CurrencyCategory.trap) {

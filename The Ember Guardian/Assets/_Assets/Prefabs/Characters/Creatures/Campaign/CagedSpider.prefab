@@ -441,7 +441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8677001440942180455, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.43
+      value: 0.004000008
       objectReference: {fileID: 0}
     - target: {fileID: 8817387759861109601, guid: 099e88a9fa31cb24097b41e3775126b6, type: 3}
       propertyPath: m_Name
@@ -508,6 +508,9 @@ MonoBehaviour:
   creatureMovement: {fileID: 6584205100630768835}
   critZoneColliders: []
   autoAimPosition: {fileID: 4447324208709954084}
+  stuckCheckDelay: 1
+  stuckKillTime: 10
+  minMovementThreshold: 0.1
   probabilityToActivateShieldOnHit: 0.3
   activateShieldDelay: 5
 --- !u!198 &5741363806220606695 stripped
