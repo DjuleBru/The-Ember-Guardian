@@ -31,6 +31,11 @@ public class HuntingFlag_CampDefined : MonoBehaviour
 
     private void Start() {
         GameInput.Instance.OnPlayerInteractPerformed += GameInput_OnPlayerInteractPerformed;
+        GameInput.Instance.OnPlayerInteractCanceled += GameInput_OnPlayerInteractCanceled;
+    }
+
+    private void GameInput_OnPlayerInteractCanceled(object sender, EventArgs e) {
+        isHolding = false;
     }
 
     private void Update() {
