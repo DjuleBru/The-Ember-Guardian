@@ -327,7 +327,7 @@ public class DogAI : MonoBehaviour
     protected virtual void ChangeState(State newState) {
         if (state == newState) return;
         RandomizeDistanceVariables();
-        Debug.Log("ChangeState " + newState);
+        //Debug.Log("ChangeState " + newState);
         dogMovement.SetMoveTarget(transform.position);
         hasSetSpeed = false;
 

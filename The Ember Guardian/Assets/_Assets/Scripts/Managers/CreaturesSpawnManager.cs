@@ -111,6 +111,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
     protected bool debugInputs;
     protected bool debugDontSpawnAtNight;
     private bool forceEndNightWave = false;
+    protected bool isCyclePaused;
 
     protected float easyDifficultyNightWaveMultiplier = 0.7f;
     protected float hardDifficultyNightWaveMultiplier = 1.15f;
@@ -127,6 +128,8 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnNightStart += DayNightManager_OnNightStart;
+        DayNightManager.Instance.OnCyclePaused += DayNightManager_OnCyclePaused;
+        DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
         SettingsManager.Instance.OnDifficultyChanged += SettingsManager_OnDifficultyChanged;
 
         LevelSO levelSO = LevelManager.Instance.GetLevelSO();
@@ -183,6 +186,13 @@ public class CreaturesSpawnManager : MonoBehaviour {
         }
     }
 
+    private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
+        isCyclePaused = false;
+    }
+
+    private void DayNightManager_OnCyclePaused(object sender, EventArgs e) {
+        isCyclePaused = true;
+    }
     protected void SettingsManager_OnDifficultyChanged(object sender, EventArgs e) {
         RefreshDifficultyMultiplier();
     }
@@ -273,7 +283,11 @@ public class CreaturesSpawnManager : MonoBehaviour {
             yield return new WaitForSeconds(delayBetweenKills);
         }
     }
-
+    protected IEnumerator WaitWhilePaused() {
+        while (isCyclePaused) {
+            yield return null;
+        }
+    }
     protected void Update() {
         if (!debugInputs) return;
         HandleDebugInputs();
@@ -628,6 +642,8 @@ public class CreaturesSpawnManager : MonoBehaviour {
                 yield break;
             }
 
+            yield return WaitWhilePaused();
+
             // === BOSS FIRST, puis cinématique ===
             if (subWaveIndex == 0 && bossSpawnsThisNight) {
                 // récupère toutes les entrées boss (peut être 1 ou 2 selon ta logique)
@@ -637,6 +653,8 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
                 List<Creature> spawnedBosses = new List<Creature>();
                 foreach (var be in bossEntries) {
+                    yield return WaitWhilePaused();
+
                     var bossInstance = SpawnCreatureAtSide(be.creature, be.spawnSide); // <-- spawn d'abord
                     spawnedBosses.Add(bossInstance);
                 }
@@ -647,6 +665,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
                 // maintenant on peut lancer la cinématique en visant des instances réelles
                 yield return StartCoroutine(HandleBossIntro(spawnedBosses));
+                yield return WaitWhilePaused();
             }
             // =====================================
 
@@ -668,6 +687,8 @@ public class CreaturesSpawnManager : MonoBehaviour {
             Queue<List<SpawnedCreatureInfo>> groupQueue = new Queue<List<SpawnedCreatureInfo>>(groupedCreatures);
 
             while (groupQueue.Count > 0) {
+                yield return WaitWhilePaused();
+
                 List<SpawnedCreatureInfo> currentGroup = groupQueue.Dequeue();
 
                 int maxPacketSize = currentGroup[0].creature.maxCreaturesPerPacket;
@@ -677,19 +698,25 @@ public class CreaturesSpawnManager : MonoBehaviour {
                 int chunkSize = currentGroup.Count > maxPacketSize ? maxPacketSize : currentGroup.Count;
 
                 for (int i = 0; i < chunkSize; i++) {
+                    yield return WaitWhilePaused();
+
                     SpawnedCreatureInfo creatureInfo = currentGroup[0];
                     currentGroup.RemoveAt(0);
 
                     SpawnCreatureAtSide(creatureInfo.creature, creatureInfo.spawnSide);
                     yield return new WaitForSeconds(0.2f);
+
+                    yield return WaitWhilePaused();
                 }
 
                 if (currentGroup.Count > 0) groupQueue.Enqueue(currentGroup);
 
                 yield return new WaitForSeconds(2f);
+                yield return WaitWhilePaused();
             }
 
             yield return new WaitUntil(() => remainingSubWaveCreatures <= maxRemainingSubWaveCreaturesForNextSubwave);
+            yield return WaitWhilePaused();
             subWaveIndex++;
         }
     }

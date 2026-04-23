@@ -17,6 +17,7 @@ public class KeyRebindingUI : MonoBehaviour
     [SerializeField] protected Button interactButton;
     [SerializeField] protected Button runButton;
     [SerializeField] protected Button rollButton;
+    [SerializeField] protected Button crouchButton;
     [SerializeField] protected Button meleeAttackButton;
 
     [SerializeField] protected Button shootButton;
@@ -41,6 +42,7 @@ public class KeyRebindingUI : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI interactText;
     [SerializeField] protected TextMeshProUGUI runText;
     [SerializeField] protected TextMeshProUGUI rollText;
+    [SerializeField] protected TextMeshProUGUI crouchText;
     [SerializeField] protected TextMeshProUGUI meleeAttackText;
 
     [SerializeField] protected TextMeshProUGUI shootText;
@@ -90,6 +92,9 @@ public class KeyRebindingUI : MonoBehaviour
         });
         rollButton.onClick.AddListener(() => {
             RebindBinding(GameInput.Binding.roll, gamepad);
+        });
+        crouchButton.onClick.AddListener(() => {
+            RebindBinding(GameInput.Binding.crouch, gamepad);
         });
         meleeAttackButton.onClick.AddListener(() => {
             RebindBinding(GameInput.Binding.meleeAttack, gamepad);
@@ -154,6 +159,7 @@ public class KeyRebindingUI : MonoBehaviour
         interactText.text = GameInput.Instance.GetBindingText(GameInput.Binding.interact);
         runText.text = GameInput.Instance.GetBindingText(GameInput.Binding.run);
         rollText.text = GameInput.Instance.GetBindingText(GameInput.Binding.roll);
+        crouchText.text = GameInput.Instance.GetBindingText(GameInput.Binding.crouch);
         meleeAttackText.text = GameInput.Instance.GetBindingText(GameInput.Binding.meleeAttack);
 
         shootText.text = GameInput.Instance.GetBindingText(GameInput.Binding.shoot);

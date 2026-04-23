@@ -36,6 +36,7 @@ public class PlayerMovement : MonoBehaviour {
     [SerializeField] private LayerMask platformLayerMask;
 
     private bool holdToRun;
+    private bool holdToCrouch;
     private bool isRunning;
     private bool isAlmostExhausted;
     private bool isAlmostExhaustedFeedbacksActive;
@@ -60,6 +61,7 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody2D rb;
 
     private bool isMoving;
+    private bool crouchInputWasDown;
 
     public event EventHandler OnPlayerMovespeedChanged;
     public event EventHandler OnPlayerRoll;
@@ -108,10 +110,13 @@ public class PlayerMovement : MonoBehaviour {
         PlayerStats.Instance.OnMoveSpeedChanged += PlayerState_OnMoveSpeedChanged;
 
         SettingsManager.Instance.OnHoldToggleRunChanged += SettingsManager_OnHoldToggleRunChanged;
+        SettingsManager.Instance.OnHoldToggleCrouchChanged += SettingsManager_OnHoldToggleCrouchChanged;
         holdToRun = SettingsManager.Instance.GetHoldToRun();
+        holdToCrouch = SettingsManager.Instance.GetHoldToCrouch();
 
         isHubScene = SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB;
     }
+
 
     private void FixedUpdate() {
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
@@ -180,6 +185,9 @@ public class PlayerMovement : MonoBehaviour {
         holdToRun = SettingsManager.Instance.GetHoldToRun();
     }
 
+    private void SettingsManager_OnHoldToggleCrouchChanged(object sender, EventArgs e) {
+        holdToCrouch = SettingsManager.Instance.GetHoldToCrouch();
+    }
     private void PlayerShoot_OnPlayerSwappedGun(object sender, EventArgs e) {
         if(gunWeightAccelerationFactor == 0) {
             // Gun weight initialization
@@ -293,22 +301,50 @@ public class PlayerMovement : MonoBehaviour {
         if (isJumping) return;
         if (PlayerShoot.Instance.GetHoldingStationaryGun()) return;
 
-        if (GameInput.Instance.GetJumpDirNormalized() <= -.5) {
-            if (!isCrouching) {
-                isCrouching = true;
-                moveSpeed *= crouchAccelerationFactor;
-                OnPlayerCrouched?.Invoke(this, EventArgs.Empty);
+        float input = GameInput.Instance.GetJumpDirNormalized();
+        bool crouchInputDown = input <= -0.5f;
+
+        if (holdToCrouch) {
+
+            if (crouchInputDown) {
+
+                if (!isCrouching) {
+                    isCrouching = true;
+                    moveSpeed *= crouchAccelerationFactor;
+                    OnPlayerCrouched?.Invoke(this, EventArgs.Empty);
+                }
+
             }
+            else {
 
-        } else {
+                if (isCrouching) {
+                    isCrouching = false;
+                    moveSpeed /= crouchAccelerationFactor;
+                    OnPlayerCrouchedEnded?.Invoke(this, EventArgs.Empty);
+                }
 
-            if(isCrouching) {
-                isCrouching = false;
-                moveSpeed /= crouchAccelerationFactor;
-                OnPlayerCrouchedEnded?.Invoke(this, EventArgs.Empty);
             }
 
         }
+        else {
+
+            if (crouchInputDown && !crouchInputWasDown) {
+
+                if (!isCrouching) {
+                    isCrouching = true;
+                    moveSpeed *= crouchAccelerationFactor;
+                    OnPlayerCrouched?.Invoke(this, EventArgs.Empty);
+                }
+                else {
+                    isCrouching = false;
+                    moveSpeed /= crouchAccelerationFactor;
+                    OnPlayerCrouchedEnded?.Invoke(this, EventArgs.Empty);
+                }
+
+            }
+        }
+
+        crouchInputWasDown = crouchInputDown;
     }
 
     private void StartRolling() {

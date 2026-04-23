@@ -186,7 +186,7 @@ public class HUBManager : MonoBehaviour
 
         if (gemAmountDroppedInChest == (totalGemsAfterTutorial)) {
             LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_DropGems, LevelUI_ObjectiveUI.SubObjectiveType.HUBDemo_BuyUpgrade);
-            StartCoroutine(StartGemMerchantTextLines(gemMerchantComeBuyTextLines));
+            StartCoroutine(StartGemMerchantTextLines(gemMerchantComeBuyTextLines, .5f));
             HubChest.Instance.SetInteractionTooltipShown();
         }
     }
@@ -418,7 +418,7 @@ public class HUBManager : MonoBehaviour
         if ((e.currencyUIDropped.GetCurrencyType() == PlayerCurrencies.CurrencyType.ember)) {
             emberExtracted = true;
             LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.HUB_ExtractEmber, LevelUI_ObjectiveUI.SubObjectiveType.HUB_HeadToTeleporter);
-            StartCoroutine(StartGemMerchantTextLines(gemMerchantOutroTextLines));
+            StartCoroutine(StartGemMerchantTextLines(gemMerchantOutroTextLines, .1f));
         }
     }
 
@@ -526,8 +526,8 @@ public class HUBManager : MonoBehaviour
         LevelUI_ObjectiveUI.Instance.SetSubObjectivesUI(subObjectiveTypes);
     }
 
-    private IEnumerator StartGemMerchantTextLines(MerchantTextLinesSO textLines) {
-        yield return new WaitForSeconds(.5f);
+    private IEnumerator StartGemMerchantTextLines(MerchantTextLinesSO textLines, float delay) {
+        yield return new WaitForSeconds(delay);
         gemMerchantTalkUI.SetTalkingWithMerchant(textLines);
     }
 

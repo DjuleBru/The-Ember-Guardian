@@ -33,9 +33,7 @@ public class CurrencyStorage : Structure
         base.Start();
         GameInput.Instance.OnCurrencyCollectedFromContainer += GameInput_OnCurrencyCollectedFromContainer;
 
-        //Debug.Log("maxCurrencyAmountStored " + maxCurrencyAmountStored);
         maxCurrencyAmountStored = maxCurrencyAmountStored + Mathf.RoundToInt(StructureStats.Instance.GetEngineerContainerSizeBuff() * maxCurrencyAmountStored);
-        //Debug.Log("NewMaxCurrencyAmountStored " + maxCurrencyAmountStored);
     }
 
     protected virtual void GameInput_OnCurrencyCollectedFromContainer(object sender, EventArgs e) {
@@ -57,6 +55,10 @@ public class CurrencyStorage : Structure
         base.TriggerStructurePrimaryFunction();
 
         StoreCurrency();
+
+        Debug.Log("GetHasCurrenciesToPay() " + GetHasCurrenciesToPay());
+        Debug.Log("playerInteracting() " + playerInteracting);
+        Debug.Log("currencyAmountStored < maxCurrencyAmountStored " + (currencyAmountStored < maxCurrencyAmountStored));
         if (GetHasCurrenciesToPay() && playerInteracting && currencyAmountStored < maxCurrencyAmountStored) {
             payCurrencyUI.SetPlayerInteractingContinuous(.05f); // Continue l'interaction
         }
@@ -64,6 +66,11 @@ public class CurrencyStorage : Structure
             payCurrencyUI.SetPlayerInteracting(false);
         }
     }
+
+    public override PlayerCurrencies.CurrencyType GetRefillCurrencyTypeNeeded() {
+        return currencyTypeStored;
+    }
+
 
     public void StoreCurrency() {
         currencyAmountStored++;
@@ -86,8 +93,6 @@ public class CurrencyStorage : Structure
     }
 
     public void SetCurrencyAmountStored(int currencyAmountStored) {
-        Debug.Log("SetCurrencyAmountStored " + currencyAmountStored);
-        Debug.Log("maxAmountStored " + maxCurrencyAmountStored);
         this.currencyAmountStored = currencyAmountStored;
         OnCurrencyStored?.Invoke(this, new OnAnyCurrencyStoredEventArgs {
             triggerSFX = false
@@ -115,6 +120,10 @@ public class CurrencyStorage : Structure
     }
 
     public float GetCurrencyStoredAmountNormalized() {
+        if(currencyTypeStored == PlayerCurrencies.CurrencyType.smallRedOrb || currencyTypeStored == PlayerCurrencies.CurrencyType.bigRedOrb) {
+            return (float)currencyAmountStored / (float)30;
+        }
+
         return (float)currencyAmountStored/ (float)maxCurrencyAmountStored;
     }
 

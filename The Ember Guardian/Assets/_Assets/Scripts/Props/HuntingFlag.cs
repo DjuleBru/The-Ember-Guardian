@@ -16,7 +16,6 @@ public class HuntingFlag : MonoBehaviour
     private bool playerManuallySetFlagPosition;
     private bool playerIsCarryingFlag;
 
-
     public event EventHandler OnPlayerResetManualHuntingLimit;
 
     private void Start() {

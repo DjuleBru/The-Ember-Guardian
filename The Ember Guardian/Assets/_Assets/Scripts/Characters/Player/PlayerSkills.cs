@@ -91,6 +91,12 @@ public class PlayerSkills : MonoBehaviour
 
     private bool isPaused;
 
+    private float leftSkillMinActiveTime = .7f;
+    private float rightSkillMinActiveTime = .7f;
+
+    private float leftSkillActiveTimer;
+    private float rightSkillActiveTimer;
+
     public event EventHandler OnPlayerInFireLightBuffedDmg;
     public event EventHandler OnPlayerInFireLightDebuffedDmg;
     public event EventHandler OnPlayerOutFireLightBuffedDmg;
@@ -192,6 +198,14 @@ public class PlayerSkills : MonoBehaviour
     private void Update() {
         if (isPaused) return;
 
+        if (leftSkillRunning) {
+            leftSkillActiveTimer += Time.deltaTime;
+        }
+
+        if (rightSkillRunning) {
+            rightSkillActiveTimer += Time.deltaTime;
+        }
+
         HandleActiveSkillsCooldowns();
         HandleActiveMoveSpeedBuff();
         HandleActiveShootCooldownBuff();
@@ -208,6 +222,11 @@ public class PlayerSkills : MonoBehaviour
         if (activeSkillRight == null) return;
 
         if (rightSkillRunning) {
+
+            if (rightSkillActiveTimer < rightSkillMinActiveTime) {
+                return;
+            }
+
             SkillItem.SkillType skillType = activeSkillRight.skillType;
             HandleActiveSkillDeactivation(skillType);
             return;
@@ -226,6 +245,11 @@ public class PlayerSkills : MonoBehaviour
         if (activeSkillLeft == null) return;
 
         if (leftSkillRunning) {
+
+            if (leftSkillActiveTimer < leftSkillMinActiveTime) {
+                return;
+            }
+
             SkillItem.SkillType skillType = activeSkillLeft.skillType;
             HandleActiveSkillDeactivation(skillType);
             return;
@@ -360,12 +384,15 @@ public class PlayerSkills : MonoBehaviour
 
     #region SKILLS ADDING & ACTIVATION
     public void ActivateActiveSkill(SkillItem skillItem, bool isLeftSkill) {
+
         if (isLeftSkill) {
             leftSkillRunning = true;
+            leftSkillActiveTimer = 0f;
             OnLeftActiveSkillActivated?.Invoke(this, EventArgs.Empty);
         }
         else {
             rightSkillRunning = true;
+            rightSkillActiveTimer = 0f;
             OnRightActiveSkillActivated?.Invoke(this, EventArgs.Empty);
         }
         Debug.Log("skillItem.currentLevel " + skillItem.currentLevel);

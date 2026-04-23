@@ -269,6 +269,7 @@ public class DayNightManager : MonoBehaviour
 
     [Button]
     public void SetCyclePaused(bool paused, bool showCyclePauseUI = false) {
+        Debug.Log("SetCyclePaused");
         // Don't unpause when closing Video Tip and fire has not been lit IF NOT IN HORDE MODE
         if (!Fire.Instance.GetInitialFireLit() && !paused && !LevelManager.Instance.IsHordeMode()) return;
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Tutorial) return;

@@ -21,6 +21,7 @@ public class SettingsManager : MonoBehaviour
     public event EventHandler OnDogVolumeChanged;
 
     public event EventHandler OnHoldToggleRunChanged;
+    public event EventHandler OnHoldToggleCrouchChanged;
     public event EventHandler OnAutoSwitchLightGunChanged;
     public event EventHandler OnAutoAlignAimWithMovementChanged;
     public event EventHandler OnControllerVibrationsChanged;
@@ -70,6 +71,7 @@ public class SettingsManager : MonoBehaviour
     private AutoAimMode currentAutoAimMode = AutoAimMode.On;
     private Resolution resolution;
     private bool holdToRun;
+    private bool holdToCrouch;
     private bool autoAlignAimWithMovement;
     private bool autoSwitchLightGun;
     private bool controllerVibrations; 
@@ -114,6 +116,7 @@ public class SettingsManager : MonoBehaviour
 
         currentLanguage = ES3.Load("currentLanguage", LocalizationManager.Language.English, settingsSaveFileSettings);
         holdToRun = ES3.Load("holdToRun", true, settingsSaveFileSettings);
+        holdToCrouch = ES3.Load("holdToCrouch", true, settingsSaveFileSettings);
         autoAlignAimWithMovement = ES3.Load("autoAlignAimWithMovement", true, settingsSaveFileSettings);
         autoSwitchLightGun = ES3.Load("autoSwitchLightGun", true, settingsSaveFileSettings);
         controllerVibrations = ES3.Load("controllerVibrations", true, settingsSaveFileSettings);
@@ -321,6 +324,12 @@ public class SettingsManager : MonoBehaviour
 
         ES3.Save("holdToRun", holdToRun, settingsSaveFileSettings);
     }
+    public void ChangeHoldToggleCrouch() {
+        holdToCrouch = !holdToCrouch;
+        OnHoldToggleCrouchChanged?.Invoke(this, EventArgs.Empty);
+
+        ES3.Save("holdToCrouch", holdToCrouch, settingsSaveFileSettings);
+    }
     public void ChangeAutoSwitchGunLight() {
         autoSwitchLightGun = !autoSwitchLightGun;
         OnAutoSwitchLightGunChanged?.Invoke(this, EventArgs.Empty);
@@ -470,6 +479,9 @@ public class SettingsManager : MonoBehaviour
 
     public bool GetHoldToRun() {
         return holdToRun;
+    }
+    public bool GetHoldToCrouch() {
+        return holdToCrouch;
     }
 
     public bool GetAutoSwitchLight() {

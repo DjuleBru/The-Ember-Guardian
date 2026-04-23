@@ -25,7 +25,7 @@ public class CurrencyStorageVisual : MonoBehaviour
 
     private void RefreshVisual() {
         float fillAmountNormalized = currencyStorage.GetCurrencyStoredAmountNormalized();
-
+        fillAmountNormalized = Mathf.Clamp01(fillAmountNormalized);
         int spriteIndex = Mathf.FloorToInt(fillAmountNormalized * (fillingSpriteList.Length - 1));
         if(fillAmountNormalized != 0 && spriteIndex == 0) {
             spriteIndex = 1;

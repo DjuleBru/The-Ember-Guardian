@@ -457,7 +457,7 @@ public class EngineerJob : WorkerJob {
         turnWrenchTimer -= Time.deltaTime;
         if (turnWrenchTimer <= 0) {
             OnEngineerTurnsWrench?.Invoke(this, EventArgs.Empty);
-            turnWrenchTimer = turnWrenchDelay - turnWrenchDelay * WorkerStats.Instance.GetEngineerWrenchSpeedBuff();
+            turnWrenchTimer = turnWrenchDelay - turnWrenchDelay * WorkerStats.Instance.GetEngineerWrenchSpeedBuff() - turnWrenchDelay * workerAttack.GetAttackSpeedBuff();
 
             if (currencyCrafterAssigned.GetCraftedCurrency()) {
                 // Pick up currency only if there is a storage

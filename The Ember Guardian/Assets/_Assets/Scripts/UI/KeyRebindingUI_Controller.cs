@@ -14,6 +14,7 @@ public class KeyRebindingUI_Controller : KeyRebindingUI
     [SerializeField] protected Image interactImg;
     [SerializeField] protected Image runImg;
     [SerializeField] protected Image rollImg;
+    [SerializeField] protected Image crouchImg;
     [SerializeField] protected Image meleeAttackImg;
 
     [SerializeField] protected Image shootImg;
@@ -58,6 +59,7 @@ public class KeyRebindingUI_Controller : KeyRebindingUI
         interactImg.sprite = InputControlIcons.Instance.GetSingleControlIconSprite(GameInput.Binding.interact, true);
         runImg.sprite = InputControlIcons.Instance.GetSingleControlIconSprite(GameInput.Binding.run, true);
         rollImg.sprite = InputControlIcons.Instance.GetSingleControlIconSprite(GameInput.Binding.roll, true);
+        crouchImg.sprite = InputControlIcons.Instance.GetSingleControlIconSprite(GameInput.Binding.crouch, true);
         meleeAttackImg.sprite = InputControlIcons.Instance.GetSingleControlIconSprite(GameInput.Binding.meleeAttack, true);
 
         shootImg.sprite = InputControlIcons.Instance.GetSingleControlIconSprite(GameInput.Binding.shoot, true);

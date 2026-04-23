@@ -40,6 +40,7 @@ public class GameInput : MonoBehaviour
         commandWorkers,
         refundGun,
         swapGun,
+        crouch,
     }
 
     private PlayerInputActions playerInputActions;
@@ -526,6 +527,9 @@ public class GameInput : MonoBehaviour
                 case Binding.roll:
                     return playerInputActions.Player.Jump.bindings[1].ToDisplayString();
 
+                case Binding.crouch:
+                    return playerInputActions.Player.JumpDir.bindings[4].ToDisplayString();
+
                 case Binding.meleeAttack:
                     return playerInputActions.Player.MeleeAttack.bindings[1].ToDisplayString();
 
@@ -623,6 +627,9 @@ public class GameInput : MonoBehaviour
                 case Binding.ability2:
                     return HandleLanguageConversions(playerInputActions.Player.RightSkill.bindings[0].ToDisplayString());
 
+                case Binding.crouch:
+                    return HandleLanguageConversions(playerInputActions.Player.JumpDir.bindings[1].ToDisplayString());
+
                 case Binding.pause:
                     return HandleLanguageConversions(playerInputActions.Player.Pause.bindings[0].ToDisplayString());
 
@@ -690,6 +697,12 @@ public class GameInput : MonoBehaviour
                 inputAction = playerInputActions.Player.Jump;
                 bindingIndex = 0;
                 break;
+
+            case Binding.crouch:
+                inputAction = playerInputActions.Player.JumpDir;
+                bindingIndex = 1;
+                break;
+
             case Binding.meleeAttack:
                 inputAction = playerInputActions.Player.MeleeAttack;
                 bindingIndex = 0;
@@ -774,6 +787,10 @@ public class GameInput : MonoBehaviour
                 case Binding.roll:
                     inputAction = playerInputActions.Player.Jump;
                     bindingIndex = 1;
+                    break;
+                case Binding.crouch:
+                    inputAction = playerInputActions.Player.JumpDir;
+                    bindingIndex = 4;
                     break;
                 case Binding.meleeAttack:
                     inputAction = playerInputActions.Player.MeleeAttack;

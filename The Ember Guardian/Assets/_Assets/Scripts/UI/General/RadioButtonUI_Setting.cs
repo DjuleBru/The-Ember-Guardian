@@ -26,6 +26,8 @@ public class RadioButtonUI_Setting : RadioButtonUI
 
         VSync,
         MaxFPS,
+
+        HoldToCrouch,
     }
 
     [SerializeField] private SettingType settingType;
@@ -68,6 +70,9 @@ public class RadioButtonUI_Setting : RadioButtonUI
     private void ChangeLinkedSetting() {
         if (settingType == SettingType.HoldToRun) {
             SettingsManager.Instance.ChangeHoldToggleRun();
+        }
+        if (settingType == SettingType.HoldToCrouch) {
+            SettingsManager.Instance.ChangeHoldToggleCrouch();
         }
         if (settingType == SettingType.AutoToggleLight) {
             SettingsManager.Instance.ChangeAutoSwitchGunLight();
@@ -164,6 +169,14 @@ public class RadioButtonUI_Setting : RadioButtonUI
             if(SettingsManager.Instance.GetHoldToRun()) {
                 toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_hold");
             } else {
+                toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_toggle");
+            }
+        }
+        if (settingType == SettingType.HoldToCrouch) {
+            if (SettingsManager.Instance.GetHoldToCrouch()) {
+                toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_hold");
+            }
+            else {
                 toggledText.text = LocalizationManager.Instance.GetLocalizedText("menu_toggle");
             }
         }

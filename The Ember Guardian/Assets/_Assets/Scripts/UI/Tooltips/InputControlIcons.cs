@@ -30,6 +30,7 @@ public class InputControlIcons : MonoBehaviour
         CollectCurrencyFromContainer,
         CommandWorkers,
         RefundWeapon,
+        Crouch,
     }
 
 
@@ -44,6 +45,11 @@ public class InputControlIcons : MonoBehaviour
     public Sprite gamepadR3Sprite;
     public Sprite gamepadL3Sprite;
     public Sprite gamepadLLeftRightSprite;
+    public Sprite gamepadLS_DownSprite;
+    public Sprite gamepadLS_UpSprite;
+    public Sprite gamepadLS_LeftSprite;
+    public Sprite gamepadLS_RightSprite;
+    public Sprite gamepadLDownSprite;
     public Sprite gamepadRJoystickSprite;
     public Sprite gamepadDownArrowSprite;
     public Sprite gamepadUpArrowSprite;
@@ -220,6 +226,8 @@ public class InputControlIcons : MonoBehaviour
         gamepadIconLookup = new Dictionary<string, Sprite>() {
         { "LS/Left",           gamepadLLeftRightSprite },
         { "LS/Right",           gamepadLLeftRightSprite },
+        { "LS/Down",           gamepadLS_DownSprite },
+        { "LS/Up",           gamepadLS_UpSprite },
         { "RS/Left",           gamepadRJoystickSprite },
         { "RS/Right",           gamepadRJoystickSprite },
         { "A",           gamepadASprite },
@@ -263,6 +271,11 @@ public class InputControlIcons : MonoBehaviour
             if (control == Control.Interact) {
                 spriteList.Add(gamepadASprite);
             }
+            
+            if (control == Control.Crouch) {
+                spriteList.Add(gamepadLS_DownSprite);
+            }
+
             if (control == Control.Move) {
                 spriteList.Add(gamepadLLeftRightSprite);
             }
@@ -551,7 +564,7 @@ public class InputControlIcons : MonoBehaviour
     [Button]
     public Sprite GetSingleControlIconSprite(GameInput.Binding control, bool gamepad) {
         string binding = GameInput.Instance.GetBindingText(control, gamepad);
-
+        Debug.Log(control +" binding " + binding);
         if (gamepad) {
             if (gamepadIconLookup.TryGetValue(binding, out Sprite gamepadSprite)) {
                 return gamepadSprite;
