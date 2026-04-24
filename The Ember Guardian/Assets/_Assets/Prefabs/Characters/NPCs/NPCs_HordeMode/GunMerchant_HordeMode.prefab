@@ -1195,12 +1195,13 @@ RectTransform:
   m_Children:
   - {fileID: 9180908361546510794}
   - {fileID: 2992601492039285616}
+  - {fileID: 3763757516396098586}
   m_Father: {fileID: 3455038943685704653}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1181.905, y: -2.5}
-  m_SizeDelta: {x: 2363.81, y: -145}
+  m_AnchoredPosition: {x: 1750, y: -2.5}
+  m_SizeDelta: {x: 3500, y: -145}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1370154274521760162
 GameObject:
@@ -1561,17 +1562,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761991293487749940}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3455038943685704653}
+  m_Father: {fileID: 3242122328981131180}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -1750.0002, y: 2.5000305}
+  m_SizeDelta: {x: -3500, y: 145}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1889766612831766341
 GameObject:
@@ -4243,7 +4244,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3242122328981131180}
-  - {fileID: 3763757516396098586}
   m_Father: {fileID: 7892704532274420594}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -7302,7 +7302,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 170
+  m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
@@ -7508,7 +7508,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00036621094, y: -12.864868}
+  m_AnchoredPosition: {x: -0.00048828125, y: -12.864868}
   m_SizeDelta: {x: 0, y: 974.26953}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8515300580925712388
@@ -10887,6 +10887,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -12773,6 +12777,10 @@ PrefabInstance:
       propertyPath: descriptionCardFrontParent
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
@@ -19660,6 +19668,10 @@ PrefabInstance:
       propertyPath: descriptionCardFrontParent
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
@@ -27838,6 +27850,10 @@ PrefabInstance:
       propertyPath: descriptionCardFrontParent
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
@@ -39249,6 +39265,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -40595,6 +40615,10 @@ PrefabInstance:
       propertyPath: descriptionCardFrontParent
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
@@ -43862,6 +43886,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -44572,6 +44600,10 @@ PrefabInstance:
       propertyPath: descriptionCardFrontParent
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
@@ -55124,6 +55156,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -62501,7 +62537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3111252049047024316, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 177
+      value: -152
       objectReference: {fileID: 0}
     - target: {fileID: 3162550493512327587, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_SizeDelta.x
@@ -62795,6 +62831,10 @@ PrefabInstance:
       propertyPath: descriptionCardFrontParent
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
@@ -67615,6 +67655,10 @@ PrefabInstance:
       propertyPath: descriptionCardFrontParent
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0
@@ -72730,6 +72774,10 @@ PrefabInstance:
       propertyPath: descriptionCardFrontParent
       value: 
       objectReference: {fileID: 4486242691074264057, guid: 27caa7e00a035f04aa556927552ff9e8, type: 3}
+    - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: descriptionCardParentManualSet
+      value: 
+      objectReference: {fileID: 3763757516396098586}
     - target: {fileID: 7027148354900603219, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: lockingItemButtonUIList.Array.size
       value: 0

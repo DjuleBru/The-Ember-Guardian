@@ -172,7 +172,6 @@ public class ScavengableObstacle : Obstacle, IScavengable, IEscortable
     }
 
     public void Die(Transform damageSource = null) {
-        Debug.Log("dead " + dead);
         if (dead) return;
 
         dead = true;

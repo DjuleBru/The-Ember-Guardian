@@ -113,6 +113,7 @@ public class Creature : Mob
     protected float stunDuration = 10f;
     protected float stunTimer;
 
+    protected bool creatureWasInFireWhenKilled;
     protected float initialGravityScale;
 
     protected virtual void Awake() {
@@ -280,12 +281,18 @@ public class Creature : Mob
 
     [Button]
     public override void Die(Transform damageSource = null) {
+
+        if(inFireLightAmount > 0) {
+            creatureWasInFireWhenKilled = true;
+        }
+
         CreatureDieFunction();
         OnCreatureDied?.Invoke(this, EventArgs.Empty);
 
         OnAnyCreatureDied?.Invoke(this, new OnCreatureDiedEventArgs {
             damageSource = damageSource
         });
+
     }
 
     private void CreatureDieFunction() {
@@ -358,6 +365,10 @@ public class Creature : Mob
         }
 
         GetComponent<Rigidbody2D>().gravityScale = 0;
+    }
+
+    public bool GetCreatureWasInFireWhenKilled() {
+        return creatureWasInFireWhenKilled;
     }
 
     protected void DemoDropGems() {
@@ -482,7 +493,6 @@ public class Creature : Mob
 
         if (collision.gameObject.GetComponentInParent<Fire>() != null) {
             inFireLightAmount--;
-
             if (inFireLightAmount != 0) return;
             if (creatureSO.isBoss) return;
 

@@ -15,6 +15,7 @@ public class DemoSaveImportManager : MonoBehaviour {
     private void Awake() {
         Instance = this;
 
+        Debug.Log("HasCompatibleDemoSave " + HasCompatibleDemoSave());
         hasDemoSaveToImport = HasCompatibleDemoSave() && !HasFullGameSave();
     }
 
@@ -26,12 +27,14 @@ public class DemoSaveImportManager : MonoBehaviour {
 
         float latestCompatibleDemoBuild = 0.0904f;
 
+        Debug.Log("File.Exists(demoSaveFile) " + File.Exists(demoSaveFile));
         if (!File.Exists(demoSaveFile)) {
             return false;
         }
 
         float latestDemoBuildSaved = ES3.Load("latestBuildSaved", demoSaveFile, 0f);
 
+        Debug.Log("latestDemoBuildSaved " + latestDemoBuildSaved);
         if (latestDemoBuildSaved >= latestCompatibleDemoBuild) return true;
         return false;
     }
@@ -85,7 +88,7 @@ public class DemoSaveImportManager : MonoBehaviour {
     }
 
     private IEnumerator ImportAchievementsAfterDelay() {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
 
 
         AchievementsManager.Instance.ImportAchievementsFromSave();

@@ -77,6 +77,9 @@ public class HordeModeProgressionManager : MonoBehaviour
     private bool hasXPToCommit = false;
     public event EventHandler OnHordeModeUnlockableUnlocked;
 
+    private const string mainFile = "SaveFile_HordeMode.es3";
+    private const string backupFile = "SaveFile_HordeMode_backup.es3";
+
     // Unlock data
     public List<HordeModeUnlockables> unlockedSet = new List<HordeModeUnlockables>();
     private ES3Settings hordeModeSaveFileSettings;
@@ -92,13 +95,48 @@ public class HordeModeProgressionManager : MonoBehaviour
     }
 
     public void InitializeLoadedParameters() {
+
         hordeModeSaveFileSettings = new ES3Settings("SaveFile_HordeMode.es3");
-        totalHordeModeXP = ES3.Load("HordeModeXP", 0, hordeModeSaveFileSettings);
-        pendingXP = ES3.Load("HordeModeXP_pending", 0, hordeModeSaveFileSettings);
-        hasXPToCommit = ES3.Load("hasXPToCommit", false, hordeModeSaveFileSettings);
+
+        try {
+
+            totalHordeModeXP = ES3.Load("HordeModeXP", 0, hordeModeSaveFileSettings);
+            pendingXP = ES3.Load("HordeModeXP_pending", 0, hordeModeSaveFileSettings);
+            hasXPToCommit = ES3.Load("hasXPToCommit", false, hordeModeSaveFileSettings);
+
+            unlockedSet = ES3.Load(
+                "HordeModeUnlocks",
+                new List<HordeModeUnlockables>(),
+                hordeModeSaveFileSettings
+            );
+
+        }
+        catch (Exception e) {
+
+            Debug.LogError("HordeMode save corrompue : reset : " + e);
+
+            ResetHordeSaveFile();
+
+            totalHordeModeXP = 0;
+            pendingXP = 0;
+            hasXPToCommit = false;
+            unlockedSet = new List<HordeModeUnlockables>();
+        }
 
         unlockThresholds = GenerateUnlockThresholds();
-        unlockedSet = ES3.Load("HordeModeUnlocks", new List<HordeModeUnlockables>(), hordeModeSaveFileSettings);
+    }
+
+    private void ResetHordeSaveFile() {
+
+        try {
+
+            ES3.DeleteFile("SaveFile_HordeMode.es3");
+
+        }
+        catch (Exception e) {
+
+            Debug.LogError("Erreur suppression save HordeMode : " + e);
+        }
     }
 
     public void CheckResettedHordeModeOnce() {
@@ -133,6 +171,8 @@ public class HordeModeProgressionManager : MonoBehaviour
     // Called during run
     [Button]
     public void AddRunXP(int amount) {
+        BackupHordeFile();
+
         pendingXP += amount;
         totalHordeModeXP += amount;
 
@@ -182,6 +222,8 @@ public class HordeModeProgressionManager : MonoBehaviour
     }
 
     public void SetHasNoXPToCommit() {
+        BackupHordeFile();
+
         hasXPToCommit = false;
         ES3.Save("hasXPToCommit", false, hordeModeSaveFileSettings);
 
@@ -190,6 +232,8 @@ public class HordeModeProgressionManager : MonoBehaviour
     }
 
     public void AddUnlocked(HordeModeUnlockables unlock) {
+        BackupHordeFile();
+
         unlockedSet.Add(unlock);
         ES3.Save("HordeModeUnlocks", new List<HordeModeProgressionManager.HordeModeUnlockables>(HordeModeProgressionManager.Instance.unlockedSet), hordeModeSaveFileSettings);
         OnHordeModeUnlockableUnlocked?.Invoke(this, EventArgs.Empty);
@@ -447,6 +491,22 @@ public class HordeModeProgressionManager : MonoBehaviour
         }
 
         return environmentUnlocked;
+    }
+
+    private void BackupHordeFile() {
+
+        try {
+
+            if (ES3.FileExists(mainFile)) {
+
+                ES3.CopyFile(mainFile, backupFile);
+            }
+
+        }
+        catch (Exception e) {
+
+            Debug.LogError("Erreur backup Horde : " + e);
+        }
     }
 
 }

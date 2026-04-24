@@ -153,7 +153,7 @@ public class DogAI : MonoBehaviour
     }
 
     protected virtual void Update() {
-        if(state != State.stay) {
+        if (state != State.stay) {
             HandleGrowling();
         }
 

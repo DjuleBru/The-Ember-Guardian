@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,27 @@ public class MetaProgressionLevelManager : MonoBehaviour
     private bool emberlingsControlUnlocked;
 
     private void Awake() {
-        emberlingsControlUnlocked = ES3.Load("emberlingsControlUnlocked", false);
+
+        try {
+
+            if (ES3.KeyExists("emberlingsControlUnlocked")) {
+
+                emberlingsControlUnlocked = ES3.Load<bool>("emberlingsControlUnlocked");
+
+            }
+            else {
+
+                emberlingsControlUnlocked = false;
+
+            }
+
+        }
+        catch (Exception e) {
+
+            Debug.Log("Erreur chargement save : " + e);
+
+            emberlingsControlUnlocked = false;
+        }
     }
 
     private void Start() {

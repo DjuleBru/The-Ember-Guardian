@@ -150,7 +150,8 @@ public class LevelObjectives : MonoBehaviour
                     LevelUI_ObjectiveUI.Instance.SetNextSubObjective(LevelUI_ObjectiveUI.SubObjectiveType.ProgressWithScavengers, LevelUI_ObjectiveUI.SubObjectiveType.BuildWatcherArtifact);
                 } else {
                     LevelUI_ObjectiveUI.Instance.SetSubObjectiveCompleted(LevelUI_ObjectiveUI.SubObjectiveType.ProgressWithScavengers);
-                    ShowReturnToHubObj(4f);
+                    LevelManager.Instance.LevelSuccess();
+                    //ShowReturnToHubObj(4f);
                 }
 
             }

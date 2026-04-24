@@ -54,6 +54,7 @@ public class ItemButtonUI : ButtonUI {
 
     [SerializeField] private List<ItemButtonUI> itemsToForceUnlockWhenBought = new List<ItemButtonUI>();
     [SerializeField] private ItemButtonUI_ChildTreeShowHide treeShowHide;
+    [SerializeField] private Transform descriptionCardParentManualSet;
     [SerializeField] private bool isTreeParent;
     [SerializeField] private bool isTreeChild;
 
@@ -770,10 +771,15 @@ public class ItemButtonUI : ButtonUI {
                 hubMerchantItem.SetNewItemUnlocked(false);
             }
 
-            if (treeShowHide != null) {
+            if (treeShowHide != null && isTreeChild) {
                 descriptionCard.transform.SetParent(treeShowHide.transform.parent);
             } else {
-                descriptionCard.transform.SetParent(transform.parent);
+                if(descriptionCardParentManualSet != null) {
+                    descriptionCard.transform.SetParent(descriptionCardParentManualSet);
+                } else {
+                    descriptionCard.transform.SetParent(transform.parent);
+                }
+
             }
 
 

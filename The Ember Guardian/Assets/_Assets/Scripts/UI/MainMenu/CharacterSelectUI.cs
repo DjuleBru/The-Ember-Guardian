@@ -86,7 +86,7 @@ public class CharacterSelectUI : MonoBehaviour
         swapCharacter_WorldCanvas.gameObject.SetActive(false);
 
         if (MainMenuUI.Instance != null) {
-
+            Debug.Log("DemoSaveImportManager.Instance.HasDemoSaveToImport() " + DemoSaveImportManager.Instance.HasDemoSaveToImport());
             if(DemoSaveImportManager.Instance.HasDemoSaveToImport()) {
 
                 MainMenuUI_ImportDemoSavePanel.Instance.OpenPanel();

@@ -86,7 +86,6 @@ public class AchievementsManager : MonoBehaviour {
         TryUnlockIfTrue("LOOSE_RESPAWNING",
             ES3.Load("loseRespawning", false));
 
-
         TryUnlockIfTrue("FUEL_FIRE_ALMOST_EMPTY",
             ES3.Load("fuelFireAlmostEmpty", false));
 
@@ -181,7 +180,10 @@ public class AchievementsManager : MonoBehaviour {
     }
 
     private void TryUnlockIfTrue(string achievementId, bool condition) {
+        Debug.Log("TryUnlockIfTrue " + achievementId + " condition " + condition);
         if (!condition) return;
+
+        Debug.Log("IsThisAchievementUnlocked(achievementId)" + IsThisAchievementUnlocked(achievementId));
         if (IsThisAchievementUnlocked(achievementId)) return;
 
         UnlockAchievement(achievementId);
@@ -214,7 +216,6 @@ public class AchievementsManager : MonoBehaviour {
     }
 
 
-
     [Button]
     public int GetSteamStat(string id) {
         if (!playerConnected) return 0;
@@ -241,5 +242,33 @@ public class AchievementsManager : MonoBehaviour {
     public void SaveSteamStats() {
         if (!playerConnected) return;
         SteamUserStats.StoreStats();
+    }
+
+    [Button]
+    public void ClearAllAchievements() {
+        if (!playerConnected) return;
+
+        Debug.Log("[Achievements] Clearing ALL achievements");
+
+        foreach (var ach in SteamUserStats.Achievements) {
+            ach.Clear();
+        }
+
+        SteamUserStats.StoreStats();
+
+        Debug.Log("[Achievements] All achievements cleared");
+    }
+
+    [Button]
+    public void ClearAllStats() {
+        if (!playerConnected) return;
+
+        Debug.Log("[Achievements] Clearing ALL stats");
+
+        SteamUserStats.ResetAll(true); // true = reset achievements aussi
+
+        SteamUserStats.StoreStats();
+
+        Debug.Log("[Achievements] All stats cleared");
     }
 }

@@ -76,6 +76,10 @@ public class PlayerCamp : MonoBehaviour
             initialFireStructureLocation.gameObject.SetActive(false);
             InitializeCampLayoutOnGameLoad();
 
+            foreach (StructureLocation location in worldStructureLocations) {
+                location.gameObject.SetActive(false);
+            }
+
         } else {
 
             initialFireStructureLocation.UnlockStructureLocation();
@@ -140,14 +144,16 @@ public class PlayerCamp : MonoBehaviour
         }
     }
 
-    public void AddStructureLocationLoaded(StructureSO structureSO, Vector2 position, bool unlocked) {
+    public void AddStructureLocationLoaded(StructureSO structureSO, Vector2 position, bool unlocked, bool isWorldStructure) {
         StructureLocation structureLocation = Instantiate(structureSO.structureLocationPrefab, customCampStructureLocationParent).GetComponent<StructureLocation>();
         structureLocation.transform.position = position;
 
-        //Debug.Log("AddStructureLocationLoaded " + structureSO + " unlocked " + unlocked);
-
-        if(unlocked) {
+        if (unlocked) {
             structureLocation.UnlockStructureLocation();
+        }
+
+        if(isWorldStructure) {
+            structureLocation.SetAsWorldStructureLocation();
         }
 
         AddCustomCampStructureLocationsList(structureSO, structureLocation);

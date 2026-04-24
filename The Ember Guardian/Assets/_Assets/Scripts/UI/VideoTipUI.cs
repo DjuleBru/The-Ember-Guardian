@@ -241,8 +241,15 @@ public class VideoTipUI : MonoBehaviour
         videoTipUIMainPanelAnimator.SetTrigger("Hide");
         StartCoroutine(ActivatePanelAfterDelay(false, .5f));
 
+        // Initialize to something to avoid null ref on manual close if no tips unlocked
+        VideoTipSO.VideoTipType tipShown = VideoTipSO.VideoTipType.SpecialAmmo;
+
+        if (shownVideoTipSO != null) {
+            tipShown = shownVideoTipSO.tipType;
+        }
+
         OnVideoTipPanelClosed?.Invoke(this, new OnVideoTipPanelClosedEventArgs {
-            tipTypeShown = shownVideoTipSO.tipType
+            tipTypeShown = tipShown
         });
     }
 

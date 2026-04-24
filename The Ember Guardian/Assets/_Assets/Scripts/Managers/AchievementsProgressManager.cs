@@ -5,6 +5,8 @@ using UnityEngine;
 public class AchievementsProgressManager : MonoBehaviour
 {
     [SerializeField] private CreatureSO finalBossCreatureSO;
+    [SerializeField] private LevelSO finalLevelSO;
+    [SerializeField] private LevelSO architectTableLevelSO;
     private bool mushroomMerchantUnlocked_ACHIEVEMENT;
     private bool architectTableUnlocked_ACHIEVEMENT;
     private bool fireFuelDepletionUnlocked_ACHIEVEMENT;
@@ -142,13 +144,28 @@ public class AchievementsProgressManager : MonoBehaviour
             CampEditManager.Instance.OnAnyChangeMade += CampEditManager_OnAnyChangeMade;
         }
 
-        if(PetDog.Instance != null) {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
+            RecoverBuggedAchievements();
+        }
+
+        if (PetDog.Instance != null) {
             PetDog.Instance.OnPlayerStartedPettingDog += PetDog_OnPlayerStartedPettingDog;
             PetDog.Instance.OnPlayerStoppedPettingDog += PetDog_OnPlayerStoppedPettingDog;
         }
+
     }
 
+    private void RecoverBuggedAchievements() {
+        if (MetaProgressionManager.Instance.GetLevelCompleted(finalLevelSO)) {
+            StartCoroutine(TryUnlockSuccessAfterDelay("FINAL_BOSS", 1f));
+        }
 
+        if(mushroomMerchantUnlocked_ACHIEVEMENT) {
+            if (MetaProgressionManager.Instance.GetLevelCompleted(architectTableLevelSO)) {
+                StartCoroutine(TryUnlockSuccessAfterDelay("ALL_NPC_UNLOCKED", 1f));
+            }
+        }
+    }
 
     #region UPDATE RELATED
     private void Update() {
@@ -179,6 +196,7 @@ public class AchievementsProgressManager : MonoBehaviour
         if(SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
             if(dogInCampZoneArea) {
                 if (!CampZoneManager.Instance.IsWithinCampZoneLimits(Dog.Instance.transform.position)) {
+                    Debug.Log("dogInCampZoneArea " + dogInCampZoneArea);
                     dogInCampZoneArea = false;
                 }
             }
@@ -212,7 +230,7 @@ public class AchievementsProgressManager : MonoBehaviour
     private void Player_OnPlayerEnteredCamp(object sender, System.EventArgs e) {
 
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
-            if(dogInCampZoneArea && playerExploredWholeDay) {
+            if (dogInCampZoneArea && playerExploredWholeDay) {
                 TryUnlockSuccess("DOG_WAIT_CAMP");
                 ES3.Save("dogWaitCampAchieved", true);
             }
@@ -531,10 +549,18 @@ public class AchievementsProgressManager : MonoBehaviour
 
     private void Creature_OnAnyCreatureDied(object sender, Creature.OnCreatureDiedEventArgs e) {
         if (AchievementsManager.Instance == null) return;
+        Creature creature = sender as Creature;
+
+        if (creature.GetCreatureSO() == finalBossCreatureSO) {
+            boneReaperDeathAmount++;
+            Debug.Log("boneReaperDeathAmount " + boneReaperDeathAmount);
+            ES3.Save("boneReaperDeathAmount", boneReaperDeathAmount);
+            if (boneReaperDeathAmount == 2) {
+                StartCoroutine(TryUnlockSuccessAfterDelay("FINAL_BOSS", 4f));
+            }
+        }
 
         if (e.damageSource != Player.Instance.transform) return;
-
-        Creature creature = sender as Creature;
 
         if (!playerMoving) {
             creaturesKilledWithoutMoving++;
@@ -549,21 +575,13 @@ public class AchievementsProgressManager : MonoBehaviour
             ES3.Save("ricochetAchieved", true);
         }
 
-        if (creature.GetCreatureSO() == finalBossCreatureSO) {
-            boneReaperDeathAmount++;
-            ES3.Save("boneReaperDeathAmount", boneReaperDeathAmount);
-            if (boneReaperDeathAmount == 2) {
-                StartCoroutine(TryUnlockSuccessAfterDelay("FINAL_BOSS", 4f));
-            }
-        }
-
         AchievementsManager.Instance.AddToSteamStat("KILLED_CREATURES", 1);
 
         if (AchievementsManager.Instance.GetSteamStat("KILLED_CREATURES") >= killCreaturesTreshold) {
             TryUnlockSuccess("KILL_ENEMIES");
         }
 
-        if (creature.GetInFireLightAmount() > 0) {
+        if (creature.GetCreatureWasInFireWhenKilled()) {
             AchievementsManager.Instance.AddToSteamStat("KILLED_CREATURES_INSIDE_FIRE_v3", 1);
 
             if (AchievementsManager.Instance.GetSteamStat("KILLED_CREATURES_INSIDE_FIRE_v3") >= killCreaturesInFireTreshold) {
@@ -575,6 +593,8 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void LevelManager_OnLevelSuccess(object sender, System.EventArgs e) {
+        Debug.Log("LevelManager_OnLevelSuccess " +( LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel[0] == HubMerchant.HubMerchantType.ArchitectTable));
+
         if(LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel.Count > 0) {
             if (LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel[0] == HubMerchant.HubMerchantType.MushroomMerchant) {
                 mushroomMerchantUnlocked_ACHIEVEMENT = true;
@@ -600,6 +620,7 @@ public class AchievementsProgressManager : MonoBehaviour
     private void LevelUI_Locations_OnLocationTextShown(object sender, System.EventArgs e) {
         LevelSO.LevelEnvironment environment = LevelManager.Instance.GetLevelSO().environmentType;
 
+        Debug.Log("LevelUI_Locations_OnLocationTextShown");
         if (environment == LevelSO.LevelEnvironment.TheVerdantGraveyard) {
             StartCoroutine(TryUnlockSuccessAfterDelay("VERDANT_GRAVEYARD", 3f));
             ES3.Save("verdantGraveyardAchieved", true);
@@ -633,6 +654,8 @@ public class AchievementsProgressManager : MonoBehaviour
             AchievementsManager.Instance.UnlockAchievement(id);
        }
     }
+
+
     private IEnumerator TryUnlockSuccessAfterDelay(string id, float delay) {
         if (AchievementsManager.Instance == null) yield break;
         yield return new WaitForSeconds(delay);

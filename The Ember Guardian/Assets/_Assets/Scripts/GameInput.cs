@@ -136,9 +136,27 @@ public class GameInput : MonoBehaviour
         playerInputActions = new PlayerInputActions();
         settingsSaveFileSettings = new ES3Settings("Settings.es3");
 
-        bool hasSavedDefaultBindings = ES3.Load("SavedDefaultBindings", false, settingsSaveFileSettings);
-        bool hasCustomBindings = ES3.Load("SavedCustomBindings", false, settingsSaveFileSettings);
-        if(!hasSavedDefaultBindings) {
+        bool hasSavedDefaultBindings = false;
+        bool hasCustomBindings = false;
+
+        try {
+
+            hasSavedDefaultBindings = ES3.Load("SavedDefaultBindings", false, settingsSaveFileSettings);
+            hasCustomBindings = ES3.Load("SavedCustomBindings", false, settingsSaveFileSettings);
+
+        }
+        catch (Exception e) {
+
+            Debug.LogError("Settings corrompus, reset : " + e);
+
+            ResetSettingsFile();
+
+            hasSavedDefaultBindings = false;
+            hasCustomBindings = false;
+        }
+
+
+        if (!hasSavedDefaultBindings) {
             ES3.Save("DefaultInputBindings", playerInputActions.SaveBindingOverridesAsJson(), settingsSaveFileSettings);
         }
         if(hasCustomBindings) {
@@ -152,7 +170,20 @@ public class GameInput : MonoBehaviour
         playerInputActions.Player.Enable();
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-  
+
+    private void ResetSettingsFile() {
+
+        try {
+
+            ES3.DeleteFile("Settings.es3");
+
+        }
+        catch (Exception e) {
+
+            Debug.LogError("Impossible de supprimer Settings.es3 : " + e);
+        }
+    }
+
     private void Start() {
         playerInput = GetComponent<PlayerInput>();
         InputUser.onChange += InputUser_onChange;

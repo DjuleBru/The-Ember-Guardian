@@ -71,13 +71,13 @@ public class VideoTipUI_ManualPanel : MonoBehaviour
 
         int lockedTipsNumber = allVideoTipsList.Count - orderedTipSOList.Count;
         for (int j = 0; j < lockedTipsNumber; j++) {
-            orderedTipSOList.Add(allVideoTipsList[0]);
+            orderedTipSOList.Add(null);
         }
 
         int i = 0;
         foreach (VideoTipSO tip in orderedTipSOList) {
             VideoTipUI_TipTemplate tipTemplate = Instantiate(buttonTemplate, buttonContainer).GetComponent<VideoTipUI_TipTemplate>();
-            if (!MetaProgressionManager.Instance.GetTipUnlocked(tip)) {
+            if (tip == null) {
                 tipTemplate.SetLocked();
                 continue;
             };

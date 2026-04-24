@@ -84,7 +84,18 @@ public class MainMenuUI : MonoBehaviour {
         CheckBackFromHordeMode();
 
         if (!VersioningManager.Instance.CheckNewSaveFile() && !VersioningManager.Instance.CheckIncompatibleSaveFile()) {
-            HandleMenuStartup();
+
+            if(CorruptedSaveRestorer.Instance.GetCorruptedSaveFileDetected()) {
+
+                MainMenuUI_StartupMessagePanel.Instance.OpenPanel();
+                MainMenuUI_StartupMessagePanel.Instance.SetErasedSaveFilePanel();
+
+            } else {
+
+                HandleMenuStartup();
+
+            }
+
         }
         else {
             continueButton.interactable = false;

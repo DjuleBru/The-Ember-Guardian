@@ -30,6 +30,9 @@ public class DogAI_DarkCompanion : DogAI
 
     private float minAttackDistance;
 
+    private float decisionTimer;
+    private float decisionInterval = 0.2f;
+
     private Creature targetCreature;
 
     public event EventHandler OnLaserAbilityStarted;
@@ -56,16 +59,15 @@ public class DogAI_DarkCompanion : DogAI
     }
 
     protected override void HandleBiteTimer() {
+        if (currentAttackAbility != AttackAbility.none) return;
 
         if (stompAbilityUnlocked) {
             if (!stompAbilityReady) {
                 stompAbilityTimer -= Time.deltaTime;
-                if (stompAbilityTimer < 0 && currentAttackAbility == AttackAbility.none) {
+
+                if (stompAbilityTimer < 0) {
                     stompAbilityReady = true;
                     stompAbilityTimer = DogStats.Instance.GetDarkCompanionStompCooldown();
-                    biteRange = stompAbilityRange;
-                    minAttackDistance = 0f;
-                    currentAttackAbility = AttackAbility.stomp;
                 }
             }
         }
@@ -74,52 +76,48 @@ public class DogAI_DarkCompanion : DogAI
             if (!laserAbilityReady) {
                 laserAbilityTimer -= Time.deltaTime;
 
-                if (laserAbilityTimer < 0 && currentAttackAbility == AttackAbility.none) {
+                if (laserAbilityTimer < 0) {
                     laserAbilityReady = true;
                     laserAbilityTimer = DogStats.Instance.GetDarkCompanionLaserCooldown();
-                    biteRange = laserAbilityRange;
-                    minAttackDistance = 3f;
-                    currentAttackAbility = AttackAbility.laserContinuous;
                 }
-
             }
-
         }
 
         if (hasBiteUnlocked) {
             if (!biteReady) {
                 biteTimer -= Time.deltaTime;
-                if (biteTimer < 0 && currentAttackAbility == AttackAbility.none) {
-                    biteTimer = DogStats.Instance.GetDarkCompanionBiteCooldown();
+
+                if (biteTimer < 0) {
                     biteReady = true;
-                    minAttackDistance = 5f;
-                    currentAttackAbility = AttackAbility.laserShot;
+                    biteTimer = DogStats.Instance.GetDarkCompanionBiteCooldown();
                 }
             }
         }
-
     }
 
     protected override void HandleBarkToAttack() {
-        if (closestCreature == null) return;
+        if (currentAttackAbility != AttackAbility.none) return;
 
-        if (stompAbilityReady && closestCreature.transform.position.y < 2f) {
-            currentAttackAbility = AttackAbility.stomp;
-            ChangeState(State.attacking);
-            return;
-        }
+        decisionTimer -= Time.deltaTime;
+        if (decisionTimer > 0) return;
+        decisionTimer = decisionInterval;
 
-        if (laserAbilityReady) {
-            currentAttackAbility = AttackAbility.laserContinuous;
-            ChangeState(State.attacking);
-            return;
-        }
+        var result = DecideBestTargetAndAbility();
 
-        if (biteReady && closestCreature.transform.position.y < 2f) {
-            currentAttackAbility = AttackAbility.laserShot;
-            ChangeState(State.attacking);
-            return;
-        }
+        Creature bestTarget = result.Item1;
+        AttackAbility ability = result.Item2;
+
+        //Debug.Log("bestTarget " + bestTarget + " ability " + ability);
+
+        if (bestTarget == null) return;
+        if (ability == AttackAbility.none) return;
+
+        targetCreature = bestTarget;
+        currentAttackAbility = ability;
+
+        ApplyAbilitySettings(ability);
+
+        ChangeState(State.attacking);
     }
 
     protected override void HeadToAttackClosestCreature() {
@@ -129,7 +127,7 @@ public class DogAI_DarkCompanion : DogAI
             targetCreature = creatureDetectionCollider.GetCreatureWithHighestLocalDensity();
         }
 
-        //Debug.Log("targetCreature " + targetCreature);
+        Debug.Log("targetCreature " + targetCreature);
         if (targetCreature == null) {
             ChangeState(State.runWithPlayer);
             return;
@@ -137,7 +135,6 @@ public class DogAI_DarkCompanion : DogAI
 
         float distanceToCreature = Mathf.Abs(transform.position.x - targetCreature.transform.position.x);
 
-        //Debug.Log("distanceToCreature " + distanceToCreature);
         if (distanceToCreature < biteRange && distanceToCreature > minAttackDistance) {
             dogMovement.SetMoveTarget(transform.position);
 
@@ -232,6 +229,113 @@ public class DogAI_DarkCompanion : DogAI
         }
 
         currentAttackAbility = AttackAbility.none;
+    }
+
+    private (Creature, AttackAbility) DecideBestTargetAndAbility() {
+
+        List<Creature> creatures = GetRelevantCreatures(5);
+
+        Creature bestCreature = null;
+        AttackAbility bestAbility = AttackAbility.none;
+        float bestScore = float.MinValue;
+
+        //Debug.Log("stompAbilityReady " + stompAbilityReady);
+        //Debug.Log("laserAbilityReady " + laserAbilityReady);
+        //Debug.Log("biteReady " + biteReady);
+
+        foreach (Creature creature in creatures) {
+
+            float distance = Mathf.Abs(transform.position.x - creature.transform.position.x);
+            bool isGrounded = creature.transform.position.y < .5f;
+
+            float score = -distance;
+            AttackAbility ability = AttackAbility.none;
+
+            // STOMP
+            if (stompAbilityReady && isGrounded && distance < stompAbilityRange + 1f) {
+                score += 50f;
+                ability = AttackAbility.stomp;
+            }
+
+            // LASER AOE
+            else if (laserAbilityReady && isGrounded && HasNearbyGroup(creature, 4f)) {
+                score += 40f;
+                ability = AttackAbility.laserContinuous;
+            }
+
+            // LASER SHOT
+            else if (biteReady && distance < biteLaserShotRange) {
+                score += 20f;
+                ability = AttackAbility.laserShot;
+            }
+
+            if (score > bestScore) {
+                bestScore = score;
+                bestCreature = creature;
+                bestAbility = ability;
+            }
+        }
+
+        return (bestCreature, bestAbility);
+    }
+
+    private List<Creature> GetRelevantCreatures(int maxCount = 5) {
+
+        List<Creature> all = creatureDetectionCollider.GetCreaturesInRange();
+
+        all.RemoveAll(c => c == null);
+
+        all.Sort((a, b) => {
+            float da = Mathf.Abs(a.transform.position.x - transform.position.x);
+            float db = Mathf.Abs(b.transform.position.x - transform.position.x);
+            return da.CompareTo(db);
+        });
+
+        if (all.Count > maxCount) {
+            all.RemoveRange(maxCount, all.Count - maxCount);
+        }
+
+        return all;
+    }
+
+    private bool HasNearbyGroup(Creature creature, float radius) {
+        int count = 0;
+
+        List<Creature> creatures = creatureDetectionCollider.GetCreaturesInRange();
+
+        foreach (Creature other in creatures) {
+
+            if (other == null) continue;
+            if (other == creature) continue;
+
+            float dist = Mathf.Abs(other.transform.position.x - creature.transform.position.x);
+
+            if (dist < radius) {
+                count++;
+
+                if (count >= 2) {
+                    return true; // early exit
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void ApplyAbilitySettings(AttackAbility ability) {
+
+        if (ability == AttackAbility.stomp) {
+            biteRange = stompAbilityRange;
+            minAttackDistance = 0f;
+        }
+        else if (ability == AttackAbility.laserContinuous) {
+            biteRange = laserAbilityRange;
+            minAttackDistance = 3f;
+        }
+        else if (ability == AttackAbility.laserShot) {
+            biteRange = biteLaserShotRange;
+            minAttackDistance = 5f;
+        }
     }
 
     public float GetWatchDir() {

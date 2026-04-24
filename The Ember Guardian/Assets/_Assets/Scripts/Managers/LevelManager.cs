@@ -218,7 +218,7 @@ public class LevelManager : MonoBehaviour
 
     [Button]
     public void LevelSuccess(float delayToReturnToHub = 2f) {
-
+        Debug.Log("LevelSuccess " + levelSucceeded);
         if (levelSucceeded) return;
         Vector3 endLevelPortalPosition = endLevelPortal.transform.position; 
 

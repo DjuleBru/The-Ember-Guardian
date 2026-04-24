@@ -180,4 +180,8 @@ public class DogCreatureDetectionCollider : MonoBehaviour
 
         return distanceToClosestCreature;
     }
+
+    public List<Creature> GetCreaturesInRange() {
+        return creaturesInDetectionColliderRange;
+    }
 }

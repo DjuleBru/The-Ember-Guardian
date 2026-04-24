@@ -241,7 +241,7 @@ public class HubMerchant : MonoBehaviour
 
 
     private void TryStopInteractingWithMerchant() {
-        if (!playerInTriggerArea) return;
+        //if (!playerInTriggerArea) return;
         if (isHubMerchant && !merchantUnlocked) return;
         if (merchantHasTalkLinesToShow) return;
 

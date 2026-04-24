@@ -9,6 +9,8 @@ public class Merchant_Skills : Merchant
 
     [SerializeField] private Transform refundDropPosition;
     [SerializeField] private SkillSO refreshShopSkillSO;
+    [SerializeField] private CurrencyStorage smallOrbsStorage;
+    [SerializeField] private CurrencyStorage bigOrbsStorage;
     private List<SkillSO> merchantSkillSOList;
     private List<SkillItem> majorSkillList;
     private List<SkillItem> minorSkillList; // Référence aux skills du joueur
@@ -32,6 +34,18 @@ public class Merchant_Skills : Merchant
         base.Start();
         PlayerSkills.Instance.OnInitialSkillsInitialized += PlayerSkills_OnInitialSkillsInitialized;
         PlayerSkills.Instance.OnActiveSkillRemoved += PlayerSkills_OnActiveSkillRemoved;
+
+        if(SavingManager_Level.Instance != null) {
+
+            if(SavingManager_Level.Instance.GetLoadingSavedLevel()) {
+                int smallOrbsStored = SavingManager_Level.Instance.GetSkillsMerchantSmallOrbsData().currencyAmountStored;
+                int bigOrbsStored = SavingManager_Level.Instance.GetSkillsMerchantBigOrbsData().currencyAmountStored;
+
+                smallOrbsStorage.SetCurrencyAmountStored(smallOrbsStored);
+                bigOrbsStorage.SetCurrencyAmountStored(bigOrbsStored);
+            }
+
+        }
     }
 
     private void PlayerSkills_OnActiveSkillRemoved(object sender, PlayerSkills.OnSkillAddedEventArgs e) {
@@ -322,6 +336,14 @@ public class Merchant_Skills : Merchant
 
             yield return new WaitForSeconds(.1f);
         }
+    }
+
+    public CurrencyStorage GetSmallOrbStorage() {
+        return smallOrbsStorage;
+    }
+
+    public CurrencyStorage GetBigOrbStorage() {
+        return bigOrbsStorage;
     }
 
 }

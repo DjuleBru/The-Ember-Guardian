@@ -14,6 +14,9 @@ public class SavingManager_Level : MonoBehaviour
     private bool gameSavedOnce;
     private DateTime lastSaveTime;
 
+    private CurrencyStorageSaveData smallOrbsStorageData;
+    private CurrencyStorageSaveData bigOrbsStorageData;
+
     public event EventHandler OnLoadGameEnded;
     public event EventHandler OnSaveGameStarted;
     public event EventHandler OnSaveGameEnded;
@@ -409,6 +412,8 @@ public class SavingManager_Level : MonoBehaviour
             data.posY = location.transform.position.y;
             data.structureBuilt = false;
             data.structureUnlocked = location.GetStructureLocationUnlocked();
+            data.isWorldStructure = location.GetIsWorldStructureLocation();
+
 
             structuresData.Add(data);
         }
@@ -429,6 +434,22 @@ public class SavingManager_Level : MonoBehaviour
             data.worldStructureScaleX = structure.GetWorldScaleX();
 
             structuresData.Add(data);
+
+            if(structureType == StructureSO.StructureType.merchant_skills) {
+                Merchant_Skills skillsMerchant = structure as Merchant_Skills;
+
+                CurrencyStorage smallOrbStorage = skillsMerchant.GetSmallOrbStorage();
+                CurrencyStorage bigOrbStorage = skillsMerchant.GetBigOrbStorage();
+
+                CurrencyStorageSaveData smallOrbs_storageData = new CurrencyStorageSaveData();
+                smallOrbs_storageData.currencyAmountStored = smallOrbStorage.GetCurrencyAmountStored();
+
+                CurrencyStorageSaveData bigOrbs_storageData = new CurrencyStorageSaveData();
+                bigOrbs_storageData.currencyAmountStored = bigOrbStorage.GetCurrencyAmountStored();
+
+                ES3.Save("Structures_SkillsMerchant_SmallOrbs", smallOrbs_storageData, path);
+                ES3.Save("Structures_SkillsMerchant_BigOrbs", bigOrbs_storageData, path);
+            }
 
             if (structureCategory == StructureSO.StructureCategory.storage) {
                 CurrencyStorage storage = structure as CurrencyStorage;
@@ -982,6 +1003,9 @@ public class SavingManager_Level : MonoBehaviour
         List<BarricadeSaveData> barricadeData = ES3.Load<List<BarricadeSaveData>>("Structures_Barricades", fileName);
         List<CurrencyStorageSaveData> storagesData = ES3.Load<List<CurrencyStorageSaveData>>("Structures_CurrencyStorages", fileName);
 
+        smallOrbsStorageData = ES3.Load<CurrencyStorageSaveData>("Structures_SkillsMerchant_SmallOrbs", fileName, new CurrencyStorageSaveData());
+        bigOrbsStorageData = ES3.Load<CurrencyStorageSaveData>("Structures_SkillsMerchant_BigOrbs", fileName, new CurrencyStorageSaveData());
+
         int trapSaveDataIndex = 0;
         int fireSaveDataIndex = 0;
         int currencyCrafterSaveDataIndex = 0;
@@ -1000,6 +1024,7 @@ public class SavingManager_Level : MonoBehaviour
             }
 
             bool structureBuilt = data.structureBuilt;
+
 
             if (structureBuilt) {
                 yield return new WaitForEndOfFrame();
@@ -1129,7 +1154,7 @@ public class SavingManager_Level : MonoBehaviour
             }
             else {
 
-                PlayerCamp.Instance.AddStructureLocationLoaded(loadedStructureSO, structurePos, data.structureUnlocked);
+                PlayerCamp.Instance.AddStructureLocationLoaded(loadedStructureSO, structurePos, data.structureUnlocked, data.isWorldStructure);
 
             }
         }
@@ -1345,6 +1370,14 @@ public class SavingManager_Level : MonoBehaviour
     }
 
     #endregion
+
+    public CurrencyStorageSaveData GetSkillsMerchantSmallOrbsData() {
+        return smallOrbsStorageData;
+    }
+
+    public CurrencyStorageSaveData GetSkillsMerchantBigOrbsData() {
+        return bigOrbsStorageData;
+    }
 
     private void CreateLevelSaveCopy() {
         if (DebugManager.Instance.GetSaveAfterEachLevelDebug());

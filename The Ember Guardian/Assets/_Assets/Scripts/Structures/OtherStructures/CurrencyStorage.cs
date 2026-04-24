@@ -56,9 +56,9 @@ public class CurrencyStorage : Structure
 
         StoreCurrency();
 
-        Debug.Log("GetHasCurrenciesToPay() " + GetHasCurrenciesToPay());
-        Debug.Log("playerInteracting() " + playerInteracting);
-        Debug.Log("currencyAmountStored < maxCurrencyAmountStored " + (currencyAmountStored < maxCurrencyAmountStored));
+        //Debug.Log("GetHasCurrenciesToPay() " + GetHasCurrenciesToPay());
+        //Debug.Log("playerInteracting() " + playerInteracting);
+        //Debug.Log("currencyAmountStored < maxCurrencyAmountStored " + (currencyAmountStored < maxCurrencyAmountStored));
         if (GetHasCurrenciesToPay() && playerInteracting && currencyAmountStored < maxCurrencyAmountStored) {
             payCurrencyUI.SetPlayerInteractingContinuous(.05f); // Continue l'interaction
         }
