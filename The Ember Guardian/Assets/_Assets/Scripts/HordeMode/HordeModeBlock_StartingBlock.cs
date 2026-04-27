@@ -294,12 +294,12 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
 
         if (activeLeft != null && data.startingBlockWorkers_Left.currentMobsAlive > 0) {
             activeLeft.gameObject.SetActive(true);
-            //activeLeft.SpawnMobs(data.startingBlockWorkers_Left.currentMobsAlive);
+            activeLeft.SpawnMobs(data.startingBlockWorkers_Left.currentMobsAlive);
         }
 
         if (activeRight != null && data.startingBlockWorkers_Right.currentMobsAlive > 0) {
             activeRight.gameObject.SetActive(true);
-            //activeRight.SpawnMobs(data.startingBlockWorkers_Right.currentMobsAlive);
+            activeRight.SpawnMobs(data.startingBlockWorkers_Right.currentMobsAlive);
         }
          
     }

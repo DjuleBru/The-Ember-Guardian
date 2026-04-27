@@ -140,8 +140,10 @@ public class PlayerSkills : MonoBehaviour
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.Level) {
+
             if (SavingManager_Level.Instance.GetLoadingSavedLevel()) return;
             StartCoroutine(SetPlayerInitialSkills());
+
         }
     }
 
@@ -1437,5 +1439,14 @@ public class PlayerSkills : MonoBehaviour
         }
 
         return allSkillsSOList[0];
+    }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerLeftSkillPerformed -= GameInput_OnPlayerLeftSkillPerformed;
+        GameInput.Instance.OnPlayerRightSkillPerformed -= GameInput_OnPlayerRightSkillPerformed;
+        PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
+        PlayerMovement.Instance.OnPlayerRoll -= PlayerMovement_OnPlayerRoll;
+        DayNightManager.Instance.OnCyclePausedByMerchantTalk -= DayNightManager_OnCyclePausedByMerchantTalk;
+        DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
     }
 }

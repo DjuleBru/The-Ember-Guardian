@@ -107,8 +107,6 @@ public class DogAI_DarkCompanion : DogAI
         Creature bestTarget = result.Item1;
         AttackAbility ability = result.Item2;
 
-        //Debug.Log("bestTarget " + bestTarget + " ability " + ability);
-
         if (bestTarget == null) return;
         if (ability == AttackAbility.none) return;
 
@@ -238,44 +236,65 @@ public class DogAI_DarkCompanion : DogAI
         AttackAbility bestAbility = AttackAbility.none;
         float bestScore = float.MinValue;
 
-        //Debug.Log("stompAbilityReady " + stompAbilityReady);
-        //Debug.Log("laserAbilityReady " + laserAbilityReady);
-        //Debug.Log("biteReady " + biteReady);
-
         foreach (Creature creature in creatures) {
 
             float distance = Mathf.Abs(transform.position.x - creature.transform.position.x);
             bool isGrounded = creature.transform.position.y < .5f;
 
-            float score = -distance;
-            AttackAbility ability = AttackAbility.none;
+            Evaluate(creature, distance, isGrounded,
+                AttackAbility.stomp, ref bestCreature, ref bestAbility, ref bestScore);
 
-            // STOMP
-            if (stompAbilityReady && isGrounded && distance < stompAbilityRange + 1f) {
-                score += 50f;
-                ability = AttackAbility.stomp;
-            }
+            Evaluate(creature, distance, isGrounded,
+                AttackAbility.laserContinuous, ref bestCreature, ref bestAbility, ref bestScore);
 
-            // LASER AOE
-            else if (laserAbilityReady && isGrounded && HasNearbyGroup(creature, 4f)) {
-                score += 40f;
-                ability = AttackAbility.laserContinuous;
-            }
-
-            // LASER SHOT
-            else if (biteReady && distance < biteLaserShotRange) {
-                score += 20f;
-                ability = AttackAbility.laserShot;
-            }
-
-            if (score > bestScore) {
-                bestScore = score;
-                bestCreature = creature;
-                bestAbility = ability;
-            }
+            Evaluate(creature, distance, isGrounded,
+                AttackAbility.laserShot, ref bestCreature, ref bestAbility, ref bestScore);
         }
 
         return (bestCreature, bestAbility);
+    }
+
+    private void Evaluate(Creature creature, float distance, bool isGrounded, AttackAbility ability, ref Creature bestCreature, ref AttackAbility bestAbility, ref float bestScore) {
+
+        float score = -distance;
+
+        if (ability == AttackAbility.stomp) {
+
+            if (stompAbilityReady && isGrounded && distance < stompAbilityRange + 1f) {
+                score += 50f;
+            }
+            else {
+                return;
+            }
+        }
+
+        if (ability == AttackAbility.laserContinuous) {
+
+            if (!laserAbilityReady || !isGrounded) return;
+
+            float s = 35f;
+
+            if (HasNearbyGroup(creature, 4f)) {
+                s += 40f;
+            }
+
+            s += Mathf.Clamp(10f - distance, 0f, 10f);
+
+            score += s;
+        }
+
+        if (ability == AttackAbility.laserShot) {
+
+            if (!biteReady || distance > biteLaserShotRange) return;
+
+            score += 20f;
+        }
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestCreature = creature;
+            bestAbility = ability;
+        }
     }
 
     private List<Creature> GetRelevantCreatures(int maxCount = 5) {

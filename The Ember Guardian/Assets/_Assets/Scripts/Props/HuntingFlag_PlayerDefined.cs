@@ -228,6 +228,7 @@ public class HuntingFlag_PlayerDefined : MonoBehaviour
     }
 
     private void OnDestroy() {
+        GameInput.Instance.OnPlayerInteractPerformed -= GameInput_OnPlayerInteractPerformed;
         FastTravelTP.OnAnyFastTravelTPBuilt -= FastTravelTP_OnAnyFastTravelTPBuilt;
         FastTravelTP.OnAnyPlayerPositionedOnTP -= FastTravelTP_OnAnyPlayerPositionedOnTP;
         FastTravelTP.OnAnyPlayerWarped -= FastTravelTP_OnAnyPlayerWarped;
