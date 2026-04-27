@@ -1203,7 +1203,8 @@ public class SoundManager : MonoBehaviour
         if (audioSource2D == null) {
             Debug.LogError("PlaySound2D ignoré car audioSource2D est null !");
             return;
-        } 
+        }
+
         audioSource2D.PlayOneShot(audioClip, volume * sfxVolume * masterVolume);
     }
 

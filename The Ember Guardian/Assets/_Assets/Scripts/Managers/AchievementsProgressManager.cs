@@ -593,8 +593,6 @@ public class AchievementsProgressManager : MonoBehaviour
     }
 
     private void LevelManager_OnLevelSuccess(object sender, System.EventArgs e) {
-        Debug.Log("LevelManager_OnLevelSuccess " +( LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel[0] == HubMerchant.HubMerchantType.ArchitectTable));
-
         if(LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel.Count > 0) {
             if (LevelManager.Instance.GetLevelSO().merchantsUnlockedInLevel[0] == HubMerchant.HubMerchantType.MushroomMerchant) {
                 mushroomMerchantUnlocked_ACHIEVEMENT = true;

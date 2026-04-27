@@ -84,11 +84,11 @@ public class PlayerCamp : MonoBehaviour
             InitializeCampLayoutOnGameLoad();
 
             foreach (StructureLocation location in worldStructureLocations) {
+                if (location.GetStructureSOToBuild().structureType == StructureSO.StructureType.currencyStorage_Objective) continue;
                 location.gameObject.SetActive(false);
             }
 
         } else {
-
 
             initialFireStructureLocation.UnlockStructureLocation();
             LoadCustomCampLayout();

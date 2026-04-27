@@ -40,6 +40,11 @@ public class StructureLocationVisual : MonoBehaviour
         } else {
             buildable = (DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night);
         }
+
+        if (structureLocation.GetDebugAlwaysUnlocked()) {
+            slotVisual.SetActive(true);
+        }
+
     }
 
     protected void SetXAxisScale() {

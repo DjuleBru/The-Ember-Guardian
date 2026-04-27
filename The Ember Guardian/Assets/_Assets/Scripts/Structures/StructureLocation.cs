@@ -258,6 +258,7 @@ public class StructureLocation : MonoBehaviour {
     }
 
     public void SetAsWorldStructureLocation() {
+        Debug.Log("SetAsWorldStructureLocation " + this);
         isWorldLocation = true;
     }
 
@@ -285,6 +286,10 @@ public class StructureLocation : MonoBehaviour {
     }
     public void SetStructureLocationWorldScaleX(float worldLocationScaleX) {
         this.worldLocationScaleX = worldLocationScaleX;
+    }
+
+    public bool GetDebugAlwaysUnlocked() {
+        return isAlwaysUnlocked;
     }
 
 }

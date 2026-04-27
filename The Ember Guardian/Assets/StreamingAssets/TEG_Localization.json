@@ -437,7 +437,7 @@
    "Japanese": "しゃがむ",
    "Chinese": "蹲下",
    "Spanish": "Agacharse",
-   "German": "",
+   "German": "Ducken",
    "French": "S'accroupir"
  },
  {
@@ -537,7 +537,7 @@
    "Japanese": "しゃがみモード",
    "Chinese": "蹲伏模式",
    "Spanish": "Modo Agacharse",
-   "German": "",
+   "German": "Duck Modus",
    "French": "Mode Accroupir"
  },
  {
@@ -6172,23 +6172,23 @@
  },
  {
    "key": "startupMessagePanel_Text",
-   "English": "Your previous save file was incompatible with the current version of the game, your progression has been reset.\\n\\nSorry for the inconvenience.",
-   "Korean": "이전 세이브파일이 현재 게임버전과 호환되지 않아 지금까지의 플레이가 초기화됐습니다.\\n\\n불편을 끼쳐드려 죄송합니다.",
-   "Japanese": "以前のセーブデータは現在バージョンとの互換性がありません、進行をリセットしました。\\n\\nご不便おかけし申し訳ございません。",
-   "Chinese": "你的存档文件与当前游戏版本不兼容，进度已被重置。\\n\\n很抱歉造成不便。",
-   "Spanish": "Tu anterior fichero de guardado era incompatible con la versión actual del juego, tu progreso se ha restablecido.\\n\\nDisculpa las molestias.",
-   "German": "Dein bisheriger Spielstand ist inkompatibel mit der aktuellen Version des Spiels.\\n\\nTut uns leid für die Unannehmlichkeiten.",
-   "French": "Votre ancienne sauvegarde est incompatible avec la version actuelle du jeu. Votre progression a été réinitialisée.\\n\\nDésolé pour la gêne occasionnée."
+   "English": "Your save file was corrupted, and the previous save file has been restored.. \\n\\nApologies if you lost any progress.",
+   "Korean": "세이브 파일이 손상되어 이전 세이브 파일로 복구되었습니다. \\n\\n진행 상황이 일부 사라졌다면 죄송합니다.",
+   "Japanese": "セーブデータが破損していたため、以前のセーブデータを復元しました。\\n\\n一部進行状況が失われてしまった可能性がございます。お詫び申し上げます。",
+   "Chinese": "存档文件损坏，已恢复成之前的存档。\\n\\n若有任何进度缺失非常抱歉。",
+   "Spanish": "Tu archivo de guardado estaba dañado, y se ha restaurado el archivo de guardado anterior. \\n\\nDisculpas si perdiste algún progreso.",
+   "German": "Dein Spielstand ist fehlerhaft und die vorherige Datei wurde wiederhergestellt… \\n\\nEntschuldigung, falls dir irgendein Fortschritt verloren gegangen ist.",
+   "French": "Votre fichier de sauvegarde était corrompu, et le fichier de sauvegarde précédent a pu être réstauré. \\n\\nDésolé pour la gêne occasionnée."
  },
  {
    "key": "startupMessagePanel_Name",
-   "English": "Version Update",
-   "Korean": "버전 업데이트",
-   "Japanese": "バージョンアップデート",
-   "Chinese": "版本更新",
-   "Spanish": "Actualización de versión",
-   "German": "Update der Version",
-   "French": "Mise à jour de version"
+   "English": "Corrupted Save Detected",
+   "Korean": "손상된 세이브 파일 감지됨",
+   "Japanese": "破損したセーブデータが検出されました",
+   "Chinese": "检测到存档损坏",
+   "Spanish": "Archivo de guardado dañado",
+   "German": "Fehlerhafter Spielstand entdeckt",
+   "French": "Fichier de Sauvegarde Corrompu"
  },
  {
    "key": "card_FindInLevel",
@@ -7672,10 +7672,10 @@
  },
  {
    "key": "VideoTip_Guards3",
-   "English": "• They'll also protect you and your Scavengers when clearing Orbstacles",
+   "English": "• They'll also protect you and your Scavengers when clearing Obstacles",
    "Korean": "• 또한 장애물을 치우는 동안 플레이어와 스캐빈저들을 보호해줍니다.",
    "Japanese": "・障害物を撤去する際、プレイヤーや清掃員を守ります。",
-   "Chinese": "• 清除球障时他们也会保护你和拾荒者。",
+   "Chinese": "• 清除障碍物时他们也会保护你和拾荒者。",
    "Spanish": "• También te protegerán a ti y a tus Carroñeros al despejar Orbstáculos.",
    "German": "• Sie schützen dich und deine Plünderer auch beim Räumen von Hindernissen.",
    "French": "• Ils protégeront également vous et vos Éclaireurs lors du déblayage des Orbstacles."
@@ -13072,7 +13072,7 @@
  },
  {
    "key": "Retriever Permit_UnlockDescription",
-   "English": "Unlocks the Golder Retreiver.",
+   "English": "Unlocks the Golder Retriever.",
    "Korean": "골든 리트리버를 해금합니다.",
    "Japanese": "ゴールデン・レトリバーがアンロックされる。",
    "Chinese": "解锁金毛寻回犬。",
@@ -13202,7 +13202,7 @@
  },
  {
    "key": "Retreiver Bite",
-   "English": "Retreiver Bite",
+   "English": "Retriever Bite",
    "Korean": "리트리버 깨물기",
    "Japanese": "レトリバーの噛みつき",
    "Chinese": "寻回犬撕咬",
@@ -13222,7 +13222,7 @@
  },
  {
    "key": "Retreiver Bite_UnlockDescription",
-   "English": "Unlocks the Bite Ability for your Golden Retreiver.",
+   "English": "Unlocks the Bite Ability for your Golden Retriever.",
    "Korean": "골든 리트리버의 깨물기 능력을 해금합니다.",
    "Japanese": "ゴールデン・レトリバーの噛みつきスキルをアンロックする。",
    "Chinese": "为金毛寻回犬解锁撕咬技能。",
@@ -13254,10 +13254,10 @@
    "key": "Loyal Radiance_UnlockDescription",
    "English": "Unlocks the Loyal Radiance passive, increasing nearby workers' attack, mining and maintenance speeds",
    "Korean": "충성스러운 광채 패시브를 해금합니다. 근처 일꾼들의 공격, 채광, 정비 속도가 증가합니다.",
-   "Japanese": "暖かい輝きスキルをアンロックする。周囲の焔の子の攻撃と作業速度上昇する。",
+   "Japanese": "暖かい輝きスキルをアンロックする。周囲の焔の子の攻撃、作業、補修速度を上昇させる。",
    "Chinese": "解锁忠诚辉光被动，提升附近工人攻击、开采和设施操作速度。",
    "Spanish": "Desbloquea la pasiva Fidelidad Resplandeciente, aumentando la velocidad de ataque, de minería y de mantenimiento de los trabajadores cercanos.",
-   "German": "Schaltet das Passiv \"Loyaler Glanz\" frei, das die Angriffsgeschwindigkeit naher Arbeiter stärkt.",
+   "German": "Schaltet die passive Fähigkeit „Loyaler Glanz“ frei, welche die Angriffsgeschwindigkeit naher Arbeiter stärkt.",
    "French": "Débloque la passive Radiance Loyale, augmentant la vitesse d’attaque, de minage et de maintenance des travailleurs proches."
  },
  {
@@ -13272,7 +13272,7 @@
  },
  {
    "key": "Fetch Items_Description",
-   "English": "Unlocks Fetching Items for your retreiver.",
+   "English": "Unlocks Fetching Items for your retriever.",
    "Korean": "리트리버의 물건 가져오기를 해금합니다.",
    "Japanese": "ゴールデン・レトリーバーのアイテム回収スキルをアンロックする。",
    "Chinese": "为寻回犬解锁拾取物品的能力。",
@@ -13422,7 +13422,7 @@
  },
  {
    "key": "Swift Jaw_Description",
-   "English": "Reduces the cooldown for your Retreiver's Bite Ability.",
+   "English": "Reduces the cooldown for your Retriever's Bite Ability.",
    "Korean": "리트리버의 깨물기 능력 쿨다운을 줄여줍니다.",
    "Japanese": "ゴールデン・レトリバーの噛みつきスキルのクールダウンを短縮する。",
    "Chinese": "减少金毛寻回犬撕咬技能冷却。",
@@ -13512,7 +13512,7 @@
  },
  {
    "key": "Sharp Fang_Description",
-   "English": "Increased damage for your Retreiver's Bite attacks.",
+   "English": "Increased damage for your Retriever's Bite attacks.",
    "Korean": "리트리버의 깨물기 공격 데미지가 증가합니다.",
    "Japanese": "ゴールデン・レトリバーの噛みつきスキルのダメージが増加する。",
    "Chinese": "提高金毛寻回犬撕咬伤害。",
@@ -14814,7 +14814,7 @@
    "key": "gemTrader_PostLevel1_1",
    "English": "So, you brought back the Armorer. Good, I <slide a=.2>suppose </slide>... though I see you’re already <wiggle a=.05 f=2>throwing</wiggle> your gems at him.",
    "Korean": "무기 장인을 데려오셨군요. <slide a=.2>잘 된 일</slide>같군요... 벌써부터 저 친구에게 보석을 <wiggle a=.05 f=2>던져주고</wiggle> 있지만 말이오.",
-   "Japanese": "",
+   "Japanese": "武器職人を連れてきたのか。まあ、<slide a=.2>いいだろう</slide>…もう宝石を<wiggle a=.05 f=2>投げる</wiggle>ように使ってるようだが。",
    "Chinese": "所以，你带了武器匠回来。好，<slide a=.2>姑且</slide>能说你干得不错……虽然我看你已经在把宝石往他身上<wiggle a=.05 f=2>扔</wiggle>了。",
    "Spanish": "Así que trajiste al Armero. Bien, supongo… aunque ya le estás lanzando tus gemas.",
    "German": "Also, du hast den Waffenmeister zurückgebracht. Gut, <slide a=.2>nehme ich an </slide>... obwohl ich sehe, dass du ihm bereits deine Edelsteine <wiggle a=.05 f=2>hinterherwirfst</wiggle>.",
@@ -18152,13 +18152,13 @@
  },
  {
    "key": "GoldenBrown_UnlockDescription",
-   "English": "Unlocks the Brown Labrador Skin for the Golden Retreiver",
+   "English": "Unlocks the Brown Labrador Skin for the Golden Retriever",
    "Korean": "골든 리트리버용 갈색 리트리버 스킨을 해금합니다.",
    "Japanese": "ラブラドール・レトリバー用「チョコ色」をアンロックする",
    "Chinese": "解锁金毛犬的棕色拉布拉多皮肤",
    "Spanish": "Desbloquea la skin Labrador Marrón para el Golden Retriever",
    "German": "Schaltet den braunen Labrador Skin für den deutschen Schäferhund frei",
-   "French": "Débloque le skin Labrador Brun pour le Golden Retreiver"
+   "French": "Débloque le skin Labrador Brun pour le Golden Retriever"
  },
  {
    "key": "ShepherdHusky",

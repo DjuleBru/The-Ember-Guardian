@@ -38,8 +38,6 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
     }
 
     private void PayOrbsUI_OnSingleOrbFilled1(object sender, PayCurrencyUI.OnSingleOrbFilledEventArgs e) {
-
-
         AudioClip audioClip = payOrbsUIAudioClips[Random.Range(0, payOrbsUIAudioClips.Length)];
 
         if ((sender as PayCurrencyUI).GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay() == PlayerCurrencies.CurrencyType.ember) {
@@ -63,7 +61,21 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
             audioClip = paySmallRedOrbsUIAudioClips[Random.Range(0, paySmallRedOrbsUIAudioClips.Length)];
         }
 
-        audioSource.PlayOneShot(audioClip, sfxVolume * masterVolume);
+        float maxDistanceToHear = 25f;
+        float volumeMultiplierWithDistance = 1f;
+
+        float distanceToPlayer = Player.Instance.transform.position.x - (sender as PayCurrencyUI).transform.position.x;
+
+        if (distanceToPlayer >= maxDistanceToHear) {
+            volumeMultiplierWithDistance = 0f;
+        }
+        else {
+            volumeMultiplierWithDistance = 1f - (distanceToPlayer / maxDistanceToHear);
+        }
+
+        float finalVolume = sfxVolume * masterVolume * volumeMultiplierWithDistance;
+
+        audioSource.PlayOneShot(audioClip, finalVolume);
 
     }
 
