@@ -312,4 +312,10 @@ public class FastTravelTP : Structure
         Player.Instance.SetInOtherInteractableObjectTriggerArea(false);
 
     }
+
+    protected override void OnDestroy() {
+        base.OnDestroy();
+        GameInput.Instance.OnPlayerRightSwitchPerformed -= GameInput_OnPlayerRightSwitchPerformed;
+        GameInput.Instance.OnPlayerLeftSwitchPerformed -= GameInput_OnPlayerLeftSwitchPerformed;
+    }
 }

@@ -73,6 +73,13 @@ public class PlayerCamp : MonoBehaviour
 
         if (SavingManager_Level.Instance.GetLoadingSavedLevel()) {
 
+            leftBarricade1.gameObject.SetActive(false);
+            leftBarricade2.gameObject.SetActive(false);
+            leftBarricade3.gameObject.SetActive(false);
+            rightBarricade1.gameObject.SetActive(false);
+            rightBarricade2.gameObject.SetActive(false);
+            rightBarricade3.gameObject.SetActive(false);
+
             initialFireStructureLocation.gameObject.SetActive(false);
             InitializeCampLayoutOnGameLoad();
 
@@ -81,6 +88,7 @@ public class PlayerCamp : MonoBehaviour
             }
 
         } else {
+
 
             initialFireStructureLocation.UnlockStructureLocation();
             LoadCustomCampLayout();
@@ -147,6 +155,8 @@ public class PlayerCamp : MonoBehaviour
     public void AddStructureLocationLoaded(StructureSO structureSO, Vector2 position, bool unlocked, bool isWorldStructure) {
         StructureLocation structureLocation = Instantiate(structureSO.structureLocationPrefab, customCampStructureLocationParent).GetComponent<StructureLocation>();
         structureLocation.transform.position = position;
+
+        Debug.Log("AddStructureLocationLoaded " + structureSO + " position " + position + " unlocked " + unlocked);
 
         if (unlocked) {
             structureLocation.UnlockStructureLocation();

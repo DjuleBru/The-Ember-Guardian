@@ -127,7 +127,6 @@ public class DogAI_DarkCompanion : DogAI
             targetCreature = creatureDetectionCollider.GetCreatureWithHighestLocalDensity();
         }
 
-        Debug.Log("targetCreature " + targetCreature);
         if (targetCreature == null) {
             ChangeState(State.runWithPlayer);
             return;

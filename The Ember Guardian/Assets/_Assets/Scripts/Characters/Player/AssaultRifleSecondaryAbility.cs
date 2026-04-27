@@ -108,6 +108,7 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
     }
 
     protected override void PerformSecondaryAbility() {
+        if (PlayerShoot.Instance.GetHeldGun() != gun) return;
         playerJustActivatedSecondary = true;
         playerJustActivatedSecondaryTimer = 0;
 

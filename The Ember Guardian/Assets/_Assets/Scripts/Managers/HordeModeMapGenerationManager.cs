@@ -731,6 +731,7 @@ public class HordeModeMapGenerationManager : MonoBehaviour {
 
         // Re-création des blocs
         startingBlock.LoadStartingBlock(save.centralBlockSaveData);
+        startingBlock.SetObstaclesBuilt(save.centralBlockLeftObstacleBuilt, save.centralBlockRightObstacleBuilt);
         startingBlock.SetCreatureSpawners(save.centralBlockSaveData.creatureSpawnerListSaveData);
 
         foreach (var blockData in save.leftBlocks)

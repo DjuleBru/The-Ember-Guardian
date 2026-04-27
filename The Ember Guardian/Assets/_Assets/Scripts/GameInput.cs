@@ -71,7 +71,6 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnPlayerLeftRightDirPerformed;
     public event EventHandler OnPlayerNavigateUIPerformed;
 
-    public event EventHandler OnPlayerLeftRightSwitchPerformed;
     public event EventHandler OnPlayerLeftSwitchPerformed;
     public event EventHandler OnPlayerRightSwitchPerformed;
 
@@ -467,7 +466,6 @@ public class GameInput : MonoBehaviour
         } else {
             OnPlayerLeftSwitchPerformed?.Invoke(this, EventArgs.Empty);
         }
-        OnPlayerLeftRightSwitchPerformed?.Invoke(this, EventArgs.Empty);
     }
 
     private void Interact_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj) {

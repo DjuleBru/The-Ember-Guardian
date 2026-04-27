@@ -7,6 +7,8 @@ public class HordeMapSaveData {
     public List<BlockSaveData> leftBlocks = new();
     public List<BlockSaveData> rightBlocks = new();
     public BlockSaveData centralBlockSaveData;
+    public bool centralBlockRightObstacleBuilt;
+    public bool centralBlockLeftObstacleBuilt;
 
     // Pour la cohérence : état interne de la génération
     public List<BlockSize> sizeHistory = new();

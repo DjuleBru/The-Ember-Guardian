@@ -12,6 +12,8 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
     [SerializeField] private List<Transform> scavengablePositionsList_Left;
     [SerializeField] private List<Transform> scavengablePositionsList_Right;
     [SerializeField] private List<Transform> creatureSpawnerPositions;
+    [SerializeField] protected Obstacle leftObstacle;
+    [SerializeField] protected Obstacle rightObstacle;
 
     [SerializeField] private WorkerSpawner workerSpawnerLeft_VG;
     [SerializeField] private WorkerSpawner workerSpawnerRight_VG;
@@ -292,14 +294,25 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
 
         if (activeLeft != null && data.startingBlockWorkers_Left.currentMobsAlive > 0) {
             activeLeft.gameObject.SetActive(true);
-            activeLeft.SpawnMobs(data.startingBlockWorkers_Left.currentMobsAlive);
+            //activeLeft.SpawnMobs(data.startingBlockWorkers_Left.currentMobsAlive);
         }
 
         if (activeRight != null && data.startingBlockWorkers_Right.currentMobsAlive > 0) {
             activeRight.gameObject.SetActive(true);
-            activeRight.SpawnMobs(data.startingBlockWorkers_Right.currentMobsAlive);
+            //activeRight.SpawnMobs(data.startingBlockWorkers_Right.currentMobsAlive);
         }
          
+    }
+
+    public void SetObstaclesBuilt(bool leftBuilt, bool rightBuilt) {
+        if (leftBuilt) {
+            leftObstacle.BuildObstacle();
+        }
+
+        if(rightBuilt) {
+            rightObstacle.BuildObstacle();
+        }
+
     }
 
     public override BlockSaveData GetBlockSaveData() {
@@ -368,5 +381,12 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
             save.startingBlockWorkers_Right.currentMobsAlive = activeRight.GetMobCount();
 
         return save;
+    }
+
+    public bool GetLeftObstacleBuilt() {
+        return leftObstacle.GetBuilt();
+    }
+    public bool GetRightObstacleBuilt() {
+        return rightObstacle.GetBuilt();
     }
 }

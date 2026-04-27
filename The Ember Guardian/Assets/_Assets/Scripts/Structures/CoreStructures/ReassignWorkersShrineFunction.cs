@@ -44,4 +44,9 @@ public class ReassignWorkersShrineFunction : MonoBehaviour
 
         }
     }
+
+    private void OnDestroy() {
+        GameInput.Instance.OnPlayerRightSwitchPerformed -= Instance_OnPlayerRightSwitchPerformed;
+        GameInput.Instance.OnPlayerLeftSwitchPerformed -= Instance_OnPlayerLeftSwitchPerformed;
+    }
 }

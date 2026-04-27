@@ -624,6 +624,8 @@ public class SavingManager_Level : MonoBehaviour
         HordeMapSaveData data = new HordeMapSaveData();
 
         data.centralBlockSaveData = HordeModeMapGenerationManager.Instance.GetStartingBlock().GetBlockSaveData();
+        data.centralBlockLeftObstacleBuilt = HordeModeMapGenerationManager.Instance.GetStartingBlock().GetLeftObstacleBuilt();
+        data.centralBlockRightObstacleBuilt = HordeModeMapGenerationManager.Instance.GetStartingBlock().GetRightObstacleBuilt();
         data.sizeHistory = HordeModeMapGenerationManager.Instance.GetSizeHistory();
         data.distSinceLastWeaponChest = HordeModeMapGenerationManager.Instance.GetDistSinceLastWeaponChest();
         data.nextWeaponChestThreshold = HordeModeMapGenerationManager.Instance.GetNextWeaponChestThreshold();
