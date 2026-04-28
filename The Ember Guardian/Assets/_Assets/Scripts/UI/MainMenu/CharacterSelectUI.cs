@@ -37,17 +37,22 @@ public class CharacterSelectUI : MonoBehaviour
             SelectCharacter(!characterType);
         });
 
-        maleCharacterButton.onClick.AddListener(() => {
-            SelectCharacter(false);
-            ClosePanel();
-        });
+        //maleCharacterButton.onClick.AddListener(() => {
+        //    SelectCharacter(false);
+        //    ClosePanel();
+        //});
 
-        femaleCharacterButton.onClick.AddListener(() => {
-            SelectCharacter(true);
-            ClosePanel();
-        });
+        //femaleCharacterButton.onClick.AddListener(() => {
+        //    SelectCharacter(true);
+        //    ClosePanel();
+        //});
 
         GameInput.Instance.OnPlayerInputChanged += Instance_OnPlayerInputChanged;
+    }
+
+    public void SelectCharacterButton(bool female) {
+        SelectCharacter(female);
+        ClosePanel();
     }
 
     private void SelectCharacter(bool female) {

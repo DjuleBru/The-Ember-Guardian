@@ -154,9 +154,9 @@ public class MainMenuUI : MonoBehaviour {
         }
     }
 
-    public void HandleMenuStartup() {
+    public void HandleMenuStartup(bool corruptedPhaseStartup = false) {
 
-        if (!CharacterSelectUI.Instance.HasChosenCharacter()) {
+        if (!corruptedPhaseStartup && !CharacterSelectUI.Instance.HasChosenCharacter()) {
             CharacterSelectUI.Instance.OpenPanel();
         }
         else {
@@ -164,7 +164,11 @@ public class MainMenuUI : MonoBehaviour {
                 return;
             };
 
-            StartCoroutine(FadeInMainMenu(1.5f));
+            float delay = 1.5f;
+            if(corruptedPhaseStartup) {
+                delay = .3f;
+            }
+            StartCoroutine(FadeInMainMenu(delay));
         }
     }
 
