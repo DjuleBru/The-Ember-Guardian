@@ -28,12 +28,13 @@ public class StructureUI_SpecialTower : StructureUI
 
     protected override void Awake() {
         base.Awake();
+
         specialTower.OnAmmoClipAdded += SpecialTower_OnAmmoClipAdded;
         specialTower.OnAmmoClipRemoved += SpecialTower_OnAmmoClipRemoved;
         specialTower.OnAmmoClipsLoaded += SpecialTower_OnAmmoClipsLoaded;
+        specialTower.OnStructureUpgraded += SpecialTower_OnStructureUpgraded;
         payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(functionPayOrbsUIList));
     }
-
 
     protected override void Start() {
         base.Start();
@@ -54,6 +55,17 @@ public class StructureUI_SpecialTower : StructureUI
     }
 
     private void SpecialTower_OnAmmoClipsLoaded(object sender, EventArgs e) {
+        RefreshAmmoBar();
+    }
+
+    private void SpecialTower_OnStructureUpgraded(object sender, Structure.OnStructureUpgradedEventArgs e) {
+        StartCoroutine(RefreshSpecialTowerUpgradedUIAfterFrame());
+    }
+
+    private IEnumerator RefreshSpecialTowerUpgradedUIAfterFrame() {
+        yield return new WaitForEndOfFrame();
+        RefreshAmmoBarBackground();
+        payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(functionPayOrbsUIList));
         RefreshAmmoBar();
     }
 
@@ -115,7 +127,6 @@ public class StructureUI_SpecialTower : StructureUI
         }
 
         int towerMaxAmmo = specialTower.GetMaxAmmoClips();
-
         for (int i = 0; i < towerMaxAmmo; i++) {
             Instantiate(ammoTickTemplateBackground, ammoTickContainerBackground);
         }

@@ -156,7 +156,7 @@ public class PlayerCamp : MonoBehaviour
         StructureLocation structureLocation = Instantiate(structureSO.structureLocationPrefab, customCampStructureLocationParent).GetComponent<StructureLocation>();
         structureLocation.transform.position = position;
 
-        Debug.Log("AddStructureLocationLoaded " + structureSO + " position " + position + " unlocked " + unlocked);
+        //Debug.Log("AddStructureLocationLoaded " + structureSO + " position " + position + " unlocked " + unlocked);
 
         if (unlocked) {
             structureLocation.UnlockStructureLocation();
@@ -438,20 +438,31 @@ public class PlayerCamp : MonoBehaviour
             if (nightOrDusk && !structure.GetStructureSO().engineerCanWorkByNight) continue;
 
             if (!structure.NeedsEngineering()) continue;
-            if (structure.GetEngineersWorking().Count == structure.GetMaxEngineersWorking()) continue;
+            if (structure.GetEngineersWorking().Count == structure.GetMaxEngineersWorking() && !structure.NeedsRefill()) continue;
+
+            bool structureNeedsRefill = false;
 
             if (structure.NeedsRefill()) {
                 CurrencyStorage storage = GetCurrencyStorageWithCurrencies(structure.GetRefillCurrencyTypeNeeded(), structure.GetMinimumRefillAmountRequired());
+
+                if(storage != null) {
+                    structureNeedsRefill = true;
+                }
+
                 if (storage == null && !structure.NeedsWorking()) continue;
             };
 
-
             int structurePriority = structure.GetStructureSO().engineerWorkingPriority;
-            if(structurePriority > highestPriority) {
+            if(structureNeedsRefill && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+                structurePriority = 1;
+            }
+            //Debug.Log(structure + " structurePriority " + structurePriority);
+            if (structurePriority > highestPriority) {
                 highestPriority = structurePriority;
                 highestPriorityStructure = structure;
             }
         }
+
         return highestPriorityStructure;
     }
 
@@ -465,7 +476,9 @@ public class PlayerCamp : MonoBehaviour
 
             if (structure.NeedsRefill()) {
                 if (!currencyTypeList.Contains(structure.GetRefillCurrencyTypeNeeded())) continue;
-            };
+            } else {
+                continue;
+            }
 
             float distanceToStructure = Mathf.Abs(engineerPosition.x - structure.transform.position.x);
             if (distanceToStructure < closestDistance) {

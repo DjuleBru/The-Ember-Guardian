@@ -13,7 +13,9 @@ public class SpecialTower : Structure {
     [SerializeField] protected int level2TowerEngineerCapacity;
     [SerializeField] protected bool playerCanClimbOnTower = true;
 
+     private int currentMaxAmmoClipsInStorage;
     [SerializeField] private int maxAmmoClipsInStorage;
+    [SerializeField] private int maxAmmoClipsInStorage_lvl2;
     private int currentAmmoClip;
 
     public event EventHandler OnAmmoClipAdded;
@@ -29,6 +31,8 @@ public class SpecialTower : Structure {
 
     protected override void Awake() {
         base.Awake();
+        currentMaxAmmoClipsInStorage = maxAmmoClipsInStorage;
+
         level2TowerCollider.gameObject.SetActive(false);
         needsRefill = true;
 
@@ -59,7 +63,7 @@ public class SpecialTower : Structure {
         currentAmmoClip++;
         OnAmmoClipAdded?.Invoke(this, EventArgs.Empty);
 
-        if (currentAmmoClip == maxAmmoClipsInStorage) {
+        if (currentAmmoClip == currentMaxAmmoClipsInStorage) {
             needsRefill = false;
             ActivateStructurePrimaryFunctionInteractionAfterFrame(false);
 
@@ -87,7 +91,7 @@ public class SpecialTower : Structure {
         yield return new WaitForEndOfFrame();
         this.currentAmmoClip = ammoClips;
 
-        if (currentAmmoClip == maxAmmoClipsInStorage) {
+        if (currentAmmoClip == currentMaxAmmoClipsInStorage) {
             needsRefill = false;
             ActivateStructurePrimaryFunctionInteraction(false);
         }
@@ -196,6 +200,10 @@ public class SpecialTower : Structure {
             level2TowerCollider.SetActive(true);
             maxEngineersAssignedWorking = level2TowerEngineerCapacity;
 
+            currentMaxAmmoClipsInStorage = maxAmmoClipsInStorage_lvl2;
+            needsRefill = true;
+            ActivateStructurePrimaryFunctionInteraction(true);
+
             if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
                 needsWorking = true;
             }
@@ -213,7 +221,7 @@ public class SpecialTower : Structure {
         return currentAmmoClip;
     }
     public int GetMaxAmmoClips() {
-        return maxAmmoClipsInStorage;
+        return currentMaxAmmoClipsInStorage;
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision) {

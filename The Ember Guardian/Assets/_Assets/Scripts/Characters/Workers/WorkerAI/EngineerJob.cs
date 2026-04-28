@@ -66,14 +66,37 @@ public class EngineerJob : WorkerJob {
         workerMovement.OnDestinationReached += WorkerMovement_OnDestinationReached;
         DayNightManager.Instance.OnDawnStart += DayNightManager_OnDawnStart;
         DayNightManager.Instance.OnDuskStart += DayNightManager_OnDuskStart;
+        StructureLocation.OnAnyStructureBuilt += StructureLocation_OnAnyStructureBuilt;
+
         if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
             isNightOrDusk = true;
         }
     }
 
+    private void StructureLocation_OnAnyStructureBuilt(object sender, StructureLocation.OnAnyStructureBuiltEventArgs e) {
+        
+        if(e.structureBuilt.GetStructureSO().structureCategory == StructureSO.StructureCategory.tower) {
+
+            // Do not unassign Engineers on full towers
+            if(assignedStructure != null) {
+                if(assignedStructure.GetStructureSO().structureCategory == StructureSO.StructureCategory.tower) {
+                    if (!assignedStructure.NeedsWorking()) return;
+                }
+
+            }
+
+            StartCoroutine(CheckAvailableWorkAfterFrames());
+        }
+    }
+
+    private IEnumerator CheckAvailableWorkAfterFrames() {
+        yield return new WaitForEndOfFrame();
+        CheckAvailableWork();
+    }
 
     private void Update() {
         if (worker.GetIsPaused()) return;
+
         if (CheckDropCurrenciesToPlayer() && state != EngineerState.droppingCurrency) {
             ChangeState(EngineerState.droppingCurrency);
             return;
@@ -114,6 +137,7 @@ public class EngineerJob : WorkerJob {
                     }
 
                     CheckAvailableWork();
+
                     break;
 
                 case EngineerState.headToSafety:
@@ -190,7 +214,7 @@ public class EngineerJob : WorkerJob {
     private void ChangeState(EngineerState newState) {
         if (newState == state) return;
         if (worker.GetDead()) return;
-
+        //Debug.Log("ChangeState " + newState);
         if (mobMovement == null) {
             Debug.LogWarning("mobMovement not initialized yet");
             mobMovement = GetComponentInChildren<MobMovement>();
@@ -230,22 +254,49 @@ public class EngineerJob : WorkerJob {
         if (CheckBlockedByCreature()) return; // Pas de boulot si danger proche
         if (CheckDropCurrenciesInContainers()) return;
 
+        if (assignedStructure != null) {
+
+            bool stillUseful = false;
+
+
+            if (assignedStructure.NeedsWorking()) {
+                if (assignedStructure.GetEngineersWorking().Contains(this)) {
+                    stillUseful = true;
+                }
+            }
+
+            if (assignedStructure.NeedsRefill()) {
+                stillUseful = true;
+            }
+
+            if (stillUseful) {
+
+                if (DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+                    if (assignedStructure.GetStructureSO().structureCategory == StructureSO.StructureCategory.tower) {
+                        return;
+                    }
+                }
+
+            }
+
+            // sinon : on libère
+            UnassignStructure();
+        }
+
         // Check structures
-        Structure highestPriorityAvailableStructure = null;
-        highestPriorityAvailableStructure = PlayerCamp.Instance.GetHighestPriorityAvailableEngineerStructure(isNightOrDusk);
+        Structure structure = PlayerCamp.Instance.GetHighestPriorityAvailableEngineerStructure(isNightOrDusk);
+        if (structure == null) return;
 
-        if (highestPriorityAvailableStructure != null) {
-            if(highestPriorityAvailableStructure.NeedsWorkingEngineers() && highestPriorityAvailableStructure.NeedsWorking()) {
+        if (structure.NeedsWorkingEngineers() && structure.NeedsWorking()) {
 
-                AssignStructure(highestPriorityAvailableStructure, true, false);
-                ChangeState(EngineerState.headingToStructure);
-                return;
-            }
+            AssignStructure(structure, true, false);
+            ChangeState(EngineerState.headingToStructure);
+            return;
+        }
 
-            if (highestPriorityAvailableStructure.NeedsRefillingEngineers() && highestPriorityAvailableStructure.NeedsRefill()) {
+        if (structure.NeedsRefillingEngineers() && structure.NeedsRefill()) {
 
-                FindTargetCurrencyStorage(highestPriorityAvailableStructure);
-            }
+            FindTargetCurrencyStorage(structure);
         }
     }
 
@@ -265,7 +316,17 @@ public class EngineerJob : WorkerJob {
         Structure structureNeedingAmmo = PlayerCamp.Instance.GetClosestDefensiveStructureNeedingCurrency(transform.position, ammoList);
 
         if (structureNeedingAmmo != null) {
+
             // Ammo sink found
+            if (assignedStructure != null) {
+                UnassignStructure();
+            }
+
+            targetCurrencyStorage = null;
+
+            AssignStructure(structureNeedingAmmo, false, true);
+            ChangeState(EngineerState.headingToStructureToRefill);
+            return true;
 
         }
         else {
@@ -365,6 +426,11 @@ public class EngineerJob : WorkerJob {
         }
     }
     private void HeadToRefill() {
+        if (targetCurrencyStorage == null) {
+            ChangeState(EngineerState.idle);
+            return;
+        }
+
         float distanceToStorage = Mathf.Abs(transform.position.x - targetCurrencyStorage.transform.position.x);
 
         if (distanceToStorage < .5f) {
@@ -503,7 +569,10 @@ public class EngineerJob : WorkerJob {
     }
 
     private void Worker_OnWorkerCollectedCurrency(object sender, EventArgs e) {
-        if (assignedStructure == null) return;
+        if (assignedStructure == null) {
+            CheckDropCurrenciesInContainers();
+            return;
+        };
         
         if (assignedStructure.NeedsRefill()) {
             if (worker.GetCurrencyAmount(assignedStructure.GetRefillCurrencyTypeNeeded()) >= assignedStructure.GetMinimumRefillAmountRequired()) {
@@ -514,7 +583,6 @@ public class EngineerJob : WorkerJob {
 
         // Check held currencies
         if (CheckDropCurrenciesInContainers()) return;
-
     }
 
     private void Worker_OnWorkerDroppedCurrency(object sender, EventArgs e) {
@@ -631,6 +699,10 @@ public class EngineerJob : WorkerJob {
 
     public WorkerDetectionCollider GetDetectionCollider() {
         return workerDetectionCollider;
+    }
+
+    private void OnDestroy() {
+        StructureLocation.OnAnyStructureBuilt -= StructureLocation_OnAnyStructureBuilt;
     }
 
 }

@@ -392,7 +392,21 @@ public class Structure : MonoBehaviour {
         }
 
         if(engineersGarrisoned == maxEngineersAssignedWorking) {
+
             needsWorking = false;
+
+        } else {
+            bool isNightOrDusk = DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk;
+
+            if (structureSO.engineerCanWorkByDay && (!isNightOrDusk) && structureSO.structureCategory != StructureSO.StructureCategory.tower) {
+                needsWorking = true;
+                return;
+            }
+
+            if (structureSO.engineerCanWorkByNight && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) {
+                needsWorking = true;
+            }
+
         }
     }
 

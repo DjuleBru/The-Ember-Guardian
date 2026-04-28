@@ -270,7 +270,6 @@ public class WorkerVisual : MobVisual {
         if (workerAI.GetFollowingPlayer()) return;
         if (workerAI.GetEscorting()) return;
 
-
         switch (job) {
             case WorkerAI.JobTypes.hunter:
                 HunterJob.HunterState state = hunterJob.GetState();
@@ -329,7 +328,7 @@ public class WorkerVisual : MobVisual {
 
                 if (engineerState == EngineerJob.EngineerState.droppingCurrency) return;
 
-                if (engineerState == EngineerJob.EngineerState.idle) {
+                if (engineerState == EngineerJob.EngineerState.idle || engineerState == EngineerJob.EngineerState.headingToStructure) {
                     ShowWeapon(true);
                     ShowBodyVisual(true);
                 }
