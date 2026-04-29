@@ -149,7 +149,7 @@ public class DogAI : MonoBehaviour
     }
 
     protected void DayNightManager_OnDawnStart(object sender, EventArgs e) {
-        SetIdleBehaviorState(State.idle);
+        ChangeState(currentBehaviorIdleState);
     }
 
     protected virtual void Update() {

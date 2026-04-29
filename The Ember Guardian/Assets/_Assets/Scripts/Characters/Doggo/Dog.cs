@@ -65,8 +65,10 @@ public class Dog : MonoBehaviour
     }
 
     private void Awake() {
-        Instance = this; 
-        
+        Instance = this;
+
+        currentIdleState = initialIdleState;
+
         DogAI[] dogAIArray = GetComponents<DogAI>();
         foreach (DogAI dogAI in dogAIArray) {
             dogAIList.Add(dogAI);
@@ -76,11 +78,12 @@ public class Dog : MonoBehaviour
         SetCurrentDogSkin();
         SetCurrentDogAI();
 
+
     }
 
     private void Start() {
         GameInput.Instance.OnPlayerCallDogPerformed += GameInput_OnPlayerCallDogPerformed;
-        currentIdleState = initialIdleState;
+
 
         // Security if people change save file manually
         if (!DLCManager.Instance.HasDLC(DogStats.Instance.GetDogSkinLinkedDLC(dogSkin))) {

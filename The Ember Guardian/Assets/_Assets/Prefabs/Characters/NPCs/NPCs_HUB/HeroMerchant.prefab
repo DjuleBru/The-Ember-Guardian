@@ -750,6 +750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoScrollWithMouse: 0
   doNotLerp: 0
+  dropdownMenuAutoScroll: 0
 --- !u!114 &3241488678946209217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -764,7 +765,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Content: {fileID: 6249987824185132287}
   m_Horizontal: 1
-  m_Vertical: 0
+  m_Vertical: 1
   m_MovementType: 2
   m_Elasticity: 0.1
   m_Inertia: 1
@@ -1399,8 +1400,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 391.5003, y: 25}
-  m_SizeDelta: {x: 782.9994, y: 49.999947}
+  m_AnchoredPosition: {x: 391.5003, y: 0}
+  m_SizeDelta: {x: 782.9994, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &44742778230550422
 MonoBehaviour:
@@ -1409,7 +1410,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3003919451031237722}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1fb257e27a3826f498ef156582ea8142, type: 3}
   m_Name: 
@@ -1422,6 +1423,10 @@ MonoBehaviour:
   ultraWidePanelPosY: 0
   ultraWidePanelWidth: 0
   ultraWidePanelHeight: 0
+  verticalPanelPosX: 0
+  verticalPanelPosY: 0
+  verticalPanelWidth: 0
+  verticalPanelHeight: 0
   onlyVerticalResize: 1
   stretchedPanel: 1
 --- !u!1 &3308381604783606732
@@ -3871,6 +3876,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 3a064256afcb11b4b993e98a5c045acd, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 4
@@ -4093,6 +4099,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5173126443592431775}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
+      propertyPath: m_Navigation.m_SelectOnDown
+      value: 
+      objectReference: {fileID: 8236838396552976080}
+    - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
       objectReference: {fileID: 3748634190022510823}
@@ -4273,6 +4283,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 53b40e8012fbaac478e1d81e91f1b978, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 5
@@ -4625,6 +4636,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 9572e5344d063a04fb8f423db403f6f9, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 10
@@ -5032,6 +5044,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 15e8bf7505861df4696ce656f32a5775, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 3
@@ -5418,6 +5431,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 05dda34dcaa4d4747b954c6604794cec, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 1
@@ -5627,7 +5641,7 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 5173126443592431775}
+      objectReference: {fileID: 5941216293477353368}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
@@ -5809,6 +5823,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 9a2d3d2bd213dba4695c500fa169667c, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 15
@@ -5999,7 +6014,7 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 2810784804505129429}
+      objectReference: {fileID: 3502539506712087434}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
@@ -6011,7 +6026,7 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
-      objectReference: {fileID: 6389785420440474141}
+      objectReference: {fileID: 0}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_PlayerMoveSped
@@ -6204,6 +6219,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: aa18d80ef511a5249ac976539a6407d3, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 6
@@ -6422,7 +6438,7 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
-      objectReference: {fileID: 3836309722994161048}
+      objectReference: {fileID: 3578168048684479324}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
@@ -6591,6 +6607,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: df105d6200c025c43a47a4849c8673d2, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 17
@@ -6793,7 +6810,7 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
-      objectReference: {fileID: 2703095682734749530}
+      objectReference: {fileID: 7238712973632612258}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_BackpackGemSize
@@ -6949,6 +6966,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 864d30afcc6362a458c5601ac3401117, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 9
@@ -7336,6 +7354,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 699538f9058c2bc45b1fc100e589bfbd, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 14
@@ -7734,6 +7753,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: f1f143e206297d74fa9b20af091f32bf, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 12
@@ -8363,7 +8383,7 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 3502539506712087434}
+      objectReference: {fileID: 8850410334256523589}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
@@ -8547,6 +8567,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 4be76daec86a6c249befa1b2b64431a6, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 8
@@ -8745,7 +8766,7 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
-      objectReference: {fileID: 3748634190022510823}
+      objectReference: {fileID: 7738014196565081214}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
@@ -8929,6 +8950,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: b21cbcba5eadd8e44989b42fc50ad450, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 2
@@ -9128,7 +9150,7 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 2904120476453369519}
+      objectReference: {fileID: 8850410334256523589}
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
@@ -9328,6 +9350,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 57f951e27faaba141a15bbcfa556db97, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 7
@@ -9562,7 +9585,7 @@ PrefabInstance:
     - target: {fileID: 4789039018567538056, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
-      objectReference: {fileID: 3836309722994161048}
+      objectReference: {fileID: 0}
     - target: {fileID: 4886390600118062766, guid: 5222fc4f384c1224aa85157f4d8b6d91, type: 3}
       propertyPath: m_Name
       value: ItemButton_InitialAMmo
@@ -9730,6 +9753,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 241d0695ffdb786438440e5a434436ee, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 16
@@ -10133,6 +10157,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: abe7d6adb3a70594ea7e04c622528eb8, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 13
@@ -10523,6 +10548,7 @@ MonoBehaviour:
   isUnlockedAtStart: 1
   itemUpgradeable: 0
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 0}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 0
@@ -10919,6 +10945,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 71281df512d1f1246aa4a0ae7b8db9f6, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 18
@@ -11267,6 +11294,7 @@ MonoBehaviour:
   isUnlockedAtStart: 0
   itemUpgradeable: 1
   unlockRequiresAllPrerequisited: 0
+  linkedDLCType: 0
   linkedStatModifierSO: {fileID: 11400000, guid: 4063aaf6db14b474f9599e5ade0a3aca, type: 2}
   parentHubMerchant: {fileID: 6379354833504559172}
   trainerItemType: 11

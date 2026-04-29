@@ -38,8 +38,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 337.5, y: -89.04953}
-  m_SizeDelta: {x: 675, y: 278.10095}
+  m_AnchoredPosition: {x: 337.5, y: -150}
+  m_SizeDelta: {x: 675, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &337110200395341641
 GameObject:
@@ -186,6 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoScrollWithMouse: 0
   doNotLerp: 0
+  dropdownMenuAutoScroll: 0
 --- !u!114 &6540478622909370562
 MonoBehaviour:
   m_ObjectHideFlags: 0
