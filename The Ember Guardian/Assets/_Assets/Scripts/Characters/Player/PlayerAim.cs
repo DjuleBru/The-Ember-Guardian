@@ -770,7 +770,7 @@ public class PlayerAim : MonoBehaviour
         detectionRange /= 1.3f;
 
         ResetStationaryPerfectPrecision();
-        Debug.Log("detectionRange " + detectionRange);
+        //Debug.Log("detectionRange " + detectionRange);
     }
 
     private void PlayerShoot_OnPlayerAimedSightStarted(object sender, EventArgs e) {
@@ -780,7 +780,7 @@ public class PlayerAim : MonoBehaviour
         detectionRange *= 1.3f; 
 
         ResetStationaryPerfectPrecision(.5f);
-        Debug.Log("detectionRange " + detectionRange);
+        //Debug.Log("detectionRange " + detectionRange);
     }
 
 

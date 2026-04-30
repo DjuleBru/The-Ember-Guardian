@@ -59,6 +59,9 @@ public class CurrencyCrafter : Structure
         if(!SavingManager_Level.Instance.GetLoadingSavedLevel()) {
             needsRefill = true;
             needsWorking = false;
+        }  else {
+            needsRefill = !craftingCurrency;
+            needsWorking = craftingCurrency;
         }
 
         if (currencyTypeCrafted == PlayerCurrencies.CurrencyType.ammo) {
@@ -148,7 +151,7 @@ public class CurrencyCrafter : Structure
             craftingCurrency = false;
             craftedCurrency = true;
             playerCanInteract = true;
-            needsWorking = false;
+            //needsWorking = false;
             currencyCraftTimer = 0;
 
             OnCurrencyCraftingEnded?.Invoke(this, EventArgs.Empty);
@@ -201,6 +204,7 @@ public class CurrencyCrafter : Structure
             }
 
             needsRefill = false;
+            //Debug.Log("needsWorking TriggerCrafterFunction  ");
             needsWorking = true;
             craftingCurrency = true;
         }
@@ -367,6 +371,7 @@ public class CurrencyCrafter : Structure
         if(currentBatches > 0) {
             needsRefill = false;
             needsWorking = true;
+            Debug.Log("needsWorking SetCurrentBatches " + currentBatches);
         }
 
         if (currentBatches == batchCapacity) {
@@ -386,6 +391,7 @@ public class CurrencyCrafter : Structure
         this.craftingCurrency = craftingCurrency;
 
         if(craftingCurrency) {
+            Debug.Log("SetCraftingCurrency craftingCurrency " + craftingCurrency);
             needsWorking = true;
             SetStructurePrimaryFunctionUnlocked(false);
             SetStructureSecondaryFunctionUnlocked(false);
@@ -399,7 +405,7 @@ public class CurrencyCrafter : Structure
     public virtual void SetCurrencyTypeBeingCrafted(PlayerCurrencies.CurrencyType currencyTypeBeingCrafted) {
         this.currencyTypeBeingCrafted = currencyTypeBeingCrafted;
 
-        Debug.Log("SetCurrencyTypeBeingCrafted " + currencyTypeBeingCrafted);
+        //Debug.Log("SetCurrencyTypeBeingCrafted " + currencyTypeBeingCrafted);
 
         if(currencyTypeBeingCrafted == PlayerCurrencies.CurrencyType.ammo_special) {
             currencyCraftTime = secondaryCurrencyCraftTime;
@@ -427,6 +433,16 @@ public class CurrencyCrafter : Structure
         }
 
         RefreshPlayerCanInteract(); 
+    }
+
+    public override void SetEngineerWorking(EngineerJob engineer, bool working) {
+        base.SetEngineerWorking(engineer, working); 
+
+        if(!working) {
+            if(!craftingCurrency && !craftedCurrency) {
+                needsWorking = false;
+            }
+        }
     }
 
     public PlayerCurrencies.CurrencyType GetCurrencyTypeCrafted() {

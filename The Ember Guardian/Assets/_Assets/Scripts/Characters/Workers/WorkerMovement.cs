@@ -97,6 +97,11 @@ public class WorkerMovement : MobMovement
         Vector3 bestDestination = targetPos;
         float bestTotalDist = directDist;
 
+        if(CampZoneManager.Instance.IsWithinCampZoneLimits(targetPos) && CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
+            // Skip using teleporters when within camp
+            return bestDestination;
+        }
+
         foreach (var tpFrom in PlayerCamp.Instance.GetAllFastTravelTPsBuilt()) {
             float distToTP = Vector3.Distance(currentPos, tpFrom.transform.position);
 

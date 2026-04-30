@@ -224,6 +224,10 @@ public class SpecialTower : Structure {
         return currentMaxAmmoClipsInStorage;
     }
 
+    public override int GetMinimumRefillAmountRequired() {
+        return 1;
+    }
+
     protected override void OnTriggerEnter2D(Collider2D collision) {
         base.OnTriggerEnter2D(collision);
         if ((collision.gameObject.GetComponent<Player>() != null)) {

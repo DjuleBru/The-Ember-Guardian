@@ -258,7 +258,7 @@ public class StructureLocation : MonoBehaviour {
     }
 
     public void SetAsWorldStructureLocation() {
-        Debug.Log("SetAsWorldStructureLocation " + this);
+        //Debug.Log("SetAsWorldStructureLocation " + this);
         isWorldLocation = true;
     }
 

@@ -53,6 +53,7 @@ public class Dog : MonoBehaviour
 
     [SerializeField] private List<DogTypeSkins> dogTypeSkins;
     private DogAI.State currentIdleState;
+    private DogAI.State currentDayIdleState;
 
     public event EventHandler OnIdleStateChanged;
     public event EventHandler OnPlayerCalledDog;
@@ -68,6 +69,7 @@ public class Dog : MonoBehaviour
         Instance = this;
 
         currentIdleState = initialIdleState;
+        currentDayIdleState = initialIdleState;
 
         DogAI[] dogAIArray = GetComponents<DogAI>();
         foreach (DogAI dogAI in dogAIArray) {
@@ -83,7 +85,6 @@ public class Dog : MonoBehaviour
 
     private void Start() {
         GameInput.Instance.OnPlayerCallDogPerformed += GameInput_OnPlayerCallDogPerformed;
-
 
         // Security if people change save file manually
         if (!DLCManager.Instance.HasDLC(DogStats.Instance.GetDogSkinLinkedDLC(dogSkin))) {
@@ -149,11 +150,13 @@ public class Dog : MonoBehaviour
         if (currentIdleState == DogAI.State.walkWithPlayer) {
 
             currentIdleState = DogAI.State.stay;
+            currentDayIdleState = DogAI.State.stay;
             OnPlayerStayDog?.Invoke(this, EventArgs.Empty);
 
         } else if (currentIdleState == DogAI.State.stay || currentIdleState == DogAI.State.idle) {
 
             currentIdleState = DogAI.State.walkWithPlayer;
+            currentDayIdleState = DogAI.State.walkWithPlayer;
             OnPlayerCalledDog?.Invoke(this, EventArgs.Empty);
 
         }
@@ -188,6 +191,10 @@ public class Dog : MonoBehaviour
 
     public DogAI.State GetIdleState() {
         return currentIdleState;
+    }
+
+    public DogAI.State GetDayIdleState() {
+        return currentDayIdleState;
     }
 
     public DogAI.State GetInitialState() {

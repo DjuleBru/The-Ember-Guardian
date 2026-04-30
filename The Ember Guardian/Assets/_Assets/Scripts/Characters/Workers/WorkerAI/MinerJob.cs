@@ -396,10 +396,7 @@ public class MinerJob : WorkerJob {
             workerAttack.RemoveAttackTarget();
 
             if(assignedScavengable is ScavengableObstacle) {
-                Debug.Log("CAAAC");
-                Debug.Log("mobMovement " + mobMovement);
                 mobMovement.SetMoveSpeed(headToEscortMoveSpeed);
-                Debug.Log("CAAAC2");
             } else {
                 mobMovement.SetMoveSpeed(headToMineMoveSpeed);
             }

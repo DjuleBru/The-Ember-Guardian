@@ -25,6 +25,7 @@ public class WorkerCurrencies : MonoBehaviour {
     }
 
     public void SetPayingCurrency(PayCurrencyUI payOrbsUI, PlayerCurrencies.CurrencyType currencyTypeToPay, bool payingCurrency) {
+        //Debug.Log("SetPayingCurrency " + payOrbsUI + " payingCurrency " + payingCurrency + " currencyTypeToPay " + currencyTypeToPay);
         if (currentPayCurrencyUI != null) {
             currentPayCurrencyUI.OnSingleCurrencyPaid -= CurrentPayOrbsUI_OnSingleOrbPaid;
             currentPayCurrencyUI.OnCurrencyPaymentSuccess -= CurrentPayOrbsUI_OnOrbPaymentSuccess;
@@ -57,6 +58,7 @@ public class WorkerCurrencies : MonoBehaviour {
         float currencyIndexNormalized = currentPayCurrencyUI.GetCurrencyIndexNormalized();
 
         int currencyAmount = worker.GetCurrencyAmount(currencyTypeToPay);
+        //Debug.Log("PayNextCurrency " + currencyAmount);
 
         if (currencyAmount > 0) {
             StartPayingCurrency(currencyTypeToPay, currencyTemplateUI, currencyIndexNormalized);
@@ -68,6 +70,8 @@ public class WorkerCurrencies : MonoBehaviour {
     }
 
     private void StartPayingCurrency(PlayerCurrencies.CurrencyType currencyType, PayCurrencyTemplateWorldUI destination, float currencyIndexNormalized) {
+        //Debug.Log("StartPayingCurrency " + currencyType + " destination " + currencyIndexNormalized);
+
         OnCurrencyPaid?.Invoke(this, new OnCurrencyPaidEventArgs {
             currencyType = currencyType
         });
@@ -78,7 +82,7 @@ public class WorkerCurrencies : MonoBehaviour {
 
         lastCurrencyPaying = Instantiate(currencyPrefab, currencySpawnPosition.transform.position, Quaternion.identity).GetComponent<Collectible>();
         lastCurrencyPaying.SetMovingForPayment(true, smoothTime, destination.transform);
-        //lastCurrencyPaying.SetCanBePickedUpByWorkerAfterDelay(3f);
+
         collectiblesBeingPaid.Add(lastCurrencyPaying);
     }
 

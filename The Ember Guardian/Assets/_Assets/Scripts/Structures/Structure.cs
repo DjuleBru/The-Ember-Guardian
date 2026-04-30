@@ -396,6 +396,7 @@ public class Structure : MonoBehaviour {
             needsWorking = false;
 
         } else {
+
             bool isNightOrDusk = DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dusk;
 
             if (structureSO.engineerCanWorkByDay && (!isNightOrDusk) && structureSO.structureCategory != StructureSO.StructureCategory.tower) {
@@ -439,7 +440,7 @@ public class Structure : MonoBehaviour {
         return structureSO.refillCurrencyTypeNeeded;
     }
 
-    public int GetMinimumRefillAmountRequired() {
+    public virtual int GetMinimumRefillAmountRequired() {
         return payCurrencyUI.GetCurrencyAmountToPay();
     }
 
@@ -610,6 +611,7 @@ public class Structure : MonoBehaviour {
 
     public void SetWorkerRefillingStructure(WorkerCurrencies workerCurrencies, bool refilling) {
         if (isBeingRefilledByEngineer) return;
+
         isBeingRefilledByEngineer = true;
         payCurrencyUI.SetWorkerInteracting(workerCurrencies, refilling);
         OnWorkerStartedRefilling?.Invoke(this, EventArgs.Empty);

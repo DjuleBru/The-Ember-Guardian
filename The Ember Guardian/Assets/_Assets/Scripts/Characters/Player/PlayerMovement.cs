@@ -547,7 +547,7 @@ public class PlayerMovement : MonoBehaviour {
         LogSpeedChange(source, buffAmount, false);
     }
     private void LogSpeedChange(string source, float factor, bool added) {
-        Debug.Log($"[MoveSpeed] {(added ? "Buff" : "Debuff")} {source} x{factor} => New speed: {moveSpeed}");
+        //Debug.Log($"[MoveSpeed] {(added ? "Buff" : "Debuff")} {source} x{factor} => New speed: {moveSpeed}");
     }
 
     public bool IsMovingBackwards() {

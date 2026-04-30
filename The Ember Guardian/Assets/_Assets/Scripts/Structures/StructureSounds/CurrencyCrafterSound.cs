@@ -12,6 +12,8 @@ public class CurrencyCrafterSound : StructureSounds
     [SerializeField] private AudioClip loopCraftingAudioClip;
     [SerializeField] private AudioClip currencyInstantiatedAudioClip;
 
+    private float maxDistanceToHear = 20f;
+
     protected override void Awake() {
         base.Awake();
         currencyCrafter = GetComponentInParent<CurrencyCrafter>();
@@ -37,7 +39,12 @@ public class CurrencyCrafterSound : StructureSounds
     private void AmmoCrafter_OnAmmoCraftingStarted(object sender, CurrencyCrafter.OnNewCurrencyBatchCraftingStartedEventArgs e) {
         if(e.triggerStartCraftingSFX) {
             GetComponent<SoundVolume2D>().SetSoundVolume2DActiveAfterDelay(true, 0);
-            audioSource.PlayOneShot(startCraftingAudioClip, sfxVolume * masterVolume * 2);
+
+            float distanceToPlayer = Mathf.Abs(transform.position.x - Player.Instance.transform.position.x);
+            float distNorm = distanceToPlayer / maxDistanceToHear;
+            float volumeMultiplier = 1f - Mathf.Clamp01(distNorm);
+
+            audioSource.PlayOneShot(startCraftingAudioClip, sfxVolume * masterVolume* volumeMultiplier * 2);
         }
 
         if (currencyCrafter.GetCraftingCurrency()) return;
@@ -55,7 +62,12 @@ public class CurrencyCrafterSound : StructureSounds
 
     private void AmmoCrafter_OnAmmoCraftingEnded(object sender, System.EventArgs e) {
         craftingAudioSource.Stop();
-        audioSource.PlayOneShot(endCraftingAudioClip, sfxVolume * masterVolume * 2);
+
+        float distanceToPlayer = Mathf.Abs(transform.position.x - Player.Instance.transform.position.x);
+        float distNorm = distanceToPlayer / maxDistanceToHear;
+        float volumeMultiplier = 1f - Mathf.Clamp01(distNorm);
+
+        audioSource.PlayOneShot(endCraftingAudioClip, sfxVolume * masterVolume * volumeMultiplier * 2);
         craftingAudioSourceSoundVolume2D.SetSoundVolume2DActiveAfterDelay(false, endCraftingAudioClip.length);
         GetComponent<SoundVolume2D>().SetSoundVolume2DActiveAfterDelay(false, endCraftingAudioClip.length);
     }

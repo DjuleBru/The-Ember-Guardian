@@ -97,7 +97,7 @@ public class SettingsMenuUI : MonoBehaviour
         maxFPSText.text = Mathf.RoundToInt(SettingsManager.Instance.GetMaxFPS()).ToString();
         RefreshFPSSliderActive();
     }
-
+   
     private void SettingsManager_OnVSyncChanged(object sender, System.EventArgs e) {
         RefreshFPSSliderActive();
     }

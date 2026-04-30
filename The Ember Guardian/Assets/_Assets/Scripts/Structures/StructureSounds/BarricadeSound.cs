@@ -46,7 +46,7 @@ public class BarricadeSound : StructureSounds
     }
 
     private void Barricade_OnBarricadeRepaired(object sender, System.EventArgs e) {
-        barricadeAudioSource.PlayOneShot(repairedAudioClips[Random.Range(0, repairedAudioClips.Length)], sfxVolume);
+        worldAudioSource.PlayOneShot(repairedAudioClips[Random.Range(0, repairedAudioClips.Length)], sfxVolume);
     }
 
     private void Barricade_OnBarricadeDestroyed(object sender, System.EventArgs e) {

@@ -225,6 +225,13 @@ public class Worker : Mob {
                     }
                 }
 
+                foreach (var currency in collectedCurrencies.ToList()) {
+                    // Si la valeur atteint 0, retirer l'élément du dictionnaire
+                    if (collectedCurrencies[currency.Key] <= 0) {
+                        collectedCurrencies.Remove(currency.Key);
+                    }
+                }
+
                 // Si plus rien à dropper, arrêter le processus
                 if (collectedCurrencies.Count == 0) {
                     droppingCurrencies = false;

@@ -81,7 +81,7 @@ public class OrbExtractor : Structure
         base.SetEngineerWorking(engineer, working);
         needsWorking = !working;
 
-        Debug.Log("SetEngineerWorking " + working);
+        //Debug.Log("SetEngineerWorking " + working);
 
         if(working) {
 

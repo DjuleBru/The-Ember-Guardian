@@ -153,7 +153,6 @@ public class DogAI_DarkCompanion : DogAI
 
         }
         else {
-
             if (!biteStarted) {
 
                 if(currentAttackAbility == AttackAbility.stomp) {

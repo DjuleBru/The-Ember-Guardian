@@ -473,8 +473,8 @@ public class UICurrencyManager : MonoBehaviour
         });
     }
 
-    public void CurrencyFellFromBag(Currency_UI currencyUI) {
-        PlayerCurrencies.Instance.CurrencyFellFromBag(currencyUI.GetCurrencyType());
+    public void CurrencyFellFromBag(Currency_UI currencyUI, bool dropInWater = true) {
+        PlayerCurrencies.Instance.CurrencyFellFromBag(currencyUI.GetCurrencyType(), dropInWater);
         currenciesInBag.Remove(currencyUI);
         currencyUI.SetFellFromBag();
 

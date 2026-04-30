@@ -88,7 +88,12 @@ public class Currency_UI : MonoBehaviour
                 if (ammoTriggerAmount != 3) return;
             }
 
-            UICurrencyManager.PlayerInventoryUI.CurrencyFellFromBag(this);
+            bool fallInWater = true;
+            if(currencyCategory == PlayerCurrencies.CurrencyCategory.gem && SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+                fallInWater = false;
+            }
+
+            UICurrencyManager.PlayerInventoryUI.CurrencyFellFromBag(this, fallInWater);
             dropCurrencyFeedback.PlayFeedbacks();
             StartCoroutine(DestroyAfterDelay(.2f));
         }

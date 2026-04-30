@@ -87,6 +87,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public void SetWorkerInteracting(WorkerCurrencies workerCurrencies, bool isInteracting) {
+        //Debug.Log("SetWorkerInteracting " + workerCurrencies + " isInteracting " + isInteracting);
         if (workerInteracting == isInteracting) return;
 
         workerCurrenciesInteracting = workerCurrencies;
@@ -114,7 +115,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public void SetOrbTemplateUIList(List<PayCurrencyTemplateWorldUI> orbTemplateList) {
-
+        //Debug.Log("SetOrbTemplateUIList " + orbTemplateList.Count);
         foreach (PayCurrencyTemplateWorldUI orbTemplate in currencyTemplateWorldUIList) {
             orbTemplate.OnCurrencyPaid -= OrbTemplate_OnOrbPaid;
         }
@@ -142,6 +143,7 @@ public class PayCurrencyUI : MonoBehaviour
             if(workerInteracting) { 
                 workerCurrenciesInteracting.FinalizeCurrencyPayment();
             }
+
             OnCurrencyPaymentSuccess?.Invoke(this, EventArgs.Empty);
         }
         else {

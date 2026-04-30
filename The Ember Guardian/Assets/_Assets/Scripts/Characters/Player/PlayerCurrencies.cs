@@ -138,14 +138,18 @@ public class PlayerCurrencies : MonoBehaviour
         });
     }
 
-    public void CurrencyFellFromBag(CurrencyType currencyType) {
+    public void CurrencyFellFromBag(CurrencyType currencyType, bool dropInWater = true) {
         lastBlueOrbDroppedOnTheFloor = Instantiate(CurrenciesManager.Instance.GetCurrencyPrefab(currencyType), blueOrbDropPoint.transform.position, Quaternion.identity).GetComponent<Collectible>();
 
         lastBlueOrbDroppedOnTheFloor.ApplyRandomForce(-2,2,3, 4);
         lastBlueOrbDroppedOnTheFloor.ApplyRandomTorque(-8,8);
         lastBlueOrbDroppedOnTheFloor.SetCollectibleUnInteractable(3f);
-        lastBlueOrbDroppedOnTheFloor.SetCollectibleFellFromBag();
         lastBlueOrbDroppedOnTheFloor.SetDroppedByPlayer();
+
+        if(dropInWater) {
+            lastBlueOrbDroppedOnTheFloor.SetCollectibleFellFromBag();
+        }
+
     }
 
     private void StartPayingCurrency(CurrencyType currencyType, PayCurrencyTemplateWorldUI destination, float currencyIndexNormalized) {

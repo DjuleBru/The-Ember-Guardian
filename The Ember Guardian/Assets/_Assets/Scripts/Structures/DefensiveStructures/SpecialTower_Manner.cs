@@ -235,7 +235,7 @@ public class SpecialTower_Manner : MonoBehaviour {
     }
 
     protected void SetEngineerManning(EngineerJob engineerJob, bool manning) {
-        Debug.Log("SetEngineerManning " + manning);
+        //Debug.Log("SetEngineerManning " + manning);
 
         if (manning) {
             engineersManning.Add(engineerJob);

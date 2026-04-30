@@ -458,6 +458,7 @@ public class CreaturesSpawnManager : MonoBehaviour {
 
     protected void SetReferenceWaveParameters(int waveNumber) {
         referenceWaveDifficulty = referenceWaveInitialDifficulty * Mathf.Pow(waveNumber, referenceWaveGrowthFactor);
+        referenceWaveDifficulty *= currentNightWaveDifficultyMultiplier;
     }
 
     protected List<SpawnedCreatureInfo> PrepareSubWaveCreatures(float subWaveDifficulty, float leftProportion, int subWaveIndex, bool subWaveRandomSideProportion) {

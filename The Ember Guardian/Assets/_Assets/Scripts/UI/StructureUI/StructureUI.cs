@@ -27,6 +27,8 @@ public class StructureUI : MonoBehaviour
     protected Structure structure;
     public event EventHandler OnStructureDisplayedFunctionChanged;
 
+    protected Coroutine workerPayingCurrencyCoroutine;
+
     protected virtual void Awake() {
         structure = GetComponentInParent<Structure>();
         payOrbsUI = structure.GetComponent<PayCurrencyUI>();
@@ -45,6 +47,8 @@ public class StructureUI : MonoBehaviour
 
         GameInput.Instance.OnPlayerRightSwitchPerformed += GameInput_OnPlayerRightSwitchPerformed;
         GameInput.Instance.OnPlayerLeftSwitchPerformed += GameInput_OnPlayerLeftSwitchPerformed;
+
+        payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(functionPayOrbsUIList));
     }
 
 
@@ -146,12 +150,18 @@ public class StructureUI : MonoBehaviour
 
     private void Structure_OnWorkerStartedRefilling(object sender, EventArgs e) {
         SetUIActive(true);
-        StartCoroutine(SetUIActiveAfterDelay(2.5f, false));
+
+        if(workerPayingCurrencyCoroutine != null) {
+            StopCoroutine(workerPayingCurrencyCoroutine);
+        }
+
+        workerPayingCurrencyCoroutine = StartCoroutine(SetUIActiveAfterDelay(2.5f, false));
     }
 
     protected IEnumerator SetUIActiveAfterDelay(float delay, bool active) {
         yield return new WaitForSeconds(delay);
         SetUIActive(active);
+        workerPayingCurrencyCoroutine = null;
     }
 
     protected virtual void SetUIActive(bool active) {

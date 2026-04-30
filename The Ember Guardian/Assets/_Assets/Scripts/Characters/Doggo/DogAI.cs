@@ -149,7 +149,7 @@ public class DogAI : MonoBehaviour
     }
 
     protected void DayNightManager_OnDawnStart(object sender, EventArgs e) {
-        ChangeState(currentBehaviorIdleState);
+        ChangeState(Dog.Instance.GetDayIdleState());
     }
 
     protected virtual void Update() {
@@ -317,6 +317,7 @@ public class DogAI : MonoBehaviour
 
     public void SetIdleBehaviorState(State state) {
         currentBehaviorIdleState = state;
+
         ChangeState(state);
     }
 

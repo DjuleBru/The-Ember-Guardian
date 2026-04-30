@@ -76,6 +76,7 @@ public class EngineerJob : WorkerJob {
     private void StructureLocation_OnAnyStructureBuilt(object sender, StructureLocation.OnAnyStructureBuiltEventArgs e) {
         
         if(e.structureBuilt.GetStructureSO().structureCategory == StructureSO.StructureCategory.tower) {
+            if (e.structureBuilt.GetStructureSO().structureType == StructureSO.StructureType.tower) return;
 
             // Do not unassign Engineers on full towers
             if(assignedStructure != null) {
@@ -154,6 +155,10 @@ public class EngineerJob : WorkerJob {
 
                     assignedStructure.SetWorkerRefillingStructure(workerCurrencies, true);
 
+                    if(!assignedStructure.NeedsRefill()) {
+                        ChangeState(EngineerState.idle);
+                    }
+
                 break;
 
                 case EngineerState.headingToStructure:
@@ -215,6 +220,7 @@ public class EngineerJob : WorkerJob {
         if (newState == state) return;
         if (worker.GetDead()) return;
         //Debug.Log("ChangeState " + newState);
+
         if (mobMovement == null) {
             Debug.LogWarning("mobMovement not initialized yet");
             mobMovement = GetComponentInChildren<MobMovement>();
@@ -239,7 +245,7 @@ public class EngineerJob : WorkerJob {
             }
         }
 
-        if (state == EngineerState.headingToStructure || state == EngineerState.headingToRefill || state == EngineerState.refillingStructure || state == EngineerState.headingToDrop) {
+        if (state == EngineerState.headingToStructure || state == EngineerState.headingToRefill || state == EngineerState.refillingStructure || state == EngineerState.headingToDrop || state == EngineerState.headingToStructureToRefill) {
             mobMovement.SetMoveSpeed(headingToStructureMoveSpeed);
         }
 
@@ -257,7 +263,6 @@ public class EngineerJob : WorkerJob {
         if (assignedStructure != null) {
 
             bool stillUseful = false;
-
 
             if (assignedStructure.NeedsWorking()) {
                 if (assignedStructure.GetEngineersWorking().Contains(this)) {
@@ -285,6 +290,7 @@ public class EngineerJob : WorkerJob {
 
         // Check structures
         Structure structure = PlayerCamp.Instance.GetHighestPriorityAvailableEngineerStructure(isNightOrDusk);
+        //Debug.Log(" GetHighestPriorityAvailableEngineerStructure " + structure);
         if (structure == null) return;
 
         if (structure.NeedsWorkingEngineers() && structure.NeedsWorking()) {
@@ -317,7 +323,7 @@ public class EngineerJob : WorkerJob {
 
         if (structureNeedingAmmo != null) {
 
-            // Ammo sink found
+            // Ammo sink (tower) found
             if (assignedStructure != null) {
                 UnassignStructure();
             }
@@ -481,6 +487,11 @@ public class EngineerJob : WorkerJob {
 
     }
     private void TryPickupCurrenciesFromStorage() {
+
+        //Debug.Log("targetCurrencyStorage.GetCurrencyAmountStored() " + targetCurrencyStorage.GetCurrencyAmountStored());
+        //Debug.Log(assignedStructure);
+        //Debug.Log("assignedStructure.GetMinimumRefillAmountRequired()" + assignedStructure.GetMinimumRefillAmountRequired());
+
         if (targetCurrencyStorage.GetCurrencyAmountStored() < assignedStructure.GetMinimumRefillAmountRequired()) {
             ChangeState(EngineerState.idle);
             return;
@@ -527,7 +538,13 @@ public class EngineerJob : WorkerJob {
 
             if (currencyCrafterAssigned.GetCraftedCurrency()) {
                 // Pick up currency only if there is a storage
-                if(PlayerCamp.Instance.GetClosestCurrencyStorageWithSpace(transform.position, currencyCrafterAssigned.GetCurrencyTypeCrafted())) {
+
+                List<PlayerCurrencies.CurrencyType> ammoList = new List<PlayerCurrencies.CurrencyType>();
+                ammoList.Add(currencyCrafterAssigned.GetCurrencyTypeCrafted());
+                Structure structureNeedingAmmo = PlayerCamp.Instance.GetClosestDefensiveStructureNeedingCurrency(transform.position, ammoList);
+                //Debug.Log("structureNeedingAmmo " + structureNeedingAmmo);
+
+                if (structureNeedingAmmo != null || PlayerCamp.Instance.GetClosestCurrencyStorageWithSpace(transform.position, currencyCrafterAssigned.GetCurrencyTypeCrafted())) {
                     currencyCrafterAssigned.WorkerCollectCurrencyFromCrafter();
                 } else {
                     ChangeState(EngineerState.idle);
@@ -595,6 +612,7 @@ public class EngineerJob : WorkerJob {
     }
 
     private bool IsCarryingRequiredCurrencyToRefillStructure() {
+        //Debug.Log("assignedStructure " + assignedStructure + " "  + assignedStructure.GetMinimumRefillAmountRequired());
         if (worker.GetCurrencyAmount(assignedStructure.GetRefillCurrencyTypeNeeded()) >= assignedStructure.GetMinimumRefillAmountRequired()) return true;
 
         return false;
@@ -661,20 +679,26 @@ public class EngineerJob : WorkerJob {
 
     protected override bool CheckDropCurrenciesToPlayer() {
 
-        if(targetCurrencyStorage != null && (state == EngineerState.refillingStructure || state == EngineerState.headingToRefill || state == EngineerState.headingToStructureToRefill || state == EngineerState.headingToDrop)) {
+        if((state == EngineerState.refillingStructure || state == EngineerState.headingToRefill || state == EngineerState.headingToStructureToRefill || state == EngineerState.headingToDrop || state == EngineerState.blockedByCreatures)) {
             // worker is transferring currencies
             return false;
         }
 
-
         if (worker.GetPlayerIsClose() && worker.GetTotalCurrencyAmount() > 0) {
+            //Debug.Log("CAN DROP CURRENCIES " + state);
             return true;
         }
+
         return false;
     }
 
     public override void ReturnToPreviousState() {
-        ChangeState(previousState);
+        if(previousState == EngineerState.droppingCurrency) {
+            ChangeState(EngineerState.idle);
+        } else {
+            ChangeState(previousState);
+        }
+ 
     }
 
     private void DayNightManager_OnDuskStart(object sender, EventArgs e) {

@@ -443,13 +443,14 @@ public class PlayerCamp : MonoBehaviour
             bool structureNeedsRefill = false;
 
             if (structure.NeedsRefill()) {
-                CurrencyStorage storage = GetCurrencyStorageWithCurrencies(structure.GetRefillCurrencyTypeNeeded(), structure.GetMinimumRefillAmountRequired());
 
-                if(storage != null) {
+                CurrencyStorage inputStorage = GetCurrencyStorageWithCurrencies(structure.GetRefillCurrencyTypeNeeded(), structure.GetMinimumRefillAmountRequired());
+
+                if(inputStorage != null) {
                     structureNeedsRefill = true;
                 }
 
-                if (storage == null && !structure.NeedsWorking()) continue;
+                if (inputStorage == null) continue;
             };
 
             int structurePriority = structure.GetStructureSO().engineerWorkingPriority;
@@ -521,7 +522,7 @@ public class PlayerCamp : MonoBehaviour
 
         foreach(CurrencyStorage currencyStorage in currencyStorages) {
             if (currencyStorage is CurrencyStorage_Objective) continue;
-            if(currencyStorage.GetCurrencyTypeStored() == currencyType && currencyStorage.GetCurrencyAmountStored() >= currencyAmountRequired) {
+            if (currencyStorage.GetCurrencyTypeStored() == currencyType && currencyStorage.GetCurrencyAmountStored() >= currencyAmountRequired) {
                 storage = currencyStorage;
             }
         }

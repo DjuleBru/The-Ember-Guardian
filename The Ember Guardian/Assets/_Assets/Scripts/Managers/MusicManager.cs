@@ -1036,7 +1036,7 @@ public class MusicManager : MonoBehaviour {
         volume *= musicSettingVolume;
         volume *= masterSettingVolume;
 
-        Debug.Log("Audio volume target set : " + volume + " isPlayingNightIntroMusic " + isPlayingNightIntroMusic + " isPlayingNightMusic " + isPlayingNightMusic);
+        //Debug.Log("Audio volume target set : " + volume + " isPlayingNightIntroMusic " + isPlayingNightIntroMusic + " isPlayingNightMusic " + isPlayingNightMusic);
         targetVolume = volume;
     }
 
