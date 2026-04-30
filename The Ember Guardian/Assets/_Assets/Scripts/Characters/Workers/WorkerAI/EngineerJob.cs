@@ -26,7 +26,7 @@ public class EngineerJob : WorkerJob {
     private WorkerCurrencies workerCurrencies;
     private WorkerMovement workerMovement;
 
-    private float headingToStructureMoveSpeed = 3.5f;
+    private float headingToStructureMoveSpeed = 3f;
 
     private bool isNightOrDusk;
 

@@ -31,7 +31,11 @@ public class SpecialTower : Structure {
 
     protected override void Awake() {
         base.Awake();
-        currentMaxAmmoClipsInStorage = maxAmmoClipsInStorage;
+
+        Debug.Log(this + " structureLevel " + structureLevel);
+        if(structureLevel == 1) {
+            currentMaxAmmoClipsInStorage = maxAmmoClipsInStorage;
+        }
 
         level2TowerCollider.gameObject.SetActive(false);
         needsRefill = true;
@@ -63,7 +67,7 @@ public class SpecialTower : Structure {
         currentAmmoClip++;
         OnAmmoClipAdded?.Invoke(this, EventArgs.Empty);
 
-        if (currentAmmoClip == currentMaxAmmoClipsInStorage) {
+        if (currentAmmoClip >= currentMaxAmmoClipsInStorage) {
             needsRefill = false;
             ActivateStructurePrimaryFunctionInteractionAfterFrame(false);
 
@@ -91,7 +95,7 @@ public class SpecialTower : Structure {
         yield return new WaitForEndOfFrame();
         this.currentAmmoClip = ammoClips;
 
-        if (currentAmmoClip == currentMaxAmmoClipsInStorage) {
+        if (currentAmmoClip >= currentMaxAmmoClipsInStorage) {
             needsRefill = false;
             ActivateStructurePrimaryFunctionInteraction(false);
         }
@@ -194,6 +198,7 @@ public class SpecialTower : Structure {
 
     protected override void UpgradeStructure() {
         base.UpgradeStructure();
+        Debug.Log(this + " UpgradeStructure " + structureLevel);
 
         if (structureLevel == 2) {
             level1TowerCollider.SetActive(false);
@@ -209,6 +214,19 @@ public class SpecialTower : Structure {
             }
         }
 
+    }
+
+    public override void SetStructureLevel(int structureLevel) {
+        base.SetStructureLevel(structureLevel);
+
+        if (structureLevel == 2) {
+            level1TowerCollider.SetActive(false);
+            level2TowerCollider.SetActive(true);
+
+            maxEngineersAssignedWorking = level2TowerEngineerCapacity;
+            currentMaxAmmoClipsInStorage = maxAmmoClipsInStorage_lvl2;
+            needsRefill = true;
+        }
     }
 
     protected override void RefreshMaxEngineersAssignedAndWorking() {
