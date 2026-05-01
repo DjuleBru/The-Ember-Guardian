@@ -127,6 +127,9 @@ public class DogCreatureDetectionCollider : MonoBehaviour
         foreach (Creature creature in creaturesInDetectionColliderRange) {
             if (creature == null) continue;
 
+            if (creature.transform.position.x > LevelManager.Instance.GetMaxLevelLimit()) continue;
+            if (creature.transform.position.x < LevelManager.Instance.GetMinLevelLimit()) continue;
+
             float distanceToCreature = Mathf.Abs(creature.transform.position.x - transform.position.x);
             if (distanceToCreature < distanceToClosestCreature) {
                 distanceToClosestCreature = distanceToCreature;

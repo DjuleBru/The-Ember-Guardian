@@ -32,7 +32,7 @@ public class SpecialTower : Structure {
     protected override void Awake() {
         base.Awake();
 
-        Debug.Log(this + " structureLevel " + structureLevel);
+        //Debug.Log(this + " structureLevel " + structureLevel);
         if(structureLevel == 1) {
             currentMaxAmmoClipsInStorage = maxAmmoClipsInStorage;
         }

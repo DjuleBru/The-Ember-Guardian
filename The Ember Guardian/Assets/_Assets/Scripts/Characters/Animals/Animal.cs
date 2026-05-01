@@ -56,6 +56,7 @@ public class Animal : Mob
     public void AssignHunter(Worker worker) {
         workersAssigned.Add(worker);
     }
+
     public void UnAssignHunter(Worker worker) {
         workersAssigned.Remove(worker);
     }
@@ -106,7 +107,6 @@ public class Animal : Mob
         return maxDistance;
 
     }
-
 
     private void OnDestroy() {
         DayNightManager.Instance.OnCyclePausedByMerchantTalk -= DayNightManager_OnCyclePausedByMerchantTalk;

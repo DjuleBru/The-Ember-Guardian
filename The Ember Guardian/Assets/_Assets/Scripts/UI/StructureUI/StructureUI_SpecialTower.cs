@@ -33,6 +33,7 @@ public class StructureUI_SpecialTower : StructureUI
         specialTower.OnAmmoClipRemoved += SpecialTower_OnAmmoClipRemoved;
         specialTower.OnAmmoClipsLoaded += SpecialTower_OnAmmoClipsLoaded;
         specialTower.OnStructureUpgraded += SpecialTower_OnStructureUpgraded;
+
         payOrbsUI.SetOrbTemplateUIList(RecomposePayOrbsUIList(functionPayOrbsUIList));
     }
 

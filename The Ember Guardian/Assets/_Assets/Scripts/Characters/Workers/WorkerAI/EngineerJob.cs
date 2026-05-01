@@ -153,8 +153,12 @@ public class EngineerJob : WorkerJob {
 
                 case EngineerState.refillingStructure:
 
-                    assignedStructure.SetWorkerRefillingStructure(workerCurrencies, true);
+                    if (assignedStructure.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.upgrade) {
+                        assignedStructure.SetWorkerRefillingStructure(workerCurrencies, false);
+                        return;
+                    };
 
+                    assignedStructure.SetWorkerRefillingStructure(workerCurrencies, true);
                     if(!assignedStructure.NeedsRefill()) {
                         ChangeState(EngineerState.idle);
                     }

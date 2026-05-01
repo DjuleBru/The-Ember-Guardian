@@ -96,7 +96,6 @@ public class DogAI_DarkCompanion : DogAI
     }
 
     protected override void HandleBarkToAttack() {
-        if (currentAttackAbility != AttackAbility.none) return;
 
         decisionTimer -= Time.deltaTime;
         if (decisionTimer > 0) return;
@@ -228,7 +227,6 @@ public class DogAI_DarkCompanion : DogAI
     }
 
     private (Creature, AttackAbility) DecideBestTargetAndAbility() {
-
         List<Creature> creatures = GetRelevantCreatures(5);
 
         Creature bestCreature = null;
