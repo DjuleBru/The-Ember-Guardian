@@ -23,6 +23,7 @@ public class Animal : Mob
         DayNightManager.Instance.OnCycleUnpaused += DayNightManager_OnCycleUnpaused;
         rb = GetComponent<Rigidbody2D>();
     }
+
     private void DayNightManager_OnCycleUnpaused(object sender, EventArgs e) {
         isPaused = false;
         rb.simulated = true;

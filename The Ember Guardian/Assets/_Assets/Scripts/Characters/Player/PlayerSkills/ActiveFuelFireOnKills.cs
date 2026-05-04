@@ -11,6 +11,7 @@ public class ActiveFuelFireOnKills : MonoBehaviour {
 
     private void Start() {
         if (SceneLoader.Instance.GetSceneType() != SceneLoader.SceneType.Level) return;
+
         Creature.OnAnyMobDied += Creature_OnAnyMobDied;
         Fire.Instance.OnInitialFireActivated += Fire_OnInitialFireActivated;
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
@@ -38,6 +39,8 @@ public class ActiveFuelFireOnKills : MonoBehaviour {
         if (!PlayerSkills.Instance.GetFuelFireOnKills()) return;
 
         Creature creatureKilled = sender as Creature;
+        if (creatureKilled == null) return;
+
         Vector3 spawnPosition = creatureKilled.GetProjectileTarget().position;
         StartCoroutine(InstantiateHealPips(spawnPosition, PlayerSkills.Instance.GetFuelPipsPerKill()));
     }

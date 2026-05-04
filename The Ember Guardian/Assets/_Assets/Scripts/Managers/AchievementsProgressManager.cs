@@ -53,7 +53,7 @@ public class AchievementsProgressManager : MonoBehaviour
     private int huntingFlagsTooFar;
     private bool nightJustStarted;
     private float nightJustStartedTimer;
-    private float nightJustStartedTime = 10f;
+    private float nightJustStartedTime = 30f;
 
     List<StructureSO.StructureType> allStructureTypeList = new List<StructureSO.StructureType> {
         StructureSO.StructureType.ammoCrafter,

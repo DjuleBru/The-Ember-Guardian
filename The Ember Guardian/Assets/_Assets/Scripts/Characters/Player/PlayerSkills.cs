@@ -1446,7 +1446,10 @@ public class PlayerSkills : MonoBehaviour
         GameInput.Instance.OnPlayerRightSkillPerformed -= GameInput_OnPlayerRightSkillPerformed;
         PlayerShoot.Instance.OnPlayerSwappedGun -= PlayerShoot_OnPlayerSwappedGun;
         PlayerMovement.Instance.OnPlayerRoll -= PlayerMovement_OnPlayerRoll;
-        DayNightManager.Instance.OnCyclePausedByMerchantTalk -= DayNightManager_OnCyclePausedByMerchantTalk;
-        DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
+
+        if (DayNightManager.Instance != null) {
+            DayNightManager.Instance.OnCyclePausedByMerchantTalk -= DayNightManager_OnCyclePausedByMerchantTalk;
+            DayNightManager.Instance.OnCycleUnpaused -= DayNightManager_OnCycleUnpaused;
+        }
     }
 }
