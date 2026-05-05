@@ -712,18 +712,7 @@ public class SoundManager : MonoBehaviour
     }
 
     private void GunProjectile_Bullet_OnAnyBulletHitEnemy(object sender, GunProjectile_Bullet.OnBulletHitEventArgs e) {
-        Creature creatureHit = e.mobHit as Creature;
-
-        if (creatureHit == null) return;
-        if (creatureHit is Creature_Shielded) {
-            if ((creatureHit as Creature_Shielded).GetShieldActive()) return;
-        }
-
-        AudioClip[] audioClipArray = creatureHit.GetCreatureSO().bulletHitAudioClips;
-        float bulletHitGunVolumeMultiplier = PlayerShoot.Instance.GetHeldGunSO().bulletHitSoundMultiplier;
-        float bulletHitCreatureVolumeMultiplier = creatureHit.GetCreatureSO().bulletHitVolumeMultiplier;
-
-        PlaySound2D(audioClipArray, bulletHitGunVolumeMultiplier * bulletHitCreatureVolumeMultiplier);
+        
     }
 
 
@@ -752,6 +741,7 @@ public class SoundManager : MonoBehaviour
         float bulletHitGunVolumeMultiplier = PlayerShoot.Instance.GetHeldGunSO().bulletHitSoundMultiplier;
         float bulletHitCreatureVolumeMultiplier = creatureHit.GetCreatureSO().bulletHitVolumeMultiplier;
 
+        Debug.Log(bulletHitGunVolumeMultiplier * bulletHitCreatureVolumeMultiplier);
         PlaySound2D(audioClipArray, bulletHitGunVolumeMultiplier* bulletHitCreatureVolumeMultiplier);
     }
 
@@ -781,9 +771,15 @@ public class SoundManager : MonoBehaviour
         Creature creatureHit = e.creatureHit;
 
         if (creatureHit == null) return;
+        if (creatureHit is Creature_Shielded) {
+            if ((creatureHit as Creature_Shielded).GetShieldActive()) return;
+        }
 
         AudioClip[] audioClipArray = creatureHit.GetCreatureSO().bulletHitAudioClips;
-        PlaySound2D(audioClipArray, creatureHit.GetCreatureSO().bulletHitVolumeMultiplier * 1.5f);
+        float bulletHitGunVolumeMultiplier = PlayerShoot.Instance.GetHeldGunSO().bulletHitSoundMultiplier;
+        float bulletHitCreatureVolumeMultiplier = creatureHit.GetCreatureSO().bulletHitVolumeMultiplier;
+
+        PlaySound2D(audioClipArray, bulletHitGunVolumeMultiplier * bulletHitCreatureVolumeMultiplier);
     }
 
     private void PlayerShoot_OnPlayerSwappedGun(object sender, PlayerShoot.OnPlayerSwappedGunEventArgs e) {

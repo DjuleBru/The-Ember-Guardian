@@ -44,6 +44,7 @@ MonoBehaviour:
   loadedShotFiredIfNotFullyLoaded: 0
   loadShotTime: 0
   minLoadShotTime: 0
+  minLoadShotForceNormalized: 0
   delayBetweenClickAndShot: 0
   useAngleInPS: 0
   damagePerBullet: 8
@@ -54,8 +55,8 @@ MonoBehaviour:
   bulletLifetime: 0.4
   bulletSpeed: 35
   shootCooldownTime: 0.18
-  reloadTime: 4.5
-  handsReloadTime: 4.2
+  reloadTime: 3.8
+  handsReloadTime: 3.5
   handsAnimationReloadTime: 2.8
   bulletKnockback: 10
   spinUpDuration: 0
@@ -65,8 +66,8 @@ MonoBehaviour:
   surgeReloadProbability: 0.15
   jamRepairHitAmount: 6
   perfectQTEBulletAmountDamageBuffed: 15
-  weightAccelerationFactor: 0.8
-  reloadAccelerationFactor: 0.8
+  weightAccelerationFactor: 0.85
+  reloadAccelerationFactor: 0.9
   followMouseSpeed: 18
   swapToWeaponTimeMultiplier: 3.5
   gunKnockback: 0.8
@@ -78,6 +79,8 @@ MonoBehaviour:
   runPrecisionDebuff: 1.3
   weaponSecondaryAbilityPrecisionFactor: 4
   weaponSecondaryRecoilReductionFactor: 8
+  weaponSecondSecondaryAbilityPrecisionFactor: 1
+  weaponSecondSecondaryRecoilReductionFactor: 1
   weaponMaxRecoilImpactOnMouseReticle: 1.25
   crouchPrecisionBuff: 1.15
   crouchRecoilReductionFactor: 1.15
@@ -109,7 +112,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 78f8c2da9d356a34a911edb9ff4f8ba9, type: 3}
   - {fileID: 8300000, guid: df9fcaa26c6465d45a40ff187ec317cb, type: 3}
   - {fileID: 8300000, guid: cfbc9793bcbc9eb4ca0bc7e01de48937, type: 3}
-  startLoadingShotGunSound: {fileID: 0}
+  startLoadingShotGunSound:
+  - {fileID: 0}
   reloadGunSound:
   - {fileID: 8300000, guid: 2c538426d44795e4c8dc720fed375cc0, type: 3}
   cooldownGunSound: []

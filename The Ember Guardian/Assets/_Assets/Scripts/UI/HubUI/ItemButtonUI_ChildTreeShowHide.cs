@@ -30,6 +30,7 @@ public class ItemButtonUI_ChildTreeShowHide : MonoBehaviour
 
         canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
         foreach (var image in inputLinkList) {
             Color color = image.color;
             color.a = 0;
@@ -73,7 +74,9 @@ public class ItemButtonUI_ChildTreeShowHide : MonoBehaviour
         }
         canvasGroup.alpha = 1f;
         canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
         treeRaycastImage.raycastTarget = false;
+
         if(treeRaycastImage2 != null) {
             treeRaycastImage2.raycastTarget = false;
         }
@@ -99,6 +102,7 @@ public class ItemButtonUI_ChildTreeShowHide : MonoBehaviour
         }
         canvasGroup.alpha = 0f;
         canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
         treeRaycastImage.raycastTarget = true;
         if (treeRaycastImage2 != null) {
             treeRaycastImage2.raycastTarget = true;

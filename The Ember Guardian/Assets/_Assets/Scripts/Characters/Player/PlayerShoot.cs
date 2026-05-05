@@ -65,8 +65,8 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private float handlingLMGTime = .9f;
-    private float setupLMGTime = .9f;
-    private float removeLMGTime = .5f;
+    private float setupLMGTime = .75f;
+    private float removeLMGTime = .4f;
     private float setupLMGTimer;
     private float lmgBipodAimAngleLimit = 40f;
     private bool settingUpLMG;

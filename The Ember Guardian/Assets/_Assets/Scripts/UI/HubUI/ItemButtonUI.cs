@@ -772,7 +772,15 @@ public class ItemButtonUI : ButtonUI {
             }
 
             if (treeShowHide != null && isTreeChild) {
-                descriptionCard.transform.SetParent(treeShowHide.transform.parent);
+
+                if (descriptionCardParentManualSet != null) {
+                    descriptionCard.transform.SetParent(descriptionCardParentManualSet);
+                }
+                else {
+                    descriptionCard.transform.SetParent(treeShowHide.transform.parent);
+                }
+
+
             } else {
                 if(descriptionCardParentManualSet != null) {
                     descriptionCard.transform.SetParent(descriptionCardParentManualSet);
