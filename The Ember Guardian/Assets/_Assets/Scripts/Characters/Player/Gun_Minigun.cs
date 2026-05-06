@@ -6,7 +6,7 @@ using UnityEngine;
 public class Gun_Minigun : Gun {
 
     private float currentSpinCooldown;
-    private float standardMaxSpinRate = 0.12f;
+    private float standardMaxSpinRate = 0.11f;
     private float maxSpinRate;
 
     private float spinningMovementDebuff = 1.5f;
@@ -163,6 +163,7 @@ public class Gun_Minigun : Gun {
     }
 
     public override void SetCooldownTime_StatModifierListLevel(int cooldownTimeStatModifierLevel) {
+        this.cooldownTimeStatModifierLevel = cooldownTimeStatModifierLevel;
         float modifiedCooldown = 0;
         if (cooldownTimeStatModifierLevel == -1) {
             modifiedCooldown = gunSO.shootCooldownTime;
