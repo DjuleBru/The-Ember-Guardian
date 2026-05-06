@@ -407,9 +407,12 @@ public class Gun : MonoBehaviour
 
         float sizePerBullet = .04f;
         float totalBullerSize = sizePerBullet * (pelletsPerBullet * (PlayerShoot.Instance.GetCurrentBullets()));
-
+        Debug.Log(totalBullerSize);
         if(totalBullerSize < .4f) {
             totalBullerSize = .4f;
+        }
+        if(totalBullerSize > .9f) {
+            totalBullerSize = .9f;
         }
 
         focusedBlastDamageBuff = pelletsPerBullet * PlayerShoot.Instance.GetCurrentBullets();
