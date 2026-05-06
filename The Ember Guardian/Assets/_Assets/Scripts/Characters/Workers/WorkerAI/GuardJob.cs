@@ -16,6 +16,8 @@ public class GuardJob : WorkerJob {
     private float distanceToOuterWallWhenGuarding = 3f;
     private float distanceToOuterWallToTargetCreatureAtNight = 18f;
 
+    private int headToSecurityHealthTreshold = 10;
+
     private IEscortable assignedEscortable;
     private Transform escortTransform;
 
@@ -26,6 +28,7 @@ public class GuardJob : WorkerJob {
         droppingOrbs,
         headingToGuard,
         guardingNight,
+        guardingNightSafe,
     }
     public event EventHandler OnGuardChangedState;
 
@@ -117,6 +120,20 @@ public class GuardJob : WorkerJob {
 
                     GuardCamp(false, 2f);
 
+                    if(worker.GetHealth() <= headToSecurityHealthTreshold) {
+                        ChangeState(GuardState.headingToGuard);
+                    }
+
+                    break;
+
+                case GuardState.guardingNightSafe:
+
+                    GuardCampSafe();
+
+                    if (worker.GetHealth() >= WorkerStats.Instance.GetGuardHealth()) {
+                        ChangeState(GuardState.guardingNight);
+                    }
+
                     break;
 
                 case GuardState.droppingOrbs:
@@ -127,6 +144,47 @@ public class GuardJob : WorkerJob {
             }
 
         }
+    }
+
+    private void GuardCampSafe() {
+        Vector3 guardingPosition = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), distanceToOuterWallWhenGuarding*2);
+
+        if (closestCreature == null) {
+
+            // Keep checking if camp limits changed
+            Roam(5f, guardingPosition);
+
+        } else {
+            CheckAggroClosestCreatureSmart(transform.position, 2f);
+
+            if (aggroedCreature == null) {
+                targetCreature = null;
+                workerAttack.RemoveAttackTarget();
+                Roam(2f, guardingPosition);
+                return;
+            }
+
+            else {
+
+                if (TargetIsInRange(aggroedCreature, maxAttackRange)) {
+
+                    TargetCreature(aggroedCreature);
+
+                }
+                else {
+                    targetCreature = null;
+                    workerAttack.RemoveAttackTarget();
+
+                    mobMovement.SetMoveTarget(aggroedCreature.transform.position);
+                    mobMovement.SetMoveSpeed(headToCampMoveSpeed);
+                    HeadToTarget();
+                }
+            }
+
+        }
+
+ 
+
     }
 
     private void GuardCamp(bool roamAroundGuardingPosition, float maxDistanceToGuardingPosition) {
@@ -158,7 +216,8 @@ public class GuardJob : WorkerJob {
             }
 
             else {
-                if (TargetIsCloseToOuterWall(aggroedCreature)) {
+
+                if (TargetIsCloseToOuterWall(aggroedCreature) && !aggroedCreature.GetDead()) {
                     // target is in attack radius
 
                     if (TargetIsInRange(aggroedCreature, maxAttackRange)) {
@@ -235,8 +294,6 @@ public class GuardJob : WorkerJob {
         roamTimer = 0;
     }
 
- 
-
     private void FollowPlayer() {
         Vector3 destination = WorkerFollowPlayerHandler.Instance.GetWorkerFollowPosition(worker);
 
@@ -306,22 +363,34 @@ public class GuardJob : WorkerJob {
         }
 
         Vector3 targetDestination = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), -3f);
+
+        if(worker.GetHealth() <= headToSecurityHealthTreshold) {
+            targetDestination = CampZoneManager.Instance.GetClosestExteriorZoneLimit(worker.GetCampSideAddigned(), distanceToOuterWallWhenGuarding * 2);
+        }
+
         Vector3 targetDestinationRandomized = new Vector3(targetDestination.x + UnityEngine.Random.Range(-1f, 1f), 0, 0);
 
         mobMovement.SetMoveTarget(targetDestinationRandomized);
 
         if (Mathf.Abs(transform.position.x - targetDestinationRandomized.x) < 0.1f) {
             if(DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Dawn || DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Day) {
+
                 ChangeState(GuardState.guardingDay);
             } else {
-                ChangeState(GuardState.guardingNight);
+
+                if (worker.GetHealth() <= headToSecurityHealthTreshold) {
+                    ChangeState(GuardState.guardingNightSafe);
+                } else {
+                    ChangeState(GuardState.guardingNight);
+                }
+
             }
         
         }
 
         hasSetSpeed = false;
     }
-
+   
     private void DayNightManager_OnDuskStart(object sender, System.EventArgs e) {
         if (escorting) return;
         ChangeState(GuardState.headingToGuard);

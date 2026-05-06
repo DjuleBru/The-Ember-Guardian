@@ -29,7 +29,7 @@ public class Worker : Mob {
     private float dropTimer = 0f; // Compteur pour suivre le temps écoulé
 
     private int initialHealth;
-    private float refillHealthTime = 10f;
+    private float refillHealthTime = 3f;
     private float refillHealthTimer;
 
     public static event EventHandler OnAnyOrbDroppedByWorker;
@@ -85,9 +85,14 @@ public class Worker : Mob {
         CheckPlayerIsClose();
 
         if(health != initialHealth) {
+            if (!CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position) && DayNightManager.Instance.GetDayNightCycleState() == DayNightManager.State.Night) return;
+
             refillHealthTimer += Time.deltaTime;
             if(refillHealthTimer >= refillHealthTime) {
-                health = initialHealth;
+                health += 1;
+                refillHealthTimer = 0;
+
+                Debug.Log("refill health ! " + health);
             }
         }
     }
@@ -143,10 +148,12 @@ public class Worker : Mob {
         return totalAmount;
     }
 
+    [Button]
     public override void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         if (defensiveStructureAssigned != null) return;
 
         base.TakeDamage(damage, damageSource, critHit, ignoreTemporaryInvincibility);
+
         refillHealthTimer = 0;
     }
 

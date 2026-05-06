@@ -31,6 +31,7 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
         ObservationTowerEnemyTypes,
         ObservationTowerEnemyAmounts,
         FastTravelTPMaxAmount,
+        OrbGeneratorMaxAmount,
     }
 
     public enum ArchitectItemCategory {
@@ -122,6 +123,9 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
         if (architectItemType == ArchitectItemType.FastTravelTPMaxAmount) {
             ArchitectTable.Instance.SetMaxFastTravelTPAmountBuff((int)buff);
         }
+        if (architectItemType == ArchitectItemType.OrbGeneratorMaxAmount) {
+            ArchitectTable.Instance.SetMaxOrbGeneratorAmountBuff((int)buff);
+        }
 
         if (architectItemType == ArchitectItemType.FireFuelDepletion) {
             StructureStats.Instance.SetFuelDepletionRateBuff(buff);
@@ -201,6 +205,10 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
                 if (architectItemType == ArchitectItemType.FastTravelTPMaxAmount) {
                     initialStatValue = ArchitectTable.Instance.GetInitialMaxFastTravelTPAmount();
                     currentStatValue = ArchitectTable.Instance.GetMaxFastTravelTPAmount().ToString();
+                }
+                if (architectItemType == ArchitectItemType.OrbGeneratorMaxAmount) {
+                    initialStatValue = ArchitectTable.Instance.GetInitialMaxOrbGeneratorsAmount();
+                    currentStatValue = ArchitectTable.Instance.GetMaxOrbGeneratorAmount().ToString();
                 }
                 if (architectItemType == ArchitectItemType.TowerMaxAmount) {
                     initialStatValue = ArchitectTable.Instance.GetInitialMaxTowerAmount();
@@ -422,6 +430,13 @@ public class HubMerchantItem_ArchitectMerchantItem : HubMerchantItem {
                 statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_maxFastTravelTP") + " ");
             }
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newMaxFastTravelTP") + " ");
+        }
+        if (architectItemType == ArchitectItemType.OrbGeneratorMaxAmount) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentMaxOrbGenerator") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_maxOrbGenerator") + " ");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newMaxOrbGenerator") + " ");
         }
         if (architectItemType == ArchitectItemType.MortarPositionsMaxAmount) {
             if (itemLevel < maxItemLevel) {

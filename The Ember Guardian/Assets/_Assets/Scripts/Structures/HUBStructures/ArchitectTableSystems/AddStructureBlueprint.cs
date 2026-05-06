@@ -297,6 +297,10 @@ public class AddStructureBlueprint : ButtonUI
                     maxBlueprintAmount = ArchitectTable.Instance.GetMaxAmmoCrafterAmount();
                     break;
 
+                case StructureSO.StructureType.orbProcessor:
+                    maxBlueprintAmount = ArchitectTable.Instance.GetMaxOrbGeneratorAmount();
+                    break;
+
                 case StructureSO.StructureType.bearTrap:
                     maxBlueprintAmount = ArchitectTable.Instance.GetMaxTrapSlotsAmount();
                     break;

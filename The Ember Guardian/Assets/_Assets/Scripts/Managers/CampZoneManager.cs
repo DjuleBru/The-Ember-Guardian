@@ -71,6 +71,7 @@ public class CampZoneManager : MonoBehaviour
     private void Barricade_OnAnyBarricadeBuilt(object sender, EventArgs e) {
         Barricade barricade = sender as Barricade;
         if (barricade.GetIsWorldStructure()) return;
+        if (functionalBarricades.Contains(barricade)) return;
 
         functionalBarricades.Add((barricade));
 
@@ -85,6 +86,7 @@ public class CampZoneManager : MonoBehaviour
         Barricade barricade = sender as Barricade;
 
         if (barricade.GetIsWorldStructure()) return;
+        if (functionalBarricades.Contains(barricade)) return;
 
         functionalBarricades.Add((barricade));
         RefreshCampZoneLimits();
@@ -94,6 +96,7 @@ public class CampZoneManager : MonoBehaviour
         Barricade barricade = sender as Barricade;
 
         if (barricade.GetIsWorldStructure()) return;
+        if (!functionalBarricades.Contains(barricade)) return;
 
         functionalBarricades.Remove((barricade));
         RefreshCampZoneLimits();

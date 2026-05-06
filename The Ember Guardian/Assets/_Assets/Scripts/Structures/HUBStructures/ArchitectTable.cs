@@ -16,6 +16,7 @@ public class ArchitectTable : MonoBehaviour
     protected int maxMachineGunTowerAmount;
     protected int maxMortarPositionsAmount;
     protected int maxFastTravelTP;
+    protected int maxOrbGenerators;
 
     protected int initialMaxAmmoCrafterAmount = 1;
     protected int initialMaxSecondaryFireAmount = 2;
@@ -25,6 +26,7 @@ public class ArchitectTable : MonoBehaviour
     protected int initialMaxMachineGunTowerAmount = 1;
     protected int initialMaxMortarPositionsAmount = 1;
     protected int initialMaxFastTravelTP = 1;
+    protected int initialMaxOrbGenerators = 1;
     protected int remainingBudget;
 
     [SerializeField] protected GameObject activeHubMerchantGameObject;
@@ -56,7 +58,8 @@ public class ArchitectTable : MonoBehaviour
         { "maxMachineGunTowerAmount", maxMachineGunTowerAmount },
         { "maxMortarPositionsAmount", maxMortarPositionsAmount },
         { "maxTowerAmount", maxTowerAmount },
-        { "maxFastTravelTP", maxFastTravelTP }
+        { "maxFastTravelTP", maxFastTravelTP },
+        { "maxOrbGenerators", maxOrbGenerators },
     };
 
         // Sauvegarde batch
@@ -82,6 +85,7 @@ public class ArchitectTable : MonoBehaviour
             maxMortarPositionsAmount = initialMaxMortarPositionsAmount;
             maxTowerAmount = initialMaxTowerAmount;
             maxFastTravelTP = initialMaxFastTravelTP;
+            maxOrbGenerators = initialMaxOrbGenerators;
             return;
         }
 
@@ -96,6 +100,7 @@ public class ArchitectTable : MonoBehaviour
         maxMortarPositionsAmount = loadedStats.ContainsKey("maxMortarPositionsAmount") ? Convert.ToInt32(loadedStats["maxMortarPositionsAmount"]) : initialMaxMortarPositionsAmount;
         maxTowerAmount = loadedStats.ContainsKey("maxTowerAmount") ? Convert.ToInt32(loadedStats["maxTowerAmount"]) : initialMaxTowerAmount;
         maxFastTravelTP = loadedStats.ContainsKey("maxFastTravelTP") ? Convert.ToInt32(loadedStats["maxFastTravelTP"]) : initialMaxFastTravelTP;
+        maxOrbGenerators = loadedStats.ContainsKey("maxOrbGenerators") ? Convert.ToInt32(loadedStats["maxOrbGenerators"]) : initialMaxOrbGenerators;
     }
 
     public HubMerchant GetArchitectTableHubMerchant() {
@@ -144,6 +149,9 @@ public class ArchitectTable : MonoBehaviour
     public void SetMaxFastTravelTPAmountBuff(int amountBuff) {
         maxFastTravelTP = initialMaxFastTravelTP + amountBuff;
     }
+    public void SetMaxOrbGeneratorAmountBuff(int amountBuff) {
+        maxOrbGenerators = initialMaxOrbGenerators + amountBuff;
+    }
     #endregion
 
     #region GET MAX STRUCTURE AMOUNTS
@@ -173,6 +181,10 @@ public class ArchitectTable : MonoBehaviour
         return maxFastTravelTP;
     }
 
+    public int GetMaxOrbGeneratorAmount() {
+        return maxOrbGenerators;
+    }
+
     #endregion
 
     #region GET INITIAL MAX STRUCTURE AMOUNTS
@@ -199,6 +211,9 @@ public class ArchitectTable : MonoBehaviour
     }
     public int GetInitialMaxFastTravelTPAmount() {
         return initialMaxFastTravelTP;
+    }
+    public int GetInitialMaxOrbGeneratorsAmount() {
+        return initialMaxOrbGenerators;
     }
     #endregion
 }
