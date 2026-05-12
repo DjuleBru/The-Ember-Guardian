@@ -23,7 +23,6 @@ public class LevelUI_SkillDescriptionCardUI : MonoBehaviour
     }
 
     private void Start() {
-        Debug.Log("Start");
         PlayerTabMenuUI.Instance.OnPlayerTabClosed += PlayerTabMenuUI_OnPlayerTabClosed;
 
     }

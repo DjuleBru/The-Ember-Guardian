@@ -970,7 +970,8 @@ public class SoundManager : MonoBehaviour
     private void Structure_OnAnyStructurePrimaryFunctionUsed(object sender, System.EventArgs e) {
         StructureSO structureSO = (sender as Structure).GetStructureSO();
         AudioClip audioClip = structureSO.useFunctionAudioClip;
-        PlaySound2D(audioClip, structureSO.useFunctionVolumeMultiplier);
+        if (audioClip == null) return;
+        PlaySound3D(audioClip, (sender as Structure).transform.position, structureSO.useFunctionVolumeMultiplier);
     }
 
     private void Structure_OnAnyStructureUpgraded(object sender, System.EventArgs e) {

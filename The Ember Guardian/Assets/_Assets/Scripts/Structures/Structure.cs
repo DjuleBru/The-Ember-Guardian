@@ -48,6 +48,7 @@ public class Structure : MonoBehaviour {
     protected bool isBeingRefilledByEngineer;
     protected List<EngineerJob> engineersAssignedRefilling = new List<EngineerJob>();
     protected List<EngineerJob> engineersAssignedWorking = new List<EngineerJob>();
+    private WorkerCurrencies engineerCurrentlyRefilling;
     private float playerInteractingTimer;
 
     public enum StructureInteractionType {
@@ -111,6 +112,7 @@ public class Structure : MonoBehaviour {
         payCurrencyUI.SetPlayerInteracting(false);
         payCurrencyUI.StopWorkerInteraction();
         isBeingRefilledByEngineer = false;
+        engineerCurrentlyRefilling = null;
     }
 
     protected virtual void TriggerStructurePrimaryFunction() {
@@ -365,6 +367,10 @@ public class Structure : MonoBehaviour {
         return engineersAssignedWorking;
     }
 
+    public List<EngineerJob> GetEngineersAssignedRefilling() {
+        return engineersAssignedRefilling;
+    }
+
     public int GetEngineersGarrisoned() {
         return engineersGarrisoned;
     }
@@ -507,6 +513,7 @@ public class Structure : MonoBehaviour {
 
     protected virtual void ActivateStructurePrimaryFunctionInteraction(bool active) {
         //Debug.Log(this + " ActivateStructurePrimaryFunctionInteraction " + active);
+
         if (active) {
             if (!activeStructureInteractionsTypeList.Contains(StructureInteractionType.primaryFunction)) {
                 activeStructureInteractionsTypeList.Add(StructureInteractionType.primaryFunction);
@@ -612,6 +619,7 @@ public class Structure : MonoBehaviour {
     public void SetWorkerRefillingStructure(WorkerCurrencies workerCurrencies, bool refilling) {
         if(!refilling) {
             isBeingRefilledByEngineer = false;
+            engineerCurrentlyRefilling = null;
             payCurrencyUI.SetWorkerInteracting(workerCurrencies, false);
             return;
         }
@@ -619,8 +627,17 @@ public class Structure : MonoBehaviour {
         if (isBeingRefilledByEngineer) return;
 
         isBeingRefilledByEngineer = true;
+        engineerCurrentlyRefilling = workerCurrencies;
         payCurrencyUI.SetWorkerInteracting(workerCurrencies, refilling);
         OnWorkerStartedRefilling?.Invoke(this, EventArgs.Empty);
+    }
+
+    public bool GetIsBeingRefilledByEngineer() {
+        return isBeingRefilledByEngineer;
+    }
+
+    public WorkerCurrencies GetEngineerCurrentlyRefillingStructure() {
+        return engineerCurrentlyRefilling;
     }
 
     public PayCurrencyUI GetPayCurrencyUI() {

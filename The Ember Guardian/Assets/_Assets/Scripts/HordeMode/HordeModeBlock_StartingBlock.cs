@@ -271,15 +271,19 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         // ANIMAUX GAUCHE
         for (int i = 0; i < data.startingBlockAnimalSpawners_Left.Count && i < animalSpawnerList_Left.Count; i++) {
             var save = data.startingBlockAnimalSpawners_Left[i];
+
             animalSpawnerList_Left[i].SetSpawnerParameters_HordeMode(save.mobPrefab, save.currentMobsAlive, 5f, save.daysSinceSpawnerActive);
             animalSpawnerList_Left[i].SpawnMobs(save.currentMobsAlive);
+
         }
 
         // ANIMAUX DROITE
         for (int i = 0; i < data.startingBlockAnimalSpawners_Right.Count && i < animalSpawnerList_Right.Count; i++) {
             var save = data.startingBlockAnimalSpawners_Right[i];
+
             animalSpawnerList_Right[i].SetSpawnerParameters_HordeMode(save.mobPrefab, save.currentMobsAlive, 5f, save.daysSinceSpawnerActive);
             animalSpawnerList_Right[i].SpawnMobs(save.currentMobsAlive);
+
         }
 
         // SCAVENGABLES
@@ -292,16 +296,25 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         WorkerSpawner activeLeft = GetActiveLeftWorkerSpawner();
         WorkerSpawner activeRight = GetActiveRightWorkerSpawner();
 
+        Debug.Log(data.startingBlockWorkers_Left.currentMobsAlive);
+        Debug.Log(data.startingBlockWorkers_Right.currentMobsAlive);
         if (activeLeft != null && data.startingBlockWorkers_Left.currentMobsAlive > 0) {
             activeLeft.gameObject.SetActive(true);
             activeLeft.SpawnMobs(data.startingBlockWorkers_Left.currentMobsAlive);
+        } else {
+            activeLeft.gameObject.SetActive(false);
+            activeLeft.KillRemainingSpawnedMobs();
         }
 
         if (activeRight != null && data.startingBlockWorkers_Right.currentMobsAlive > 0) {
             activeRight.gameObject.SetActive(true);
             activeRight.SpawnMobs(data.startingBlockWorkers_Right.currentMobsAlive);
         }
-         
+        else {
+            activeRight.gameObject.SetActive(false);
+            activeRight.KillRemainingSpawnedMobs();
+        }
+
     }
 
     public void SetObstaclesBuilt(bool leftBuilt, bool rightBuilt) {

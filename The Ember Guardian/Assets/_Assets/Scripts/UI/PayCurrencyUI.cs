@@ -87,6 +87,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public void SetWorkerInteracting(WorkerCurrencies workerCurrencies, bool isInteracting) {
+        //Debug.Log("SetWorkerInteracting " + workerCurrencies + " isInteracting " + isInteracting);
         if (workerInteracting == isInteracting) return;
 
         workerCurrenciesInteracting = workerCurrencies;
@@ -107,6 +108,10 @@ public class PayCurrencyUI : MonoBehaviour
         else {
             workerCurrencies.SetPayingCurrency(this, currencyTypeToPay, true);
         }
+    }
+
+    public void WorkerCanInteract(WorkerCurrencies workerCurrencies, bool isInteracting) {
+        if (workerInteracting == isInteracting) return;
     }
 
     public void StopWorkerInteraction() {

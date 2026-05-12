@@ -16,6 +16,7 @@ public class DayNightCyclePausedUI : MonoBehaviour
     }
 
     private void DayNightManager_OnCycleUnpaused(object sender, System.EventArgs e) {
+        if (!Fire.Instance.GetInitialFireLit() && !LevelManager.Instance.IsHordeMode()) return;
         if (animator == null) return;
         image.sprite = playSprite;
         animator.SetTrigger("Hide");

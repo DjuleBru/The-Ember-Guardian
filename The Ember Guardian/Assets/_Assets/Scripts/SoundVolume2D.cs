@@ -15,11 +15,16 @@ public class SoundVolume2D : MonoBehaviour
     private float masterVolume;
     private float fadeMultiplier = 1f;
 
+    private float reevaluateVolumeTimer;
+    private float reevaluateVolumeTime = 1f;
+
     private void Awake() {
         audioSource = GetComponent<AudioSource>();
         if(!active) {
             audioSource.enabled = false;
         }
+
+        reevaluateVolumeTimer = UnityEngine.Random.Range(0, 1f);
     }
 
     private void Start() {
@@ -45,7 +50,12 @@ public class SoundVolume2D : MonoBehaviour
 
     private void Update() {
         if (!active) return;
-        HandleAudioSourceVolumeAndSleep();
+
+        reevaluateVolumeTimer -= Time.deltaTime;
+        if(reevaluateVolumeTimer < 0) {
+            reevaluateVolumeTimer = reevaluateVolumeTime;
+            HandleAudioSourceVolumeAndSleep();
+        }
     }
 
     public void SetMaxDistanceToHear(float distance) {
@@ -72,6 +82,7 @@ public class SoundVolume2D : MonoBehaviour
 
     private void HandleAudioSourceVolumeAndSleep() {
         if (Player.Instance == null) return;
+
         float distanceToAudioSource = Mathf.Abs(Player.Instance.transform.position.x - transform.position.x);
         float volume = (1 - (distanceToAudioSource / maxDistanceToHear)) * maxAudioSourceVolume * sfxVolume * masterVolume * volumeMultiplier;
 

@@ -28,6 +28,7 @@ public class JoblessJob : WorkerJob, IJobBehavior {
 
     private bool CheckBlockedByCreature() {
         if (workerDetectionCollider.CreaturesInDetectionCollider()) {
+            if (workerDetectionCollider.GetClosestCreature() == null) return false;
             Vector3 creaturePosition = workerDetectionCollider.GetClosestCreature().transform.position;
 
             if (Mathf.Abs(creaturePosition.x) > Mathf.Abs(transform.position.x)) {

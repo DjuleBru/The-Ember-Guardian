@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -134,12 +135,14 @@ public class SpecialTower : Structure {
         needsWorking = true;
     }
 
+    [Button]
     private void Manner_OnMannerReloadingEnded(object sender, EventArgs e) {
         if(currentAmmoClip > 0) {
             currentAmmoClip--;
             OnAmmoClipRemoved?.Invoke(this, EventArgs.Empty);
             needsRefill = true;
             ActivateStructurePrimaryFunctionInteraction(true);
+            SetCurrentStructureInteractionType(StructureInteractionType.primaryFunction);
         }
     }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 public class Gun_Minigun : Gun {
 
     private float currentSpinCooldown;
-    private float standardMaxSpinRate = 0.11f;
+    private float standardMaxSpinRate = 0.1f;
     private float maxSpinRate;
 
     private float spinningMovementDebuff = 1.5f;

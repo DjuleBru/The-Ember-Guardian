@@ -10,6 +10,7 @@ public class GunProjectile : MonoBehaviour
     [SerializeField] protected bool explodeOnContact;
     [SerializeField] protected bool damagesPlayer;
     [SerializeField] protected float maxDistanceToDamagePlayer = 1f;
+    [SerializeField] private bool dealDirectDamage = true;
     protected int penetrationMaxAmount = 1;
 
     protected Rigidbody2D rb;
@@ -98,6 +99,7 @@ public class GunProjectile : MonoBehaviour
                 if (!projectileExploded) {
                     if (projectileHitCreature) return;
                     if (projectileBouncedOnGround) return;
+                    if (!dealDirectDamage) return;
                     projectileHitCreature = true;
                     int projectileHitDamage = Mathf.RoundToInt(projectileExplosionDamage / 10f);
 

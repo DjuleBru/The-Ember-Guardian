@@ -59,12 +59,15 @@ MonoBehaviour:
   mobHitPS_Splatter_Continuous: {fileID: 1657823130492668103, guid: d8f1fa8f87ec49b43b547e4ae973b7f5, type: 3}
   mobHitPS_Splatter_Crit: {fileID: 1657823130492668103, guid: 51a7451741ce5eb43998d6c50bbe71b2, type: 3}
   useHitXPosition: 0
-  creatureSO: {fileID: 11400000, guid: 4677f0daccecce74488f30b387df3971, type: 2}
+  creatureSO: {fileID: 0}
   detectionCollider: {fileID: 9086489504018976004}
   creatureMovement: {fileID: 2201482587927928448}
   critZoneColliders:
   - {fileID: 617523866817803319}
   autoAimPosition: {fileID: 8677001440942180455}
+  stuckCheckDelay: 1
+  stuckKillTime: 10
+  minMovementThreshold: 0.1
 --- !u!114 &2201482587927928448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7191,7 +7194,7 @@ CapsuleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2147483648
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -7223,7 +7226,7 @@ GameObject:
   - component: {fileID: 9086489504018976004}
   - component: {fileID: 4621125121055982351}
   - component: {fileID: 3856744932199881647}
-  m_Layer: 15
+  m_Layer: 31
   m_Name: DetectionCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

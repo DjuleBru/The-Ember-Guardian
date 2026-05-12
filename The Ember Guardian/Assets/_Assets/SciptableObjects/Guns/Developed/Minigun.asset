@@ -48,7 +48,7 @@ MonoBehaviour:
   mouseCursorSprite_SW: {fileID: 21300000, guid: e4fdae90f8fdb734f94dbf62e85a889b, type: 3}
   initialMouseCursorWidth: 80
   initialMouseCursorHeight: 80
-  ammoTypeUsed: 7
+  ammoTypeUsed: 16
   bulletIsParticle: 0
   bulletIsProjectile: 1
   bulletIsSprite: 0
@@ -80,8 +80,8 @@ MonoBehaviour:
   surgeReloadProbability: 0.15
   jamRepairHitAmount: 0
   perfectQTEBulletAmountDamageBuffed: 25
-  weightAccelerationFactor: 0.85
-  reloadAccelerationFactor: 0.85
+  weightAccelerationFactor: 0.8
+  reloadAccelerationFactor: 0.8
   followMouseSpeed: 10
   swapToWeaponTimeMultiplier: 1
   gunKnockback: 0.2

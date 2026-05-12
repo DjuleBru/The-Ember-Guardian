@@ -49,7 +49,6 @@ public class WorkerCurrencies : MonoBehaviour {
     private void CurrentPayOrbsUI_OnSingleOrbPaid(object sender, PayCurrencyUI.OnSingleOrbFilledEventArgs e) {
         PlayerCurrencies.CurrencyType nextCurrencyTypeToPay = currentPayCurrencyUI.GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay();
 
-
         PayNextCurrency(nextCurrencyTypeToPay);
     }
 
@@ -58,7 +57,7 @@ public class WorkerCurrencies : MonoBehaviour {
         float currencyIndexNormalized = currentPayCurrencyUI.GetCurrencyIndexNormalized();
 
         int currencyAmount = worker.GetCurrencyAmount(currencyTypeToPay);
-        //Debug.Log("PayNextCurrency " + currencyAmount);
+        //Debug.Log("currencyTypeToPay " + currencyTypeToPay + " currencyAmount " + currencyAmount);
 
         if (currencyAmount > 0) {
             StartPayingCurrency(currencyTypeToPay, currencyTemplateUI, currencyIndexNormalized);

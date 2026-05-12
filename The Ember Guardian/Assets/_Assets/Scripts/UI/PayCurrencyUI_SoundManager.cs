@@ -64,7 +64,7 @@ public class PayCurrencyUI_SoundManager : MonoBehaviour
         float maxDistanceToHear = 25f;
         float volumeMultiplierWithDistance = 1f;
 
-        float distanceToPlayer = Player.Instance.transform.position.x - (sender as PayCurrencyUI).transform.position.x;
+        float distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - (sender as PayCurrencyUI).transform.position.x);
 
         if (distanceToPlayer >= maxDistanceToHear) {
             volumeMultiplierWithDistance = 0f;

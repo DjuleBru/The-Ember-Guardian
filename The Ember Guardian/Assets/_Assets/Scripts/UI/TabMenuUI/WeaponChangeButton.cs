@@ -14,6 +14,8 @@ public class WeaponChangeButton : ButtonUI
     [SerializeField] private Image gunIconImage;
     [SerializeField] private bool isPrimaryWeaponButton;
     [SerializeField] private TextMeshProUGUI weaponNameText;
+    [SerializeField] private Image gunAmmoTypeImage;
+    [SerializeField] private Sprite specialAmmoSprite;
 
     public static event EventHandler OnAnyWeaponChangeButtonPressed;
 
@@ -90,6 +92,7 @@ public class WeaponChangeButton : ButtonUI
             gunIconImage.sprite = gunSO.gunSprite;
             gunIconImage.color = Color.white;
 
+
         } else {
             Color transparentColor = Color.white;
             transparentColor.a = 0f;
@@ -103,10 +106,15 @@ public class WeaponChangeButton : ButtonUI
         UpdateGunIconImage(linkedGunSO);
         if(linkedGunSO != null) {
             weaponNameText.text = LocalizationManager.Instance.GetLocalizedText(gunSO.gunType.ToString());
+            gunAmmoTypeImage.gameObject.SetActive(true);
         } else {
             weaponNameText.text = "";
+            gunAmmoTypeImage.gameObject.SetActive(false);
         }
 
+        if (gunSO != null && gunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+            gunAmmoTypeImage.sprite = specialAmmoSprite;
+        }
     }
 
     public GunSO GetLinkedGunSO() {

@@ -274,6 +274,7 @@ public class StructureUI : MonoBehaviour
 
         // Afficher le type courantx
         if (activeTypes.Contains(structure.GetCurrentStructureInteractionType())) {
+            //Debug.Log(structure.GetCurrentStructureInteractionType());
             switch (structure.GetCurrentStructureInteractionType()) {
                 case Structure.StructureInteractionType.primaryFunction:
                     ShowStructurePrimaryFunctionUI();

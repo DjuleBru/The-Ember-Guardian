@@ -146,6 +146,15 @@ public class Tower : Structure
         OnHunterGarrisoned?.Invoke(this, EventArgs.Empty);
     }
 
+    public void UngarrisonWorker(Worker worker) {
+        Vector3 groundPosition = new Vector3(transform.position.x, 1, 0);
+        worker.transform.position = groundPosition;
+        worker.AssignDefensiveStructure(null);
+        worker.GetComponent<HunterJob>().ResetRangeBuff();
+        worker.GetComponent<HunterJob>().ResetDamageBuff();
+        assignedWorkersList.Remove(worker);
+    }
+
     protected void SetWorkerGarrisonPosition(Worker worker) {
         int workerIndex = assignedWorkersList.IndexOf(worker);
         if (workerIndex < 0) {

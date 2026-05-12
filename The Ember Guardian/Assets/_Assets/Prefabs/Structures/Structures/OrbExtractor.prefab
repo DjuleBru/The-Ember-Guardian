@@ -9978,6 +9978,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 753321179b77de048b026cd54fc8534a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   orbExtractor: {fileID: 6974271337797978079}
   pullLevelAudioClip:
   - {fileID: 8300000, guid: 0af03b268be49f544846c7156039accc, type: 3}
@@ -10431,7 +10433,7 @@ MonoBehaviour:
   secondaryFunctionUnlocked: 0
   visualIndicator: {fileID: 0}
   orbSpawnPosition: {fileID: 7441869313988092870}
-  drillAmountRequiredToCollectOrb: 10
+  drillAmountRequiredToCollectOrb: 8
   engineerWorkingPosition: {fileID: 5105957668410904559}
   engineerDropPosition: {fileID: 47179211954914296}
 --- !u!4 &6349067041674093866 stripped

@@ -9,7 +9,9 @@ using UnityEngine.UI;
 public class WeaponReplaceButton : ButtonUI {
 
     [SerializeField] private Image gunIconImage;
+    [SerializeField] private Image gunAmmoTypeImage;
     [SerializeField] private TextMeshProUGUI weaponNameText;
+    [SerializeField] private Sprite specialAmmoSprite;
 
     private Button button;
     private GunSO linkedGunSO;
@@ -63,9 +65,12 @@ public class WeaponReplaceButton : ButtonUI {
 
     public void SetLinkedGunSO(GunSO gunSO) {
         linkedGunSO = gunSO;
-        UpdateGunIconImage(gunSO);
 
+        UpdateGunIconImage(gunSO);
         weaponNameText.text = LocalizationManager.Instance.GetLocalizedText(gunSO.gunType.ToString());
+        if(gunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
+            gunAmmoTypeImage.sprite = specialAmmoSprite;
+        }
     }
 
     private void UpdateGunIconImage(GunSO gunSO) {

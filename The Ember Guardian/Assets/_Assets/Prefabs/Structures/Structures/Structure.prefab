@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: 932857151962827383}
   - component: {fileID: 7506368512435722411}
   - component: {fileID: 863618961266177847}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Structure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2065,7 +2065,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structureSpriteRenderer: {fileID: 2858744977638243454}
   structureFunctionIconSpriteRenderer: {fileID: 4340702860594050722}
-  structureInteractionIconImage: {fileID: 0}
+  structureInteractionIconGO: {fileID: 0}
   greyedStructionIconColor: {r: 1, g: 1, b: 1, a: 0.3137255}
   unhoveredMaterial: {fileID: 2100000, guid: 2ba136974dfe4bc43b6cb9c770ec4fae, type: 2}
   hoveredMaterial: {fileID: 2100000, guid: c6a4bb7424abc8347826a06e33f33e40, type: 2}

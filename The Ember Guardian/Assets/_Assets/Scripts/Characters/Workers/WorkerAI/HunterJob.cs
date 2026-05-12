@@ -93,7 +93,9 @@ public class HunterJob : WorkerJob {
         ScavengableObstacle.OnAnyObstacleBuilt += ScavengableObstacle_OnAnyObstacleBuilt;
         ScavengableObstacle.OnAnyScavengableObstacleDeActivatedMining += ScavengableObstacle_OnAnyScavengableObstacleDeActivatedMining;
         worker.OnMobDied += Worker_OnMobDied;
+        worker.OnSideAssigned += Worker_OnSideAssigned;
     }
+
 
     private void Update() {
         if (worker.GetIsPaused()) return;
@@ -381,7 +383,6 @@ public class HunterJob : WorkerJob {
 
 
                     // Keep checking if tower spots have been opened
-
                     if (worker.GetDefensiveStructureAssigned() == null) {
                         TryAssignTower();
 
@@ -391,7 +392,6 @@ public class HunterJob : WorkerJob {
                     };
 
                     if (targetCreature == null) {
-
                         if(assignedTower == null) {
                             CheckClosestCreatureSmart();
                         } else {
@@ -448,6 +448,17 @@ public class HunterJob : WorkerJob {
                     break;
 
             }
+        }
+
+    }
+    private void Worker_OnSideAssigned(object sender, EventArgs e) {
+        if (assignedTower != null) {
+            assignedTower.UngarrisonWorker(worker);
+            assignedTower = null;
+        };
+
+        if (targetAnimal != null) {
+            RemoveCurrentTargetAnimal();
         }
 
     }
@@ -686,6 +697,7 @@ public class HunterJob : WorkerJob {
 
     public void RemoveCurrentTargetAnimal() {
         if (targetAnimal == null) return;
+
         targetAnimal.OnMobDroppedCollectibles -= TargetAnimal_OnAnimalDroppedCollectibles;
         targetAnimal.OnMobDamageTaken -= TargetAnimal_OnMobDamageTaken;
         targetAnimal.UnAssignHunter(worker);

@@ -292,7 +292,8 @@ public class DogAI : MonoBehaviour
                     return;
                 }
 
-                Creature newClosestIncomingCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(transform.position, 50f, 0, true); ;
+                Creature newClosestIncomingCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(transform.position, 50f, 0, true);
+                //Debug.Log("newClosestIncomingCreature " + newClosestIncomingCreature + " closestIncomingCreature " + closestIncomingCreature);
                 if(newClosestIncomingCreature != closestIncomingCreature) {
                     ChangeState(State.nightInCampIdle);
                     return;

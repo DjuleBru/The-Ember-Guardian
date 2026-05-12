@@ -153,14 +153,33 @@ public class EngineerJob : WorkerJob {
 
                 case EngineerState.refillingStructure:
 
-                    if (assignedStructure.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.upgrade) {
+                    if (assignedStructure.GetPayCurrencyUI().GetPlayerInteracting()) {
                         assignedStructure.SetWorkerRefillingStructure(workerCurrencies, false);
                         return;
                     };
 
-                    assignedStructure.SetWorkerRefillingStructure(workerCurrencies, true);
-                    if(!assignedStructure.NeedsRefill()) {
+                    if (assignedStructure.GetCurrentStructureInteractionType() == Structure.StructureInteractionType.upgrade) {
+                        assignedStructure.SetWorkerRefillingStructure(workerCurrencies, false);
                         ChangeState(EngineerState.idle);
+                        return;
+                    };
+
+                    if(assignedStructure.GetStructureSO().structureCategory != StructureSO.StructureCategory.storage) {
+                        if (assignedStructure.GetIsBeingRefilledByEngineer() && assignedStructure.GetEngineerCurrentlyRefillingStructure() != workerCurrencies) {
+                            ChangeState(EngineerState.idle);
+                            return;
+                        }
+                    }
+
+                    if(worker.GetCurrencyAmount(assignedStructure.GetRefillCurrencyTypeNeeded()) < assignedStructure.GetMinimumRefillAmountRequired()) {
+                        ChangeState(EngineerState.idle);
+                        return;
+                    }
+
+                    if (!assignedStructure.NeedsRefill()) {
+                        ChangeState(EngineerState.idle);
+                    } else {
+                        assignedStructure.SetWorkerRefillingStructure(workerCurrencies, true);
                     }
 
                 break;

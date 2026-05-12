@@ -32,6 +32,7 @@ public class WorkerDetectionCollider : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
+        //Debug.Log("OnTriggerEnter2D " + collision.gameObject + " " + collision.gameObject.transform.parent + " " + collision.gameObject.transform.parent.transform.parent);
         Creature creature = collision.gameObject.GetComponent<Creature>();
         CreatureSpawner_Ambush ambushSpawner = collision.gameObject.GetComponent<CreatureSpawner_Ambush>();
 

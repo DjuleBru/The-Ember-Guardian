@@ -46,6 +46,7 @@ public class Worker : Mob {
     public event EventHandler OnWorkerUnpaused;
     public static event EventHandler OnAnyWorkerDroppedAllCurrencies;
     public event EventHandler OnWildJobTypeSet;
+    public event EventHandler OnSideAssigned;
 
     private void Awake() {
         workerAI = GetComponent<WorkerAI>();
@@ -92,7 +93,7 @@ public class Worker : Mob {
                 health += 1;
                 refillHealthTimer = 0;
 
-                Debug.Log("refill health ! " + health);
+                //Debug.Log("refill health ! " + health);
             }
         }
     }
@@ -196,6 +197,7 @@ public class Worker : Mob {
 
     public void AssignSide(CampZoneManager.CampSide side) {
         sideAssigned = side;
+        OnSideAssigned?.Invoke(this, EventArgs.Empty);
     }
 
     public CampZoneManager.CampSide GetCampSideAddigned() {

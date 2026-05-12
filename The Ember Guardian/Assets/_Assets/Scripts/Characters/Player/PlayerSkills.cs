@@ -790,9 +790,9 @@ public class PlayerSkills : MonoBehaviour
 
             case SkillItem.SkillType.passiveShootOnReload:
                 shootOnReload = true;
-                Debug.Log("relativeBuffEffectValue " + relativeBuffEffectValue);
+                //Debug.Log("relativeBuffEffectValue " + relativeBuffEffectValue);
                 shootOnReloadShotAmount += (int)relativeBuffEffectValue;
-                Debug.Log("shootOnReloadShotAmount " + shootOnReloadShotAmount);
+                //Debug.Log("shootOnReloadShotAmount " + shootOnReloadShotAmount);
                 break;
 
             case SkillItem.SkillType.passiveMeleeAttackMagmaShot:

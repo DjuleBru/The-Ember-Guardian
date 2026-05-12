@@ -17,7 +17,7 @@ public class OrbExtractor : Structure
     public event EventHandler OnEngineerStoppedWorking;
 
     private bool drilling;
-    private float probabilityToExtractBigOrb = .3f;
+    private float probabilityToExtractBigOrb = .4f;
     private float drillAnimationDuration = 1.5f;
     private float extractionRate = .7f;
     private float extractionRateWithEngineer = 3f;

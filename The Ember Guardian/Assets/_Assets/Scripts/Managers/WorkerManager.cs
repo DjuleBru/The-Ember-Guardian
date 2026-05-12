@@ -251,11 +251,33 @@ public class WorkerManager : MonoBehaviour
             OnHunterAssignedSide?.Invoke(this, EventArgs.Empty);
         }
     }
+    private void SortHuntersByDefensiveStructure(List<Worker> workers) {
+
+        workers.Sort(CompareHuntersByDefensiveStructure);
+
+    }
+    private int CompareHuntersByDefensiveStructure(Worker a, Worker b) {
+
+        bool aHasStructure = a.GetDefensiveStructureAssigned() != null;
+        bool bHasStructure = b.GetDefensiveStructureAssigned() != null;
+
+        if (aHasStructure == bHasStructure) {
+            return 0;
+        }
+
+        if (!aHasStructure) {
+            return -1;
+        }
+
+        return 1;
+    }
 
     public void ReassignHunterToASide(CampZoneManager.CampSide campSide) {
+        // Sort assigned hunters by ungarrisoned => garrisoned
 
         if (campSide == CampZoneManager.CampSide.left) {
             if (rightSideAssignedHunters.Count == 0) return;
+            SortHuntersByDefensiveStructure(rightSideAssignedHunters);
 
             Worker worker = rightSideAssignedHunters[0];
             leftSideAssignedHunters.Add(worker);
@@ -268,6 +290,7 @@ public class WorkerManager : MonoBehaviour
 
         if (campSide == CampZoneManager.CampSide.right) {
             if (leftSideAssignedHunters.Count == 0) return;
+            SortHuntersByDefensiveStructure(leftSideAssignedHunters);
 
             Worker worker = leftSideAssignedHunters[0];
             rightSideAssignedHunters.Add(worker);

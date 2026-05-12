@@ -107,6 +107,10 @@ public class MobSpawner : MonoBehaviour
             }
         }
 
+        if (SavingManager_Level.Instance.GetLoadingSavedLevel() && LevelManager.Instance.IsHordeMode() && isAnimalSpawner) {
+            return;
+        }
+
         SpawnMobs(mobAmountToSpawn);
     }
 
@@ -149,6 +153,7 @@ public class MobSpawner : MonoBehaviour
     private void LinkedMobSpawner_OnAllMobRemoved(object sender, EventArgs e) {
         KillRemainingSpawnedMobs();
     }
+
 
     public virtual void RemoveMobFromMobSpawnedList(Mob mob) {
         mobSpawnedList.Remove(mob);
@@ -211,6 +216,7 @@ public class MobSpawner : MonoBehaviour
     }
 
     public virtual void SpawnMobs(int mobAmount) {
+        //Debug.Log(this + " SpawnMobs " + mobAmount);
         if (mobPrefab == null) return;
         if (ambushSpawned) return;
 
@@ -376,7 +382,7 @@ public class MobSpawner : MonoBehaviour
         }
     }
 
-    private void KillRemainingSpawnedMobs() {
+    public void KillRemainingSpawnedMobs() {
         List<Mob> mobListCopy = new List<Mob>();
         foreach (Mob mob in mobSpawnedList) {
             mobListCopy.Add(mob);
@@ -431,7 +437,6 @@ public class MobSpawner : MonoBehaviour
     }
 
     public void SetMobAmountToSpawn(int mobAmountToSpawn) {
-        Debug.Log(this + " mobAmountToSpawn " + mobAmountToSpawn);
         this.mobAmountToSpawn = mobAmountToSpawn;
     }
 
