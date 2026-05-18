@@ -835,9 +835,8 @@ public class PlayerShoot : MonoBehaviour
         }
 
         bool secondaryAbilityUnlocked = heldGun.GetSecondaryAbilityUnlocked();
-        bool primarySecondaryAbilityEquipped = debugUseFirstSecondaryAbility;
-        bool secondarySecondaryAbilityEquipped = debugUseSecondSecondaryAbility;
-
+        bool primarySecondaryAbilityEquipped = heldGun.GetPrimarySecondaryAbilityEquipped();
+        bool secondarySecondaryAbilityEquipped = heldGun.GetSecondSecondaryAbilityEquipped();
         if (useDebugGun) {
             secondaryAbilityUnlocked = true;
         }
@@ -849,7 +848,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Rifle) {
 
-            if (primarySecondaryAbilityEquipped) {
+            if (!secondarySecondaryAbilityEquipped) {
                 rifleSemiAutoModeActive = !rifleSemiAutoModeActive;
 
                 if (rifleSemiAutoModeActive) {
@@ -864,7 +863,7 @@ public class PlayerShoot : MonoBehaviour
                 OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
             }
 
-            if (debugUseSecondSecondaryAbility) {
+            if (secondarySecondaryAbilityEquipped) {
 
                 rifleLoadShotModeActive = !rifleLoadShotModeActive;
                 if (rifleLoadShotModeActive) {
@@ -885,7 +884,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Shotgun) {
-            if(primarySecondaryAbilityEquipped) {
+            if(!secondarySecondaryAbilityEquipped) {
                 if (coolingDown) return;
                 if (!canShoot) return;
 
@@ -929,7 +928,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.SMG) {
 
-            if(primarySecondaryAbilityEquipped) {
+            if(!secondarySecondaryAbilityEquipped) {
                 float shootCooldownBuffValue = 1.4f;
                 PlayerStats.Instance.BuffShootCooldown(shootCooldownBuffValue);
 
@@ -954,7 +953,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Sniper) {
-            if(primarySecondaryAbilityEquipped) {
+            if(!secondarySecondaryAbilityEquipped) {
                 OnPlayerAimedSightStarted?.Invoke(this, EventArgs.Empty);
                 OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = true;
@@ -980,7 +979,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Revolver) {
-            if(primarySecondaryAbilityEquipped) {
+            if(!secondarySecondaryAbilityEquipped) {
                 if (heldGun.GetCurrentBullet() == 0) {
                     TryAutoReload();
                     return;
@@ -1021,7 +1020,7 @@ public class PlayerShoot : MonoBehaviour
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.GrenadeLauncher) {
 
-            if(primarySecondaryAbilityEquipped) {
+            if(!secondarySecondaryAbilityEquipped) {
                 projectileExplodesOnPlayerClickModeActive = !projectileExplodesOnPlayerClickModeActive;
                 projectileExplodesOnPlayerClick = true;
 
@@ -1051,7 +1050,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.LMG) {
-            if (primarySecondaryAbilityEquipped) {
+            if (!secondarySecondaryAbilityEquipped) {
                 if (settingUpLMG) return;
                 if (!secondaryAbilityActive) {
                     gunKnockback = 0f;
@@ -1105,7 +1104,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.AAGun) {
-            if(primarySecondaryAbilityEquipped) {
+            if(!secondarySecondaryAbilityEquipped) {
                 aaGunSpawnsChildProjectiles = !aaGunSpawnsChildProjectiles;
 
                 OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
@@ -1134,7 +1133,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.RocketLauncher) {
-            if(primarySecondaryAbilityEquipped) {
+            if(!secondarySecondaryAbilityEquipped) {
                 rocketLauncherSpawnsMiniRockets = !rocketLauncherSpawnsMiniRockets;
 
                 OnPlayerSwitchedFireMode?.Invoke(this, EventArgs.Empty);
@@ -1169,7 +1168,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.Pistol) {
-            if(primarySecondaryAbilityEquipped) {
+            if(!secondarySecondaryAbilityEquipped) {
                 silencerActive = !silencerActive;
 
                 if (silencerActive) {
@@ -1198,7 +1197,7 @@ public class PlayerShoot : MonoBehaviour
         }
 
         if (heldGun.GetGunSO().gunType == GunSO.GunType.MiniGun) {
-            if(primarySecondaryAbilityEquipped) {
+            if(!secondarySecondaryAbilityEquipped) {
                 OnWeaponSecondaryAbilityStarted?.Invoke(this, EventArgs.Empty);
                 secondaryAbilityActive = true;
             }
@@ -1222,7 +1221,6 @@ public class PlayerShoot : MonoBehaviour
 
     private void GameInput_OnWeaponSecondaryAbilityCanceled(object sender, EventArgs e) {
         rightClickHeldDown = false;
-        bool primarySecondaryAbilityEquipped = debugUseFirstSecondaryAbility;
         bool secondarySecondaryAbilityEquipped = debugUseSecondSecondaryAbility;
 
         if (!Player.Instance.GetPlayerControlInputsEnabled()) return;
@@ -1236,7 +1234,7 @@ public class PlayerShoot : MonoBehaviour
 
             if (heldGun.GetGunSO().gunType == GunSO.GunType.Shotgun) {
 
-                if(primarySecondaryAbilityEquipped) {
+                if(!secondarySecondaryAbilityEquipped) {
                     loadingShot = false;
                     OnPlayerFocusBlastStopped?.Invoke(this, EventArgs.Empty);
                     OnWeaponSecondaryAbilityEnded?.Invoke(this, EventArgs.Empty);
@@ -1246,7 +1244,7 @@ public class PlayerShoot : MonoBehaviour
             }
 
             if (heldGun.GetGunSO().gunType == GunSO.GunType.SMG) {
-                if (primarySecondaryAbilityEquipped) {
+                if (!secondarySecondaryAbilityEquipped) {
                     float shootCooldownBuffValue = 1.4f;
                     PlayerStats.Instance.DebuffShootCooldown(shootCooldownBuffValue);
                     OnPlayerOverclockedSMGStopped?.Invoke(this, EventArgs.Empty);
@@ -1341,11 +1339,11 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public bool GetFirstSecondaryAbilityEquipped() {
-        return debugUseFirstSecondaryAbility;
+        return heldGun.GetPrimarySecondaryAbilityEquipped();
     }
 
     public bool GetSecondSecondaryAbilityEquipped() {
-        return debugUseSecondSecondaryAbility;
+        return heldGun.GetSecondSecondaryAbilityEquipped();
     }
 
 
@@ -1392,6 +1390,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public void SetPrimaryWeaponSO(GunSO gunSO, bool setGunActive = true) {
+        CancelSecondaryFireMode();
 
         primaryGunSO = gunSO;
         if (setGunActive) {
@@ -1403,6 +1402,8 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public void SetSecondaryWeaponSO(GunSO gunSO, bool setGunActive = true) {
+        CancelSecondaryFireMode();
+
         secondayGunSO = gunSO;
 
         if (setGunActive) {
@@ -1413,6 +1414,7 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public void PickUpWeapon(GunSO gunSO) {
+
         if (canHold2Guns && secondayGunSO == null) {
             SetSecondaryWeaponSO(gunSO);
         }
@@ -1422,6 +1424,8 @@ public class PlayerShoot : MonoBehaviour
     }
 
     private void ReplaceHeldWeaponSO(GunSO gunSO) {
+        CancelSecondaryFireMode();
+
         if (replacedGunSOList.Contains(gunSO)) {
             replacedGunSOList.Remove(gunSO);
         }
@@ -1439,6 +1443,8 @@ public class PlayerShoot : MonoBehaviour
     }
 
     public void ReplaceWeaponSO(GunSO gunSO, bool replacePrimaryWeapon) {
+        CancelSecondaryFireMode();
+
         if (replacedGunSOList.Contains(gunSO)) {
             replacedGunSOList.Remove(gunSO);
         }
@@ -1468,7 +1474,7 @@ public class PlayerShoot : MonoBehaviour
         }
     }
 
-    private void CancelSecondaryFireMode() {
+    public void CancelSecondaryFireMode() {
         if (rifleSemiAutoModeActive) {
             automaticWeapon = false;
             rifleSemiAutoModeActive = false;

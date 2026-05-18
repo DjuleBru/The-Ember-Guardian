@@ -63,6 +63,7 @@ public class ItemButtonUI : ButtonUI {
 
     private bool itemSelected;
     private bool itemHovered;
+    private bool equippedItemOverInHierarchy;
 
     public static event EventHandler OnAnyOutputLinkUnlocked;
     public static event EventHandler OnAnyLockedButtonTryPress;
@@ -97,6 +98,7 @@ public class ItemButtonUI : ButtonUI {
         hubMerchantItem.OnHubMerchantItemLoaded += HubMerchantItem_OnHubMerchantItemLoaded;
         hubMerchantItem.OnHubMerchantItemUpgraded += HubMerchantItem_OnHubMerchantItemUpgraded;
         hubMerchantItem.OnItemMustRefreshDescriptionCard += HubMerchantItem_OnItemMustRefreshDescriptionCard;
+        hubMerchantItem.OnHubMerchantItemUnequipped += HubMerchantItem_OnHubMerchantItemUnequipped;
 
         HubMerchant.OnPlayerStoppedInteractingWithAnyHubMerchant += HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant;
 
@@ -107,6 +109,10 @@ public class ItemButtonUI : ButtonUI {
             }  
         }
 
+    }
+
+    private void HubMerchantItem_OnHubMerchantItemUnequipped(object sender, EventArgs e) {
+        RefreshItemEquippedUI();
     }
 
     protected override void Start() {
@@ -294,6 +300,7 @@ public class ItemButtonUI : ButtonUI {
         }
 
         RefreshItemStatusVisuals();
+        RefreshItemEquippedUI();
         RefreshItemLevelUI();
     }
 
@@ -415,7 +422,6 @@ public class ItemButtonUI : ButtonUI {
         }
         else {
             // Item is already bought
-
             if (hubMerchantItem.GetItemUpgradeable()) {
                 // Upgrade
 
@@ -427,8 +433,15 @@ public class ItemButtonUI : ButtonUI {
 
                 hubMerchantItem.UpgradeItem();
 
-            } else {
-                hubMerchantItem.EquipOrUnequipItem();
+            }
+
+            if(hubMerchantItem.GetItemEquippable()) {
+
+                if (!hubMerchantItem.GetItemEquipped()) {
+                    hubMerchantItem.EquipOrUnequipItem();
+                    RefreshItemEquippedUI();
+                }
+
             }
 
         }
@@ -464,12 +477,7 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void StartBuyItemVisuals() {
-        if (hubMerchantItem.GetItemUpgradeable() && hubMerchantItem.GetItemMaxed()) {
-            outlineImage.sprite = itemMaxedOutlineSprite;
-        }
-        else {
-            outlineImage.sprite = outlineImageBoughtSprite;
-        }
+        RefreshOutlineSprite();
         outlineImage.color = boughtOutlineColor;
         backgroundImage.color = boughtBackgroundColor;
 
@@ -479,11 +487,7 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void SetItemBoughtVisuals() {
-        if (hubMerchantItem.GetItemUpgradeable() && hubMerchantItem.GetItemMaxed()) {
-            outlineImage.sprite = itemMaxedOutlineSprite;
-        } else {
-            outlineImage.sprite = outlineImageBoughtSprite;
-        }
+        RefreshOutlineSprite();
 
         outlineImage.color = boughtOutlineColor;
         backgroundImage.color = boughtBackgroundColor;
@@ -491,6 +495,20 @@ public class ItemButtonUI : ButtonUI {
         iconImage.material.SetFloat("_GreyscaleBlend", 0);
 
         itemButtonUI_Visual.SetItemLoadedBought();
+    }
+
+    private void RefreshOutlineSprite() {
+        if (hubMerchantItem.GetItemUpgradeable() && hubMerchantItem.GetItemMaxed()) {
+            outlineImage.sprite = itemMaxedOutlineSprite;
+        }
+        else {
+            if(hubMerchantItem.GetItemEquipped()) {
+                outlineImage.sprite = itemEquippedOutlineSprite;
+            } else {
+                outlineImage.sprite = outlineImageBoughtSprite;
+            }
+
+        }
     }
 
     private void SetOutputLinksBought() {
@@ -683,6 +701,8 @@ public class ItemButtonUI : ButtonUI {
             return;
         }
 
+        RefreshItemEquippedUI();
+
         if ((!hubMerchantItem.GetItemBought() && itemUnlockableOnlyInLevel)) {
             outlineImage.color = Color.grey;
             return;
@@ -701,6 +721,17 @@ public class ItemButtonUI : ButtonUI {
             outlineImage.color = outlineUnlockedBuyableColor;
         }
 
+    }
+
+    private void RefreshItemEquippedUI() {
+        if (hubMerchantItem.GetItemEquipped()) {
+            outlineImage.sprite = itemEquippedOutlineSprite;
+            transform.SetAsLastSibling();
+
+        } else {
+            outlineImage.sprite = defaultOutlineSprite; 
+            
+        }
     }
 
     private void LockNavigationForLockedItem() {
@@ -727,6 +758,7 @@ public class ItemButtonUI : ButtonUI {
         iconImage.material.SetFloat("_GreyscaleBlend", 1);
         backgroundImage.color = Color.black;
         itemButtonUI_Visual.DisableAnimator();
+        outlineImage.sprite = defaultOutlineSprite;
 
         foreach (Image image in outputLinkUnlockedImageList) {
             image.gameObject.SetActive(false);

@@ -39,6 +39,18 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         pistol,
         rocketLauncher,
         assaultRifle,
+        chargedShot,
+        toxicRounds,
+        assaultBreach,
+        piercingCharge,
+        hipBarrage,
+        ricochetChamber,
+        blastRounds,
+        proximityMines,
+        chainPayload,
+        trackerRounds,
+        firestormPayloads,
+        siegePayload,
     }
 
     public enum GunItemCategory {
@@ -51,6 +63,8 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
     [SerializeField] private GunItemType gunItem;
     [SerializeField] private GunItemCategory gunItemCategory;
     [SerializeField] private GunSO linkedGunSO;
+    [SerializeField] private bool isPrimarySecondaryAbility;
+    [SerializeField] private bool isSecondSecondaryAbility;
     
     protected override void Awake() {
 
@@ -76,12 +90,11 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         if (merchantItem is HUBMerchantItem_GunMerchantItem) {
             HUBMerchantItem_GunMerchantItem gunItem = (HUBMerchantItem_GunMerchantItem)merchantItem;
 
+            bool isOtherSecondaryAbility = (gunItem.IsPrimarySecondaryAbility() && isSecondSecondaryAbility) || (gunItem.IsSecondSecondaryAbility() && isPrimarySecondaryAbility);
 
-            if (gunItem.GetGunItemCategory() == GunItemCategory.newGun && gunItemCategory == GunItemCategory.newGun && gunItem.GetLinkedGunSO() != linkedGunSO) {
-                // Another gun has been equipped
-
+            if (isOtherSecondaryAbility && gunItem.GetLinkedGunSO() == linkedGunSO) {
+                // Another ability has been equipped 
                 UnequipItem();
-
             }
             
 
@@ -119,20 +132,30 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
 
         if (gunItemCategory == GunItemCategory.newGun) {
             UnlockGun();
-            EquipOrUnequipItem();
         }
 
         if (gunItemCategory == GunItemCategory.gunAbility) {
             UnlockGunAbility();
+            EquipOrUnequipItem();
         }
 
         if (gunItemCategory == GunItemCategory.gunModule) {
-            //EquipOrUnequipItem();
             //UnlockGunModule();
         }
 
         base.BuyItem();
 
+    }
+
+    public override void EquipOrUnequipItem() {
+        base.EquipOrUnequipItem();
+
+        if (isPrimarySecondaryAbility) {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetPrimarySecondaryAbilityEquipped();
+        }
+        else {
+            PlayerShoot.Instance.GetGun(linkedGunSO).SetSecondSecondaryAbilityEquipped();
+        }
     }
 
     public override void SetItemBought() {
@@ -852,6 +875,12 @@ public class HUBMerchantItem_GunMerchantItem : HubMerchantItem
         InvokeOnItemLoaded();
     }
 
+    public bool IsPrimarySecondaryAbility() {
+        return isPrimarySecondaryAbility;
+    }
+    public bool IsSecondSecondaryAbility() {
+        return isSecondSecondaryAbility;
+    }
     private void OnDestroy() {
         OnAnyHubMerchantItemBought -= HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded;
         OnAnyHubMerchantItemUpgraded -= HUBMerchantItem_GunMerchantItem_OnAnyHubMerchantItemBoughtOrUpgraded;

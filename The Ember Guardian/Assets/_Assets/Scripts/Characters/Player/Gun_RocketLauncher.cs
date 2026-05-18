@@ -46,7 +46,7 @@ public class Gun_RocketLauncher : Gun {
         if (!gunActive) return;
 
         if (gunSO.gunType == GunSO.GunType.RocketLauncher) {
-            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if (secondSecondaryAbilityEquipped) {
 
                 if (PlayerShoot.Instance.GetRocketLauncherNukeMode()) {
 
@@ -54,12 +54,16 @@ public class Gun_RocketLauncher : Gun {
                     trajectoryPreview.enabled = true;
                     bulletSpeed = 30;
                     bulletLifetime = 3f;
+                    BuffBulletDamage(rocketLauncherNukeDmgBuff);
 
                 } else {
+
                     trajectoryPreviewLR.enabled = false;
                     trajectoryPreview.enabled = false;
                     bulletSpeed = 12.5f;
                     bulletLifetime = 1;
+                    DebuffBulletDamage(rocketLauncherNukeDmgBuff);
+
                 }
 
             }

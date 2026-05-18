@@ -29,7 +29,7 @@ public class GunVisual_LMG : GunVisual
     protected override void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
         if (!gun.GetGunActive()) return;
 
-        if (gunSecondaryAbilityActiveSpriteRenderer != null && PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+        if (gunSecondaryAbilityActiveSpriteRenderer != null && gun.GetSecondSecondaryAbilityEquipped()) {
             gunSecondaryFireModeActive = !gunSecondaryFireModeActive;
             gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
         }

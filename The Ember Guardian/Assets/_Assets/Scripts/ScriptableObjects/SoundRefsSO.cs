@@ -69,6 +69,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip openSkillsMenuPanel;
     public AudioClip hoverOrSelectHubMerchantItem;
     public AudioClip buyHubMerchantItem;
+    public AudioClip equipHubMerchantItem;
     public AudioClip[] upgradeHubMerchantItem;
     public AudioClip failBuyHubMerchantItem;
     public AudioClip tryBuyLockedHubMerchantItem;

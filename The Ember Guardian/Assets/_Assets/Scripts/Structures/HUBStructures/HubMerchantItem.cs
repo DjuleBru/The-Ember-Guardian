@@ -22,6 +22,7 @@ public class HubMerchantItem : MonoBehaviour
     [SerializeField] private bool isBoughtAtStart;
     [SerializeField] private bool isUnlockedAtStart;
     [SerializeField] protected bool itemUpgradeable;
+    [SerializeField] protected bool itemEquippable;
     [SerializeField] protected bool unlockRequiresAllPrerequisited;
 
     [SerializeField] protected DLCManager.DLCType linkedDLCType = DLCManager.DLCType.None;
@@ -51,6 +52,7 @@ public class HubMerchantItem : MonoBehaviour
 
     protected bool canBuyItem;
     protected bool itemBought;
+    protected bool itemEquipped;
     protected bool itemUnlocked;
     protected bool newItemUnlocked;
     protected bool itemStatusChanged;
@@ -284,18 +286,21 @@ public class HubMerchantItem : MonoBehaviour
 
     public virtual void EquipOrUnequipItem() {
         itemStatusChanged = true;
+        itemEquipped = !itemEquipped;
+
+        OnHubMerchantItemEquipped?.Invoke(this, EventArgs.Empty);
+        OnAnyHubMerchantItemEquipped?.Invoke(this, EventArgs.Empty);
     }
 
     public virtual void UnequipItem() {
+        itemEquipped = false;
         itemStatusChanged = true;
+
+        OnHubMerchantItemUnequipped?.Invoke(this, EventArgs.Empty);
     }
 
     public void InvokeOnItemLoaded() {
         OnHubMerchantItemLoaded?.Invoke(this, EventArgs.Empty);
-    }
-
-    public void InvokeOnItemUnequipped() {
-        OnHubMerchantItemUnequipped?.Invoke(this, EventArgs.Empty);
     }
 
     public void InvokeItemMustRefreshDescriptionCard() {
@@ -448,6 +453,12 @@ public class HubMerchantItem : MonoBehaviour
         return itemUpgradeable;
     }
 
+    public bool GetItemEquippable() {
+        return itemEquippable;
+    }
+    public bool GetItemEquipped() {
+        return itemEquipped;
+    }
     public bool GetItemLockedByDLC() {
         return !DLCManager.Instance.HasDLC(linkedDLCType);
     }
@@ -518,8 +529,19 @@ public class HubMerchantItem : MonoBehaviour
             }
 
             itemLevel = data.ContainsKey("Level") ? Convert.ToInt32(data["Level"]) : 0;
+            itemEquipped = data.ContainsKey("Equipped") ? Convert.ToBoolean(data["Equipped"]) : false;
 
-            if(linkedStatModifierSO != null) {
+            // Migration : auto-équipement de la primary ability uniquement si "Equipped" n'a jamais été sauvegardé
+            if (this is HUBMerchantItem_GunMerchantItem gunItem && gunItem.GetGunItemCategory() == HUBMerchantItem_GunMerchantItem.GunItemCategory.gunAbility) {
+
+                if (gunItem.IsPrimarySecondaryAbility() && itemBought && !data.ContainsKey("Equipped")) {
+                    itemEquipped = true;
+                    itemStatusChanged = true; // Pour que la save se fasse avec "Equipped = true"
+                    //Debug.Log("ITEM EQUIPPED");
+                }
+            }
+
+            if (linkedStatModifierSO != null) {
                 // Balancing Security 
                 int maxItemLevel = Mathf.Max(linkedStatModifierSO.blueGemCostList.Count, linkedStatModifierSO.redGemCostList.Count, linkedStatModifierSO.yellowGemCostList.Count, linkedStatModifierSO.purleGemCostList.Count, linkedStatModifierSO.cyanGemCostList.Count, linkedStatModifierSO.greenGemCostList.Count);
                 if(itemLevel > maxItemLevel) { itemLevel = maxItemLevel; }
@@ -560,6 +582,7 @@ public class HubMerchantItem : MonoBehaviour
             }
 
             itemLevel = data.ContainsKey("Level") ? Convert.ToInt32(data["Level"]) : 0;
+            itemEquipped = data.ContainsKey("Equipped") ? Convert.ToBoolean(data["Equipped"]) : false;
 
             if (linkedStatModifierSO != null) {
                 // Balancing Security 
@@ -582,7 +605,8 @@ public class HubMerchantItem : MonoBehaviour
             ["Bought"] = itemBought,
             ["Unlocked"] = itemUnlocked,
             ["NewlyUnlocked"] = newItemUnlocked,
-            ["Level"] = itemLevel
+            ["Level"] = itemLevel,
+            ["Equipped"] = itemEquipped
         };
 
         // Sauvegarde du dictionnaire complet en une seule clé
@@ -590,8 +614,8 @@ public class HubMerchantItem : MonoBehaviour
         if (parentHubMerchant.GetIsHordeModeNPC()) {
             key = GetItemType() + "_HordeModeData";
         }
-        ES3.Save(key, dataToSave);
 
+        ES3.Save(key, dataToSave);
         itemStatusChanged = false;
     }
 

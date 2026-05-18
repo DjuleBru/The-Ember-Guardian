@@ -47,6 +47,7 @@ public class BulletPSVisuals : MonoBehaviour
         PlayerSkills.Instance.OnPlayerInFireLightDebuffedDmg += PlayerSkills_OnPlayerInFireLightDebuffedDmg;
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
         PlayerSkills.Instance.OnActiveSkillDeactivated += PlayerSkills_OnActiveSkillDeactivated;
+        PlayerShoot.Instance.OnPlayerSwitchedFireMode += PlayerShoot_OnPlayerSwitchedFireMode;
 
         if(isOnProjectileVisual) {
             if(PlayerShoot.Instance.GetHeldGun().GetLastBulletShot()) {
@@ -64,6 +65,24 @@ public class BulletPSVisuals : MonoBehaviour
         }
     }
 
+    private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
+        if (gun.GetGunSO().gunType != GunSO.GunType.SMG) return;
+
+        ParticleSystem.MainModule trailMainModule = trailPS.main;
+        ParticleSystem.MainModule bulletModule = bulletPS.main;
+
+        if (PlayerShoot.Instance.GetSMGPoisonRoundsActive()) {
+
+            trailMainModule.startColor = poisonedPSColor;
+            bulletModule.startColor = new ParticleSystem.MinMaxGradient(poisonedPSColor, poisonedPSColor);
+
+        } else {
+
+            trailMainModule.startColor = Color.white;
+            bulletModule.startColor = new ParticleSystem.MinMaxGradient(initialBulletPSColor, initialBulletPSColor);
+
+        }
+    }
 
     private void PlayerSkills_OnActiveSkillDeactivated(object sender, PlayerSkills.OnSkillDeactivatedArgs e) {
         if (e.skillTypeDeactivated == SkillItem.SkillType.activeMagmaShotBullet || e.skillTypeDeactivated == SkillItem.SkillType.activeFeedFireOnKills) {
@@ -115,7 +134,6 @@ public class BulletPSVisuals : MonoBehaviour
             ParticleSystem.MainModule trailMainModule = trailPS.main;
             trailMainModule.startColor = fireLightBuffedBulletDmg;
         }
-
 
         if (bulletPS != null) {
             ParticleSystem.MainModule bulletModule = bulletPS.main;

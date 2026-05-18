@@ -99,6 +99,7 @@ public class PlayerWorldUITooltip : MonoBehaviour
     }
 
     public void ShowTooltipInstruction(string text1ToShow, string text2ToShow, InputControlIcons.Control controlType, float displayTime = 10f) {
+        Debug.Log("ShowTooltipInstruction " + text1ToShow);
         currentControl = controlType;
         List<Sprite> spriteList = InputControlIcons.Instance.GetControlIconSprite(controlType);
 

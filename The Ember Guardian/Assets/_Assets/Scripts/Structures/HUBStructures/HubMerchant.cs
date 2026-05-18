@@ -512,6 +512,7 @@ public class HubMerchant : MonoBehaviour
     #endregion
 
     public void SaveMerchant() {
+        //Debug.Log(this + "SaveMerchant " + hubMerchantLoaded);
         if (!hubMerchantLoaded) return;
         if (!merchantUnlocked) return;
 

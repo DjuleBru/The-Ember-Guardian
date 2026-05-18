@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6334019459852369413, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
       propertyPath: explosionVolumeMultiplier
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6334019459852369413, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}
       propertyPath: explosionAudioClips.Array.size
@@ -121,6 +121,7 @@ MonoBehaviour:
   explodeOnContact: 0
   damagesPlayer: 0
   maxDistanceToDamagePlayer: 1
+  dealDirectDamage: 1
   raycastMask:
     serializedVersion: 2
     m_Bits: 33718336

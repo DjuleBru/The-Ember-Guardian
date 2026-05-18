@@ -20,7 +20,7 @@ public class Gun_Minigun : Gun {
     private float secondaryAmmoConsumptionTime = .35f;
 
     private float minigunPrewarmSpinUpDurationBuff = 1.4f;
-    private float minigunExplosiveBulletsShootCooldownDebuff = 1.7f;
+    private float minigunExplosiveBulletsShootCooldownDebuff = 2f;
     private float minigunExplosiveBulletsRangeBuff = 1.35f;
 
     public event EventHandler OnMinigunStartedSpinning;
@@ -39,7 +39,7 @@ public class Gun_Minigun : Gun {
     private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, EventArgs e) {
         if (!gunActive) return;
 
-        if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+        if (secondSecondaryAbilityEquipped) {
             if(PlayerShoot.Instance.GetMinigunExplosiveBulletsActive()) {
 
                 maxSpinRate *= minigunExplosiveBulletsShootCooldownDebuff;

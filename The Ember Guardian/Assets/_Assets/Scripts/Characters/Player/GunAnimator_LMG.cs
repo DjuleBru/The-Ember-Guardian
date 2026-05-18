@@ -17,7 +17,7 @@ public class GunAnimator_LMG : GunAnimator {
             }
         }
 
-        if(PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+        if(gun.GetSecondSecondaryAbilityEquipped()) {
             animator.SetTrigger("SwitchFireMode");
 
             if(PlayerShoot.Instance.GetBlastingLMGModeActive()) {

@@ -169,6 +169,7 @@ public class SoundManager : MonoBehaviour
         ButtonUI.OnAnyButtonPressed += ButtonUI_OnAnyButtonPressed;
         ItemButtonUI.OnAnyButtonSelected += ItemButtonUI_OnAnyButtonSelected;
         ItemButtonUI.OnAnyButtonHovered += ItemButtonUI_OnAnyButtonHovered;
+        HubMerchantItem.OnAnyHubMerchantItemEquipped += HubMerchantItem_OnAnyHubMerchantItemEquipped;
         HubMerchantItem.OnAnyHubMerchantItemBought += HubMerchantItem_OnAnyHubMerchantItemBought;
         HubMerchantItem.OnAnyHubMerchantItemUpgraded += HubMerchantItem_OnAnyHubMerchantItemUpgraded;
         ItemButtonUI.OnAnyHubMerchantItemFailedBuy += ItemButtonUI_OnAnyHubMerchantItemFailedBuy;
@@ -397,6 +398,9 @@ public class SoundManager : MonoBehaviour
 
     private void HubMerchantItem_OnAnyHubMerchantItemBought(object sender, System.EventArgs e) {
         PlaySound2D(soundRefsSO.buyHubMerchantItem);
+    }
+    private void HubMerchantItem_OnAnyHubMerchantItemEquipped(object sender, System.EventArgs e) {
+        PlaySound2D(soundRefsSO.equipHubMerchantItem, .6f);
     }
 
     private void HubMerchantItem_OnAnyHubMerchantItemUpgraded(object sender, System.EventArgs e) {
@@ -856,7 +860,7 @@ public class SoundManager : MonoBehaviour
         if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.Pistol) {
             PlaySound2D(soundRefsSO.switchGunFireMode_pistol, .5f);
         }
-        if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.LMG && PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+        if (PlayerShoot.Instance.GetHeldGunSO().gunType == GunSO.GunType.LMG && PlayerShoot.Instance.GetHeldGun().GetSecondSecondaryAbilityEquipped()) {
             PlaySound2D(soundRefsSO.switchGunFireMode_LMG, 1);
         }
     }

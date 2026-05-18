@@ -39,7 +39,6 @@ public class SoundObject : MonoBehaviour
 
 
     public void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
-
         if (audioClipArray.Length == 0) return;
         if (audioSource2D.volume == 0) return;
 

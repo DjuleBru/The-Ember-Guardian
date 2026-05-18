@@ -49,11 +49,11 @@ public class AssaultRifleSecondaryAbility : GunSecondaryAbility {
 
     private void PlayerShoot_OnPlayerShot(object sender, EventArgs e) {
         if(ammoClipInfusedWithOrb) {
-            if(PlayerShoot.Instance.GetFirstSecondaryAbilityEquipped()) {
+            if(gun.GetPrimarySecondaryAbilityEquipped()) {
                 secondaryBulletPS.Emit(1);
             }
 
-            if(PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if(gun.GetSecondSecondaryAbilityEquipped()) {
                 homingBulletsActive = true;
             }
         }

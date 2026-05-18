@@ -17,6 +17,8 @@ public class Gun : MonoBehaviour
     protected bool gunActive;
     protected bool gunUnlocked;
     protected bool secondaryAbilityUnlocked;
+    protected bool primarySecondaryAbilityEquipped;
+    protected bool secondSecondaryAbilityEquipped;
     protected bool lerpingGunAngle;
     protected bool lastBulletShot;
     protected bool gunJammed;
@@ -89,6 +91,8 @@ public class Gun : MonoBehaviour
     protected float assaultRifleHomingBulletsDebuff = 1.5f;
     protected float aaGunSpawnsMinesBulletSpeedDebuff = 1.5f;
 
+    protected float rocketLauncherNukeDmgBuff = 2f;
+
     protected int pierceAmount = 1;
     protected int projectilesShotAmount = 1;
 
@@ -103,7 +107,7 @@ public class Gun : MonoBehaviour
     protected float shotgunSemiAutoModeCooldownBuff = 1.5f;
     protected int shotgunSemiAutoModeDamageDebuff = 2;
 
-    protected float smgPoisonRoundsDamageDebuff = 1.25f;
+    protected float smgPoisonRoundsDamageDebuff = 1.33f;
 
     protected int bulletDamageStatModifierLevel = -1;
     protected int shotsPerClipStatModifierLevel = -1;
@@ -173,7 +177,7 @@ public class Gun : MonoBehaviour
         if (!gunActive) return;
 
         if (gunSO.gunType == GunSO.GunType.Rifle) {
-            if(PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if(secondSecondaryAbilityEquipped) {
                 ParticleSystem.MainModule shootPSMainModule = shootPS.main;
 
                 if (PlayerShoot.Instance.GetRifleLoadShotModeActive()) {
@@ -206,7 +210,7 @@ public class Gun : MonoBehaviour
         }
 
         if(gunSO.gunType == GunSO.GunType.Shotgun) {
-            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if (secondSecondaryAbilityEquipped) {
                 ParticleSystem.ShapeModule shootPSShapeModule = shootPS.shape;
                 ParticleSystem.MainModule shootPSMainModule = shootPS.main;
                 float currentPSAngle = shootPSShapeModule.angle;
@@ -238,7 +242,7 @@ public class Gun : MonoBehaviour
         }
 
         if (gunSO.gunType == GunSO.GunType.SMG) {
-            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if (secondSecondaryAbilityEquipped) {
                 ParticleSystem.MainModule shootPSMainModule = shootPS.main;
 
                 if (PlayerShoot.Instance.GetSMGPoisonRoundsActive()) {
@@ -257,7 +261,7 @@ public class Gun : MonoBehaviour
         }
 
         if (gunSO.gunType == GunSO.GunType.Sniper) {
-            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if (secondSecondaryAbilityEquipped) {
                 if (PlayerShoot.Instance.GetSniperPiercingRoundsActive()) {
 
                     bulletSizeMultiplier *= 2f;
@@ -283,7 +287,7 @@ public class Gun : MonoBehaviour
         }
 
         if (gunSO.gunType == GunSO.GunType.Revolver) {
-            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if (secondSecondaryAbilityEquipped) {
                 if (PlayerShoot.Instance.GetRevolverBouncingBulletsActive()) {
                     DebuffBulletDamage(revolverBouncingBulletsDamageDebuff);
                     pierceAmount = revolverBouncingBulletsPierceAmount;
@@ -299,7 +303,7 @@ public class Gun : MonoBehaviour
         }
 
         if (gunSO.gunType == GunSO.GunType.Pistol) {
-            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if (secondSecondaryAbilityEquipped) {
                 if (PlayerShoot.Instance.GetPistolExplosiveBulletsActive()) {
                     DebuffBulletDamage(pistolExplosiveBulletsDamageDebuff);
                 }
@@ -310,7 +314,7 @@ public class Gun : MonoBehaviour
         }
 
         if (gunSO.gunType == GunSO.GunType.GrenadeLauncher) {
-            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if (secondSecondaryAbilityEquipped) {
                 if (PlayerShoot.Instance.GetGrenadeLauncherMultipleGrenadesActive()) {
 
                     bulletSizeMultiplier /= 1.5f;
@@ -342,7 +346,7 @@ public class Gun : MonoBehaviour
                 shootPSMainModule.startLifetime = bulletLifetime;
             }
 
-            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if (secondSecondaryAbilityEquipped) {
                 ParticleSystem.MainModule shootPSMainModule = shootPS.main;
                 if (PlayerShoot.Instance.GetBlastingLMGModeActive()) {
 
@@ -361,7 +365,7 @@ public class Gun : MonoBehaviour
         }
 
         if(gunSO.gunType == GunSO.GunType.AssaultRifle) {
-            if(PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if(secondSecondaryAbilityEquipped) {
                 if(AssaultRifleSecondaryAbility.Instance.GetHomingBulletsActive()) {
                     bulletLifetime *= assaultRifleHomingBulletsDebuff;
                 } else {
@@ -371,12 +375,21 @@ public class Gun : MonoBehaviour
         }
 
         if (gunSO.gunType == GunSO.GunType.AAGun) {
-            if (PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if (secondSecondaryAbilityEquipped) {
                 if (PlayerShoot.Instance.GetAAGunSpawnsMines()) {
                     bulletSpeed /= aaGunSpawnsMinesBulletSpeedDebuff;
                 }
                 else {
                     bulletSpeed *= aaGunSpawnsMinesBulletSpeedDebuff;
+                }
+            }
+        }
+
+        if (gunSO.gunType == GunSO.GunType.RocketLauncher) {
+            if (secondSecondaryAbilityEquipped) {
+                if (PlayerShoot.Instance.GetRocketLauncherNukeMode()) {
+                }
+                else {
                 }
             }
         }
@@ -703,7 +716,7 @@ public class Gun : MonoBehaviour
     }
 
     public void BuffBulletDamage(float buffAmount, bool globalBuff = true) {
-        Debug.Log("BuffBulletDamage " + buffAmount + " globalBuff " + globalBuff);
+        //Debug.Log("BuffBulletDamage " + buffAmount + " globalBuff " + globalBuff);
         if(globalBuff) {
             totalBuffMultiplier *= buffAmount;
         } else {
@@ -714,7 +727,7 @@ public class Gun : MonoBehaviour
     }
 
     public void DebuffBulletDamage(float debuffAmount, bool globalDebuff = true) {
-        Debug.Log("DebuffBulletDamage " + debuffAmount + " globalBuff " + globalDebuff);
+        //Debug.Log("DebuffBulletDamage " + debuffAmount + " globalBuff " + globalDebuff);
         if (globalDebuff) {
             totalBuffMultiplier /= debuffAmount;
         }
@@ -1218,6 +1231,8 @@ public class Gun : MonoBehaviour
         gunData["surgeReloadProbabilityStatModifierLevel"] = surgeReloadProbabilityStatModifierLevel;
 
         gunData["secondaryAbilityUnlocked"] = secondaryAbilityUnlocked;
+        gunData["primarySecondaryAbilityEquipped"] = primarySecondaryAbilityEquipped;
+        gunData["secondSecondaryAbilityEquipped"] = secondSecondaryAbilityEquipped;
 
         // Sauvegarde en batch
         string key = gunSO.gunType + "_metaData";
@@ -1273,7 +1288,37 @@ public class Gun : MonoBehaviour
 
         secondaryAbilityUnlocked = gunData.ContainsKey("secondaryAbilityUnlocked") && Convert.ToBoolean(gunData["secondaryAbilityUnlocked"]);
 
+        if(!gunData.ContainsKey("primarySecondaryAbilityEquipped")) {
+            primarySecondaryAbilityEquipped = true;
+        } else {
+            primarySecondaryAbilityEquipped = gunData.ContainsKey("primarySecondaryAbilityEquipped") && Convert.ToBoolean(gunData["primarySecondaryAbilityEquipped"]);
+        }
+
+        secondSecondaryAbilityEquipped = gunData.ContainsKey("secondSecondaryAbilityEquipped") && Convert.ToBoolean(gunData["secondSecondaryAbilityEquipped"]);
+
         RefreshGunStats();
+    }
+
+    public void SetPrimarySecondaryAbilityEquipped() {
+        PlayerShoot.Instance.CancelSecondaryFireMode();
+        primarySecondaryAbilityEquipped = true;
+        secondSecondaryAbilityEquipped = false;
+        //Debug.Log("SetPrimarySecondaryAbilityEquipped");
+    }
+
+    public void SetSecondSecondaryAbilityEquipped() {
+        PlayerShoot.Instance.CancelSecondaryFireMode();
+        secondSecondaryAbilityEquipped = true;
+        primarySecondaryAbilityEquipped = false;
+        //Debug.Log("SetSecondSecondaryAbilityEquipped");
+    }
+
+    public bool GetPrimarySecondaryAbilityEquipped() {
+        return primarySecondaryAbilityEquipped;
+    }
+
+    public bool GetSecondSecondaryAbilityEquipped() {
+        return secondSecondaryAbilityEquipped;
     }
 
 }

@@ -26,7 +26,7 @@ public class GunVisual_Pistol : GunVisual
                 }
             }
 
-            if(PlayerShoot.Instance.GetSecondSecondaryAbilityEquipped()) {
+            if(gun.GetSecondSecondaryAbilityEquipped()) {
                 if (PlayerShoot.Instance.GetPistolExplosiveBulletsActive()) {
 
                     gunSecondaryAbilityActiveSpriteRenderer.enabled = gunSecondaryFireModeActive;
