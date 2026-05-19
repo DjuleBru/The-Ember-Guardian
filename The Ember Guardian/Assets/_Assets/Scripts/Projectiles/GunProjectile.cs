@@ -10,7 +10,7 @@ public class GunProjectile : MonoBehaviour
     [SerializeField] protected bool explodeOnContact;
     [SerializeField] protected bool damagesPlayer;
     [SerializeField] protected float maxDistanceToDamagePlayer = 1f;
-    [SerializeField] private bool dealDirectDamage = true;
+    [SerializeField] protected bool dealDirectDamage = true;
     protected int penetrationMaxAmount = 1;
 
     protected Rigidbody2D rb;
@@ -26,6 +26,10 @@ public class GunProjectile : MonoBehaviour
     protected bool projectileBouncedOnGround;
 
     protected bool projectileExplodesOnContact;
+
+    [SerializeField] private bool useMinTimeBeforeExplosion;
+    private float minTimeBeforeExplosion = .15f;
+    private float timerBeforeExplosion;
 
     protected Vector2 initialForce;
     protected Gun parentGun;
@@ -43,7 +47,7 @@ public class GunProjectile : MonoBehaviour
         if (projectileExploded) return;
 
         lifetimeTimer -= Time.deltaTime;
-
+        timerBeforeExplosion += Time.deltaTime;
         if (lifetimeTimer < 0) {
             Explode();
         }
@@ -79,24 +83,37 @@ public class GunProjectile : MonoBehaviour
         Creature creatureHit = collision.GetComponent<Creature>();
         CreatureSpawnerContinuous spawnerHit = collision.GetComponent<CreatureSpawnerContinuous>();
 
+        // Détection du sol (Layer "Ground")
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+            if (projectileExploded) return;
+
+            if (explodeOnContact) {
+                Explode();
+            }
+        }
+
         if (creatureHit != null || spawnerHit != null) {
             if (explodeOnContact) {
-
+                if (useMinTimeBeforeExplosion && timerBeforeExplosion < minTimeBeforeExplosion) return;
                 if (!projectileExploded) {
                     Explode();
                 };
 
-                if(creatureHit != null) {
-                    DamageCreatureHit(creatureHit, collision);
-                }
-                if(spawnerHit != null) {
-                    DamageSpawnerHit(spawnerHit, collision);
-                }
+                if (!dealDirectDamage) {
+                    if (creatureHit != null) {
+                        DamageCreatureHit(creatureHit, collision);
+                    }
+                    if (spawnerHit != null) {
+                        DamageSpawnerHit(spawnerHit, collision);
+                    }
+                };
+              
 
             }
             else {
 
                 if (!projectileExploded) {
+                    if (useMinTimeBeforeExplosion && timerBeforeExplosion < minTimeBeforeExplosion) return;
                     if (projectileHitCreature) return;
                     if (projectileBouncedOnGround) return;
                     if (!dealDirectDamage) return;
@@ -121,15 +138,6 @@ public class GunProjectile : MonoBehaviour
                 }
             }
 
-        }
-
-        // Détection du sol (Layer "Ground")
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")) {
-            if (projectileExploded) return;
-
-            if (explodeOnContact) {
-                Explode();
-            }
         }
     }
 

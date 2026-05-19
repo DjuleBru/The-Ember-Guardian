@@ -66,6 +66,8 @@ public class BulletPSVisuals : MonoBehaviour
     }
 
     private void PlayerShoot_OnPlayerSwitchedFireMode(object sender, System.EventArgs e) {
+        if (gun == null) return;
+        if (gun.GetGunSO() == null) return;
         if (gun.GetGunSO().gunType != GunSO.GunType.SMG) return;
 
         ParticleSystem.MainModule trailMainModule = trailPS.main;
@@ -306,5 +308,6 @@ public class BulletPSVisuals : MonoBehaviour
         PlayerSkills.Instance.OnPlayerInFireLightDebuffedDmg -= PlayerSkills_OnPlayerInFireLightDebuffedDmg;
         PlayerSkills.Instance.OnActiveSkillActivated -= PlayerSkills_OnActiveSkillActivated;
         PlayerSkills.Instance.OnActiveSkillDeactivated -= PlayerSkills_OnActiveSkillDeactivated;
+        PlayerShoot.Instance.OnPlayerSwitchedFireMode -= PlayerShoot_OnPlayerSwitchedFireMode;
     }
 }

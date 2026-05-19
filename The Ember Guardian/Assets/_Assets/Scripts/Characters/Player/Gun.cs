@@ -72,7 +72,7 @@ public class Gun : MonoBehaviour
     protected int subExplosivesAmount;
     protected int subExplosivesDamage;
 
-    protected float loadingRifleShotDamageBuff = 2.5f;
+    protected float loadingRifleShotDamageBuff = 2f;
     protected float loadingRifleShotRangeDebuff = 1.5f;
     protected float loadingRifleShotBulletKnockbackBuf = 20f;
 

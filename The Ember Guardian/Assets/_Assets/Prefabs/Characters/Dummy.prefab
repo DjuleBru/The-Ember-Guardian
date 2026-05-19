@@ -93,7 +93,10 @@ MonoBehaviour:
   detectionCollider: {fileID: 0}
   creatureMovement: {fileID: 0}
   critZoneColliders: []
-  autoAimPosition: {fileID: 0}
+  autoAimPosition: {fileID: 1491374328414435379}
+  stuckCheckDelay: 1
+  stuckKillTime: 10
+  minMovementThreshold: 0.1
   dummyAnimator: {fileID: 4463873543397735931}
   heavyHitDamageTreshold: 30
 --- !u!95 &4463873543397735931

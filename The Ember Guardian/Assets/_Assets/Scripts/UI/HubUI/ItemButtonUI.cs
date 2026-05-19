@@ -57,6 +57,7 @@ public class ItemButtonUI : ButtonUI {
     [SerializeField] private Transform descriptionCardParentManualSet;
     [SerializeField] private bool isTreeParent;
     [SerializeField] private bool isTreeChild;
+    [SerializeField] private bool useParentAsLocalPosition;
 
     private HubMerchantItem hubMerchantItem;
     private Button button;
@@ -932,7 +933,12 @@ public class ItemButtonUI : ButtonUI {
 
     public Vector2 GetLocalPosition() {
         if (isTreeChild) {
-            return transform.parent.GetComponent<RectTransform>().localPosition + GetComponent<RectTransform>().localPosition;
+            if(useParentAsLocalPosition) {
+                return transform.parent.transform.parent.GetComponent<RectTransform>().localPosition + GetComponent<RectTransform>().localPosition;
+            } else {
+                return transform.parent.GetComponent<RectTransform>().localPosition + GetComponent<RectTransform>().localPosition;
+            }
+
         } else {
             return GetComponent<RectTransform>().localPosition;
         }
@@ -941,7 +947,6 @@ public class ItemButtonUI : ButtonUI {
     public void ShowTree() {
         treeShowHide.ShowTree();
     }
-
     protected override void OnDestroy() {
         base.OnDestroy();
 

@@ -31,7 +31,7 @@ public class GunProjectile_BulletRevolver : GunProjectile_Bullet
 
             float dist = Vector2.Distance(
                 transform.position,
-                creature.transform.position
+                creature.GetAutoAimPosition().position
             );
 
             if (dist < closestDist) {
@@ -52,12 +52,11 @@ public class GunProjectile_BulletRevolver : GunProjectile_Bullet
         }
 
         Creature nextTarget = FindClosestCreature();
-
         if (nextTarget == null) {
             return;
         }
 
-        Vector2 dir = (nextTarget.transform.position - transform.position).normalized;
+        Vector2 dir = (nextTarget.GetAutoAimPosition().position - transform.position).normalized;
 
         float speed = rb.velocity.magnitude;
 

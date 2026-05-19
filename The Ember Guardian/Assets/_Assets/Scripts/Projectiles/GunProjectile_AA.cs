@@ -17,6 +17,7 @@ public class GunProjectile_AA : GunProjectile
     [SerializeField] private float childBulletAirLifetime = .22f;
     [SerializeField] private int childBulletKnockback = 0;
 
+
     private float timeBeforeMineDeployment = 2f;
     private float mineDeployTimer;
     private bool mineDeployed;

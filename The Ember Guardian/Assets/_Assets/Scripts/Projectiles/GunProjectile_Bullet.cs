@@ -169,11 +169,8 @@ public class GunProjectile_Bullet : GunProjectile {
             }
 
             creaturesHit.Add(creatureHit);
-
             creatureHit.HandlePlayerSkillEffects(angle, collisionPosition.y);
-
             creatureHit.TakeDamage(projectileExplosionDamage, bulletSource, critHit, false, hitWeakSpot);
-
             creatureHit.InstantiateHitPS(angle,collisionPosition.y,critHit,projectileExplosionDamage,collisionPosition.x);
 
             if (critHit) {
@@ -209,11 +206,8 @@ public class GunProjectile_Bullet : GunProjectile {
             }
 
             spawnersHit.Add(spawnerHit);
-
             spawnerHit.TakeDamage(projectileExplosionDamage, bulletSource, false);
-
             spawnerHit.InstantiateHitPS(angle, collisionPosition.y, false);
-
             PierceEnemy(null);
 
         }

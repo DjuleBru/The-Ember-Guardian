@@ -133,13 +133,14 @@ MonoBehaviour:
   explodeOnContact: 0
   damagesPlayer: 0
   maxDistanceToDamagePlayer: 1
+  dealDirectDamage: 1
   raycastMask:
     serializedVersion: 2
     m_Bits: 33718336
   circleCastRadius: 0.15
   explosionPrefab: {fileID: 8231705165639236091, guid: a854f4631f7b1f74a92e549ba047df5c, type: 3}
   noiseFrequency: 8
-  noiseAmplitude: 4
+  noiseAmplitude: 2
 --- !u!1 &1680120764452094945 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4302220210616209658, guid: 66f7bbe64132e384697a6e5ccb8df864, type: 3}

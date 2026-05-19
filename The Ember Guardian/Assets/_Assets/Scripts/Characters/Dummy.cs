@@ -16,9 +16,16 @@ public class Dummy : Creature
     protected override void Start() {
     }
 
+
     protected override void Update() {
+        if (isPaused) return;
+
+        if (dead) return;
+
+        HandleStatusEffects();
 
     }
+
 
     public override void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
         if (weakSpotHit) {
