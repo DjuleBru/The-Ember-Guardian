@@ -10,7 +10,7 @@ public class GunProjectile_BulletAR : GunProjectile_Bullet
     [SerializeField] private LayerMask homingTargetMask;
     private bool useHoming;
 
-    private Creature currentTarget;
+    private Transform currentTarget;
 
     protected override void Awake() {
         base.Awake();
@@ -38,7 +38,7 @@ public class GunProjectile_BulletAR : GunProjectile_Bullet
         Transform target = PlayerAim.Instance.GetCurrentAutoAimTarget();
 
         if (target != null) {
-            currentTarget = target.GetComponent<Creature>();
+            currentTarget = target.GetComponent<Creature>().GetAutoAimPosition();
             return;
         }
 
@@ -57,7 +57,7 @@ public class GunProjectile_BulletAR : GunProjectile_Bullet
         Vector2 aimDir = PlayerAim.Instance.GetEffectiveAimDir().normalized;
 
         float bestScore = float.MaxValue;
-        Creature bestTarget = null;
+        Transform bestTarget = null;
 
         for (int i = 0; i < hits.Length; i++) {
 
@@ -69,7 +69,7 @@ public class GunProjectile_BulletAR : GunProjectile_Bullet
                 continue;
             }
 
-            Vector2 dirToEnemy = (creature.transform.position - transform.position).normalized;
+            Vector2 dirToEnemy = (creature.GetAutoAimPosition().position - transform.position).normalized;
 
             float angle = Vector2.Angle(aimDir, dirToEnemy);
 
@@ -77,13 +77,13 @@ public class GunProjectile_BulletAR : GunProjectile_Bullet
                 continue;
             }
 
-            float distance = Vector2.Distance(transform.position, creature.transform.position);
+            float distance = Vector2.Distance(transform.position, creature.GetAutoAimPosition().position);
 
             float score = angle + distance * 0.1f;
 
             if (score < bestScore) {
                 bestScore = score;
-                bestTarget = creature;
+                bestTarget = creature.GetAutoAimPosition();
             }
         }
 
@@ -99,7 +99,7 @@ public class GunProjectile_BulletAR : GunProjectile_Bullet
         );
 
         float closestDistance = Mathf.Infinity;
-        Creature bestTarget = null;
+        Transform bestTarget = null;
 
         for (int i = 0; i < hits.Length; i++) {
 
@@ -113,7 +113,7 @@ public class GunProjectile_BulletAR : GunProjectile_Bullet
 
             if (distance < closestDistance) {
                 closestDistance = distance;
-                bestTarget = creature;
+                bestTarget = creature.GetAutoAimPosition();
             }
         }
 

@@ -66,7 +66,7 @@ public class StaticProjectile_DarkTrap : StaticProjectile
                         // First time it hits the creature
 
                         if (poisonEffect) {
-                            creatureHit.ApplyPoisonEffect(poisonAmount);
+                            creatureHit.ApplyPoisonStackedEffect(poisonAmount, 10f);
                         }
 
                     }

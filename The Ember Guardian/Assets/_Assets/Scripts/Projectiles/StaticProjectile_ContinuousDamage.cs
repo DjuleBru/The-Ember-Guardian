@@ -92,7 +92,7 @@ public class StaticProjectile_ContinuousDamage : StaticProjectile
                 creatureHit.ApplyImmobilizeEffect(immobilizeDuration, creatureHit.transform.position);
             }
             if (poisonEffect) {
-                creatureHit.ApplyPoisonEffect(poisonAmount);
+                creatureHit.ApplyPoisonStackedEffect(poisonAmount, 1f);
             }
             if (knockbackEffect) {
                 Vector2 knockBackDirNormalized = (creatureHit.transform.position - transform.position).normalized;

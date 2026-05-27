@@ -568,7 +568,8 @@ MonoBehaviour:
   explodeOnContact: 1
   damagesPlayer: 1
   maxDistanceToDamagePlayer: 3
-  dealDirectDamage: 1
+  dealDirectDamage: 0
+  useMinTimeBeforeExplosion: 0
   accelerationForce: 0
   accelerationDuration: 0
   spawnChildBullets: 1

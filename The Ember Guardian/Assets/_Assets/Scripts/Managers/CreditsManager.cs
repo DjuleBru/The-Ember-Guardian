@@ -118,6 +118,7 @@ public class CreditsManager : MonoBehaviour
         creditNamesTypeWriter.ShowText("");
         creditNamesTypeWriter2.ShowText("");
         creditNamesTypeWriter3.ShowText("");
+        creditNamesTypeWriter4.ShowText("");
 
         InitBoxForNewText(LocalizationManager.Instance.GetLocalizedText("Created by"));
         yield return new WaitForSeconds(1.5f);
@@ -132,12 +133,51 @@ public class CreditsManager : MonoBehaviour
         InitBoxForNewText(LocalizationManager.Instance.GetLocalizedText("Published by"));
         yield return new WaitForSeconds(1.5f);
         creditNamesTypeWriter.ShowText("Slug Disco");
+        yield return new WaitForSeconds(1.5f);
 
-        yield return new WaitForSeconds(3.5f);
+        creditNamesText2.fontSize = 50f;
+        creditNamesText3.fontSize = 50f;
+        creditNamesText4.fontSize = 50f;
+        creditNamesText2.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 65);
+        creditNamesText3.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 65);
+        creditNamesText4.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 65);
+
+        creditNamesTypeWriter2.ShowText("Daniel Postlethwaite");
+        yield return new WaitForSeconds(1.25f);
+        creditNamesTypeWriter3.ShowText("Hei Man Chan");
+        yield return new WaitForSeconds(1.25f);
+        creditNamesTypeWriter2.StartDisappearingText();
+        creditNamesTypeWriter4.ShowText("Theo Kunetz");
+        yield return new WaitForSeconds(1.25f);
+        creditNamesTypeWriter3.StartDisappearingText();
+        creditNamesTypeWriter2.ShowText("Kaidi Guo");
+        yield return new WaitForSeconds(1.25f);
+        creditNamesTypeWriter4.StartDisappearingText();
+        creditNamesTypeWriter3.ShowText("Sayaka Ojima");
+        yield return new WaitForSeconds(1.25f);
+        creditNamesTypeWriter2.StartDisappearingText();
+        creditNamesTypeWriter4.ShowText("Jay Ho Oh");
+        yield return new WaitForSeconds(1.25f);
+        creditNamesTypeWriter3.StartDisappearingText();
+        yield return new WaitForSeconds(1.25f);
+        creditNamesTypeWriter4.StartDisappearingText();
+
+        yield return new WaitForSeconds(1.25f);
         creditTitleTypeWriter.StartDisappearingText();
         yield return new WaitForSeconds(.5f);
         creditNamesTypeWriter.StartDisappearingText();
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(.5f);
+        creditNamesTypeWriter2.StartDisappearingText();
+        creditNamesTypeWriter3.StartDisappearingText();
+        creditNamesTypeWriter4.StartDisappearingText();
+        yield return new WaitForSeconds(1.6f);
+
+        creditNamesText2.fontSize = 80f;
+        creditNamesText3.fontSize = 80f;
+        creditNamesText4.fontSize = 80f;
+        creditNamesText2.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 85);
+        creditNamesText3.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 85);
+        creditNamesText4.GetComponent<RectTransform>().sizeDelta = new Vector2(450, 85);
 
         InitBoxForNewText(LocalizationManager.Instance.GetLocalizedText("Pixel Artists"));
         yield return new WaitForSeconds(1f);

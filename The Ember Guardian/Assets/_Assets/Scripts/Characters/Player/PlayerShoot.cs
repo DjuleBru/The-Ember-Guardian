@@ -1333,7 +1333,7 @@ public class PlayerShoot : MonoBehaviour
         Creature creatureHit = mobHit as Creature;
         if(creatureHit != null) {
             if (smgPoisonRoundsActive) {
-                creatureHit.ApplyPoisonEffect(5);
+                creatureHit.ApplyPoisonStackedEffect(1, .5f);
             }
         }    
     }

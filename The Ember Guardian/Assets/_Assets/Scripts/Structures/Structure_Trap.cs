@@ -255,7 +255,7 @@ public class Structure_Trap : Structure
         }
 
         if (trapSO.trapType == TrapItem.TrapType.smokeEjector) {
-            creature.ApplyPoisonEffect(trapSpecial);
+            creature.ApplyPoisonStackedEffect(trapSpecial, 10f);
         }
 
         if (trapSO.trapType == TrapItem.TrapType.fireEjector) {

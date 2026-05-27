@@ -38,8 +38,7 @@ public class GunProjectile_AA : GunProjectile
 
         if(mine && !isChildProjectile) {
             projectileAnimator.runtimeAnimatorController = mineAnimator;
-            detectionCollider.excludeLayers = creatureLayerMask;
-            detectionCollider.radius = .5f;
+            detectionCollider.radius = 0f;
 
             activeMines.Add(this); 
             
@@ -81,7 +80,6 @@ public class GunProjectile_AA : GunProjectile
                 mineDeployTimer += Time.deltaTime;
                 if (mineDeployTimer > timeBeforeMineDeployment) {
                     mineDeployed = true;
-                    detectionCollider.excludeLayers = 0;
                     detectionCollider.radius = 1.22f;
                 }
 
@@ -117,10 +115,15 @@ public class GunProjectile_AA : GunProjectile
     protected override void Explode() {
         base.Explode();
 
-        if (!spawnChildBullets) return;
+        if (!spawnChildBullets || (mine && !mineDeployed)) return;
 
         if (mine && activeMines.Contains(this)) {
             activeMines.Remove(this);
+        }
+
+        if(mine) {
+            //Synch with animator
+            detectionCollider.radius = 0.39299f;
         }
 
         if (instantiateChildGunGroundProjectiles) {

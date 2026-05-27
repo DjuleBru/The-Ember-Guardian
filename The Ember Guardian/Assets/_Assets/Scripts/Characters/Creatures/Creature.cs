@@ -281,6 +281,7 @@ public class Creature : Mob
 
     [Button]
     public override void Die(Transform damageSource = null) {
+        Debug.Log(inFireLightAmount);
 
         if(inFireLightAmount > 0) {
             creatureWasInFireWhenKilled = true;
@@ -592,7 +593,6 @@ public class Creature : Mob
     }
 
     public override void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
-
         if (weakSpotHit) {
             float scaledDamage = damage * 1.2f;
             int baseDamage = Mathf.FloorToInt(scaledDamage);
@@ -717,6 +717,24 @@ public class Creature : Mob
         poisoned = true;
         this.poisonAmount = poisonAmount;
         poisonedTimer = poisonedDuration;
+
+        OnCreaturePoisonedStarted?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void ApplyPoisonStackedEffect(int poisonAmount, float poisonDuration) {
+        if (dead) return;
+        if (poisonImmune) return;
+
+        poisoned = true;
+
+        if(poisonedTimer <= 0) {
+            this.poisonAmount = poisonAmount;
+        } else {
+            this.poisonAmount += poisonAmount;
+        }
+
+
+        poisonedTimer += poisonDuration;
 
         OnCreaturePoisonedStarted?.Invoke(this, EventArgs.Empty);
     }

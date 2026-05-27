@@ -62,7 +62,7 @@ public class StaticProjectile : MonoBehaviour
                     creatureHit.ApplyStunEffect(stunDuration, creatureHit.transform.position);
                 }
                 if (poisonEffect) {
-                    creatureHit.ApplyPoisonEffect(poisonAmount);
+                    creatureHit.ApplyPoisonStackedEffect(poisonAmount, 10f);
                 }
                 if (knockbackEffect) {
                     Vector2 knockBackDirNormalized = (creatureHit.transform.position - transform.position).normalized;

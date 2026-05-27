@@ -28,6 +28,7 @@ public class Dummy : Creature
 
 
     public override void TakeDamage(int damage, Transform damageSource, bool critHit = false, bool ignoreTemporaryInvincibility = false, bool weakSpotHit = false) {
+        Debug.Log("TakeDamage " + damage);
         if (weakSpotHit) {
             float scaledDamage = damage * 1.2f;
             int baseDamage = Mathf.FloorToInt(scaledDamage);
