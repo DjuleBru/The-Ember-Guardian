@@ -16,11 +16,14 @@ public class WeaponChangeButton : ButtonUI
     [SerializeField] private TextMeshProUGUI weaponNameText;
     [SerializeField] private Image gunAmmoTypeImage;
     [SerializeField] private Sprite specialAmmoSprite;
+    private Sprite standardAmmoSprite;
 
     public static event EventHandler OnAnyWeaponChangeButtonPressed;
 
     private void Awake() {
         button = GetComponent<Button>();
+
+        standardAmmoSprite = gunAmmoTypeImage.sprite;
     }
 
     protected override void Start() {
@@ -104,6 +107,7 @@ public class WeaponChangeButton : ButtonUI
         linkedGunSO = gunSO;
 
         UpdateGunIconImage(linkedGunSO);
+
         if(linkedGunSO != null) {
             weaponNameText.text = LocalizationManager.Instance.GetLocalizedText(gunSO.gunType.ToString());
             gunAmmoTypeImage.gameObject.SetActive(true);
@@ -114,6 +118,8 @@ public class WeaponChangeButton : ButtonUI
 
         if (gunSO != null && gunSO.ammoTypeUsed == PlayerCurrencies.CurrencyType.ammo_special) {
             gunAmmoTypeImage.sprite = specialAmmoSprite;
+        } else {
+            gunAmmoTypeImage.sprite = standardAmmoSprite;
         }
     }
 

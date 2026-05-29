@@ -412,6 +412,10 @@ public class MobSpawner : MonoBehaviour
         return mobSpawnedList.Count;
     }
 
+    public int GetMobAmountToSpawn() {
+        return mobAmountToSpawn;
+    }
+
     public bool GetMobsCanSpawnAtDawn() {
         return mobsCanSpawnAtDawn;
     }
