@@ -767,7 +767,7 @@ public class SoundManager : MonoBehaviour
         if (creatureHit == null) return;
 
         AudioClip[] audioClipArray = creatureHit.GetCreatureSO().bulletHitAudioClips;
-        PlaySound3D(audioClipArray, e.bulletHitPosition, creatureHit.GetCreatureSO().bulletHitVolumeMultiplier);
+        PlaySound3D(audioClipArray, e.bulletHitPosition, creatureHit.GetCreatureSO().bulletHitVolumeMultiplier * 5);
     }
 
     private void GunProjectile_Bullet_OnAnyBulletPierceCreature(object sender, GunProjectile_Bullet.OnBulletPierceCreatureEventArgs e) {
