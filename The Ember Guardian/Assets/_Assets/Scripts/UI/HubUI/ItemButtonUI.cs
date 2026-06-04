@@ -9,12 +9,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Steamworks;
 
 public class ItemButtonUI : ButtonUI {
 
     [SerializeField] private HubMerchant parentHubMerchant;
     [SerializeField] private List<ItemButtonUI> lockingItemButtonUIList;
     [SerializeField] private ItemDescriptionCardUI descriptionCard;
+    [SerializeField] private ItemDescriptionCardUI descriptionCard_SteamDeck;
     [SerializeField] private GameObject newUnlockedItemGO;
     private List<ItemButtonUI> initialLockingItemButtonUIList = new List<ItemButtonUI>();
 
@@ -141,6 +143,11 @@ public class ItemButtonUI : ButtonUI {
         buyItemFromOtherMerchantText.font = font;
 
         RefreshItemStatusVisuals();
+
+        if (SceneLoader.Instance.IsSteamDeck()) {
+            descriptionCard = descriptionCard_SteamDeck;
+        }
+
     }
 
     private void HubInventoryUI_OnCurrencyCollected(object sender, UICurrencyManager.OnCurrencyDroppedEventArgs e) {
@@ -150,6 +157,7 @@ public class ItemButtonUI : ButtonUI {
     private void HubMerchant_OnPlayerStoppedInteractingWithAnyHubMerchant(object sender, EventArgs e) {
         if(itemHovered || itemSelected) {
             descriptionCard.gameObject.SetActive(false);
+            descriptionCard_SteamDeck.gameObject.SetActive(false);
         }
 
         itemHovered = false;
@@ -306,7 +314,7 @@ public class ItemButtonUI : ButtonUI {
     }
 
     private void RefreshDescriptionCard() {
-
+       
         string itemName = hubMerchantItem.GetItemName();
         string itemDescription = hubMerchantItem.GetDescription();
 
@@ -835,6 +843,7 @@ public class ItemButtonUI : ButtonUI {
         if (this != itemButtonUI && itemHovered) {
             itemHovered = false;
             descriptionCard.gameObject.SetActive(false);
+            descriptionCard_SteamDeck.gameObject.SetActive(false);
         }
 
         if(treeShowHide != null && this != itemButtonUI) {
@@ -898,6 +907,7 @@ public class ItemButtonUI : ButtonUI {
     private void DeselectItemButtonUI() {
         itemSelected = false;
         descriptionCard.gameObject.SetActive(false);
+        descriptionCard_SteamDeck.gameObject.SetActive(false);
     }
 
     public override void OnPointerExit(PointerEventData eventData) {
@@ -905,6 +915,7 @@ public class ItemButtonUI : ButtonUI {
 
         itemHovered = false;
         descriptionCard.gameObject.SetActive(false);
+        descriptionCard_SteamDeck.gameObject.SetActive(false);
     }
 
     #endregion

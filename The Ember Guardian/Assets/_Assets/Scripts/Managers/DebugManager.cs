@@ -41,6 +41,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private bool hordeModeAllUnlockedDebug;
     [SerializeField] private bool debugMode_Credits;
     [SerializeField] private bool debugMode_EventSystem;
+    [SerializeField] private bool debugMode_SteamDeck;
 
     private GameObject lastSelected;
 
@@ -207,5 +208,8 @@ public class DebugManager : MonoBehaviour
     }
     public bool GetHordeModeAllUnlockedDebug() {
         return hordeModeAllUnlockedDebug;
+    }
+    public bool GetDebugMode_SteamDeck() {
+        return debugMode_SteamDeck;
     }
 }

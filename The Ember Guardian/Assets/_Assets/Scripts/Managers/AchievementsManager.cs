@@ -271,4 +271,8 @@ public class AchievementsManager : MonoBehaviour {
 
         Debug.Log("[Achievements] All stats cleared");
     }
+
+    public bool GetPlayerConnected() {
+        return playerConnected;
+    }
 }

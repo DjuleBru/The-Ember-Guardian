@@ -254,7 +254,11 @@ public class ItemDescriptionCardUI : MonoBehaviour
 
             if (itemStatList[i] == "") {
                 template.Find("StatText").GetComponent<ContentSizeFitter>().enabled = true;
-                template.Find("StatText").GetComponent<RectTransform>().sizeDelta = new Vector2(250f, itemStatTemplateText.GetComponent<RectTransform>().sizeDelta.y);
+                float size = 250f;
+                if(SceneLoader.Instance.IsSteamDeck()) {
+                    size = 350f;
+                }
+                template.Find("StatText").GetComponent<RectTransform>().sizeDelta = new Vector2(size, itemStatTemplateText.GetComponent<RectTransform>().sizeDelta.y);
             }
             else {
                 template.Find("StatText").GetComponent<ContentSizeFitter>().enabled = false;

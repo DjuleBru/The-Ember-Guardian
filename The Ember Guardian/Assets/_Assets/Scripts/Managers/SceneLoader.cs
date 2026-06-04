@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Steamworks;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -170,6 +171,14 @@ public class SceneLoader : MonoBehaviour
         if (sceneType == SceneType.HUB) {
             MetaProgressionManager.Instance.SetPlayerLeftFromLevel(false);
         }
+    }
+
+    public bool IsSteamDeck() {
+        if (DebugManager.Instance.GetDebugMode_SteamDeck()) return true;
+
+        if (!AchievementsManager.Instance.GetPlayerConnected()) return false;
+
+        return SteamUtils.IsRunningOnSteamDeck;
     }
 
     private void OnApplicationQuit() {

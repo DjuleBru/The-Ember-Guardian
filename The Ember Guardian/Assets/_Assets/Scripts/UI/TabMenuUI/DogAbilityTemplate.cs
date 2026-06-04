@@ -35,11 +35,11 @@ public class DogAbilityTemplate : MonoBehaviour
                 abilityNameText.text = LocalizationManager.Instance.GetLocalizedText("dog_dig");
 
 
-                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("general_probability");
+                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("general_probability_short");
                 abilityStatValue.text = DogStats.Instance.GetGermanShepherdDigResourceProbility().ToString() + "%";
                 Instantiate(abilityStatTemplate, abilityStatContainer);
 
-                abilityStatText.text = "x2 " + LocalizationManager.Instance.GetLocalizedText("general_probability");
+                abilityStatText.text = "x2 " + LocalizationManager.Instance.GetLocalizedText("general_probability_short");
                 abilityStatValue.text = DogStats.Instance.GetGermanShepherdDigResourceDoubleProbability().ToString() + "%";
                 Instantiate(abilityStatTemplate, abilityStatContainer);
 
@@ -52,7 +52,7 @@ public class DogAbilityTemplate : MonoBehaviour
             case HUBMerchantItem_DogTamerItem.DogTamerItemType.GermanShepherd_AmbushDetectionAbility:
                 abilityNameText.text = LocalizationManager.Instance.GetLocalizedText("dog_ambush");
 
-                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("general_probability");
+                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("general_probability_short");
                 abilityStatValue.text = DogStats.Instance.GetGermanShepherdDetectAmbushProbability().ToString() + "%";
                 Instantiate(abilityStatTemplate, abilityStatContainer);
 
@@ -114,7 +114,7 @@ public class DogAbilityTemplate : MonoBehaviour
                 abilityNameText.text = LocalizationManager.Instance.GetLocalizedText("Charged Beam");
 
                 abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("card_damagePerSecond");
-                abilityStatValue.text = ((int)(DogStats.Instance.GetDarkCompanionLaserDamage() / DogStats.Instance.GetDarkCompanionLaserTickCooldown())).ToString() + "/s";
+                abilityStatValue.text = ((int)(DogStats.Instance.GetDarkCompanionLaserDamage() / DogStats.Instance.GetDarkCompanionLaserTickCooldown())).ToString();
                 Instantiate(abilityStatTemplate, abilityStatContainer);
 
                 abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("card_cooldown");

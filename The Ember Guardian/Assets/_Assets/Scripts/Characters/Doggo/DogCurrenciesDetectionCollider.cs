@@ -45,6 +45,7 @@ public class DogCurrenciesDetectionCollider : MonoBehaviour
 
         foreach (Collectible collectible in collectiblesInTriggerArea) {
             if (!collectible.GetCanBePickedUpByWorker()) continue;
+            if (LevelManager.Instance == null) return;
             if (collectible.transform.position.x > LevelManager.Instance.GetMaxLevelLimit() || collectible.transform.position.x < LevelManager.Instance.GetMinLevelLimit()) continue;
             float distanceToDog = Mathf.Abs(transform.position.x - collectible.transform.position.x);
             float distanceToPlayer = Mathf.Abs(Player.Instance.transform.position.x - collectible.transform.position.x);
