@@ -930,6 +930,9 @@ public class ItemButtonUI : ButtonUI {
     public bool GetIsTreeChild() {
         return isTreeChild;
     }
+    public bool GetUseParentAsLocalPosition() {
+        return useParentAsLocalPosition;
+    }
     public bool GetIsTreeParent() {
         return isTreeParent;
     }

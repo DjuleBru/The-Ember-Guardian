@@ -9,6 +9,7 @@ public class DogStats : MonoBehaviour {
 
     private bool retreiverUnlocked;
     private bool darkCompanionUnlocked;
+    private bool robodogUnlocked;
 
     private bool germanShepherdBiteAbilityUnlocked;
     private bool germanShepherdDigResourceAbilityUnlocked;
@@ -19,6 +20,9 @@ public class DogStats : MonoBehaviour {
     private bool darkCompanionBiteAbilityUnlocked = true;
     private bool darkCompanionLaserAbilityUnlocked;
     private bool darkCompanionStompAbilityUnlocked;
+    private bool robodogMissilesAbilityUnlocked;
+    private bool robodogSpeedupAbilityUnlocked;
+    private bool robodogAmmoFactoryAbilityUnlocked;
 
     private int germanShepherdBiteDamage;
     private float germanShepherdBiteCooldown;
@@ -39,6 +43,13 @@ public class DogStats : MonoBehaviour {
     private int darkCompanionStompDamage;
     private float darkCompanionStompCooldown;
     private float darkCompanionStompStunDuration;
+
+    private int robodogMissilesAmount;
+    private float robodogMissilesCooldown;
+    private float robodogSpeedupDuration;
+    private float robodogSpeedupAmount;
+    private float robodogSpeedupCooldown;
+    private float robodogAmmoFactoryCooldown;
 
     [SerializeField] private List<Dog.DogTypeSkins> dogTypeSkins;
 
@@ -63,6 +74,13 @@ public class DogStats : MonoBehaviour {
     [SerializeField] private int initialDarkCompanionStompDamage;
     [SerializeField] private float initialDarkCompanionStompCooldown;
     [SerializeField] private float initialDarkCompanionStompStunDuration;
+
+    [SerializeField] private int initialRobodogMissilesAmount;
+    [SerializeField] private float initialRobodogMissilesCooldown;
+    [SerializeField] private float initialRobodogSpeedupDuration;
+    [SerializeField] private float initialRobodogSpeedupCooldown;
+    [SerializeField] private float initialRobodogSpeedupAmount;
+    [SerializeField] private float initialRobodogAmmoFactoryCooldown;
 
     [SerializeField] private bool debugUnlockBiteAbility;
     [SerializeField] private bool debugUnlockDigResourceAbility;
@@ -379,6 +397,13 @@ public class DogStats : MonoBehaviour {
         ES3.Save("darkCompanionUnlocked", darkCompanionUnlocked);
     }
 
+    public void UnlockRobodog() {
+        robodogUnlocked = true;
+        Dog.Instance.SetDogType(Dog.DogType.Robodog);
+        OnNewDogUnlocked?.Invoke(this, EventArgs.Empty);
+        ES3.Save("robodogUnlocked", robodogUnlocked);
+    }
+
     public void UnlockGermanShepherdBiteAbility() {
         germanShepherdBiteAbilityUnlocked = true;
         OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
@@ -413,6 +438,11 @@ public class DogStats : MonoBehaviour {
     }
     public void UnlockDarkCompanionStompAbility() {
         darkCompanionStompAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
+    }
+
+    public void UnlockRobodogMissilesAbility() {
+        robodogMissilesAbilityUnlocked = true;
         OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
 

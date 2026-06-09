@@ -12,6 +12,7 @@ public class Dog : MonoBehaviour
         GermanShepherd,
         GoldenRetreiver,
         DarkCompanion,
+        Robodog,
     }
 
     public enum DogSkin {
@@ -22,6 +23,8 @@ public class Dog : MonoBehaviour
         GermanShepherdLight,
         GoldenBrownSkin,
         DarkCompanionRed,
+        Robodog,
+        RobodogSkin1,
     }
 
     [Serializable]
@@ -216,6 +219,7 @@ public class Dog : MonoBehaviour
     }
 
     public void SetDogType(DogType dogType, bool selectedFromMenu = false) {
+        Debug.Log("SetDogType " + dogType);
         this.dogType = dogType;
 
         dogSkin = LoadSkinForType(dogType);
@@ -258,6 +262,14 @@ public class Dog : MonoBehaviour
             DogStats.Instance.UnlockDarkCompanionBiteAbility();
         }
 
+        if (dogType == DogType.Robodog) {
+            MetaProgressionManager.Instance.SetHubMerchantItemUnlocked(HUBMerchantItem_DogTamerItem.DogTamerItemType.Dog_Robodog.ToString(), true);
+            MetaProgressionManager.Instance.SetHubMerchantItemNewlyUnlocked(HUBMerchantItem_DogTamerItem.DogTamerItemType.Dog_Robodog.ToString(), true);
+            MetaProgressionManager.Instance.SetHubMerchantNewItemsToSale(HubMerchant.HubMerchantType.DogTamer, true);
+            DogStats.Instance.UnlockRobodog();
+            DogStats.Instance.UnlockRobodogMissilesAbility();
+        }
+
         this.dogType = dogType;
         SetCurrentDogAI();
         OnDogTypeChanged?.Invoke(this, new OnDogTypeChangedEventArgs {
@@ -282,6 +294,7 @@ public class Dog : MonoBehaviour
             case DogType.GermanShepherd: return DogSkin.GermanShepherdSkin;
             case DogType.GoldenRetreiver: return DogSkin.GoldenRetreiverSkin;
             case DogType.DarkCompanion: return DogSkin.DarkCompanionSkin;
+            case DogType.Robodog: return DogSkin.Robodog;
         }
     }
 

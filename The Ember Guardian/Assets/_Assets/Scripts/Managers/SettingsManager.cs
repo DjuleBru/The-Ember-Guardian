@@ -134,11 +134,16 @@ public class SettingsManager : MonoBehaviour
         currentAutoAimMode = ES3.Load("currentAutoAimMode", AutoAimMode.On, settingsSaveFileSettings);
 
         Resolution defaultRes = Screen.currentResolution;
-        resolution = ES3.Load("resolution", resolution, settingsSaveFileSettings);
+        resolution = ES3.Load("resolution", defaultRes, settingsSaveFileSettings);
         // sécurité : résolution invalide
         if (resolution.width <= 0 || resolution.height <= 0) {
             resolution = defaultRes;
         }
+
+        //if(SceneLoader.Instance.IsSteamDeck()) {
+        //    resolution.width = 1280;
+        //    resolution.height = 800;
+        //}
 
         if(!displaySettingsAppliedThisSession) {
             ApplyScreenMode(currentScreenMode);

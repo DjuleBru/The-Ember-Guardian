@@ -12,24 +12,32 @@ public class DogSounds : SoundObject
     [SerializeField] private AudioSource dogFootstepsAudioSource;
     [SerializeField] private AudioSource dogPantAudioSource;
     [SerializeField] private AudioClip[] footStepAudioClips;
+    [SerializeField] private AudioClip[] footStepAudioClips_robodog;
     [SerializeField] private AudioClip[] breatheAudioClips;
+    [SerializeField] private AudioClip[] breatheAudioClips_robodog;
     [SerializeField] private AudioClip[] sniffAudioClips;
     [SerializeField] private AudioClip[] pantAudioClips;
     [SerializeField] private AudioClip[] groanAudioClips;
     [SerializeField] private AudioClip[] groanAudioClips_darkCompanion;
+    [SerializeField] private AudioClip[] groanAudioClips_robodog;
     [SerializeField] private AudioClip[] growlAudioClips;
     [SerializeField] private AudioClip[] growlAudioClips_darkCompanion;
+    [SerializeField] private AudioClip[] growlAudioClips_robodog;
     [SerializeField] private AudioClip[] barkAudioClips;
     [SerializeField] private AudioClip[] barkAudioClips_retreiver;
     [SerializeField] private AudioClip[] barkAudioClips_darkCompanion;
+    [SerializeField] private AudioClip[] barkAudioClips_robodog;
     [SerializeField] private AudioClip[] biteAudioClips;
     [SerializeField] private AudioClip[] biteAudioClips_darkCompanion;
+    [SerializeField] private AudioClip[] biteAudioClips_robodog;
 
     [SerializeField] private AudioClip[] petStartAudioClips;
     [SerializeField] private AudioClip[] petLoopAudioClips;
     [SerializeField] private AudioClip[] petBarkAudioClips;
+    [SerializeField] private AudioClip[] petBarkAudioClips_Robodog;
     [SerializeField] private AudioClip[] petTapAudioClips;
     [SerializeField] private AudioClip[] skidAudioClips;
+
     [SerializeField] private AudioClip rollingAudioClip;
     [SerializeField] private AudioClip laserAttackAudioClip;
     [SerializeField] private AudioClip stompAttackAudioClip;
@@ -108,11 +116,17 @@ public class DogSounds : SoundObject
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
             dogAudioSource.PlayOneShot(biteAudioClips_darkCompanion[Random.Range(0, biteAudioClips_darkCompanion.Length)], masterVolume * dogVolume * .7f);
         }
+        if (Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+            dogAudioSource.PlayOneShot(biteAudioClips_robodog[Random.Range(0, biteAudioClips_robodog.Length)], masterVolume * dogVolume * .7f);
+        }
     }
 
     private void PetDog_OnPlayerEndedPettingDog(object sender, System.EventArgs e) {
         if(Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd || Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
             dogAudioSource.PlayOneShot(petBarkAudioClips[Random.Range(0, petBarkAudioClips.Length)], masterVolume * dogVolume * 3f);
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+            dogAudioSource.PlayOneShot(petBarkAudioClips_Robodog[Random.Range(0, petBarkAudioClips_Robodog.Length)], masterVolume * dogVolume * 3f);
         }
     }
 
@@ -141,6 +155,9 @@ public class DogSounds : SoundObject
             }
             if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
                 audioClip = barkAudioClips_darkCompanion[Random.Range(0, barkAudioClips_darkCompanion.Length)];
+            }
+            if (Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+                audioClip = barkAudioClips_robodog[Random.Range(0, barkAudioClips_robodog.Length)];
             }
 
             dogAudioSource.PlayOneShot(audioClip, masterVolume * dogVolume * 2);
@@ -249,6 +266,9 @@ public class DogSounds : SoundObject
             if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
                 audioClip = growlAudioClips_darkCompanion[Random.Range(0, growlAudioClips_darkCompanion.Length)];
             }
+            if (Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+                audioClip = growlAudioClips_robodog[Random.Range(0, growlAudioClips_robodog.Length)];
+            }
 
             dogOtherSFXAudioSource.clip = audioClip;
             dogOtherSFXAudioSource.Play();
@@ -261,6 +281,10 @@ public class DogSounds : SoundObject
         AudioClip audioClip = groanAudioClips[Random.Range(0, groanAudioClips.Length)];
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
             audioClip = groanAudioClips_darkCompanion[Random.Range(0, groanAudioClips_darkCompanion.Length)];
+        }
+
+        if (Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+            audioClip = groanAudioClips_robodog[Random.Range(0, groanAudioClips_robodog.Length)];
         }
 
         dogAudioSource.PlayOneShot(audioClip, masterVolume * dogVolume * .7f);
@@ -276,7 +300,13 @@ public class DogSounds : SoundObject
     private void PlayerAnimator_OnFootStepTriggered(object sender, System.EventArgs e) {
         if (dogFootstepsAudioSource.isPlaying) return;
 
-        dogFootstepsAudioSource.clip = footStepAudioClips[Random.Range(0, footStepAudioClips.Length)];
+        if(Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+            dogFootstepsAudioSource.clip = footStepAudioClips_robodog[Random.Range(0, footStepAudioClips_robodog.Length)];
+        }
+        else {
+            dogFootstepsAudioSource.clip = footStepAudioClips[Random.Range(0, footStepAudioClips.Length)];
+        }
+
         dogFootstepsAudioSource.Play();
     }
 

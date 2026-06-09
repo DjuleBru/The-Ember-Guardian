@@ -14,6 +14,8 @@ public class DogAnimatorManager : MonoBehaviour {
     [SerializeField] private RuntimeAnimatorController darkCompanionAnimator;
     [SerializeField] private RuntimeAnimatorController darkCompanionRedAnimator;
     [SerializeField] private RuntimeAnimatorController huskyAnimator;
+    [SerializeField] private RuntimeAnimatorController robodogAnimator;
+    [SerializeField] private RuntimeAnimatorController robodogAnimator_Skin1;
     [SerializeField] private PetDog petDog;
     [SerializeField] private DogAI_DarkCompanion darkCompanionAI;
     [SerializeField] private DogAI_Retreiver retreiverAI;
@@ -203,6 +205,12 @@ public class DogAnimatorManager : MonoBehaviour {
         }
         if (dogSkin == Dog.DogSkin.Husky) {
             animator.runtimeAnimatorController = huskyAnimator;
+        }
+        if (dogSkin == Dog.DogSkin.Robodog) {
+            animator.runtimeAnimatorController = robodogAnimator;
+        }
+        if (dogSkin == Dog.DogSkin.RobodogSkin1) {
+            animator.runtimeAnimatorController = robodogAnimator_Skin1;
         }
     }
 

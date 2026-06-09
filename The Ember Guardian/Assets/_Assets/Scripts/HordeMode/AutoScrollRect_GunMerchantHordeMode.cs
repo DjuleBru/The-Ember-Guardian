@@ -14,8 +14,14 @@ public class AutoScrollRect_GunMerchantHordeMode : AutoScrollRect
         ItemButtonUI itemButtonUI = previousSelectedButtonUI.GetComponent<ItemButtonUI>();
 
         if(itemButtonUI.GetIsTreeChild()) {
-            buttonLocalPosition = (previousSelectedButtonUI.transform.parent).transform.parent.localPosition;
+            if(itemButtonUI.GetUseParentAsLocalPosition()) {
+                buttonLocalPosition = (previousSelectedButtonUI.transform.parent).transform.parent.transform.parent.localPosition;
+            } else {
+                buttonLocalPosition = (previousSelectedButtonUI.transform.parent).transform.parent.localPosition;
+            }
+
         }
+        //buttonLocalPosition.x = itemButtonUI.GetLocalPosition().x;
 
         float centeredPositionX = buttonLocalPosition.x - viewportWidth / 2f;
         float centeredPositionY = buttonLocalPosition.y - viewportHeight / 2f;

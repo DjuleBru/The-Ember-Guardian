@@ -770,7 +770,7 @@ Animator:
   m_GameObject: {fileID: 849184809638594990}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 75f435485fdd83546982aac5d235b5b5, type: 2}
+  m_Controller: {fileID: 22100000, guid: 649a57861ea4bab4db50ba9126c7d02a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -801,6 +801,8 @@ MonoBehaviour:
   darkCompanionAnimator: {fileID: 9100000, guid: e639b3b491590e74299071758e043363, type: 2}
   darkCompanionRedAnimator: {fileID: 22100000, guid: 75f435485fdd83546982aac5d235b5b5, type: 2}
   huskyAnimator: {fileID: 9100000, guid: 328950a9e41326849bc77eddeb0742e3, type: 2}
+  robodogAnimator: {fileID: 22100000, guid: 649a57861ea4bab4db50ba9126c7d02a, type: 2}
+  robodogAnimator_Skin1: {fileID: 22100000, guid: 649a57861ea4bab4db50ba9126c7d02a, type: 2}
   petDog: {fileID: 7906990751673499060}
   darkCompanionAI: {fileID: 6964596691999979307}
   retreiverAI: {fileID: 7151654208442214634}
@@ -1590,6 +1592,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 05da9ab816397f6469ae15a94f7c98b9, type: 3}
   - {fileID: 8300000, guid: e8eb44aa6c1f5e5499e83c736f3966bb, type: 3}
   - {fileID: 8300000, guid: 283cb20435ba2704b925e4425629841b, type: 3}
+  footStepAudioClips_robodog:
+  - {fileID: 8300000, guid: b6754e245f21bee428a5bbfafa38f9d4, type: 3}
+  - {fileID: 8300000, guid: 13ac716d4d4e65849a7ec27aacefc8e1, type: 3}
+  - {fileID: 8300000, guid: 0ccf45dff585aae49895c09d93bcf924, type: 3}
+  - {fileID: 8300000, guid: 7cf7b04b86407474991567efdf273272, type: 3}
+  - {fileID: 8300000, guid: f2ee27bd2742c7147859fdd51e5ed27f, type: 3}
+  - {fileID: 8300000, guid: 1221d044382ea5247ac54e17758ae52f, type: 3}
+  - {fileID: 8300000, guid: d7bc0a1977b10cd479697fe2fcdaba34, type: 3}
+  - {fileID: 8300000, guid: 573d6375365c99844bb172bc5aabd004, type: 3}
+  - {fileID: 8300000, guid: d243132db6bcf01429debe1139d816ef, type: 3}
+  - {fileID: 8300000, guid: 1f6366526172dc640bed44cf7fed177a, type: 3}
   breatheAudioClips:
   - {fileID: 8300000, guid: 47b6734a53471e049b52d3126af5d8e6, type: 3}
   - {fileID: 8300000, guid: fa0a04c362b0b5346a641159cb0a6358, type: 3}
@@ -1601,6 +1614,21 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 06dc76638fd0067488269d1824077484, type: 3}
   - {fileID: 8300000, guid: fad47bce4a9278149937076b2cbc9159, type: 3}
   - {fileID: 8300000, guid: 8286f827e25dae148aa847b3ffa604b3, type: 3}
+  breatheAudioClips_robodog:
+  - {fileID: 8300000, guid: 2c601856813a6404d9cbcf1b2302a812, type: 3}
+  - {fileID: 8300000, guid: 3a69f6d1be5f4fa4c9ca18a69c3bf1d0, type: 3}
+  - {fileID: 8300000, guid: b8702d58d2119c04889623fa70d4d236, type: 3}
+  - {fileID: 8300000, guid: 6b6e72294c04c6f41a3762958f03ac22, type: 3}
+  - {fileID: 8300000, guid: 7d881652b473b634f8e6fc1b8b2c0caf, type: 3}
+  - {fileID: 8300000, guid: dc98e555c9963d441be8241a91ac2689, type: 3}
+  - {fileID: 8300000, guid: f1da118c148b55d4bb71f38ba3ddc8b5, type: 3}
+  - {fileID: 8300000, guid: 6340a0ef2f99d8a4ba99033db20563b3, type: 3}
+  - {fileID: 8300000, guid: 512acfef61296e44186644be9e40d081, type: 3}
+  - {fileID: 8300000, guid: f1c766da2fd3dbf49a36a50e22e33353, type: 3}
+  - {fileID: 8300000, guid: c3028b725cef7a64b8018069edb7f81f, type: 3}
+  - {fileID: 8300000, guid: 4f39793b8e56004468b13f678974e5d0, type: 3}
+  - {fileID: 8300000, guid: afc05960c02ab6841ac9c546c258cdf5, type: 3}
+  - {fileID: 8300000, guid: 26431325dffb3844db23285a625790f8, type: 3}
   sniffAudioClips:
   - {fileID: 8300000, guid: d448ed06644a9ca44a44017528d1c65b, type: 3}
   - {fileID: 8300000, guid: 7ae51b6166c775b41ab40253ae9ca351, type: 3}
@@ -1629,6 +1657,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0b527ada1b7065146998389e4802092b, type: 3}
   - {fileID: 8300000, guid: ecc7abac9d8ed0c4c93263672fb049fc, type: 3}
   - {fileID: 8300000, guid: f728e8a977f265f428bb0d8e5b9e1376, type: 3}
+  groanAudioClips_robodog:
+  - {fileID: 8300000, guid: 7c4dde6fa69af6a43a73ac71cacd7948, type: 3}
+  - {fileID: 8300000, guid: c93698b993216f64880834f4e493e1b5, type: 3}
+  - {fileID: 8300000, guid: 2f1373ad4e01e644d8f44c0e5a70ee6e, type: 3}
+  - {fileID: 8300000, guid: bb6bec0364bfd2c4caafa7708ba8f05a, type: 3}
   growlAudioClips:
   - {fileID: 8300000, guid: 6644eae5d0552ba42b67c578207358ec, type: 3}
   - {fileID: 8300000, guid: a80935a1cb68f8844b31d3adc8a645cf, type: 3}
@@ -1636,6 +1669,10 @@ MonoBehaviour:
   growlAudioClips_darkCompanion:
   - {fileID: 8300000, guid: 42a34c5e6f6a74e4cba9b715f66ce5b1, type: 3}
   - {fileID: 8300000, guid: e9e3e1a011278bf41b008779742bb940, type: 3}
+  growlAudioClips_robodog:
+  - {fileID: 8300000, guid: 096a1c705be94ea459884c36f9600d32, type: 3}
+  - {fileID: 8300000, guid: ae11059aeaff7174ca1e5e58239ec80b, type: 3}
+  - {fileID: 8300000, guid: 898fe5ce10057124d8c25be630d526cd, type: 3}
   barkAudioClips:
   - {fileID: 8300000, guid: 95371ee9aa34edc40879c290222214a6, type: 3}
   - {fileID: 8300000, guid: 4d5c35efa9e07cf4da0ddf340d25be4b, type: 3}
@@ -1684,12 +1721,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 754f15e9df258904f8c04a3419d60248, type: 3}
   - {fileID: 8300000, guid: a515916e09aa0ba49a2ca9e73ef2c48f, type: 3}
   - {fileID: 8300000, guid: 9a55dc12a52ec68429c0f3c0937862d4, type: 3}
+  barkAudioClips_robodog:
+  - {fileID: 8300000, guid: 471fba58d50c0ba4cb80eba828daa81f, type: 3}
+  - {fileID: 8300000, guid: 9d297091423a440468f34db891e70abf, type: 3}
+  - {fileID: 8300000, guid: c992df1f0806bac4e89918bb72ce0e83, type: 3}
+  - {fileID: 8300000, guid: c4f5a6223e6f32341b5fbcfc1294116c, type: 3}
+  - {fileID: 8300000, guid: 3cfffc73d5c616a43940e4c38210c9d9, type: 3}
+  - {fileID: 8300000, guid: 9ced91ee75fafed41ae8bb7229fc1e61, type: 3}
   biteAudioClips:
   - {fileID: 8300000, guid: 8d9f66459ddc40c41a238d36a0d9aa47, type: 3}
   biteAudioClips_darkCompanion:
   - {fileID: 8300000, guid: cde46385ec6c8214ba101ac77bdeb11a, type: 3}
   - {fileID: 8300000, guid: 4f9f1ada2fd621c4383cbeeee7651b3d, type: 3}
   - {fileID: 8300000, guid: 8f9cf234f28759248b5bb37098b92fce, type: 3}
+  biteAudioClips_robodog: []
   petStartAudioClips:
   - {fileID: 8300000, guid: b77d3ebbc86ec1647906b4df99274e88, type: 3}
   - {fileID: 8300000, guid: 6dab63746e3a2ad478d7568914954718, type: 3}
@@ -1706,6 +1751,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e00e3695539450c4daa1b6460a80c90a, type: 3}
   - {fileID: 8300000, guid: b4fc08e7ac81ba948b7be969386357d6, type: 3}
   - {fileID: 8300000, guid: 7069013bccb4ff248a5627d4fb90b0c1, type: 3}
+  petBarkAudioClips_Robodog:
+  - {fileID: 8300000, guid: 58b3c0d5e387d2846ba913a1e9b63f3c, type: 3}
+  - {fileID: 8300000, guid: 3e1d4ff376303c945ac13210d839d64b, type: 3}
+  - {fileID: 8300000, guid: 0118c20d4420e304ca71030bda3afad4, type: 3}
+  - {fileID: 8300000, guid: 7518a50f82db90b4eab2aa0fface0678, type: 3}
+  - {fileID: 8300000, guid: 86dddf8c67241094e9b9e59f51733e08, type: 3}
+  - {fileID: 8300000, guid: 25592a7ae1cfe294aa88780cad675578, type: 3}
+  - {fileID: 8300000, guid: b8176b2576acc6e4fbc15545674eda30, type: 3}
+  - {fileID: 8300000, guid: 85db9501954c0a346a9234b352547d3d, type: 3}
   petTapAudioClips:
   - {fileID: 8300000, guid: 60ebb1fe90c2de44b91132543c63cba1, type: 3}
   - {fileID: 8300000, guid: ee20ef146c313ab48b5a2d47d7c8cb60, type: 3}
@@ -2356,6 +2410,7 @@ GameObject:
   - component: {fileID: 6784152704645662438}
   - component: {fileID: 7151654208442214634}
   - component: {fileID: 6964596691999979307}
+  - component: {fileID: 4090749891847688498}
   - component: {fileID: 6445080187049815477}
   - component: {fileID: 1436243691899500231}
   - component: {fileID: 8490795598111556466}
@@ -2405,10 +2460,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dogType: 0
   dogSkin: 0
-  useDebugDogType: 0
-  useDebugDogSkin: 0
-  debugDogType: 0
-  debugDogSkin: 0
+  useDebugDogType: 1
+  useDebugDogSkin: 1
+  debugDogType: 3
+  debugDogSkin: 7
   initialIdleState: 7
   initialState: 3
   dogTypeSkins:
@@ -2431,6 +2486,12 @@ MonoBehaviour:
     - dogSkin: 2
       linkedDLC: 0
     - dogSkin: 6
+      linkedDLC: 0
+  - dogType: 3
+    dogTypeDLCSkins:
+    - dogSkin: 7
+      linkedDLC: 0
+    - dogSkin: 8
       linkedDLC: 0
 --- !u!114 &6784152704645662438
 MonoBehaviour:
@@ -2480,6 +2541,20 @@ MonoBehaviour:
   laserContinuousStaticProjectilePrefab: {fileID: 8912131687088607176, guid: eeaf1bca29046d04f8fb8b86482137b0, type: 3}
   shockWaveStaticProjectile: {fileID: 2892590372256961367, guid: 09c906518a62b6746ad8a97dcbd09164, type: 3}
   laserProjectileSpawnPosition: {fileID: 5557275048333591901}
+--- !u!114 &4090749891847688498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5832608994968075746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc11f77e1275434bb9cc002dc2dfbd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dogAIType: 3
+  creatureDetectionCollider: {fileID: 5507158826448228988}
 --- !u!114 &6445080187049815477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2532,6 +2607,12 @@ MonoBehaviour:
   initialDarkCompanionStompDamage: 20
   initialDarkCompanionStompCooldown: 80
   initialDarkCompanionStompStunDuration: 3
+  initialRobodogMissilesAmount: 0
+  initialRobodogMissilesCooldown: 0
+  initialRobodogSpeedupDuration: 0
+  initialRobodogSpeedupCooldown: 0
+  initialRobodogSpeedupAmount: 0
+  initialRobodogAmmoFactoryCooldown: 0
   debugUnlockBiteAbility: 0
   debugUnlockDigResourceAbility: 0
   debugUnlockDetectAmbushAbility: 0

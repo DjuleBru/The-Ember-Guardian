@@ -42,6 +42,20 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         DogSkin_Husky,
         DogSkin_GoldenBrown,
         DogSkin_DarkCompanionRed,
+
+
+        Dog_Robodog,
+        DogSkin_RobodogSkin1,
+        Robodog_MissilesAbility,
+        Robodog_SpeedUpAbility,
+        Robodog_AmmoFactory,
+
+        Robodog_MissilesRocketAmount,
+        Robodog_MissilesRocketCooldown,
+        Robodog_SpeedUpDuration,
+        Robodog_SpeedUpCooldown,
+        Robodog_SpeedUpAmount,
+        Robodog_AmmoFactoryCooldown,
     }
 
     public enum DogTamerItemCategory {
