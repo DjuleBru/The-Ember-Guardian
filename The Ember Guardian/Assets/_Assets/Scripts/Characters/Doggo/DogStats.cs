@@ -102,6 +102,8 @@ public class DogStats : MonoBehaviour {
     [SerializeField] private Sprite darkCompanionIcon;
     [SerializeField] private Sprite darkCompanionRedIcon;
     [SerializeField] private Sprite huskyIcon;
+    [SerializeField] private Sprite robodogIcon;
+    [SerializeField] private Sprite robodogSkin1Icon;
 
     private List<string> tempSaveStrings = new List<string>();
 
@@ -218,6 +220,13 @@ public class DogStats : MonoBehaviour {
         darkCompanionStompCooldown = initialDarkCompanionStompCooldown;
         darkCompanionStompStunDuration = initialDarkCompanionStompStunDuration;
 
+
+        robodogMissilesAmount = initialRobodogMissilesAmount;
+        robodogMissilesCooldown = initialRobodogMissilesCooldown;
+        robodogSpeedupDuration = initialRobodogSpeedupDuration;
+        robodogSpeedupAmount = initialRobodogSpeedupAmount;
+        robodogSpeedupCooldown = initialRobodogSpeedupCooldown;
+        robodogAmmoFactoryCooldown = initialRobodogAmmoFactoryCooldown;
     }
 
     private T GetValue<T>(Dictionary<string, object> dict, string key, T defaultValue) {
@@ -282,6 +291,27 @@ public class DogStats : MonoBehaviour {
     }
     public float GetInitialDarkCompanionStompStunDuration() {
         return initialDarkCompanionStompStunDuration;
+    }
+
+
+    public float GetInitialRobodogSpeedUpCooldown() {
+        return initialRobodogSpeedupCooldown;
+    }
+    public float GetInitialMissilesRocketCooldown() {
+        Debug.Log("GetInitialMissilesRocketCooldown " + initialRobodogMissilesCooldown);
+        return initialRobodogMissilesCooldown;
+    }
+    public float GetInitialMissilesRocketAmount() {
+        return initialRobodogMissilesAmount;
+    }
+    public float GetInitialAmmoFactoryCooldown() {
+        return initialRobodogAmmoFactoryCooldown;
+    }
+    public float GetInitialSpeedUpDuration() {
+        return initialRobodogSpeedupDuration;
+    }
+    public float GetInitialSpeedUpAmount() {
+        return initialRobodogSpeedupAmount;
     }
     #endregion
 
@@ -379,6 +409,25 @@ public class DogStats : MonoBehaviour {
     public float GetDarkCompanionStompStunDuration() {
         return darkCompanionStompStunDuration;
     }
+
+    public float GetRobodogSpeedUpCooldown() {
+        return robodogSpeedupCooldown;
+    }
+    public float GetMissilesRocketCooldown() {
+        return robodogMissilesCooldown;
+    }
+    public float GetAmmoFactoryCooldown() {
+        return robodogAmmoFactoryCooldown;
+    }
+    public float GetSpeedUpAmount() {
+        return robodogSpeedupAmount;
+    }
+    public float GetMissilesRocketAmount() {
+        return robodogMissilesAmount;
+    }
+    public float GetSpeedUpDuration() {
+        return robodogSpeedupDuration;
+    }
     #endregion
 
     #region SET PARAMETERS
@@ -443,6 +492,14 @@ public class DogStats : MonoBehaviour {
 
     public void UnlockRobodogMissilesAbility() {
         robodogMissilesAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
+    }
+    public void UnlockRobodogAmmoFactory() {
+        robodogAmmoFactoryAbilityUnlocked = true;
+        OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
+    }
+    public void UnlockRobodogSpeedUpAbility() {
+        robodogSpeedupAbilityUnlocked = true;
         OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
 
@@ -516,6 +573,31 @@ public class DogStats : MonoBehaviour {
         this.darkCompanionStompStunDuration = initialDarkCompanionStompStunDuration + absoluteBuff;
         OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
     }
+
+    public void BuffRobodogAmmoFactoryCooldown(float absoluteBuff) {
+        this.robodogAmmoFactoryCooldown = initialRobodogAmmoFactoryCooldown + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+    public void BuffRobodogMissilesRocketCooldown(float absoluteBuff) {
+        this.robodogMissilesCooldown = initialRobodogMissilesCooldown + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+    public void BuffRobodogSpeedUpCooldown(float absoluteBuff) {
+        this.robodogSpeedupCooldown = initialRobodogSpeedupCooldown + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+    public void BuffRobodogMissilesRocketAmount(int absoluteBuff) {
+        this.robodogMissilesAmount = initialRobodogMissilesAmount + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+    public void BuffRobodogSpeedUpAmount(float absoluteBuff) {
+        this.robodogSpeedupAmount = initialRobodogSpeedupAmount + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
+    }
+    public void BuffRobodogSpeedUpDuration(float absoluteBuff) {
+        this.robodogSpeedupDuration = initialRobodogSpeedupDuration + absoluteBuff;
+        OnAbilityUpgraded?.Invoke(this, EventArgs.Empty);
+    }
     #endregion
 
 
@@ -544,6 +626,9 @@ public class DogStats : MonoBehaviour {
             skin = Dog.DogSkin.GoldenRetreiverSkin;
         }
 
+        if (dogType == Dog.DogType.Robodog) {
+            skin = Dog.DogSkin.Robodog;
+        }
         return skin;
     }
 
@@ -551,6 +636,7 @@ public class DogStats : MonoBehaviour {
         if (dogType == Dog.DogType.GermanShepherd) return true;
         if (dogType == Dog.DogType.GoldenRetreiver) return retreiverUnlocked;
         if (dogType == Dog.DogType.DarkCompanion) return darkCompanionUnlocked;
+        if (dogType == Dog.DogType.Robodog) return robodogUnlocked;
         return false;
     }
 
@@ -586,6 +672,9 @@ public class DogStats : MonoBehaviour {
         if(type == Dog.DogType.DarkCompanion) {
             return darkCompanionIcon;
         }
+        if (type == Dog.DogType.Robodog) {
+            return robodogIcon;
+        }
         return germanShepherdIcon;
     }
 
@@ -613,6 +702,14 @@ public class DogStats : MonoBehaviour {
 
         if (skin == Dog.DogSkin.Husky) {
             return huskyIcon;
+        }
+
+        if (skin == Dog.DogSkin.Robodog) {
+            return robodogIcon;
+        }
+
+        if (skin == Dog.DogSkin.RobodogSkin1) {
+            return robodogSkin1Icon;
         }
 
         return germanShepherdIcon;

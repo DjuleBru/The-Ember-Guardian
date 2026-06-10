@@ -219,7 +219,6 @@ public class Dog : MonoBehaviour
     }
 
     public void SetDogType(DogType dogType, bool selectedFromMenu = false) {
-        Debug.Log("SetDogType " + dogType);
         this.dogType = dogType;
 
         dogSkin = LoadSkinForType(dogType);

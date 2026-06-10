@@ -102,6 +102,15 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             if (itemType == DogTamerItemType.DarkCompanion_StompAbility) {
                 DogStats.Instance.UnlockDarkCompanionStompAbility();
             }
+            if (itemType == DogTamerItemType.Robodog_AmmoFactory) {
+                DogStats.Instance.UnlockRobodogAmmoFactory();
+            }
+            if (itemType == DogTamerItemType.Robodog_MissilesAbility) {
+                DogStats.Instance.UnlockRobodogMissilesAbility();
+            }
+            if (itemType == DogTamerItemType.Robodog_SpeedUpAbility) {
+                DogStats.Instance.UnlockRobodogSpeedUpAbility();
+            }
         }
 
         if (itemCategory == DogTamerItemCategory.NewDog) {
@@ -333,6 +342,65 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             }
 
 
+            if (itemType == DogTamerItemType.Robodog_SpeedUpCooldown) {
+                initialStatValue = DogStats.Instance.GetInitialRobodogSpeedUpCooldown();
+                currentStatValue = DogStats.Instance.GetRobodogSpeedUpCooldown().ToString();
+                totalStatWithModifierPostfix = "s";
+                relativeStatPostfix = "s";
+                relativeStatPrefix = "";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
+
+            if (itemType == DogTamerItemType.Robodog_MissilesRocketCooldown) {
+                initialStatValue = DogStats.Instance.GetInitialMissilesRocketCooldown();
+                currentStatValue = DogStats.Instance.GetMissilesRocketCooldown().ToString();
+                totalStatWithModifierPostfix = "s";
+                relativeStatPostfix = "s";
+                relativeStatPrefix = "";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
+
+            if (itemType == DogTamerItemType.Robodog_AmmoFactoryCooldown) {
+                initialStatValue = DogStats.Instance.GetInitialAmmoFactoryCooldown();
+                currentStatValue = DogStats.Instance.GetAmmoFactoryCooldown().ToString();
+                totalStatWithModifierPostfix = "s";
+                relativeStatPostfix = "s";
+                relativeStatPrefix = "";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
+
+            if (itemType == DogTamerItemType.Robodog_SpeedUpDuration) {
+                initialStatValue = DogStats.Instance.GetInitialSpeedUpDuration();
+                currentStatValue = DogStats.Instance.GetSpeedUpDuration().ToString();
+                totalStatWithModifierPostfix = "s";
+                relativeStatPostfix = "s";
+                relativeStatPrefix = "";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
+
+            if (itemType == DogTamerItemType.Robodog_SpeedUpAmount) {
+                initialStatValue = DogStats.Instance.GetInitialSpeedUpAmount();
+                currentStatValue = DogStats.Instance.GetSpeedUpAmount().ToString();
+                totalStatWithModifierPostfix = "%";
+                relativeStatPostfix = "%";
+                relativeStatPrefix = "+";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
+
+            if (itemType == DogTamerItemType.Robodog_MissilesRocketAmount) {
+                initialStatValue = DogStats.Instance.GetInitialMissilesRocketAmount();
+                currentStatValue = DogStats.Instance.GetMissilesRocketAmount().ToString();
+                totalStatWithModifierPostfix = "";
+                relativeStatPostfix = "";
+                relativeStatPrefix = "+";
+                initialStatPrefix = "";
+                totalStatWithModifierPrefix = "";
+            }
 
             if (itemLevel == maxItemLevel) {
                 absoluteStatValueModifier = linkedStatModifierSO.statModifierList[itemLevel - 1];
@@ -341,8 +409,12 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             }
             else {
                 absoluteStatValueModifier = linkedStatModifierSO.statModifierList[itemLevel];
+                Debug.Log("absoluteStatValueModifier " + absoluteStatValueModifier);
+                Debug.Log("statValueModifierMultiplier " + statValueModifierMultiplier);
                 totalStatWithModifier = initialStatValue + absoluteStatValueModifier * statValueModifierMultiplier;
 
+                Debug.Log("initialStatValue " + initialStatValue);
+                Debug.Log("totalStatWithModifier " + totalStatWithModifier);
                 totalStatValue = totalStatWithModifier.ToString();
                 relativeDamageBulletModifier = linkedStatModifierSO.statModifierList[itemLevel];
 
@@ -429,6 +501,25 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         if (itemType == DogTamerItemType.DarkCompanion_StompStunDuration) {
             DogStats.Instance.BuffDarkCompanionStompStunDuration((int)newAbsoluteValueBuff);
         }
+
+        if (itemType == DogTamerItemType.Robodog_AmmoFactoryCooldown) {
+            DogStats.Instance.BuffRobodogAmmoFactoryCooldown(newAbsoluteValueBuff);
+        }
+        if (itemType == DogTamerItemType.Robodog_MissilesRocketCooldown) {
+            DogStats.Instance.BuffRobodogMissilesRocketCooldown(newAbsoluteValueBuff);
+        }
+        if (itemType == DogTamerItemType.Robodog_SpeedUpCooldown) {
+            DogStats.Instance.BuffRobodogSpeedUpCooldown(newAbsoluteValueBuff);
+        }
+        if (itemType == DogTamerItemType.Robodog_MissilesRocketAmount) {
+            DogStats.Instance.BuffRobodogMissilesRocketAmount((int)newAbsoluteValueBuff);
+        }
+        if (itemType == DogTamerItemType.Robodog_SpeedUpAmount) {
+            DogStats.Instance.BuffRobodogSpeedUpAmount(newAbsoluteValueBuff);
+        }
+        if (itemType == DogTamerItemType.Robodog_SpeedUpDuration) {
+            DogStats.Instance.BuffRobodogSpeedUpDuration(newAbsoluteValueBuff);
+        }
     }
 
     private void UnlockDogSkin() {
@@ -446,7 +537,9 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
         if (itemType == DogTamerItemType.DogSkin_Husky) {
             skinType = Dog.DogSkin.Husky;
         }
-
+        if (itemType == DogTamerItemType.DogSkin_RobodogSkin1) {
+            skinType = Dog.DogSkin.RobodogSkin1;
+        }
         DogStats.Instance.SetDogSkinUnlocked_Temp(skinType);
     }
 
@@ -602,6 +695,55 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newDarkCompanionStompStunDuration") + " ");
         }
 
+
+        if (itemType == DogTamerItemType.Robodog_AmmoFactoryCooldown) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentAmmoFactoryCooldown") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_ammoFactoryCooldown") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newAmmoFactoryCooldown") + " ");
+        }
+        if (itemType == DogTamerItemType.Robodog_MissilesRocketCooldown) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentMissilesRocketCooldown") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_missilesRocketCooldown") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newMissilesRocketCooldown") + " ");
+        }
+        if (itemType == DogTamerItemType.Robodog_SpeedUpCooldown) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentSpeedUpCooldown") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_speedUpCooldown") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newSpeedUpCooldown") + " ");
+        }
+        if (itemType == DogTamerItemType.Robodog_SpeedUpDuration) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentSpeedUpDuration") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_speedUpDuration") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newSpeedUpDuration") + " ");
+        }
+        if (itemType == DogTamerItemType.Robodog_SpeedUpAmount) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentSpeedUpAmount") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_speedUpAmount") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newSpeedUpAmount") + " ");
+        }
+        if (itemType == DogTamerItemType.Robodog_MissilesRocketAmount) {
+            if (itemLevel < maxItemLevel) {
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_currentMissilesRocketAmount") + " ");
+                statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_MissilesRocketAmount") + " ");
+                statDescriptionList.Add("");
+            }
+            statDescriptionList.Add(LocalizationManager.Instance.GetLocalizedText("card_newMissilesRocketAmount") + " ");
+        }
 
         return statDescriptionList;
     }

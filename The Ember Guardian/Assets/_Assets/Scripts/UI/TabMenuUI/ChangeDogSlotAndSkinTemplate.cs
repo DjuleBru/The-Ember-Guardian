@@ -24,7 +24,7 @@ public class ChangeDogSlotAndSkinTemplate : MonoBehaviour
                 // Check if DLC unlocked here
 
                 // Remove default skins
-                if (dogTypeDLCSkin.dogSkin == Dog.DogSkin.DarkCompanionSkin || dogTypeDLCSkin.dogSkin == Dog.DogSkin.GermanShepherdSkin || dogTypeDLCSkin.dogSkin == Dog.DogSkin.GoldenRetreiverSkin) continue;
+                if (dogTypeDLCSkin.dogSkin == Dog.DogSkin.DarkCompanionSkin || dogTypeDLCSkin.dogSkin == Dog.DogSkin.GermanShepherdSkin || dogTypeDLCSkin.dogSkin == Dog.DogSkin.GoldenRetreiverSkin || dogTypeDLCSkin.dogSkin == Dog.DogSkin.Robodog) continue;
 
                 DogSkinReplaceButton skinReplaceButton = Instantiate(changeDogSkinSlotTemplate, changeDogSkinContainerTemplate).GetComponent<DogSkinReplaceButton>();
                 skinReplaceButton.SetLinkedDogSkin(dogTypeDLCSkin.dogSkin);

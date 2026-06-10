@@ -56,6 +56,7 @@ public class DogSkinReplaceButton : ButtonUI {
     }
 
     public void SetLinkedDogSkin(Dog.DogSkin skin) {
+        //Debug.Log("SetLinkedDogSkin " + skin);
         linkedDogSkinType = skin;
 
         DLCManager.DLCType dlc = DogStats.Instance.GetDogSkinLinkedDLC(skin);

@@ -802,7 +802,7 @@ MonoBehaviour:
   darkCompanionRedAnimator: {fileID: 22100000, guid: 75f435485fdd83546982aac5d235b5b5, type: 2}
   huskyAnimator: {fileID: 9100000, guid: 328950a9e41326849bc77eddeb0742e3, type: 2}
   robodogAnimator: {fileID: 22100000, guid: 649a57861ea4bab4db50ba9126c7d02a, type: 2}
-  robodogAnimator_Skin1: {fileID: 22100000, guid: 649a57861ea4bab4db50ba9126c7d02a, type: 2}
+  robodogAnimator_Skin1: {fileID: 22100000, guid: 0b6229feafd604e4c8e69f822591b5cc, type: 2}
   petDog: {fileID: 7906990751673499060}
   darkCompanionAI: {fileID: 6964596691999979307}
   retreiverAI: {fileID: 7151654208442214634}
@@ -2588,6 +2588,12 @@ MonoBehaviour:
       linkedDLC: 0
     - dogSkin: 6
       linkedDLC: 0
+  - dogType: 3
+    dogTypeDLCSkins:
+    - dogSkin: 7
+      linkedDLC: 0
+    - dogSkin: 8
+      linkedDLC: 0
   initialGermanShepherdBiteDamage: 40
   initialGermanShepherdBiteCooldown: 30
   initialGermanShepherdDigResourceCooldown: 20
@@ -2607,12 +2613,12 @@ MonoBehaviour:
   initialDarkCompanionStompDamage: 20
   initialDarkCompanionStompCooldown: 80
   initialDarkCompanionStompStunDuration: 3
-  initialRobodogMissilesAmount: 0
-  initialRobodogMissilesCooldown: 0
-  initialRobodogSpeedupDuration: 0
-  initialRobodogSpeedupCooldown: 0
-  initialRobodogSpeedupAmount: 0
-  initialRobodogAmmoFactoryCooldown: 0
+  initialRobodogMissilesAmount: 3
+  initialRobodogMissilesCooldown: 60
+  initialRobodogSpeedupDuration: 3
+  initialRobodogSpeedupCooldown: 45
+  initialRobodogSpeedupAmount: 20
+  initialRobodogAmmoFactoryCooldown: 120
   debugUnlockBiteAbility: 0
   debugUnlockDigResourceAbility: 0
   debugUnlockDetectAmbushAbility: 0
@@ -2627,6 +2633,8 @@ MonoBehaviour:
   darkCompanionIcon: {fileID: 21300000, guid: 9073bf5f678c1ef42af794e74cec0683, type: 3}
   darkCompanionRedIcon: {fileID: 21300000, guid: 38a316f7455967e47a141e3d44268f63, type: 3}
   huskyIcon: {fileID: 21300000, guid: 53903685ee1e3574fa154868a2354f85, type: 3}
+  robodogIcon: {fileID: 21300000, guid: 60c23c310c126b94d893007cb3fa4551, type: 3}
+  robodogSkin1Icon: {fileID: 21300000, guid: 7e7277082a0d916448d15e34aceb1bb8, type: 3}
 --- !u!114 &1436243691899500231
 MonoBehaviour:
   m_ObjectHideFlags: 0

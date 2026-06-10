@@ -176,6 +176,7 @@ public class SceneLoader : MonoBehaviour
     public bool IsSteamDeck() {
         if (DebugManager.Instance.GetDebugMode_SteamDeck()) return true;
 
+        if (AchievementsManager.Instance == null) return false;
         if (!AchievementsManager.Instance.GetPlayerConnected()) return false;
 
         return SteamUtils.IsRunningOnSteamDeck;

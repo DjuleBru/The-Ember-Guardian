@@ -72,6 +72,7 @@ public class DogChangeButton : ButtonUI {
 
 
     private void UpdateDogIconImage(Dog.DogSkin dogType) {
+        Debug.Log("UpdateDogIconImage " + dogType);
         dogIconImage.sprite = DogStats.Instance.GetDogIconSprite(dogType);
         dogIconImage.color = Color.white;
     }

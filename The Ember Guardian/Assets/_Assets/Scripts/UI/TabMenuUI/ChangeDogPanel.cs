@@ -47,10 +47,15 @@ public class ChangeDogPanel : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (Dog.DogType type in Enum.GetValues(typeof(Dog.DogType))) {
+        List<Dog.DogType> dogTypeList = new List<Dog.DogType> {
+            Dog.DogType.GermanShepherd,
+            Dog.DogType.GoldenRetreiver,
+            Dog.DogType.Robodog,
+            Dog.DogType.DarkCompanion
+        };
+        foreach (Dog.DogType type in dogTypeList) {
 
             if(DogStats.Instance.GetDogUnlocked(type)) {
-
                 ChangeDogSlotAndSkinTemplate dogReplaceSlot = Instantiate(changeDogSlotTemplate, changeDogSlotContainer).GetComponent<ChangeDogSlotAndSkinTemplate>();
                 dogReplaceSlot.SetLinkedDog(type);
                 changeDogButtons.Add(dogReplaceSlot.GetDogReplaceButton().gameObject);
