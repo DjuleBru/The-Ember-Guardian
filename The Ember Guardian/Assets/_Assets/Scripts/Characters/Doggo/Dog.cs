@@ -104,6 +104,7 @@ public class Dog : MonoBehaviour
                 SetPosition(new Vector3(UnityEngine.Random.Range(-10, 10), 0, 0));
             }
         }
+
     }
 
     private void SetCurrentDogType() {

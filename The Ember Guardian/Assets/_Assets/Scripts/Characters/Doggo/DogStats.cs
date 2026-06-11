@@ -89,6 +89,9 @@ public class DogStats : MonoBehaviour {
     [SerializeField] private bool debugUnlockPickUpItemsAbility;
     [SerializeField] private bool debugUnlockLaserAbility;
     [SerializeField] private bool debugUnlockStompAbility;
+    [SerializeField] private bool debugUnlockMissilesAbility;
+    [SerializeField] private bool debugUnlockAmmoCrafterAbility;
+    [SerializeField] private bool debugUnlockSpeedupAbility;
 
     public event EventHandler OnNewDogUnlocked;
     public event EventHandler OnNewDogSkinUnlocked;
@@ -152,6 +155,10 @@ public class DogStats : MonoBehaviour {
         darkCompanionLaserAbilityUnlocked = GetValue(dogData, "darkCompanionLaserAbilityUnlocked", false);
         darkCompanionStompAbilityUnlocked = GetValue(dogData, "darkCompanionStompAbilityUnlocked", false);
 
+        robodogMissilesAbilityUnlocked = GetValue(dogData, "robodogMissilesAbilityUnlocked", true);
+        robodogAmmoFactoryAbilityUnlocked = GetValue(dogData, "robodogAmmoFactoryAbilityUnlocked", false);
+        robodogSpeedupAbilityUnlocked = GetValue(dogData, "robodogSpeedupAbilityUnlocked", false);
+
         // Stats
         germanShepherdBiteDamage = GetValue(dogData, "germanShepherdBiteDamage", initialGermanShepherdBiteDamage);
         germanShepherdBiteCooldown = GetValue(dogData, "germanShepherdBiteCooldown", initialGermanShepherdBiteCooldown);
@@ -173,6 +180,14 @@ public class DogStats : MonoBehaviour {
         darkCompanionStompCooldown = GetValue(dogData, "darkCompanionStompCooldown", initialDarkCompanionStompCooldown);
         darkCompanionStompStunDuration = GetValue(dogData, "darkCompanionStompStunDuration", initialDarkCompanionStompStunDuration);
 
+
+        robodogMissilesAmount = GetValue(dogData, "robodogMissilesAmount", initialRobodogMissilesAmount);
+        robodogMissilesCooldown = GetValue(dogData, "robodogMissilesCooldown", initialRobodogMissilesCooldown);
+        robodogSpeedupDuration = GetValue(dogData, "robodogSpeedupDuration", initialRobodogSpeedupDuration);
+        robodogSpeedupAmount = GetValue(dogData, "robodogSpeedupAmount", initialRobodogSpeedupAmount);
+        robodogSpeedupCooldown = GetValue(dogData, "robodogSpeedupCooldown", initialRobodogSpeedupCooldown);
+        robodogAmmoFactoryCooldown = GetValue(dogData, "robodogAmmoFactoryCooldown", initialRobodogAmmoFactoryCooldown);
+
         // Dog type (enum direct)
         loadedDogType = GetValue(dogData, "dogType", Dog.DogType.GermanShepherd);
 
@@ -186,6 +201,7 @@ public class DogStats : MonoBehaviour {
         // Anciennes clés restées hors batch
         retreiverUnlocked = ES3.Load("retreiverUnlocked", false);
         darkCompanionUnlocked = ES3.Load("darkCompanionUnlocked", false);
+        robodogUnlocked = ES3.Load("robodogUnlocked", false);
 
         // Initialisation par défaut
         germanShepherdBiteAbilityUnlocked = false;
@@ -199,6 +215,10 @@ public class DogStats : MonoBehaviour {
         darkCompanionBiteAbilityUnlocked = true;
         darkCompanionLaserAbilityUnlocked = false;
         darkCompanionStompAbilityUnlocked = false;
+
+        robodogMissilesAbilityUnlocked = true;
+        robodogSpeedupAbilityUnlocked = false;
+        robodogAmmoFactoryAbilityUnlocked = false;
 
         germanShepherdBiteDamage = initialGermanShepherdBiteDamage;
         germanShepherdBiteCooldown = initialGermanShepherdBiteCooldown;
@@ -322,6 +342,9 @@ public class DogStats : MonoBehaviour {
     public bool GetDarkCompanionUnlocked() {
         return darkCompanionUnlocked;
     }
+    public bool GetRobodogUnlocked() {
+        return robodogUnlocked;
+    }
 
     public bool GetGermanShepherdBiteAbilityUnlocked() {
         return germanShepherdBiteAbilityUnlocked || debugUnlockBiteAbility;
@@ -349,6 +372,16 @@ public class DogStats : MonoBehaviour {
     }
     public bool GetDarkCompanionStompAbilityUnlocked() {
         return darkCompanionStompAbilityUnlocked || debugUnlockStompAbility;
+    }
+
+    public bool GetRobodogMissilesAbilityUnlocked() {
+        return robodogMissilesAbilityUnlocked || debugUnlockMissilesAbility;
+    }
+    public bool GetRobodogAmmoCraftAbilityUnlocked() {
+        return robodogAmmoFactoryAbilityUnlocked || debugUnlockAmmoCrafterAbility;
+    }
+    public bool GetRobodogSpeedUpAbilityUnlocked() {
+        return robodogSpeedupAbilityUnlocked || debugUnlockSpeedupAbility;
     }
 
     public int GetGermanShepherdBiteDamage() {
@@ -494,6 +527,7 @@ public class DogStats : MonoBehaviour {
         robodogMissilesAbilityUnlocked = true;
         OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
     }
+
     public void UnlockRobodogAmmoFactory() {
         robodogAmmoFactoryAbilityUnlocked = true;
         OnNewAbilityUnlocked?.Invoke(this, EventArgs.Empty);
@@ -732,6 +766,10 @@ public class DogStats : MonoBehaviour {
         dogData["darkCompanionLaserAbilityUnlocked"] = darkCompanionLaserAbilityUnlocked;
         dogData["darkCompanionStompAbilityUnlocked"] = darkCompanionStompAbilityUnlocked;
 
+        dogData["robodogMissilesAbilityUnlocked"] = robodogMissilesAbilityUnlocked;
+        dogData["robodogAmmoFactoryAbilityUnlocked"] = robodogAmmoFactoryAbilityUnlocked;
+        dogData["robodogSpeedupAbilityUnlocked"] = robodogSpeedupAbilityUnlocked;
+
         // Stats
         dogData["germanShepherdBiteDamage"] = germanShepherdBiteDamage;
         dogData["germanShepherdBiteCooldown"] = germanShepherdBiteCooldown;
@@ -753,6 +791,13 @@ public class DogStats : MonoBehaviour {
         dogData["darkCompanionStompCooldown"] = darkCompanionStompCooldown;
         dogData["darkCompanionStompStunDuration"] = darkCompanionStompStunDuration;
 
+        dogData["robodogMissilesAmount"] = robodogMissilesAmount;
+        dogData["robodogMissilesCooldown"] = robodogMissilesCooldown;
+        dogData["robodogSpeedupDuration"] = robodogSpeedupDuration;
+        dogData["robodogSpeedupAmount"] = robodogSpeedupAmount;
+        dogData["robodogSpeedupCooldown"] = robodogSpeedupCooldown;
+        dogData["robodogAmmoFactoryCooldown"] = robodogAmmoFactoryCooldown;
+
         // Dog type (enum direct)
         dogData["dogType"] = Dog.Instance.GetDogType();
 
@@ -762,6 +807,7 @@ public class DogStats : MonoBehaviour {
             ES3.Save(key, true);
         }
     }
+
     public void SaveHordeDogStats() {
         var dogData = new Dictionary<string, object>();
 
@@ -778,6 +824,10 @@ public class DogStats : MonoBehaviour {
         dogData["darkCompanionLaserAbilityUnlocked"] = darkCompanionLaserAbilityUnlocked;
         dogData["darkCompanionStompAbilityUnlocked"] = darkCompanionStompAbilityUnlocked;
 
+        dogData["robodogMissilesAbilityUnlocked"] = robodogMissilesAbilityUnlocked;
+        dogData["robodogAmmoFactoryAbilityUnlocked"] = robodogAmmoFactoryAbilityUnlocked;
+        dogData["robodogSpeedupAbilityUnlocked"] = robodogSpeedupAbilityUnlocked;
+
         // Stats
         dogData["germanShepherdBiteDamage"] = germanShepherdBiteDamage;
         dogData["germanShepherdBiteCooldown"] = germanShepherdBiteCooldown;
@@ -798,6 +848,13 @@ public class DogStats : MonoBehaviour {
         dogData["darkCompanionStompDamage"] = darkCompanionStompDamage;
         dogData["darkCompanionStompCooldown"] = darkCompanionStompCooldown;
         dogData["darkCompanionStompStunDuration"] = darkCompanionStompStunDuration;
+
+        dogData["robodogMissilesAmount"] = robodogMissilesAmount;
+        dogData["robodogMissilesCooldown"] = robodogMissilesCooldown;
+        dogData["robodogSpeedupDuration"] = robodogSpeedupDuration;
+        dogData["robodogSpeedupAmount"] = robodogSpeedupAmount;
+        dogData["robodogSpeedupCooldown"] = robodogSpeedupCooldown;
+        dogData["robodogAmmoFactoryCooldown"] = robodogAmmoFactoryCooldown;
 
         // Dog type (enum direct)
         dogData["dogType"] = Dog.Instance.GetDogType();

@@ -11,6 +11,8 @@ public class DoggoVisualOnly : MonoBehaviour
     [SerializeField] private GameObject darkCompanionGO;
     [SerializeField] private GameObject darkCompanionRedGO;
     [SerializeField] private GameObject huskyGO;
+    [SerializeField] private GameObject robodogGO;
+    [SerializeField] private GameObject robodogBlueGO;
 
     private Dog.DogType dogType = Dog.DogType.GermanShepherd;
 
@@ -44,6 +46,7 @@ public class DoggoVisualOnly : MonoBehaviour
         germanShepherdGO.SetActive(false);
         retreiverGO.SetActive(false);
         darkCompanionGO.SetActive(false);
+        robodogGO.SetActive(false);
 
         if(germanShepherdLightGO != null) {
             germanShepherdLightGO.SetActive(false);
@@ -61,6 +64,10 @@ public class DoggoVisualOnly : MonoBehaviour
             huskyGO.SetActive(false);
         }
 
+        if (robodogBlueGO != null) {
+            robodogBlueGO.SetActive(false);
+        }
+
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
             if (dogType == Dog.DogType.GermanShepherd) {
@@ -72,16 +79,21 @@ public class DoggoVisualOnly : MonoBehaviour
             if (dogType == Dog.DogType.DarkCompanion) {
                 darkCompanionGO.SetActive(true);
             }
+            if (dogType == Dog.DogType.Robodog) {
+                robodogGO.SetActive(true);
+            }
         }
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
             bool retreiverUnlocked = DogStats.Instance.GetRetreiverUnlocked();
             bool darkCompanionUnlocked = DogStats.Instance.GetDarkCompanionUnlocked();
+            bool robodogUnlocked = DogStats.Instance.GetRobodogUnlocked();
 
             if (dogType == Dog.DogType.GermanShepherd) {
                 germanShepherdGO.SetActive(false);
                 retreiverGO.SetActive(retreiverUnlocked);
                 darkCompanionGO.SetActive(darkCompanionUnlocked);
+                robodogGO.SetActive(robodogUnlocked);
 
             }
 
@@ -89,10 +101,19 @@ public class DoggoVisualOnly : MonoBehaviour
                 retreiverGO.SetActive(false);
                 germanShepherdGO.SetActive(true);
                 darkCompanionGO.SetActive(darkCompanionUnlocked);
+                robodogGO.SetActive(robodogUnlocked);
             }
 
             if (dogType == Dog.DogType.DarkCompanion) {
                 darkCompanionGO.SetActive(false);
+                germanShepherdGO.SetActive(true);
+                retreiverGO.SetActive(retreiverUnlocked);
+                robodogGO.SetActive(robodogUnlocked);
+            }
+
+            if (dogType == Dog.DogType.Robodog) {
+                robodogGO.SetActive(false);
+                darkCompanionGO.SetActive(darkCompanionUnlocked);
                 germanShepherdGO.SetActive(true);
                 retreiverGO.SetActive(retreiverUnlocked);
             }
@@ -101,6 +122,7 @@ public class DoggoVisualOnly : MonoBehaviour
         RandomizeAnimation(germanShepherdGO.GetComponent<Animator>());
         RandomizeAnimation(darkCompanionGO.GetComponent<Animator>());
         RandomizeAnimation(retreiverGO.GetComponent<Animator>());
+        RandomizeAnimation(robodogGO.GetComponent<Animator>());
 
     }
 
@@ -113,6 +135,8 @@ public class DoggoVisualOnly : MonoBehaviour
         retreiverBrownGO.SetActive(false);
         darkCompanionRedGO.SetActive(false);
         huskyGO.SetActive(false);
+        robodogGO.SetActive(false);
+        robodogBlueGO.SetActive(false);
 
         if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.MainMenu) {
             if (dogSkin == Dog.DogSkin.GermanShepherdSkin) {
@@ -138,6 +162,12 @@ public class DoggoVisualOnly : MonoBehaviour
                 huskyGO.SetActive(true);
             }
 
+            if (dogSkin == Dog.DogSkin.Robodog) {
+                robodogGO.SetActive(true);
+            }
+            if (dogSkin == Dog.DogSkin.RobodogSkin1) {
+                robodogBlueGO.SetActive(true);
+            }
         }
 
         RandomizeAnimation(germanShepherdGO.GetComponent<Animator>());
@@ -147,6 +177,8 @@ public class DoggoVisualOnly : MonoBehaviour
         RandomizeAnimation(retreiverBrownGO.GetComponent<Animator>());
         RandomizeAnimation(darkCompanionRedGO.GetComponent<Animator>());
         RandomizeAnimation(huskyGO.GetComponent<Animator>());
+        RandomizeAnimation(robodogGO.GetComponent<Animator>());
+        RandomizeAnimation(robodogBlueGO.GetComponent<Animator>());
 
     }
 

@@ -11,6 +11,7 @@ public class MetaProgressionManager : MonoBehaviour
     public static MetaProgressionManager Instance;
     [SerializeField] private bool destroySaveOnApplicationQuit;
     [SerializeField] private List<LevelSO> allLevelSOList;
+    [SerializeField] private LevelSO unlockRobodogLevelSO;
     private bool flagCarry_Debug;
 
     private List<string> unlockedVideoTipList = new List<string>();
@@ -67,6 +68,20 @@ public class MetaProgressionManager : MonoBehaviour
         unlockedVideoTipList = ES3.Load("unlockedVideoTipList", new List<string>());
         newlyUnlockedVideoTipList = ES3.Load("newlyUnlockedVideoTipList", new List<string>());
     }
+
+
+    private void Start() {
+        if (SceneLoader.Instance.GetSceneType() == SceneLoader.SceneType.HUB) {
+            RetrospectiveCheckToUnlockRobodog();
+        }
+    }
+    private void RetrospectiveCheckToUnlockRobodog() {
+        if (DogStats.Instance.GetRobodogUnlocked()) return;
+        if (MetaProgressionManager.Instance.GetLevelCompleted(unlockRobodogLevelSO)) {
+            Dog.Instance.UnlockDogType(Dog.DogType.Robodog);
+        }
+    }
+
 
     private void Update() {
         if(Input.GetKeyDown(KeyCode.H)) {

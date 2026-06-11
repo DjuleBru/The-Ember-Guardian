@@ -81,6 +81,21 @@ public class DogStatsPanel : MonoBehaviour
             }
         }
 
+        if (dogType == Dog.DogType.Robodog) {
+            if (DogStats.Instance.GetRobodogMissilesAbilityUnlocked()) {
+                DogAbilityTemplate ability = Instantiate(abilityTemplate, abilityContainer).GetComponent<DogAbilityTemplate>();
+                ability.InitializeAbility(HUBMerchantItem_DogTamerItem.DogTamerItemType.Robodog_MissilesAbility);
+            }
+            if (DogStats.Instance.GetRobodogSpeedUpAbilityUnlocked()) {
+                DogAbilityTemplate ability = Instantiate(abilityTemplate, abilityContainer).GetComponent<DogAbilityTemplate>();
+                ability.InitializeAbility(HUBMerchantItem_DogTamerItem.DogTamerItemType.Robodog_SpeedUpAbility);
+            }
+            if (DogStats.Instance.GetRobodogAmmoCraftAbilityUnlocked()) {
+                DogAbilityTemplate ability = Instantiate(abilityTemplate, abilityContainer).GetComponent<DogAbilityTemplate>();
+                ability.InitializeAbility(HUBMerchantItem_DogTamerItem.DogTamerItemType.Robodog_AmmoFactory);
+            }
+        }
+
         abilityTemplate.gameObject.SetActive(false);
     }
 }

@@ -45,6 +45,7 @@ public class LevelSO : ScriptableObject
         ScavengableObstacles,
         ThroneArtifact,
         Trials,
+        Robodog,
     }
 
 

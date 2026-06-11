@@ -140,6 +140,46 @@ public class DogAbilityTemplate : MonoBehaviour
 
                 break;
 
+
+            case HUBMerchantItem_DogTamerItem.DogTamerItemType.Robodog_MissilesAbility:
+                abilityNameText.text = LocalizationManager.Instance.GetLocalizedText("Missile Barrage");
+
+                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("card_MissilesRocketAmount");
+                abilityStatValue.text = DogStats.Instance.GetMissilesRocketAmount().ToString();
+                Instantiate(abilityStatTemplate, abilityStatContainer);
+
+                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("card_cooldown");
+                abilityStatValue.text = DogStats.Instance.GetMissilesRocketCooldown().ToString() + "s";
+                Instantiate(abilityStatTemplate, abilityStatContainer);
+
+                break;
+
+            case HUBMerchantItem_DogTamerItem.DogTamerItemType.Robodog_SpeedUpAbility:
+                abilityNameText.text = LocalizationManager.Instance.GetLocalizedText("Overclock Pulse");
+
+
+                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("card_speedUpAmount");
+                abilityStatValue.text = DogStats.Instance.GetSpeedUpAmount().ToString() + "%";
+                Instantiate(abilityStatTemplate, abilityStatContainer);
+
+                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("Duration");
+                abilityStatValue.text = DogStats.Instance.GetSpeedUpDuration().ToString() + "s";
+                Instantiate(abilityStatTemplate, abilityStatContainer);
+
+                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("card_cooldown");
+                abilityStatValue.text = DogStats.Instance.GetRobodogSpeedUpCooldown().ToString() + "s";
+                Instantiate(abilityStatTemplate, abilityStatContainer);
+
+                break;
+
+            case HUBMerchantItem_DogTamerItem.DogTamerItemType.Robodog_AmmoFactory:
+                abilityNameText.text = LocalizationManager.Instance.GetLocalizedText("Ammo Fabricator");
+
+                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("card_cooldown");
+                abilityStatValue.text = DogStats.Instance.GetAmmoFactoryCooldown().ToString() + "s";
+                Instantiate(abilityStatTemplate, abilityStatContainer);
+
+                break;
         }
 
 

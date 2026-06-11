@@ -77,7 +77,10 @@ public class PortalUI_UnlockableTemplate : MonoBehaviour
                 case LevelSO.Unlockable.Dog_Golden:
                 unlocked = DogStats.Instance.GetDogUnlocked(Dog.DogType.GoldenRetreiver);
                 break;
-                case LevelSO.Unlockable.Worker_Engineer:
+                case LevelSO.Unlockable.Robodog:
+                unlocked = DogStats.Instance.GetDogUnlocked(Dog.DogType.Robodog);
+                break;
+            case LevelSO.Unlockable.Worker_Engineer:
                 unlocked = MetaProgressionManager.Instance.GetMerchantItemUnlocked(StructureSO.StructureType.engineerShrine.ToString() + "1");
                 break;
                 case LevelSO.Unlockable.Worker_Guard:
