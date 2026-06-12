@@ -421,7 +421,7 @@ public class HordeModeUI : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        if(!HordeModeProgressionManager.Instance.GetHasXPToCommit() || HordeModeProgressionManager.Instance.GetAllUnlocked()) {
+        if((!HordeModeProgressionManager.Instance.GetHasXPToCommit() || HordeModeProgressionManager.Instance.GetAllUnlocked())) {
 
             hordeModePanelGO.gameObject.SetActive(true);
             panelAnimator.SetTrigger("Show");

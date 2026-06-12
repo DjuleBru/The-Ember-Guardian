@@ -36,6 +36,7 @@ public class DogSounds : SoundObject
     [SerializeField] private AudioClip[] petBarkAudioClips;
     [SerializeField] private AudioClip[] petBarkAudioClips_Robodog;
     [SerializeField] private AudioClip[] petTapAudioClips;
+    [SerializeField] private AudioClip[] petTapAudioClips_Robodog;
     [SerializeField] private AudioClip[] skidAudioClips;
 
     [SerializeField] private AudioClip rollingAudioClip;
@@ -135,6 +136,10 @@ public class DogSounds : SoundObject
         if(!pettingDogTapPlaying) {
 
             AudioClip tapAudioClip = petTapAudioClips[Random.Range(0, petTapAudioClips.Length)];
+
+            if(Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+                tapAudioClip = petTapAudioClips_Robodog[Random.Range(0, petTapAudioClips_Robodog.Length)];
+            }
             dogAudioSource.PlayOneShot(tapAudioClip, masterVolume * dogVolume / 2);
             StartCoroutine(SetTappingDogSFXAfterSFXEnd(tapAudioClip.length * 5f));
         }

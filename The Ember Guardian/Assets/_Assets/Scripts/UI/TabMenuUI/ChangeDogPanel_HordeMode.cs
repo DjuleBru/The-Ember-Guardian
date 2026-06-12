@@ -22,7 +22,14 @@ public class ChangeDogPanel_HordeMode : ChangeDogPanel
             Destroy(child.gameObject);
         }
 
-        foreach (Dog.DogType type in Enum.GetValues(typeof(Dog.DogType))) {
+        List<Dog.DogType> dogTypesList = new List<Dog.DogType>() {
+            Dog.DogType.GermanShepherd,
+            Dog.DogType.GoldenRetreiver,
+            Dog.DogType.Robodog,
+            Dog.DogType.DarkCompanion,
+        };
+
+        foreach (Dog.DogType type in dogTypesList) {
 
             bool unlocked = false;
             if (type == Dog.DogType.GermanShepherd) {
@@ -34,6 +41,13 @@ public class ChangeDogPanel_HordeMode : ChangeDogPanel
                     unlocked = true;
                 }
             }
+
+            if (type == Dog.DogType.Robodog) {
+                if (HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.Robogog)) {
+                    unlocked = true;
+                }
+            }
+
             if (type == Dog.DogType.DarkCompanion) {
                 if (HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.DarkCompanion)) {
                     unlocked = true;

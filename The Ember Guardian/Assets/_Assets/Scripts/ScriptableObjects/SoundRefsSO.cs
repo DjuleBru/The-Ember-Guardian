@@ -154,6 +154,7 @@ public class SoundRefsSO : ScriptableObject
     public AudioClip germanShepherdSelected;
     public AudioClip retreiverSelected;
     public AudioClip darkCompanionSelected;
+    public AudioClip robodogSelected;
 
     public AudioClip hordeModeXPNewUnlock;
     public AudioClip hordeModeProgressionBar;

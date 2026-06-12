@@ -62,7 +62,9 @@ public class HordeModeProgressionManager : MonoBehaviour
         MoreCampCustomizationBudget1,
         MoreCampCustomizationBudget2,
         None,
+        Robogog,
     }
+
     public Dictionary<HordeModeUnlockables, int> unlockThresholds;
 
     [SerializeField] private List<LevelSO> levelSOList;
@@ -82,6 +84,7 @@ public class HordeModeProgressionManager : MonoBehaviour
 
     // Unlock data
     public List<HordeModeUnlockables> unlockedSet = new List<HordeModeUnlockables>();
+    private List<HordeModeUnlockables> pendingMigrationUnlocks = new List<HordeModeUnlockables>();
     private ES3Settings hordeModeSaveFileSettings;
 
     private void Awake() {
@@ -124,6 +127,9 @@ public class HordeModeProgressionManager : MonoBehaviour
         }
 
         unlockThresholds = GenerateUnlockThresholds();
+        RunMigrations();
+
+        pendingMigrationUnlocks = ES3.Load("HordeModeUnlocks_pendingMigration",new List<HordeModeUnlockables>(),hordeModeSaveFileSettings);
     }
 
     private void ResetHordeSaveFile() {
@@ -218,7 +224,7 @@ public class HordeModeProgressionManager : MonoBehaviour
     }
 
     public bool GetHasXPToCommit() {
-        return hasXPToCommit;
+        return (hasXPToCommit || pendingMigrationUnlocks.Count != 0);
     }
 
     public void SetHasNoXPToCommit() {
@@ -509,4 +515,46 @@ public class HordeModeProgressionManager : MonoBehaviour
         }
     }
 
+    #region MIGRATION
+    private void RunMigrations() {
+        int saveVersion = ES3.Load("HordeSaveVersion", 0, hordeModeSaveFileSettings);
+
+        if (saveVersion < 1) {
+            MigrateV1_RecalculateUnlocks();
+            ES3.Save("HordeSaveVersion", 1, hordeModeSaveFileSettings);
+        }
+        // if (saveVersion < 2) { ... }
+    }
+
+    private void MigrateV1_RecalculateUnlocks() {
+        foreach (var unlock in unlockOrder) {
+            if (unlock == HordeModeUnlockables.None) continue;
+            if (unlockedSet.Contains(unlock)) continue;
+
+            if (unlockThresholds.TryGetValue(unlock, out int threshold)) {
+                if (totalHordeModeXP >= threshold) {
+                    // Pas AddUnlocked() — on met en attente pour l'UI
+                    pendingMigrationUnlocks.Add(unlock);
+                }
+            }
+        }
+
+        ES3.Save("HordeModeUnlocks_pendingMigration",
+            new List<HordeModeUnlockables>(pendingMigrationUnlocks),
+            hordeModeSaveFileSettings);
+    }
+
+
+    public List<HordeModeUnlockables> GetPendingMigrationUnlocks() {
+        return new List<HordeModeUnlockables>(pendingMigrationUnlocks);
+    }
+
+    public void ClearPendingMigrationUnlocks() {
+        pendingMigrationUnlocks.Clear();
+        ES3.Save("HordeModeUnlocks_pendingMigration",
+            new List<HordeModeUnlockables>(),
+            hordeModeSaveFileSettings);
+    }
+
+    #endregion
 }

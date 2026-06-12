@@ -118,7 +118,12 @@ public class PlayerAnimator : MonoBehaviour
         playerAnimator.SetTrigger("PetDogEnd");
     }
     private void PetDog_OnPlayerStartedPettingDog(object sender, EventArgs e) {
-        playerAnimator.SetTrigger("PetDogStart");
+        if(Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+            playerAnimator.SetTrigger("PetDogStart_Robodog");
+        } else {
+            playerAnimator.SetTrigger("PetDogStart");
+        }
+
     }
 
     private void PlayerShoot_OnPlayerResetLMGBipod(object sender, EventArgs e) {
@@ -352,7 +357,6 @@ public class PlayerAnimator : MonoBehaviour
             runDustPS.Emit(randomParticles);
         }
     }
-
 
     private void OnDestroy() {
         PlayerMovement.Instance.OnPlayerJumpUp -= PlayerMovement_OnPlayerJumpUp;

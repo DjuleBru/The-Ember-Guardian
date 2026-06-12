@@ -28,10 +28,10 @@ public class ArchitectTable_MainMenu : ArchitectTable
         bool moreGems2Unlocked = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.MoreCampCustomizationBudget2);
 
         if(moreGems1Unlocked) {
-            initialBudget += 10;
+            initialBudget += 15;
         }
         if (moreGems2Unlocked) {
-            initialBudget += 10;
+            initialBudget += 15;
         }
 
         remainingBudget = initialBudget;

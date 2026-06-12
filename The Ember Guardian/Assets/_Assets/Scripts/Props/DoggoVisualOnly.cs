@@ -127,7 +127,6 @@ public class DoggoVisualOnly : MonoBehaviour
     }
 
     private void RefreshActiveDogSkin(Dog.DogSkin dogSkin) {
-        Debug.Log("RefreshActiveDogSkin " + dogSkin);
         germanShepherdGO.SetActive(false);
         retreiverGO.SetActive(false);
         darkCompanionGO.SetActive(false);

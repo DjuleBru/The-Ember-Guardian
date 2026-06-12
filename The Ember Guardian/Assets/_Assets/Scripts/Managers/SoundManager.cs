@@ -297,6 +297,9 @@ public class SoundManager : MonoBehaviour
         if (selectedDogType == Dog.DogType.DarkCompanion) {
             PlaySound2D(soundRefsSO.darkCompanionSelected);
         }
+        if (selectedDogType == Dog.DogType.Robodog) {
+            PlaySound2D(soundRefsSO.robodogSelected);
+        }
 
     }
 
@@ -1129,6 +1132,9 @@ public class SoundManager : MonoBehaviour
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
             audioClip = soundRefsSO.darkCompanionSelected;
         }
+        if (Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+            audioClip = soundRefsSO.robodogSelected;
+        }
         PlaySound2D(audioClip, .6f);
     }
 
@@ -1140,6 +1146,9 @@ public class SoundManager : MonoBehaviour
         }
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
             audioClip = soundRefsSO.darkCompanionSelected;
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+            audioClip = soundRefsSO.robodogSelected;
         }
         PlaySound2D(audioClip, .6f);
     }

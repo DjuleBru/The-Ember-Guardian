@@ -216,6 +216,11 @@ public class SettingsMenuUI : MonoBehaviour
     public void OpenSettingsPanel() {
         panelOpen = true;
         settingsPanelGameObject.gameObject.SetActive(true);
+        StartCoroutine(SetSelectedGOAfterFrame());
+    }
+
+    private IEnumerator SetSelectedGOAfterFrame() {
+        yield return new WaitForEndOfFrame();
         EventSystem.current.SetSelectedGameObject(firstSelectedButton);
     }
 

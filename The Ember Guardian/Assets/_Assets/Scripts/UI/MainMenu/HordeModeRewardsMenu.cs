@@ -96,7 +96,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
     public void OpenPanelAndCommitXP() {
         panelOpen = true;
         MusicManager.Instance.SetAudioVolume(.5f);
-         StartUnlockSequence();
+        StartUnlockSequence();
     }
 
     public void StartUnlockSequence() {
@@ -129,6 +129,16 @@ public class HordeModeRewardsMenu : MonoBehaviour
                 pendingUnlocks.Add(kvp.Key);
             }
 
+        }
+
+        // Unlocks de migration — on les ajoute EN PREMIER pour garder l'ordre logique
+        List<HordeModeProgressionManager.HordeModeUnlockables> migrationUnlocks =
+            HordeModeProgressionManager.Instance.GetPendingMigrationUnlocks();
+
+        // Fusionner sans doublons, migration en premier
+        foreach (var m in migrationUnlocks) {
+            if (!pendingUnlocks.Contains(m))
+                pendingUnlocks.Insert(0, m);
         }
 
         // Séquence pour chaque unlock
@@ -276,6 +286,7 @@ public class HordeModeRewardsMenu : MonoBehaviour
 
         OnProgressionBarEndFill?.Invoke(this, EventArgs.Empty);
         HordeModeProgressionManager.Instance.SetHasNoXPToCommit();
+        HordeModeProgressionManager.Instance.ClearPendingMigrationUnlocks();
         unlockSequenceCoroutineRunning = false;
 
         if(reachedLockedInDemoUnlockable) {
@@ -308,6 +319,11 @@ public class HordeModeRewardsMenu : MonoBehaviour
             }
 
         }
+
+        foreach (var unlock in HordeModeProgressionManager.Instance.GetPendingMigrationUnlocks()) {
+            HordeModeProgressionManager.Instance.AddUnlocked(unlock);
+        }
+        HordeModeProgressionManager.Instance.ClearPendingMigrationUnlocks();
 
         StopCoroutine(unlockSequenceCoroutine);
         HordeModeProgressionManager.Instance.SetHasNoXPToCommit();
