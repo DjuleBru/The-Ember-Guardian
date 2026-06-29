@@ -51,8 +51,15 @@ public class SteamDeckPanelResizer : MonoBehaviour {
         rt = GetComponent<RectTransform>();
 
         float aspectRatio = (float)Screen.width / Screen.height;
-        Debug.Log(aspectRatio);
-        if (aspectRatio == 1.6f) {
+        StartCoroutine(SetAfterFrames());
+    }
+
+    private IEnumerator SetAfterFrames() {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        if (SceneLoader.Instance.IsSteamDeck()) {
+            Debug.Log("test cedric");
             if (stretchedPanel) {
 
                 if (onlyVerticalResize) {

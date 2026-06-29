@@ -66,8 +66,6 @@ public class DogAI_Retreiver : DogAI {
                     return;
                 }
             }
-           
-
         }
 
         base.Update();

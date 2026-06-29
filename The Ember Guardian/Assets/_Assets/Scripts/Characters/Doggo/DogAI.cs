@@ -116,42 +116,6 @@ public class DogAI : MonoBehaviour
         }
     }
 
-    private int GetBiteDamage() {
-        int biteDamage = 0; 
-        if (Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd) {
-            biteDamage = DogStats.Instance.GetGermanShepherdBiteDamage();
-        }
-        if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
-            biteDamage = DogStats.Instance.GetRetreiverBiteDamage();
-        }
-        if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
-            biteDamage = DogStats.Instance.GetDarkCompanionBiteDamage();
-        }
-        return biteDamage;
-    }
-    private float GetBiteCooldown() {
-        float biteCooldown = 0;
-
-        if (Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd) {
-            biteCooldown = DogStats.Instance.GetGermanShepherdBiteCooldown();
-        }
-        if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
-            biteCooldown = DogStats.Instance.GetRetreiverBiteCooldown();
-        }
-        if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
-            biteCooldown = DogStats.Instance.GetDarkCompanionBiteCooldown();
-        }
-        return biteCooldown;
-    }
-
-    private void Dog_OnDogTypeChanged(object sender, EventArgs e) {
-        ChangeState(Dog.Instance.GetInitialState());
-    }
-
-    protected void DayNightManager_OnDawnStart(object sender, EventArgs e) {
-        ChangeState(Dog.Instance.GetDayIdleState());
-    }
-
     protected virtual void Update() {
         if (state != State.stay) {
             HandleGrowling();
@@ -159,11 +123,11 @@ public class DogAI : MonoBehaviour
 
         HandleBiteTimer();
 
-        if(!IsNightState() && state != State.attacking && state != State.growling && state != State.barking) {
+        if (!IsNightState() && state != State.attacking && state != State.growling && state != State.barking) {
             CheckNightInCamp();
         }
 
-        if(IsNightState()) {
+        if (IsNightState()) {
             closestIncomingCreature = CheckClosestIncomingCreature();
         }
 
@@ -181,14 +145,14 @@ public class DogAI : MonoBehaviour
 
                 distanceToCamp = Mathf.Abs(transform.position.x) - Mathf.Abs(CampZoneManager.Instance.GetClosestExteriorZoneLimit(transform.position).x);
 
-                if(distanceToCamp > distanceToRunToCamp && CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
+                if (distanceToCamp > distanceToRunToCamp && CampZoneManager.Instance.IsWithinCampZoneLimits(transform.position)) {
                     ChangeState(State.runToCamp);
                     return;
                 }
 
                 RoamInCamp();
 
-            break;
+                break;
 
             case State.runToCamp:
 
@@ -199,12 +163,12 @@ public class DogAI : MonoBehaviour
                     return;
                 }
 
-            break;
+                break;
 
             case State.idle:
 
                 Roam(Player.Instance.transform.position);
-                
+
                 if (distanceToPlayer > distanceToWalkToPlayerWhenStickingAround) {
                     ChangeState(State.walkWithPlayer);
                 }
@@ -213,7 +177,7 @@ public class DogAI : MonoBehaviour
 
             case State.nightInCampIdle:
 
-                if(closestIncomingCreature != null) {
+                if (closestIncomingCreature != null) {
                     ChangeState(State.nightInCampRunToClosestCreature);
                 }
 
@@ -258,7 +222,7 @@ public class DogAI : MonoBehaviour
 
             case State.growling:
 
-                if(PlayerIsTooFar() && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
+                if (PlayerIsTooFar() && DayNightManager.Instance.GetDayNightCycleState() != DayNightManager.State.Night) {
                     ChangeState(State.runWithPlayer);
                     dogJustStoppedGrowling = true;
                     return;
@@ -283,7 +247,7 @@ public class DogAI : MonoBehaviour
                     return;
                 }
 
-            break;
+                break;
 
             case State.nightInCampGrowlAtIncomingCreature:
 
@@ -294,7 +258,7 @@ public class DogAI : MonoBehaviour
 
                 Creature newClosestIncomingCreature = CreaturesManager.Instance.GetClosestCreatureInRadiusSmart(transform.position, 50f, 0, true);
                 //Debug.Log("newClosestIncomingCreature " + newClosestIncomingCreature + " closestIncomingCreature " + closestIncomingCreature);
-                if(newClosestIncomingCreature != closestIncomingCreature) {
+                if (newClosestIncomingCreature != closestIncomingCreature) {
                     ChangeState(State.nightInCampIdle);
                     return;
                 }
@@ -311,6 +275,42 @@ public class DogAI : MonoBehaviour
 
         }
     }
+    private int GetBiteDamage() {
+        int biteDamage = 0; 
+        if (Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd) {
+            biteDamage = DogStats.Instance.GetGermanShepherdBiteDamage();
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
+            biteDamage = DogStats.Instance.GetRetreiverBiteDamage();
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
+            biteDamage = DogStats.Instance.GetDarkCompanionBiteDamage();
+        }
+        return biteDamage;
+    }
+    private float GetBiteCooldown() {
+        float biteCooldown = 0;
+
+        if (Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd) {
+            biteCooldown = DogStats.Instance.GetGermanShepherdBiteCooldown();
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.GoldenRetreiver) {
+            biteCooldown = DogStats.Instance.GetRetreiverBiteCooldown();
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
+            biteCooldown = DogStats.Instance.GetDarkCompanionBiteCooldown();
+        }
+        return biteCooldown;
+    }
+
+    private void Dog_OnDogTypeChanged(object sender, EventArgs e) {
+        ChangeState(Dog.Instance.GetInitialState());
+    }
+
+    protected void DayNightManager_OnDawnStart(object sender, EventArgs e) {
+        ChangeState(Dog.Instance.GetDayIdleState());
+    }
+
 
     public bool IsNightState() {
         return state == State.nightInCampIdle || state == State.nightInCampGrowlAtIncomingCreature || state == State.nightInCampRunToClosestCreature || state == State.attacking || state == State.growling || state == State.barking;

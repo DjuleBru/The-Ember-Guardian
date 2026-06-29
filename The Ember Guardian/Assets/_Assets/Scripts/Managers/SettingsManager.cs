@@ -133,22 +133,18 @@ public class SettingsManager : MonoBehaviour
 
         currentAutoAimMode = ES3.Load("currentAutoAimMode", AutoAimMode.On, settingsSaveFileSettings);
 
-        Resolution defaultRes = Screen.currentResolution;
+        Resolution defaultRes = new Resolution();
+        defaultRes.width = Screen.width;   // 1280 sur Steam Deck
+        defaultRes.height = Screen.height; // 800
+
         resolution = ES3.Load("resolution", defaultRes, settingsSaveFileSettings);
         // sécurité : résolution invalide
         if (resolution.width <= 0 || resolution.height <= 0) {
             resolution = defaultRes;
         }
 
-        //if(SceneLoader.Instance.IsSteamDeck()) {
-        //    resolution.width = 1280;
-        //    resolution.height = 800;
-        //}
-
         if(!displaySettingsAppliedThisSession) {
-            ApplyScreenMode(currentScreenMode);
-            SetResolution(resolution);
-
+            StartCoroutine(ApplyDisplaySettingsNextFrame());
             displaySettingsAppliedThisSession = true;
         }
 
@@ -158,6 +154,16 @@ public class SettingsManager : MonoBehaviour
             ES3.Save("autoReload", true, settingsSaveFileSettings);
             ES3.Save("settingsVersion", 0.9f, settingsSaveFileSettings);
         }
+    }
+
+    private IEnumerator ApplyDisplaySettingsNextFrame() {
+        yield return new WaitForSeconds(0.1f);
+
+        ApplyScreenMode(currentScreenMode);
+
+        yield return new WaitForSeconds(0.1f);
+
+        SetResolution(resolution);
     }
 
     private void ApplyFrameSettings() {
@@ -423,7 +429,7 @@ public class SettingsManager : MonoBehaviour
     }
 
     private void ApplyResolution(Resolution res) {
-        Screen.SetResolution(res.width,res.height,Screen.fullScreenMode,res.refreshRateRatio);
+        Screen.SetResolution(res.width, res.height, Screen.fullScreenMode, res.refreshRateRatio);
     }
 
     public void ChangeShowDamageNumbers() {

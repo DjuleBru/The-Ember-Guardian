@@ -19,6 +19,7 @@ public class DogAnimatorManager : MonoBehaviour {
     [SerializeField] private PetDog petDog;
     [SerializeField] private DogAI_DarkCompanion darkCompanionAI;
     [SerializeField] private DogAI_Retreiver retreiverAI;
+    [SerializeField] private DogAI_Robodog robodogAI;
 
     private Animator animator;
     private Dog dog;
@@ -103,6 +104,9 @@ public class DogAnimatorManager : MonoBehaviour {
         darkCompanionAI.OnStompAbilityEnded += DarkCompanionAI_OnStompAbilityEnded;
         retreiverAI.OnDogStartedDroppingCurrency += RetreiverAI_OnDogStartedDroppingCurrency;
 
+        robodogAI.OnHatchOpened += RobodogAI_OnHatchOpened;
+        robodogAI.OnAmmoAbilityStarted += RobodogAI_OnAmmoAbilityStarted;
+
         dogMovement.SetReadyToMoveAnimator(false);
         DogDigAbility.Instance.OnSniffStart += DogDigAbility_OnSniffStart;
 
@@ -110,6 +114,14 @@ public class DogAnimatorManager : MonoBehaviour {
         DogStats.Instance.OnNewAbilityUnlocked += DogStats_OnNewAbilityUnlocked;
 
         SetDogSkinAnimator();
+    }
+
+    private void RobodogAI_OnHatchOpened(object sender, EventArgs e) {
+        animator.SetTrigger("OpenHatch");
+    }
+
+    private void RobodogAI_OnAmmoAbilityStarted(object sender, EventArgs e) {
+        animator.SetTrigger("Ammo");
     }
 
     private void DogStats_OnNewAbilityUnlocked(object sender, EventArgs e) {

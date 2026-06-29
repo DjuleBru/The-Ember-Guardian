@@ -60,6 +60,8 @@ public class ItemButtonUI_ChildTreeShowHide : MonoBehaviour
     }
 
     private IEnumerator ShowTreeCoroutine() {
+        canvasGroup = GetComponent<CanvasGroup>();
+
         float elapsedTime = 0f;
         while (elapsedTime < fadeDuration) {
             float alpha = elapsedTime / fadeDuration;

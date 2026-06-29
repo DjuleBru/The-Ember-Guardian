@@ -296,8 +296,6 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         WorkerSpawner activeLeft = GetActiveLeftWorkerSpawner();
         WorkerSpawner activeRight = GetActiveRightWorkerSpawner();
 
-        Debug.Log(data.startingBlockWorkers_Left.currentMobsAlive);
-        Debug.Log(data.startingBlockWorkers_Right.currentMobsAlive);
         if (activeLeft != null && data.startingBlockWorkers_Left.currentMobsAlive > 0) {
             activeLeft.gameObject.SetActive(true);
             activeLeft.SpawnMobs(data.startingBlockWorkers_Left.currentMobsAlive);

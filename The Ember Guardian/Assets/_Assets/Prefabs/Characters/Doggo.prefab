@@ -770,7 +770,7 @@ Animator:
   m_GameObject: {fileID: 849184809638594990}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 649a57861ea4bab4db50ba9126c7d02a, type: 2}
+  m_Controller: {fileID: 9100000, guid: ac18a3dbf88d69f4d8868ae81b9a89a2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -801,11 +801,12 @@ MonoBehaviour:
   darkCompanionAnimator: {fileID: 9100000, guid: e639b3b491590e74299071758e043363, type: 2}
   darkCompanionRedAnimator: {fileID: 22100000, guid: 75f435485fdd83546982aac5d235b5b5, type: 2}
   huskyAnimator: {fileID: 9100000, guid: 328950a9e41326849bc77eddeb0742e3, type: 2}
-  robodogAnimator: {fileID: 22100000, guid: 649a57861ea4bab4db50ba9126c7d02a, type: 2}
+  robodogAnimator: {fileID: 9100000, guid: ac18a3dbf88d69f4d8868ae81b9a89a2, type: 2}
   robodogAnimator_Skin1: {fileID: 22100000, guid: 0b6229feafd604e4c8e69f822591b5cc, type: 2}
   petDog: {fileID: 7906990751673499060}
   darkCompanionAI: {fileID: 6964596691999979307}
   retreiverAI: {fileID: 7151654208442214634}
+  robodogAI: {fileID: 4090749891847688498}
 --- !u!114 &5992384380654162466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1575,6 +1576,7 @@ MonoBehaviour:
   minIntervalBetweenSameClip: 0.1
   maxInstancesPerClip: 10
   darkCompanionAI: {fileID: 6964596691999979307}
+  robodogAI: {fileID: 4090749891847688498}
   dogAudioSource: {fileID: 7438131779235664477}
   dogOtherSFXAudioSource: {fileID: 3295097019564880530}
   dogRollingAudioSource: {fileID: 6968122999923463413}
@@ -1781,6 +1783,11 @@ MonoBehaviour:
   rollingAudioClip: {fileID: 8300000, guid: 4853f3ab391dad34f8fe7f3e3c2e9fd0, type: 3}
   laserAttackAudioClip: {fileID: 8300000, guid: 37f89f085a526064488d891c92199ae2, type: 3}
   stompAttackAudioClip: {fileID: 8300000, guid: 52e2d81686ccf014cb79efbb837f0a5b, type: 3}
+  openHatchAudioClip: {fileID: 8300000, guid: 69aa576e0b1fb34419e6f60b834a2c82, type: 3}
+  generateAmmoAudioClip: {fileID: 8300000, guid: cf2b90de90ff1e642aa73f120686bb5b, type: 3}
+  laserSpeedupAudioClip: {fileID: 0}
+  missileAudioClip: {fileID: 0}
+  closeHatchAudioClip: {fileID: 8300000, guid: 8fea2229bda943945a278af4e53cbf08, type: 3}
   dogAnimator: {fileID: 4129023110296732134}
 --- !u!1 &2980902283940867268
 GameObject:
@@ -2560,6 +2567,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dogAIType: 3
   creatureDetectionCollider: {fileID: 5507158826448228988}
+  missileProjectileSO: {fileID: 0}
+  speedupLineRenderer: {fileID: 0}
+  spawnPosition: {fileID: 7830572932185093186}
 --- !u!114 &6445080187049815477
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -52,7 +52,7 @@ public class UltraWidePanelResizer : MonoBehaviour
         rt = GetComponent<RectTransform>();
 
         float aspectRatio = (float)Screen.width / Screen.height;
-        if (aspectRatio == 1.6f) return; // STEAM DECK
+        if (SceneLoader.Instance.IsSteamDeck()) return;
 
         if (aspectRatio >= 2.33f) {
             if (stretchedPanel) {

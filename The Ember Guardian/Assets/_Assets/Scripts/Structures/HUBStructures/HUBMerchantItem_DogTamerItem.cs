@@ -409,12 +409,12 @@ public class HUBMerchantItem_DogTamerItem : HubMerchantItem
             }
             else {
                 absoluteStatValueModifier = linkedStatModifierSO.statModifierList[itemLevel];
-                Debug.Log("absoluteStatValueModifier " + absoluteStatValueModifier);
-                Debug.Log("statValueModifierMultiplier " + statValueModifierMultiplier);
+                //Debug.Log("absoluteStatValueModifier " + absoluteStatValueModifier);
+                //Debug.Log("statValueModifierMultiplier " + statValueModifierMultiplier);
                 totalStatWithModifier = initialStatValue + absoluteStatValueModifier * statValueModifierMultiplier;
 
-                Debug.Log("initialStatValue " + initialStatValue);
-                Debug.Log("totalStatWithModifier " + totalStatWithModifier);
+                //Debug.Log("initialStatValue " + initialStatValue);
+                //Debug.Log("totalStatWithModifier " + totalStatWithModifier);
                 totalStatValue = totalStatWithModifier.ToString();
                 relativeDamageBulletModifier = linkedStatModifierSO.statModifierList[itemLevel];
 
