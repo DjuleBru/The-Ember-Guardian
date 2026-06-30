@@ -33,6 +33,9 @@ public class PlayerFeedbacks : MonoBehaviour
     [SerializeField] private MMF_Player blindedPhotosensitiveFeedbacks;
     [SerializeField] private MMF_Player bulletPierceCreatureFeedbacks;
 
+    [SerializeField] private ParticleSystem robodogSpeedBoostInstantPS;
+    [SerializeField] private ParticleSystem robodogSpeedBoostPS;
+
     private float minDelayBetweenCritHitFeedbacks = 1f;
     private float critHitFeedbacksTimer;
     private bool critHitFeedbackRecentlyActivated;
@@ -48,6 +51,8 @@ public class PlayerFeedbacks : MonoBehaviour
         PlayerMovement.Instance.OnPlayerExhaustionStopped += PlayerMovement_OnPlayerExhaustionStopped;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionStarted += PlayerMovement_OnPlayerAlmostExhaustionStarted;
         PlayerMovement.Instance.OnPlayerAlmostExhaustionDeactivateFeedbacks += PlayerMovement_OnPlayerAlmostExhaustionDeactivateFeedbacks;
+        PlayerMovement.Instance.OnRobodogSpeedBoostStarted += Instance_OnRobodogSpeedBoostStarted;
+        PlayerMovement.Instance.OnRobodogSpeedBoostEnded += Instance_OnRobodogSpeedBoostEnded;
         PassiveShield.OnAnyPassiveShieldDied += PassiveShield_OnAnyPassiveShieldDied;
 
         PlayerSkills.Instance.OnActiveSkillActivated += PlayerSkills_OnActiveSkillActivated;
@@ -225,6 +230,15 @@ public class PlayerFeedbacks : MonoBehaviour
         }
     }
 
+
+    private void Instance_OnRobodogSpeedBoostEnded(object sender, System.EventArgs e) {
+        robodogSpeedBoostPS.Stop();
+    }
+
+    private void Instance_OnRobodogSpeedBoostStarted(object sender, System.EventArgs e) {
+        robodogSpeedBoostPS.Play();
+        robodogSpeedBoostInstantPS.Play();
+    }
 
     private void PassiveShield_OnAnyPassiveShieldDied(object sender, System.EventArgs e) {
         passiveShieldDamagedFeedbacks.PlayFeedbacks();

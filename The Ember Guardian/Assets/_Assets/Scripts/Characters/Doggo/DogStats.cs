@@ -77,6 +77,7 @@ public class DogStats : MonoBehaviour {
 
     [SerializeField] private int initialRobodogMissilesAmount;
     [SerializeField] private float initialRobodogMissilesCooldown;
+    [SerializeField] private int initialRobodogMissilesDamage;
     [SerializeField] private float initialRobodogSpeedupDuration;
     [SerializeField] private float initialRobodogSpeedupCooldown;
     [SerializeField] private float initialRobodogSpeedupAmount;
@@ -460,6 +461,13 @@ public class DogStats : MonoBehaviour {
     }
     public float GetSpeedUpDuration() {
         return robodogSpeedupDuration;
+    }
+    public float GetSpeedUpCooldown() {
+        return robodogSpeedupCooldown;
+    }
+
+    public int GetRobodogMissilesDamage() {
+        return initialRobodogMissilesDamage;
     }
     #endregion
 

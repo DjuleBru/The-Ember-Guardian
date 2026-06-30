@@ -242,7 +242,6 @@ public class GunProjectile_Bullet : GunProjectile {
     }
 
     protected void FadeOutProjectile() {
-
         transform.rotation = Quaternion.identity;
 
         rb.bodyType = RigidbodyType2D.Static;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class DogSounds : SoundObject
@@ -32,6 +33,7 @@ public class DogSounds : SoundObject
     [SerializeField] private AudioClip[] biteAudioClips;
     [SerializeField] private AudioClip[] biteAudioClips_darkCompanion;
     [SerializeField] private AudioClip[] biteAudioClips_robodog;
+    [SerializeField] private AudioClip[] missilesAudioClips_robodog;
 
     [SerializeField] private AudioClip[] petStartAudioClips;
     [SerializeField] private AudioClip[] petLoopAudioClips;
@@ -48,7 +50,6 @@ public class DogSounds : SoundObject
     [SerializeField] private AudioClip openHatchAudioClip;
     [SerializeField] private AudioClip generateAmmoAudioClip;
     [SerializeField] private AudioClip laserSpeedupAudioClip;
-    [SerializeField] private AudioClip missileAudioClip;
     [SerializeField] private AudioClip closeHatchAudioClip;
 
     [SerializeField] private DogAnimatorManager dogAnimator; 
@@ -93,7 +94,7 @@ public class DogSounds : SoundObject
         robodogAI.OnHatchClosed += RobodogAI_OnHatchClosed;
         robodogAI.OnAmmoCrafted += RobodogAI_OnAmmoCrafted;
         robodogAI.OnMissileGenerated += RobodogAI_OnMissileGenerated;
-        robodogAI.OnLaserAnimationStarted += RobodogAI_OnLaserAnimationStarted;
+        robodogAI.OnSpeedupAnimationStarted += RobodogAI_OnSpeedupAnimationStarted;
 
         PetDog.Instance.OnPlayerStoppedPettingDog += PetDog_OnPlayerStoppedPettingDog;
         PetDog.Instance.OnPlayerStartedPettingDog += PetDot_OnPlayerStartedPettingDog;
@@ -109,12 +110,12 @@ public class DogSounds : SoundObject
         PreloadAudioClips();
     }
 
-    private void RobodogAI_OnLaserAnimationStarted(object sender, System.EventArgs e) {
+    private void RobodogAI_OnSpeedupAnimationStarted(object sender, System.EventArgs e) {
         dogAudioSource.PlayOneShot(laserSpeedupAudioClip, masterVolume * dogVolume);
     }
 
     private void RobodogAI_OnMissileGenerated(object sender, System.EventArgs e) {
-        dogAudioSource.PlayOneShot(missileAudioClip, masterVolume * dogVolume);
+        dogAudioSource.PlayOneShot(missilesAudioClips_robodog[UnityEngine.Random.Range(0, missilesAudioClips_robodog.Length)], masterVolume * dogVolume);
     }
 
     private void RobodogAI_OnAmmoCrafted(object sender, System.EventArgs e) {
@@ -295,6 +296,9 @@ public class DogSounds : SoundObject
         }
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
             dogAudioSource.PlayOneShot(barkAudioClips_darkCompanion[Random.Range(0, barkAudioClips_darkCompanion.Length)], masterVolume * dogVolume * 2f);
+        }
+        if (Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+            dogAudioSource.PlayOneShot(barkAudioClips_robodog[Random.Range(0, barkAudioClips_robodog.Length)], masterVolume * dogVolume * 2f);
         }
     }
 

@@ -187,7 +187,7 @@ public class Player : MonoBehaviour, IDamageable
         if (isInvincibleWhileRolling) return;
         if (inTeleporter) return;
 
-        Debug.Log("TakeDamage " + damage);
+        //Debug.Log("TakeDamage " + damage);
         if (ShieldTanksDamage(damage, damageSource)) return;
 
         int healthLoss = damage;

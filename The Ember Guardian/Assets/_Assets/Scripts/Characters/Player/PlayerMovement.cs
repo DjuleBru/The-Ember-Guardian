@@ -82,6 +82,9 @@ public class PlayerMovement : MonoBehaviour {
     public event EventHandler OnPlayerRecoverStaminaFastStarted;
     public event EventHandler OnPlayerRecoverStaminaFastStopped;
 
+    public event EventHandler OnRobodogSpeedBoostStarted;
+    public event EventHandler OnRobodogSpeedBoostEnded;
+
     public event EventHandler OnPlayerCrouched;
     public event EventHandler OnPlayerCrouchedEnded;
     private Dictionary<Collider2D, Coroutine> collisionCooldowns = new Dictionary<Collider2D, Coroutine>();
@@ -546,6 +549,14 @@ public class PlayerMovement : MonoBehaviour {
 
         LogSpeedChange(source, buffAmount, false);
     }
+
+    public void StartRobodogBoost() {
+        OnRobodogSpeedBoostStarted?.Invoke(this, EventArgs.Empty);
+    }
+    public void EndRobodogBoost() {
+        OnRobodogSpeedBoostEnded?.Invoke(this, EventArgs.Empty);
+    }
+
     private void LogSpeedChange(string source, float factor, bool added) {
         //Debug.Log($"[MoveSpeed] {(added ? "Buff" : "Debuff")} {source} x{factor} => New speed: {moveSpeed}");
     }

@@ -288,7 +288,8 @@ public class DogAI : MonoBehaviour
         }
         return biteDamage;
     }
-    private float GetBiteCooldown() {
+
+    protected float GetBiteCooldown() {
         float biteCooldown = 0;
 
         if (Dog.Instance.GetDogType() == Dog.DogType.GermanShepherd) {
@@ -300,6 +301,10 @@ public class DogAI : MonoBehaviour
         if (Dog.Instance.GetDogType() == Dog.DogType.DarkCompanion) {
             biteCooldown = DogStats.Instance.GetDarkCompanionBiteCooldown();
         }
+        if (Dog.Instance.GetDogType() == Dog.DogType.Robodog) {
+            biteCooldown = DogStats.Instance.GetMissilesRocketCooldown();
+        }
+
         return biteCooldown;
     }
 

@@ -106,6 +106,9 @@ public class DogAnimatorManager : MonoBehaviour {
 
         robodogAI.OnHatchOpened += RobodogAI_OnHatchOpened;
         robodogAI.OnAmmoAbilityStarted += RobodogAI_OnAmmoAbilityStarted;
+        robodogAI.OnSpeedupAnimationStarted += RobodogAI_OnSpeedupAnimationStarted;
+        robodogAI.OnMissileAbilityStarted += RobodogAI_OnMissileAbilityStarted;
+        robodogAI.OnMissileAbilityEnded += RobodogAI_OnMissileAbilityEnded;
 
         dogMovement.SetReadyToMoveAnimator(false);
         DogDigAbility.Instance.OnSniffStart += DogDigAbility_OnSniffStart;
@@ -114,6 +117,18 @@ public class DogAnimatorManager : MonoBehaviour {
         DogStats.Instance.OnNewAbilityUnlocked += DogStats_OnNewAbilityUnlocked;
 
         SetDogSkinAnimator();
+    }
+
+    private void RobodogAI_OnMissileAbilityEnded(object sender, EventArgs e) {
+        animator.SetTrigger("StopMissile");
+    }
+
+    private void RobodogAI_OnMissileAbilityStarted(object sender, EventArgs e) {
+        animator.SetTrigger("Missile");
+    }
+
+    private void RobodogAI_OnSpeedupAnimationStarted(object sender, EventArgs e) {
+        animator.SetTrigger("LaserAntenna");
     }
 
     private void RobodogAI_OnHatchOpened(object sender, EventArgs e) {
@@ -508,8 +523,11 @@ public class DogAnimatorManager : MonoBehaviour {
     }
 
     public void SetUnReadyToMove() {
-        //dogAI.SetReadyToMove(false);
         dogMovement.SetReadyToMoveAnimator(false);
+    }
+
+    public void SetUnReadyToMoveAndStopMoving() {
+        dogMovement.SetUnReadyToMoveAnimatorAndStopMoving();
     }
 
     private void ResetAllTriggers() {

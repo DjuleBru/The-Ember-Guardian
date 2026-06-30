@@ -281,8 +281,6 @@ public class Creature : Mob
 
     [Button]
     public override void Die(Transform damageSource = null) {
-        Debug.Log(inFireLightAmount);
-
         if(inFireLightAmount > 0) {
             creatureWasInFireWhenKilled = true;
         }
