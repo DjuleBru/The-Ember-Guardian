@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class ItemButtonUI_Visual : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem greenGemPS;
-    [SerializeField] private ParticleSystem redGemPS;
-    [SerializeField] private ParticleSystem blueGemPS;
-    [SerializeField] private ParticleSystem yellowGemPS;
-    [SerializeField] private ParticleSystem purpleGemPS;
-    [SerializeField] private ParticleSystem cyanGemPS;
+    [SerializeField] private Transform greenGemPSPrefab;
+    [SerializeField] private Transform redGemPSPrefab;
+    [SerializeField] private Transform blueGemPSPrefab;
+    [SerializeField] private Transform yellowGemPSPrefab;
+    [SerializeField] private Transform purpleGemPSPrefab;
+    [SerializeField] private Transform cyanGemPSPrefab;
 
     private Animator animator;
 
@@ -51,12 +51,35 @@ public class ItemButtonUI_Visual : MonoBehaviour
         animator.SetTrigger("Buy");
         OnAnyGemPSTriggered?.Invoke(this, EventArgs.Empty);
 
-        greenGemPS.Emit(greenParticlesToEmit);
-        redGemPS.Emit(redParticlesToEmit);
-        blueGemPS.Emit(blueParticlesToEmit);
-        yellowGemPS.Emit(yellowParticlesToEmit);
-        purpleGemPS.Emit(purpleParticlesToEmit);
-        cyanGemPS.Emit(cyanParticlesToEmit);
+        if(greenParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(greenGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(greenParticlesToEmit);
+        }
+
+        if (redParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(redGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(redParticlesToEmit);
+        }
+
+        if (blueParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(blueGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(blueParticlesToEmit);
+        }
+
+        if (yellowParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(yellowGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(yellowParticlesToEmit);
+        }
+
+        if (purpleParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(purpleGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(purpleParticlesToEmit);
+        }
+
+        if (cyanParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(cyanGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(cyanParticlesToEmit);
+        }
     }
 
     private IEnumerator StartBuyAnimationCoroutine(int redCost, int greenCost, int blueCost, int yellowCost, int purpleCost, int cyanCost) {
@@ -69,9 +92,7 @@ public class ItemButtonUI_Visual : MonoBehaviour
 
         animator.enabled = true;
         animator.SetTrigger("Buy");
-
-        //yield return new WaitForSeconds(delayToBurstPS/2);
-
+        
         
         yield return new WaitForSeconds(delayToBurstPS-.2f);
 
@@ -79,11 +100,34 @@ public class ItemButtonUI_Visual : MonoBehaviour
 
         yield return new WaitForSeconds(.2f);
 
-        greenGemPS.Emit(greenParticlesToEmit);
-        redGemPS.Emit(redParticlesToEmit);
-        blueGemPS.Emit(blueParticlesToEmit);
-        yellowGemPS.Emit(yellowParticlesToEmit);
-        purpleGemPS.Emit(purpleParticlesToEmit);
-        cyanGemPS.Emit(cyanParticlesToEmit);
+        if (greenParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(greenGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(greenParticlesToEmit);
+        }
+
+        if (redParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(redGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(redParticlesToEmit);
+        }
+
+        if (blueParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(blueGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(blueParticlesToEmit);
+        }
+
+        if (yellowParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(yellowGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(yellowParticlesToEmit);
+        }
+
+        if (purpleParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(purpleGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(purpleParticlesToEmit);
+        }
+
+        if (cyanParticlesToEmit != 0) {
+            ParticleSystem ps = Instantiate(cyanGemPSPrefab, transform.position, Quaternion.identity).GetComponent<ParticleSystem>();
+            ps.Emit(cyanParticlesToEmit);
+        }
     }
 }
