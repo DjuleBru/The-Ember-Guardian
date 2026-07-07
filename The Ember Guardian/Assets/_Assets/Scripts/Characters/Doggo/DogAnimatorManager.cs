@@ -105,6 +105,7 @@ public class DogAnimatorManager : MonoBehaviour {
         retreiverAI.OnDogStartedDroppingCurrency += RetreiverAI_OnDogStartedDroppingCurrency;
 
         robodogAI.OnHatchOpened += RobodogAI_OnHatchOpened;
+        robodogAI.OnHatchClosed += RobodogAI_OnHatchClosed;
         robodogAI.OnAmmoAbilityStarted += RobodogAI_OnAmmoAbilityStarted;
         robodogAI.OnSpeedupAnimationStarted += RobodogAI_OnSpeedupAnimationStarted;
         robodogAI.OnMissileAbilityStarted += RobodogAI_OnMissileAbilityStarted;
@@ -117,6 +118,16 @@ public class DogAnimatorManager : MonoBehaviour {
         DogStats.Instance.OnNewAbilityUnlocked += DogStats_OnNewAbilityUnlocked;
 
         SetDogSkinAnimator();
+    }
+
+    private void RobodogAI_OnHatchClosed(object sender, EventArgs e) {
+        StartCoroutine(SetUsingSpecialAbilityFinished());
+    }
+
+    private IEnumerator SetUsingSpecialAbilityFinished() {
+        yield return new WaitForSeconds(.5f);
+        animator.SetBool("UsingSpecialAbility", false);
+
     }
 
     private void RobodogAI_OnMissileAbilityEnded(object sender, EventArgs e) {
@@ -133,6 +144,7 @@ public class DogAnimatorManager : MonoBehaviour {
 
     private void RobodogAI_OnHatchOpened(object sender, EventArgs e) {
         animator.SetTrigger("OpenHatch");
+        animator.SetBool("UsingSpecialAbility", true);
     }
 
     private void RobodogAI_OnAmmoAbilityStarted(object sender, EventArgs e) {

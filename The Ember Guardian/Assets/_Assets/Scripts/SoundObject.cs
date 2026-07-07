@@ -37,7 +37,6 @@ public class SoundObject : MonoBehaviour
         StartCoroutine(FadeInCoroutine(audioSource, fadeDuration, targetVolume));
     }
 
-
     public void PlaySound2D(AudioClip[] audioClipArray, float volume = 1f) {
         if (audioClipArray.Length == 0) return;
         if (audioSource2D.volume == 0) return;
@@ -92,9 +91,12 @@ public class SoundObject : MonoBehaviour
     }
 
     protected void PlaySFXAfterDelay(AudioClip audioClip, float delay, float volume = 1f) {
+        Debug.LogError("PlaySFXAfterDelay " + audioClip);
         StartCoroutine(PlaySFXAfterDelayCoroutine(audioClip, delay, volume));
     }
+
     protected void PlaySFXAfterDelay(AudioClip[] audioClip, float delay, float volume = 1f) {
+        Debug.LogError("PlaySFXAfterDelay " + audioClip);
         StartCoroutine(PlaySFXAfterDelayCoroutine(audioClip, delay, volume));
     }
 
@@ -105,6 +107,17 @@ public class SoundObject : MonoBehaviour
     private IEnumerator PlaySFXAfterDelayCoroutine(AudioClip[] audioClip, float delay, float volume = 1f) {
         yield return new WaitForSeconds(delay);
         PlaySound2D(audioClip, volume);
+    }
+
+    protected void PlaySound3D(AudioClip[] audioClip,Vector3 position, float volume = 1f) {
+        Vector3 newPosition = new Vector3(position.x, position.y, Camera.main.transform.position.z);
+        AudioClip clip = audioClip[UnityEngine.Random.Range(0, audioClip.Length)];
+        AudioSource.PlayClipAtPoint(clip, newPosition, volume * sfxVolume * masterVolume);
+    }
+
+    protected IEnumerator PlaySound3DAfterDelay(AudioClip[] audioClip, Vector3 position, float delay, float volume = 1f) {
+        yield return new WaitForSeconds(delay);
+        PlaySound3D(audioClip,  position,  volume);
     }
 
     protected IEnumerator FadeOutCoroutine(AudioSource audioSource, float fadeDuration) {

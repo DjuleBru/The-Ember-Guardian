@@ -185,6 +185,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Pet
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: UsingSpecialAbility
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6945335999998831865}
   m_Solo: 0
@@ -756,6 +759,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Growling
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: UsingSpecialAbility
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 616354279346380487}
   m_Solo: 0
@@ -983,6 +989,12 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
   - m_Name: StopMissile
     m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: UsingSpecialAbility
+    m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -1562,6 +1574,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Bite
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: UsingSpecialAbility
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 2024140335178870611}
   m_Solo: 0
@@ -1831,6 +1846,9 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 2
     m_ConditionEvent: Running
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: UsingSpecialAbility
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6026718503211434817}

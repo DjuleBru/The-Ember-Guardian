@@ -617,7 +617,7 @@ public class Structure : MonoBehaviour {
     }
 
     public void SetWorkerRefillingStructure(WorkerCurrencies workerCurrencies, bool refilling) {
-        if(!refilling) {
+        if(!refilling && workerCurrencies == engineerCurrentlyRefilling) {
             isBeingRefilledByEngineer = false;
             engineerCurrentlyRefilling = null;
             payCurrencyUI.SetWorkerInteracting(workerCurrencies, false);

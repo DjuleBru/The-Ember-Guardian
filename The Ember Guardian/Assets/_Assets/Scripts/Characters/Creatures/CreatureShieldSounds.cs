@@ -25,10 +25,11 @@ public class CreatureShieldSounds : SoundObject
     }
 
     private void Creature_Shielded_OnShieldRegenerated(object sender, System.EventArgs e) {
-        PlaySFXAfterDelay(generateShieldAudioClips, shieldGenerationSFXDelay, generateShieldVolumeMultiplier);
+        PlaySound3DAfterDelay(generateShieldAudioClips, transform.position, shieldGenerationSFXDelay, generateShieldVolumeMultiplier);
     }
 
     private void Creature_Shielded_OnShieldDestroyed(object sender, System.EventArgs e) {
         PlaySound2D(destroyShieldAudioClips, destroyShieldVolumeMultiplier);
     }
+
 }

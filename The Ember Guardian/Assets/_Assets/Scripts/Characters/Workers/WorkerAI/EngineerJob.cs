@@ -155,6 +155,7 @@ public class EngineerJob : WorkerJob {
 
                     if (assignedStructure.GetPayCurrencyUI().GetPlayerInteracting()) {
                         assignedStructure.SetWorkerRefillingStructure(workerCurrencies, false);
+                        ChangeState(EngineerState.idle);
                         return;
                     };
 
@@ -166,17 +167,27 @@ public class EngineerJob : WorkerJob {
 
                     if(assignedStructure.GetStructureSO().structureCategory != StructureSO.StructureCategory.storage) {
                         if (assignedStructure.GetIsBeingRefilledByEngineer() && assignedStructure.GetEngineerCurrentlyRefillingStructure() != workerCurrencies) {
+                            assignedStructure.SetWorkerRefillingStructure(workerCurrencies, false);
                             ChangeState(EngineerState.idle);
                             return;
                         }
                     }
 
-                    if(worker.GetCurrencyAmount(assignedStructure.GetRefillCurrencyTypeNeeded()) < assignedStructure.GetMinimumRefillAmountRequired()) {
+                    if(assignedStructure.GetEngineerCurrentlyRefillingStructure() != workerCurrencies && worker.GetCurrencyAmount(assignedStructure.GetRefillCurrencyTypeNeeded()) < assignedStructure.GetMinimumRefillAmountRequired()) {
+                        assignedStructure.SetWorkerRefillingStructure(workerCurrencies, false);
+                        ChangeState(EngineerState.idle);
+                        return;
+                    }
+
+                    if(assignedStructure.GetEngineerCurrentlyRefillingStructure() != workerCurrencies && !IsCarryingRequiredCurrencyToRefillStructure()) {
+                        assignedStructure.SetWorkerRefillingStructure(workerCurrencies, false);
                         ChangeState(EngineerState.idle);
                         return;
                     }
 
                     if (!assignedStructure.NeedsRefill()) {
+
+                        assignedStructure.SetWorkerRefillingStructure(workerCurrencies, false);
                         ChangeState(EngineerState.idle);
                     } else {
                         assignedStructure.SetWorkerRefillingStructure(workerCurrencies, true);
@@ -323,7 +334,7 @@ public class EngineerJob : WorkerJob {
             return;
         }
 
-        if (structure.NeedsRefillingEngineers() && structure.NeedsRefill()) {
+        if (structure.NeedsRefillingEngineers() && structure.NeedsRefill() && !structure.GetPayCurrencyUI().GetPlayerInteracting()) {
 
             FindTargetCurrencyStorage(structure);
         }
@@ -462,7 +473,7 @@ public class EngineerJob : WorkerJob {
 
         float distanceToStorage = Mathf.Abs(transform.position.x - targetCurrencyStorage.transform.position.x);
 
-        if (distanceToStorage < .5f) {
+        if (distanceToStorage < .5f && !targetCurrencyStorage.GetPlayerInTriggerArea()) {
             TryPickupCurrenciesFromStorage();
         }
         else {
@@ -511,9 +522,9 @@ public class EngineerJob : WorkerJob {
     }
     private void TryPickupCurrenciesFromStorage() {
 
-        //Debug.Log("targetCurrencyStorage.GetCurrencyAmountStored() " + targetCurrencyStorage.GetCurrencyAmountStored());
-        //Debug.Log(assignedStructure);
-        //Debug.Log("assignedStructure.GetMinimumRefillAmountRequired()" + assignedStructure.GetMinimumRefillAmountRequired());
+        Debug.Log("targetCurrencyStorage.GetCurrencyAmountStored() " + targetCurrencyStorage.GetCurrencyAmountStored());
+        Debug.Log(assignedStructure);
+        Debug.Log("assignedStructure.GetMinimumRefillAmountRequired()" + assignedStructure.GetMinimumRefillAmountRequired());
 
         if (targetCurrencyStorage.GetCurrencyAmountStored() < assignedStructure.GetMinimumRefillAmountRequired()) {
             ChangeState(EngineerState.idle);
@@ -635,7 +646,7 @@ public class EngineerJob : WorkerJob {
     }
 
     private bool IsCarryingRequiredCurrencyToRefillStructure() {
-        //Debug.Log("assignedStructure " + assignedStructure + " "  + assignedStructure.GetMinimumRefillAmountRequired());
+        //Debug.Log("assignedStructure " + assignedStructure + " " + assignedStructure.GetMinimumRefillAmountRequired());
         if (worker.GetCurrencyAmount(assignedStructure.GetRefillCurrencyTypeNeeded()) >= assignedStructure.GetMinimumRefillAmountRequired()) return true;
 
         return false;

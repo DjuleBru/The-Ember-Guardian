@@ -154,6 +154,7 @@ public class Merchant : Structure {
         if (!playerInTriggerArea) return;
         if (!playerInteracting) return;
         if (playerJustTriggeredInteraction) return;
+        if (!playerPayedToRefreshShop) return;
 
         if(playerHoldingDownInteract) {
             payCurrencyUI.SetPlayerInteracting(false);

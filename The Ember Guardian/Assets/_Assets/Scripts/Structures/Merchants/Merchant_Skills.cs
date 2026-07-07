@@ -291,6 +291,7 @@ public class Merchant_Skills : Merchant
             return skill.skillSO.activeSkillEffect.GetPriceAtLevel(skill.currentLevel);
         }
     }
+
     protected override void TriggerStructurePrimaryFunction() {
 
         if (!playerPayedToRefreshShop) {
@@ -315,7 +316,6 @@ public class Merchant_Skills : Merchant
 
         playerJustTriggeredInteraction = true;
     }
-
 
     public void RefundPlayer() {
         payCurrencyUI.SetPlayerInteracting(false);

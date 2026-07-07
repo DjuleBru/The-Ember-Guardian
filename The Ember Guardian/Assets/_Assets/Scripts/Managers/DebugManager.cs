@@ -56,8 +56,7 @@ public class DebugManager : MonoBehaviour
     }
 
     private void Update() {
-
-        if(debugMode_EventSystem) {
+        if (debugMode_EventSystem) {
             GameObject current = EventSystem.current.currentSelectedGameObject;
 
             if (current != lastSelected) {

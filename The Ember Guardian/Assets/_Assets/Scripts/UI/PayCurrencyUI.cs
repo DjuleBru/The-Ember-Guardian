@@ -34,6 +34,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public virtual void ResetCurrencyPayment() {
+        Debug.Log("ResetCurrencyPayment");
         foreach (PayCurrencyTemplateWorldUI orbTemplateWorldUI in currencyTemplateWorldUIList) {
             orbTemplateWorldUI.SetCurrencyPaid(false);
         }
@@ -46,6 +47,7 @@ public class PayCurrencyUI : MonoBehaviour
     public void SetPlayerInteracting(bool isInteracting) {
         if (playerInteracting == isInteracting) return;
 
+        //Debug.Log("SetPlayerInteracting " + isInteracting);
         currencyIndex = 0;
         if (currencyTemplateWorldUIList.Count > 0) {
             PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
@@ -75,6 +77,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public void SetPlayerInteractingContinuous(float delayBetweenDrops) {
+        Debug.Log("SetPlayerInteractingContinuous");
         playerInteracting = true;
         PlayerCurrencies.CurrencyType currencyTypeToPay = currencyTemplateWorldUIList[0].GetCurrencyTypeToPay();
         currencyIndex = 0;
@@ -87,7 +90,7 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public void SetWorkerInteracting(WorkerCurrencies workerCurrencies, bool isInteracting) {
-        //Debug.Log("SetWorkerInteracting " + workerCurrencies + " isInteracting " + isInteracting);
+        Debug.Log("SetWorkerInteracting " + workerCurrencies + " isInteracting " + isInteracting);
         if (workerInteracting == isInteracting) return;
 
         workerCurrenciesInteracting = workerCurrencies;
@@ -97,12 +100,14 @@ public class PayCurrencyUI : MonoBehaviour
         currencyIndex = 0;
 
         if (!isInteracting) {
+            workerCurrenciesInteracting = null;
             foreach (PayCurrencyTemplateWorldUI orbTemplateWorldUI in currencyTemplateWorldUIList) {
                 orbTemplateWorldUI.SetCurrencyPaid(false);
             }
 
             workerCurrencies.CancelCurrencyPayment(currenciesFailedToPayFallInWater);
             workerCurrencies.SetPayingCurrency(this, currencyTypeToPay, false);
+
 
         }
         else {
@@ -119,7 +124,6 @@ public class PayCurrencyUI : MonoBehaviour
     }
 
     public void SetOrbTemplateUIList(List<PayCurrencyTemplateWorldUI> orbTemplateList) {
-        //Debug.Log("SetOrbTemplateUIList " + orbTemplateList.Count);
         foreach (PayCurrencyTemplateWorldUI orbTemplate in currencyTemplateWorldUIList) {
             orbTemplate.OnCurrencyPaid -= OrbTemplate_OnOrbPaid;
         }
@@ -176,6 +180,10 @@ public class PayCurrencyUI : MonoBehaviour
 
     public bool GetPlayerInteracting() {
         return playerInteracting;
+    }
+
+    public WorkerCurrencies GetWorkerCurrenciesInteracting() {
+        return workerCurrenciesInteracting;
     }
 
     public PayCurrencyTemplateWorldUI GetCurrentCurrencyTemplateWorldUI() {

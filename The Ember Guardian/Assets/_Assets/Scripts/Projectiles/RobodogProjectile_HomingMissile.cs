@@ -64,6 +64,8 @@ public class RobodogProjectile_HomingMissile : GunProjectile_Bullet {
 
     private bool IsTargetValid(Creature creature) {
         if (creature == null) return false;
+        if (!creature.GetCreatureSO().flying) return false;
+
         return !creature.GetDead();
     }
 

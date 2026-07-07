@@ -47,12 +47,14 @@ public class WorkerCurrencies : MonoBehaviour {
     }
 
     private void CurrentPayOrbsUI_OnSingleOrbPaid(object sender, PayCurrencyUI.OnSingleOrbFilledEventArgs e) {
+        if (currentPayCurrencyUI.GetPlayerInteracting() || currentPayCurrencyUI.GetWorkerCurrenciesInteracting() != this) return;
         PlayerCurrencies.CurrencyType nextCurrencyTypeToPay = currentPayCurrencyUI.GetCurrentCurrencyTemplateWorldUI().GetCurrencyTypeToPay();
 
         PayNextCurrency(nextCurrencyTypeToPay);
     }
 
     private void PayNextCurrency(PlayerCurrencies.CurrencyType currencyTypeToPay) {
+        //Debug.Log("PayNextCurrency " + currencyTypeToPay);
         PayCurrencyTemplateWorldUI currencyTemplateUI = currentPayCurrencyUI.GetCurrentCurrencyTemplateWorldUI();
         float currencyIndexNormalized = currentPayCurrencyUI.GetCurrencyIndexNormalized();
 

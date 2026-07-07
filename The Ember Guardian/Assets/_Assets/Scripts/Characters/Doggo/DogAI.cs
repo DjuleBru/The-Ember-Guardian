@@ -378,7 +378,6 @@ public class DogAI : MonoBehaviour
 
     protected void HeadToBarkAtCampZoneLimit() {
         float destinationPositionX = CampZoneManager.Instance.GetMaxZoneLimit() - 4f;
-
         if(closestIncomingCreature.transform.position.x < 0) {
             destinationPositionX = CampZoneManager.Instance.GetMinZoneLimit() + 4f;
         }

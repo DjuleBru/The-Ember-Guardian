@@ -32,8 +32,7 @@ public class DogAI_Robodog : DogAI
     private float speedUpTimeTimer;
 
     private float ammoCraftMaxDistanceToPlayer = 15f;
-    private float missilesAbilityRange = 10f;
-    private float speedUpAbilityRange = 6f;
+    private float speedUpAbilityRange = 10f;
 
     private float delayToOpenHatch = .6f;
     private float delayToCloseHatch = .4f;
@@ -41,7 +40,6 @@ public class DogAI_Robodog : DogAI
     private float delayToSpawnLaser = .8f;
     private float delayAfterLaserSpawnedToCloseHatch = .4f;
 
-    private float minCreatureAltitudeToGenerateMissile = 4f;
     private float missilesLaunchSpeed = 6f;
 
     public event EventHandler OnHatchOpened;
@@ -85,7 +83,7 @@ public class DogAI_Robodog : DogAI
 
     protected override void HeadToAttackClosestCreature() {
         float distanceToCreature = Mathf.Abs(transform.position.x - closestCreature.transform.position.x);
-        if (distanceToCreature < missilesAbilityRange && biteReady) {
+        if (distanceToCreature < creatureBarkDistanceToDog && biteReady) {
             dogMovement.SetMoveTarget(transform.position);
 
             StartCoroutine(MissilesAbilityCoroutine());
@@ -106,11 +104,13 @@ public class DogAI_Robodog : DogAI
 
     private void HandleSpeedupAbility() {
         if (!speedUpAbilityUnlocked) return;
-        if (isHandlingAmmoHatch) return;
-        if (isHandlingMissileHatch) return;
-        if (state == State.attacking || state == State.growling || state == State.barking) return;
 
         speedUpTimer += Time.deltaTime;
+
+        if (isHandlingAmmoHatch) return;
+        if (isHandlingMissileHatch) return;
+        if (state == State.attacking) return;
+
 
         float distanceToPlayer = Mathf.Abs(transform.position.x - Player.Instance.transform.position.x);
         if (distanceToPlayer > speedUpAbilityRange) return;
@@ -126,11 +126,13 @@ public class DogAI_Robodog : DogAI
 
     private void HandleAmmoCraftAbility() {
         if (!ammoCraftAbilityUnlocked) return;
-        if (isHandlingSpeedupHatch) return;
-        if (isHandlingMissileHatch) return;
-        if (state == State.attacking || state == State.growling || state == State.barking) return;
 
         ammoCraftTimer += Time.deltaTime;
+
+        if (isHandlingSpeedupHatch) return;
+        if (isHandlingMissileHatch) return;
+        if (state == State.attacking) return;
+
 
         float distanceToPlayer = Mathf.Abs(transform.position.x - Player.Instance.transform.position.x);
         if (distanceToPlayer > ammoCraftMaxDistanceToPlayer) return;
@@ -258,7 +260,11 @@ public class DogAI_Robodog : DogAI
 
     protected override void HandleBarkToAttack() {
         barkingTimer += Time.deltaTime;
-        if (closestCreature == null || closestCreature.transform.position.y < minCreatureAltitudeToGenerateMissile) return;
+        if (closestCreature == null) return;
+
+        foreach (Creature creature in creatureDetectionCollider.GetCreaturesInRange()) {
+            if (!creature.GetCreatureSO().flying) return;
+        }
 
         if (barkingTimer > barkTimeToAttack && biteReady) {
             barkingTimer = 0;
