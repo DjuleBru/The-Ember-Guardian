@@ -10,6 +10,7 @@ public class DoggoVisual : MonoBehaviour
     [SerializeField] private GameObject hasCurrenciesGO;
     [SerializeField] private DogCreatureDetectionCollider detectionCollider;
     [SerializeField] private GameObject detectedAmbushGO;
+    [SerializeField] private GameObject speedupLineRenderer;
     private DogAnimatorManager dogAnimatorManager;
 
 
@@ -31,6 +32,7 @@ public class DoggoVisual : MonoBehaviour
 
         hasCurrenciesGO.SetActive(false);
         detectedAmbushGO.SetActive(false);
+        speedupLineRenderer.SetActive(false);
     }
 
     private void DetectionCollider_OnNoAmbushDetected(object sender, System.EventArgs e) {

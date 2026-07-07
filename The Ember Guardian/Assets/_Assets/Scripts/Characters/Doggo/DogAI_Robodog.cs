@@ -54,6 +54,10 @@ public class DogAI_Robodog : DogAI
     public event EventHandler OnMissileAbilityEnded;
     public event EventHandler OnMissileGenerated;
 
+    protected override void Awake() {
+        speedupLineRenderer.enabled = false;
+        base.Awake();
+    }
 
     protected override void Start() {
         base.Start();
@@ -63,7 +67,6 @@ public class DogAI_Robodog : DogAI
         ammoCraftAbilityUnlocked = DogStats.Instance.GetRobodogAmmoCraftAbilityUnlocked();
         speedUpAbilityUnlocked = DogStats.Instance.GetRobodogSpeedUpAbilityUnlocked();
 
-        speedupLineRenderer.enabled = false;
     }
 
     private void DogStats_OnNewAbilityUnlocked(object sender, EventArgs e) {
