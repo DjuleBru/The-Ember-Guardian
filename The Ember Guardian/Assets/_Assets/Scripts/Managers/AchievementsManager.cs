@@ -18,10 +18,12 @@ public class AchievementsManager : MonoBehaviour {
 
         try {
             SteamClient.Init(3570060);
+            SteamUserStats.RequestCurrentStats();
             Debug.Log(SteamClient.Name);
             playerConnected = true;
         }
         catch (System.Exception e) {
+            Debug.Log("[Achievements] Init failed, offline/no-Galaxy mode: " + e.Message);
             playerConnected = false;
         }
     }
@@ -201,9 +203,14 @@ public class AchievementsManager : MonoBehaviour {
     public void UnlockAchievement(string id) {
         if (!playerConnected) return;
 
-        var ach = new Steamworks.Data.Achievement(id);
-        ach.Trigger();
-        SteamUserStats.StoreStats();
+        try {
+            var ach = new Steamworks.Data.Achievement(id);
+            ach.Trigger();
+            SteamUserStats.StoreStats();
+        }
+        catch (System.Exception e) {
+            Debug.Log("[Achievements] UnlockAchievement failed for " + id + ": " + e.Message);
+        }
     }
 
     [Button]
