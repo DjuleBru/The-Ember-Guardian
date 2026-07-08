@@ -35,11 +35,11 @@ public class DogAbilityTemplate : MonoBehaviour
                 abilityNameText.text = LocalizationManager.Instance.GetLocalizedText("dog_dig");
 
 
-                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("general_probability_short");
+                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("Prob.");
                 abilityStatValue.text = DogStats.Instance.GetGermanShepherdDigResourceProbility().ToString() + "%";
                 Instantiate(abilityStatTemplate, abilityStatContainer);
 
-                abilityStatText.text = "x2 " + LocalizationManager.Instance.GetLocalizedText("general_probability_short");
+                abilityStatText.text = "x2 " + LocalizationManager.Instance.GetLocalizedText("Prob.");
                 abilityStatValue.text = DogStats.Instance.GetGermanShepherdDigResourceDoubleProbability().ToString() + "%";
                 Instantiate(abilityStatTemplate, abilityStatContainer);
 
@@ -52,7 +52,7 @@ public class DogAbilityTemplate : MonoBehaviour
             case HUBMerchantItem_DogTamerItem.DogTamerItemType.GermanShepherd_AmbushDetectionAbility:
                 abilityNameText.text = LocalizationManager.Instance.GetLocalizedText("dog_ambush");
 
-                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("general_probability_short");
+                abilityStatText.text = LocalizationManager.Instance.GetLocalizedText("Prob.");
                 abilityStatValue.text = DogStats.Instance.GetGermanShepherdDetectAmbushProbability().ToString() + "%";
                 Instantiate(abilityStatTemplate, abilityStatContainer);
 
