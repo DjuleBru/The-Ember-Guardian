@@ -311,8 +311,9 @@ public class Creature : Mob
         }
 
         bool isHordeMode = LevelManager.Instance != null && LevelManager.Instance.IsHordeMode();
+
         if (isHordeMode) {
-            dropRedOrbs = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.OrbAlchemist);
+            dropRedOrbs = HordeModeProgressionManager.Instance.GetUnlocked(HordeModeProgressionManager.HordeModeUnlockables.OrbAlchemist) && PlayerCamp.Instance.GetHasSkillMerchantInLayoutAndUnlocked();
         } else {
             dropRedOrbs = MetaProgressionManager.Instance.GetDropRedOrbsUnlocked() && PlayerCamp.Instance.GetHasSkillMerchantInLayoutAndUnlocked();
         }

@@ -6,6 +6,7 @@ public class AnimalManager : MonoBehaviour
 {
     public static AnimalManager Instance;
     [SerializeField] private List<AnimalSO> animalSOList;
+    [SerializeField] private List<Transform> animalPrefabList;
     private List<Animal> spawnedAnimalList = new List<Animal>();
     private float distanceToMaxHuntingLimitToAllowHunting = 8f;
     private float distanceToAnimalToAllowReassigning = 15f;
@@ -93,5 +94,13 @@ public class AnimalManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public Transform GetAnimalPrefab(int animalIndex) {
+        return animalPrefabList[animalIndex];
+    }
+
+    public int GetAnimalIndex(Transform animalPrefab) {
+        return animalPrefabList.IndexOf(animalPrefab);
     }
 }

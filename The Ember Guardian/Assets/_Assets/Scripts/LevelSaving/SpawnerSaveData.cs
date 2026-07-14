@@ -6,7 +6,7 @@ using UnityEngine;
 public class SpawnerSaveData
 {
     public string spawnerID;   // identifiant unique de ce spawner
-    public Transform mobPrefab;
+    public int animalIndex;
     public int currentMobsAlive;
     public bool ambushSpawned; // Pour ambush
     public bool dead;          // pour CreatureSpawnerContinuous

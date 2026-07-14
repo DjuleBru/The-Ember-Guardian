@@ -272,7 +272,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         for (int i = 0; i < data.startingBlockAnimalSpawners_Left.Count && i < animalSpawnerList_Left.Count; i++) {
             var save = data.startingBlockAnimalSpawners_Left[i];
 
-            animalSpawnerList_Left[i].SetSpawnerParameters_HordeMode(save.mobPrefab, save.currentMobsAlive, 5f, save.daysSinceSpawnerActive);
+            animalSpawnerList_Left[i].SetSpawnerParameters_HordeMode(save.animalIndex, save.currentMobsAlive, 5f, save.daysSinceSpawnerActive);
             animalSpawnerList_Left[i].SpawnMobs(save.currentMobsAlive);
 
         }
@@ -281,7 +281,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         for (int i = 0; i < data.startingBlockAnimalSpawners_Right.Count && i < animalSpawnerList_Right.Count; i++) {
             var save = data.startingBlockAnimalSpawners_Right[i];
 
-            animalSpawnerList_Right[i].SetSpawnerParameters_HordeMode(save.mobPrefab, save.currentMobsAlive, 5f, save.daysSinceSpawnerActive);
+            animalSpawnerList_Right[i].SetSpawnerParameters_HordeMode(save.animalIndex, save.currentMobsAlive, 5f, save.daysSinceSpawnerActive);
             animalSpawnerList_Right[i].SpawnMobs(save.currentMobsAlive);
 
         }
@@ -334,7 +334,6 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
             DayCreatureSpawner creatureSpawner = spawner as DayCreatureSpawner;
 
             SpawnerSaveData spawnerData = new SpawnerSaveData {
-                mobPrefab = creatureSpawner.GetMobPrefab(),
                 currentMobsAlive = creatureSpawner.GetMobCount(),
                 mobsCanSpawnAtDawn = creatureSpawner.GetMobsCanSpawnAtDawn(),
                 ambushSpawned = creatureSpawner.GetAmbushSpawned(),
@@ -354,7 +353,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         foreach (var spawner in animalSpawnerList_Left) {
             if (spawner.GetMobCount() == 0) continue;
             save.startingBlockAnimalSpawners_Left.Add(new SpawnerSaveData {
-                mobPrefab = spawner.GetMobPrefab(),
+                animalIndex = spawner.GetAnimalIndex(),
                 currentMobsAlive = spawner.GetMobCount(),
                 mobsCanSpawnAtDawn = spawner.GetMobsCanSpawnAtDawn(),
                 daysSinceSpawnerActive = spawner.GetDaysSinceSpawnerActive(),
@@ -365,7 +364,7 @@ public class HordeModeBlock_StartingBlock : HordeModeBlock
         foreach (var spawner in animalSpawnerList_Right) {
             if (spawner.GetMobCount() == 0) continue;
             save.startingBlockAnimalSpawners_Right.Add(new SpawnerSaveData {
-                mobPrefab = spawner.GetMobPrefab(),
+                animalIndex = spawner.GetAnimalIndex(),
                 currentMobsAlive = spawner.GetMobCount(),
                 mobsCanSpawnAtDawn = spawner.GetMobsCanSpawnAtDawn(),
                 daysSinceSpawnerActive = spawner.GetDaysSinceSpawnerActive(),

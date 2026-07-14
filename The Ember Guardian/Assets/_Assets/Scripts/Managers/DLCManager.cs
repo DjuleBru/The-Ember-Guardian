@@ -63,6 +63,7 @@ public class DLCManager : MonoBehaviour {
     }
 
     private bool HasDLC_ViaSteamworks(DLCDefinition def) {
+        Debug.Log("SteamClient.IsValid " + SteamClient.IsValid);
         if (!SteamClient.IsValid) {
             return false;
         }

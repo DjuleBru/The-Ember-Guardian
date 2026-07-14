@@ -427,8 +427,18 @@ public class MobSpawner : MonoBehaviour
         return daysSinceSpawnerActive;
     }
 
-    public Transform GetMobPrefab() {
-        return mobPrefab;
+    public int GetAnimalIndex() {
+        return AnimalManager.Instance.GetAnimalIndex(mobPrefab);
+    }
+
+
+    public void SetSpawnerParameters_HordeMode(int mobIndex, int mobAmountToSpawn, float radiusToRoamAround, int daysSinceSpawnerActive = 0) {
+        this.mobPrefab = AnimalManager.Instance.GetAnimalPrefab(mobIndex);
+        this.mobAmountToSpawn = mobAmountToSpawn;
+        this.radiusToRoamAround = radiusToRoamAround;
+        this.daysSinceSpawnerActive = daysSinceSpawnerActive;
+
+        isAnimalHordeModeSpawner = true;
     }
 
     public void SetSpawnerParameters_HordeMode(Transform mobPrefab, int mobAmountToSpawn, float radiusToRoamAround, int daysSinceSpawnerActive = 0) {

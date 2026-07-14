@@ -47,7 +47,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32768
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -705,6 +705,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3edffd4db14ad6b4fb2930e7ecea06b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minIntervalBetweenSameClip: 0.1
+  maxInstancesPerClip: 10
   rocksMovingAudioClip: {fileID: 8300000, guid: b222a2ce0b1f0974a9d6fe68cc0e05c5, type: 3}
   trialStartAudioClip: {fileID: 8300000, guid: 3898b80e56e42d84da78c705171208e6, type: 3}
   chestUnlockedAudioClip: {fileID: 8300000, guid: eced4d4569b77544c8c9b0fa10966a01, type: 3}
@@ -801,7 +803,7 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32768
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -935,6 +937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b81c8be2218f814f942caf8686ba0bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trialAreaID: 54d8f78b-3d66-43ad-81af-9479eec5f12a
   trialChest: {fileID: 1410201764100089340}
   creatureSpawners:
   - {fileID: 4309564625974894697}

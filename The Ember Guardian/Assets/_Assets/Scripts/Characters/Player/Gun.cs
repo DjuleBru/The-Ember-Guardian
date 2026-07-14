@@ -718,7 +718,7 @@ public class Gun : MonoBehaviour
     }
 
     public void BuffBulletDamage(float buffAmount, bool globalBuff = true) {
-        Debug.Log("BuffBulletDamage " + buffAmount + " globalBuff " + globalBuff);
+        //Debug.Log("BuffBulletDamage " + buffAmount + " globalBuff " + globalBuff);
         if (globalBuff) {
             totalBuffMultiplier *= buffAmount;
         } else {
@@ -729,7 +729,7 @@ public class Gun : MonoBehaviour
     }
 
     public void DebuffBulletDamage(float debuffAmount, bool globalDebuff = true) {
-        Debug.Log("DebuffBulletDamage " + debuffAmount + " globalBuff " + globalDebuff);
+        //Debug.Log("DebuffBulletDamage " + debuffAmount + " globalBuff " + globalDebuff);
         if (globalDebuff) {
             totalBuffMultiplier /= debuffAmount;
         }

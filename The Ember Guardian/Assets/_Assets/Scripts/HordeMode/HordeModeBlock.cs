@@ -180,7 +180,7 @@ public class HordeModeBlock : MonoBehaviour
         } else {
 
             int animalAmountToSpawn = saveData.animalSpawnerData.currentMobsAlive;
-            animalSpawner.SetSpawnerParameters_HordeMode(saveData.animalSpawnerData.mobPrefab, animalAmountToSpawn, radiusToRoamAround, saveData.animalSpawnerData.daysSinceSpawnerActive);
+            animalSpawner.SetSpawnerParameters_HordeMode(saveData.animalSpawnerData.animalIndex, animalAmountToSpawn, radiusToRoamAround, saveData.animalSpawnerData.daysSinceSpawnerActive);
 
         }
 
@@ -450,7 +450,6 @@ public class HordeModeBlock : MonoBehaviour
             DayCreatureSpawner creatureSpawner = spawner as DayCreatureSpawner;
 
             SpawnerSaveData spawnerData = new SpawnerSaveData {
-                mobPrefab = creatureSpawner.GetMobPrefab(),
                 currentMobsAlive = creatureSpawner.GetMobCount(),
                 mobsCanSpawnAtDawn = creatureSpawner.GetMobsCanSpawnAtDawn(),
                 ambushSpawned = creatureSpawner.GetAmbushSpawned(),
@@ -474,7 +473,7 @@ public class HordeModeBlock : MonoBehaviour
             decorIndex = GetComponent<HordeModeBlockVisuals>().GetDecorIndex(),
 
             animalSpawnerData = new SpawnerSaveData {
-                mobPrefab = animalSpawner.GetMobPrefab(),
+                animalIndex = animalSpawner.GetAnimalIndex(),
                 currentMobsAlive = animalSpawner.GetMobCount(),
                 mobsCanSpawnAtDawn = animalSpawner.GetMobsCanSpawnAtDawn(),
                 daysSinceSpawnerActive = animalSpawner.GetDaysSinceSpawnerActive(),

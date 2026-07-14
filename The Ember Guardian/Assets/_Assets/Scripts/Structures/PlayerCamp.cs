@@ -576,7 +576,8 @@ public class PlayerCamp : MonoBehaviour
     public bool GetHasSkillMerchantInLayoutAndUnlocked() {
         foreach(StructureLocation location in allStructureLocations) {
             if(location.GetStructureSOToBuild().structureType == StructureSO.StructureType.merchant_skills) {
-                if(location.GetStructureLocationBought()) {
+                Debug.Log("ocation.GetStructureLocationBought() " + location.GetStructureLocationBought());
+                if (location.GetStructureLocationBought()) {
                     return true;
                 }
             }

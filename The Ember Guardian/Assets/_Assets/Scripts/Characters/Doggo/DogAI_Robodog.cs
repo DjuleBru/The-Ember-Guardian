@@ -226,6 +226,7 @@ public class DogAI_Robodog : DogAI
 
         // Activer le line renderer vers le joueur pendant une durée limitée (.2s)
 
+        speedupLineRenderer.gameObject.SetActive(true);
         speedupLineRenderer.enabled = true;
         speedupLineRenderer.positionCount = 2;
 
